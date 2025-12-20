@@ -206,10 +206,7 @@ export default function RequirementsPage() {
                   </div>
 
                   {/* Requirements List */}
-                  <motion.div
-                    variants={containerVariants}
-                    className="space-y-4 pl-0 md:pl-18"
-                  >
+                  <div className="space-y-4 pl-0 md:pl-18">
                     {requirement.items.map((item, itemIndex) => {
                       const ItemIcon = item.icon
                       
@@ -217,6 +214,9 @@ export default function RequirementsPage() {
                         <motion.div
                           key={itemIndex}
                           variants={itemVariants}
+                          initial="hidden"
+                          animate={isInView ? "visible" : "hidden"}
+                          transition={{ delay: itemIndex * 0.1 }}
                           whileHover={{ x: 5 }}
                           className="flex items-start gap-4 group"
                         >
@@ -234,7 +234,7 @@ export default function RequirementsPage() {
                         </motion.div>
                       )
                     })}
-                  </motion.div>
+                  </div>
                 </div>
 
                 {/* Decorative Bottom Border */}
