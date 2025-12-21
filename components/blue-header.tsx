@@ -16,7 +16,7 @@ const navItems = [
     title: "About us",
     href: "/about",
     submenu: [
-      { title: "Our School", href: "/about/our-school" },
+      { title: "Our School", href: "/about" },
       { title: "Our Approach", href: "/about/our-approach" },
     ],
   },
@@ -25,9 +25,9 @@ const navItems = [
     href: "/admissions",
     submenu: [
       { title: "Requirements", href: "/admissions/requirements" },
-      { title: "Admission Period", href: "/admissions/period" },
+      { title: "Admission Period", href: "/admissions/periods" },
       { title: "How to Apply", href: "/admissions/how-to-apply" },
-      { title: "Apply Now", href: "/admissions/apply" },
+      { title: "Apply Now", href: "/admissions/apply-now" },
     ],
   },
   { title: "Academics", href: "/academics" },
@@ -222,18 +222,17 @@ export function BlueSiteHeader() {
                   transition={{ delay: 0.5 }}
                 >
                   <SheetClose asChild>
-                    <Link href="/login" className="block">
+                    <Link
+                      href="/login"
+                      className="w-full inline-flex items-center justify-center gap-2 text-white border-white hover:bg-white hover:text-[#2a3dc8ff] font-medium py-2 px-3 rounded-md"
+                    >
                       <motion.div
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
+                        className="flex items-center gap-2"
                       >
-                        <Button
-                          variant="outline"
-                          className="w-full text-white border-white hover:bg-white hover:text-[#2a3dc8ff] font-medium flex items-center justify-center gap-2"
-                        >
-                          <User className="h-5 w-5" />
-                          <span>Log In</span>
-                        </Button>
+                        <User className="h-5 w-5" />
+                        <span>Log In</span>
                       </motion.div>
                     </Link>
                   </SheetClose>
@@ -253,7 +252,7 @@ export function BlueSiteHeader() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              {navItems.map((item, index) =>
+                  {navItems.map((item, index) =>
                 item.submenu ? (
                   <motion.div
                     key={item.title}
@@ -304,19 +303,17 @@ export function BlueSiteHeader() {
                       duration: 0.3
                     }}
                   >
-                    <Link href={item.href}>
+                    <Link
+                      href={item.href}
+                      className={`text-white hover:bg-white/10 font-bold transition-all duration-300 ${
+                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
+                      }`}
+                    >
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <Button 
-                          variant="ghost" 
-                          className={`text-white hover:bg-white/10 font-bold transition-all duration-300 ${
-                            isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
-                          }`}
-                        >
-                          {item.title}
-                        </Button>
+                        {item.title}
                       </motion.div>
                     </Link>
                   </motion.div>
@@ -333,30 +330,29 @@ export function BlueSiteHeader() {
                 duration: 0.3
               }}
             >
-              <Link href="/login">
+              <Link
+                href="/login"
+                className={`text-white hover:bg-white/10 font-medium flex items-center gap-2 transition-all duration-300 ${
+                  isScrolled ? "text-xs xl:text-sm px-2 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
+                }`}
+              >
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  className="flex items-center gap-2"
                 >
-                  <Button
-                    variant="ghost"
-                    className={`text-white hover:bg-white/10 font-medium flex items-center gap-2 transition-all duration-300 ${
-                      isScrolled ? "text-xs xl:text-sm px-2 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
+                  <motion.div 
+                    className={`flex items-center justify-center rounded-full bg-[#EFBF04] transition-all duration-300 ${
+                      isScrolled ? "w-6 h-6 xl:w-7 xl:h-7" : "w-8 h-8 xl:w-9 xl:h-9"
                     }`}
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.5 }}
                   >
-                    <motion.div 
-                      className={`flex items-center justify-center rounded-full bg-[#EFBF04] transition-all duration-300 ${
-                        isScrolled ? "w-6 h-6 xl:w-7 xl:h-7" : "w-8 h-8 xl:w-9 xl:h-9"
-                      }`}
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <User className={`text-white transition-all duration-300 ${
-                        isScrolled ? "h-3 w-3 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
-                      }`} />
-                    </motion.div>
-                    <span className="hidden xl:inline">Log In</span>
-                  </Button>
+                    <User className={`text-white transition-all duration-300 ${
+                      isScrolled ? "h-3 w-3 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
+                    }`} />
+                  </motion.div>
+                  <span className="hidden xl:inline">Log In</span>
                 </motion.div>
               </Link>
             </motion.div>

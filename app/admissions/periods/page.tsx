@@ -1,257 +1,225 @@
-"use client"
+'use client';
 
-import React, { useRef } from "react"
-import { motion, useInView, Variants } from "framer-motion"
-import { 
-  Laptop, 
-  Wifi, 
-  FileText, 
-  GraduationCap, 
-  User, 
-  CheckCircle2,
-  Download,
-  Home
-} from "lucide-react"
-import { BlueSiteHeader } from "@/components/blue-header"
-import { CTA } from "@/components/home/cta"
-import { MainSiteFooter } from "@/components/main-footer"
-import { SiteFooter } from "@/components/site-footer"
+import { BlueSiteHeader } from '@/components/blue-header';
+import { MainSiteFooter } from '@/components/main-footer';
+import React from 'react';
+import { motion } from 'framer-motion';
 
-const requirements = [
-  {
-    title: "Technological Requirements",
-    icon: Laptop,
-    description: "To succeed in our online learning environment, students must have the following technological setup:",
-    items: [
-      {
-        icon: Laptop,
-        text: "Device: A laptop or desktop computer equipped with essential software, a web camera, a microphone, and speakers."
-      },
-      {
-        icon: Wifi,
-        text: "Internet: A stable internet connection with at least 3G speed to ensure smooth streaming of classes and participation in virtual labs."
-      },
-      {
-        icon: Download,
-        text: "Software: Necessary software installed, including a web browser, word processing software, and any other course-specific applications."
-      }
-    ]
-  },
-  {
-    title: "Environmental Requirements",
-    icon: Home,
-    description: "To succeed in our online learning environment, students must have the following environmental setup:",
-    items: [
-      {
-        icon: Home,
-        text: "Learning Environment: A quiet and distraction-free space for attending classes and studying."
-      },
-      {
-        icon: CheckCircle2,
-        text: "Exam Environment: A controlled and quiet environment for taking exams and tests to ensure academic integrity."
-      }
-    ]
-  },
-  {
-    title: "Academic Documentation",
-    icon: GraduationCap,
-    description: "Please prepare the following academic documents for your application:",
-    items: [
-      {
-        icon: FileText,
-        text: "Transcripts: Translated official transcripts for the last three school years, demonstrating satisfactory academic performance."
-      },
-      {
-        icon: GraduationCap,
-        text: "Academic History: Detailed records of your previous academic achievements and coursework."
-      }
-    ]
-  },
-  {
-    title: "Personal Identification",
-    icon: User,
-    description: "Valid identification documents are required for enrollment:",
-    items: [
-      {
-        icon: User,
-        text: "Identification: Bio-data page from your passport or national ID with a photo."
-      },
-      {
-        icon: FileText,
-        text: "Birth Certificate: A copy of your birth certificate."
-      },
-      {
-        icon: User,
-        text: "Passport-Sized Photo: A recent digital passport-sized color photo."
-      }
-    ]
-  }
-]
-
-// Define animation variants with proper typing
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.1,
+export default function AdmissionPeriods() {
+  const periods = [
+    {
+      month: 'September',
+      description: 'The traditional start of the academic year, perfect for students transitioning from summer break.'
     },
-  },
-}
-
-const headerVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
+    {
+      month: 'January',
+      description: 'A mid-year entry point, suitable for students who have completed a term or semester elsewhere and are looking to switch schools.'
     },
-  },
-}
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
+    {
+      month: 'April',
+      description: 'A spring entry, providing an alternative start time for students who need more time to prepare or finish previous commitments.'
     },
-  },
-}
+    {
+      month: 'July',
+      description: 'A summer entry, ideal for students who wish to get ahead or need to make up for lost time.'
+    }
+  ];
 
-const itemVariants: Variants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut",
-    },
-  },
-}
+  const containerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: 'easeOut' }
+    }
+  };
 
-export default function RequirementsPage() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 })
+  const slideInVariants = {
+    hidden: { opacity: 0, x: 40 },
+    visible: (i) => ({
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.6, ease: 'easeOut', delay: i * 0.1 }
+    })
+  };
+
+  const fadeInVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: (delay) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: 'easeOut', delay }
+    })
+  };
+
+  const floatVariants = {
+    animate: {
+      x: [0, 20, 0],
+      y: [0, -20, 0],
+      transition: {
+        duration: 6,
+        ease: 'easeInOut',
+        repeat: Infinity
+      }
+    }
+  };
 
   return (
     <>
       <BlueSiteHeader />
-      <section
-        ref={sectionRef}
-        className="pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-20"
-      >
-        <div className="container mx-auto px-4 pt-20">
-          {/* Header */}
-          <motion.div
-            variants={headerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            className="text-center max-w-3xl mx-auto mb-16"
-          >
-            <h2 className="text-4xl md:text-6xl text-gray-900 font-serif mb-4 leading-tight">
-              Requirements to Study at{" "}
-              <span className="text-[#3d4fd4]">Queensgate</span>
-            </h2>
-            
-            <p className="text-lg md:text-xl text-gray-600">
-              Everything you need to know to start your educational journey with us
-            </p>
-          </motion.div>
+      <div className="min-h-screen  pt-[120px] md:pt-[200px] lg:pt-[240px] pb-16 px-6">
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+          
+          .period-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #EFBF04 0%, #6B1616 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            transform-origin: top;
+          }
+          
+          .period-card:hover::before {
+            transform: scaleY(1);
+          }
+          
+          .image-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(139, 30, 30, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+          }
+        `}</style>
 
-          {/* Requirements Grid */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            className="max-w-6xl mx-auto space-y-8"
-          >
-            {requirements.map((requirement, index) => {
-              const Icon = requirement.icon
-              
-              return (
-                <motion.div
-                  key={index}
-                  variants={cardVariants}
-                  whileHover={{ y: -5 }}
-                  className="bg-white overflow-hidden"
+            {/* Full-Page Background Pattern - Independent Layer */}
+      <div
+        className="fixed inset-0 bg-center bg-repeat -z-10"
+        style={{ backgroundImage: "url('/images/pattern.webp')" }}
+      />
+      
+      <motion.div
+        className="fixed inset-0 -z-[5]"
+        style={{ backgroundColor: '#EFBF04', opacity: 0.88 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.88 }}
+        transition={{ duration: 0.4 }}
+      />
+
+        <motion.div 
+          className="max-w-7xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            {/* Left Column */}
+            <div className="flex flex-col gap-8">
+              <div className="relative">
+                <motion.div 
+                  className="absolute w-[120px] h-[120px] bg-[radial-gradient(circle,rgba(139,30,30,0.08)_0%,transparent_70%)] rounded-full blur-[40px] -top-[60px] -left-[60px]"
+                  variants={floatVariants}
+                  animate="animate"
+                />
+                <motion.h1 
+                  className="text-6xl  text-[#3d4fd4] mb-6 leading-tight"
+                  style={{ fontFamily: "'Crimson Pro', serif" }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
                 >
-                  <div className="p-8 md:p-10">
-                    {/* Card Header */}
-                    <div className="flex items-start gap-4 mb-6">
-                      <motion.div
-                        whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
-                        transition={{ duration: 0.5 }}
-                        className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-[#3d4fd4] to-[#2a3eb8] rounded-2xl flex items-center justify-center shadow-lg"
-                      >
-                        <Icon className="w-7 h-7 text-white" />
-                      </motion.div>
-                      
-                      <div className="flex-1">
-                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                          {requirement.title}
-                        </h3>
-                        <p className="text-gray-600 text-base md:text-lg">
-                          {requirement.description}
-                        </p>
-                      </div>
-                    </div>
+                  Admission Periods
+                </motion.h1>
+                <motion.div 
+                  className="h-1 w-24 bg-gradient-to-r from-[#3d4fd4] to-[#6B1616] rounded-full"
+                  initial={{ opacity: 0, x: -40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+                />
+              </div>
+              
+              <motion.p 
+                className="text-lg text-gray-700 leading-relaxed max-w-xl"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+                variants={fadeInVariants}
+                initial="hidden"
+                animate="visible"
+                custom={0.3}
+              >
+                CIC Ontario Secondary School offers multiple admission entry points throughout the year 
+                to accommodate the diverse needs of students worldwide. These entry points are in 
+                September, January, April, and July, allowing flexibility for students to start their education 
+                at a time that best suits their academic and personal schedules. It is recommended to 
+                apply a minimum of two weeks before your desired admission period.
+              </motion.p>
+              
+              <motion.div 
+                className="image-container relative overflow-hidden rounded-2xl"
+                style={{ boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1)' }}
+                variants={fadeInVariants}
+                initial="hidden"
+                animate="visible"
+                custom={0.4}
+              >
+                <img 
+                  src="/images/02a-header-How-To-Apply-Header-PhotoV3.jpg"
+                  alt="University Application Accepted"
+                  className="w-full h-auto object-cover"
+                />
+              </motion.div>
+            </div>
 
-                    {/* Requirements List */}
-                    <motion.div
-                      variants={containerVariants}
-                      className="space-y-4 pl-0 md:pl-18"
-                    >
-                      {requirement.items.map((item, itemIndex) => {
-                        const ItemIcon = item.icon
-                        
-                        return (
-                          <motion.div
-                            key={itemIndex}
-                            variants={itemVariants}
-                            whileHover={{ x: 5 }}
-                            className="flex items-start gap-4 group"
-                          >
-                            <motion.div
-                              whileHover={{ scale: 1.2, rotate: 360 }}
-                              transition={{ duration: 0.3 }}
-                              className="flex-shrink-0 w-10 h-10 bg-[#EFBF04]/20 rounded-xl flex items-center justify-center group-hover:bg-[#EFBF04]/30 transition-colors duration-300"
-                            >
-                              <ItemIcon className="w-5 h-5 text-[#EFBF04]" />
-                            </motion.div>
-                            
-                            <p className="text-gray-700 text-base md:text-lg leading-relaxed pt-1.5">
-                              {item.text}
-                            </p>
-                          </motion.div>
-                        )
-                      })}
-                    </motion.div>
-                  </div>
-
-                  {/* Decorative Bottom Border */}
-                  <motion.div
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="h-1 bg-gradient-to-r from-[#EFBF04] via-[#EFBF04] to-[#EFBF04]"
-                  />
+            {/* Right Column - Periods */}
+            <div>
+              {periods.map((period, index) => (
+                <motion.div 
+                  key={period.month}
+                  className="period-card relative pl-8 pr-6 py-8 border-b border-gray-200 last:border-b-0 transition-all duration-300 ease-out hover:translate-x-2 hover:bg-gradient-to-br hover:from-[rgba(139,30,30,0.03)] hover:to-[rgba(139,30,30,0.01)]"
+                  variants={slideInVariants}
+                  initial="hidden"
+                  animate="visible"
+                  custom={index + 1}
+                >
+                  <h2 
+                    className="text-3xl  text-[#3d4fd4] mb-3"
+                    style={{ fontFamily: "'Crimson Pro', serif" }}
+                  >
+                    {period.month}
+                  </h2>
+                  <p 
+                    className="text-gray-700 leading-relaxed"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    {period.description}
+                  </p>
                 </motion.div>
-              )
-            })}
+              ))}
+            </div>
+          </div>
+
+          {/* Decorative Element */}
+          <motion.div 
+            className="mt-20 text-center opacity-30"
+            variants={fadeInVariants}
+            initial="hidden"
+            animate="visible"
+            custom={0.8}
+          >
+            <div className="flex items-center justify-center gap-2">
+              <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#3d4fd4]" />
+              <div className="w-2 h-2 rounded-full bg-[#3d4fd4]" />
+              <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#3d4fd4]" />
+            </div>
           </motion.div>
-        </div>
-      </section>
-      <div className="bg-[#f9f9f9]">
-        <CTA />
-        <SiteFooter />
+        </motion.div>
       </div>
+
+      <MainSiteFooter />
     </>
-  )
+  );
 }

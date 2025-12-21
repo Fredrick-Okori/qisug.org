@@ -69,7 +69,7 @@ export default function FAQPage() {
     <div className="min-h-screen flex flex-col">
       <BlueSiteHeader />
 
-      <main className="flex-1 bg-white">
+      <main className="flex-1 bg-white pt-24 lg:pt-32">
         <div className="container mx-auto px-4 py-16 lg:py-24">
           <div className="max-w-5xl mx-auto">
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#3d4fd4] mb-12 text-center">

@@ -35,7 +35,7 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             >
-              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#3d4fd4] leading-tight mb-6">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl  text-[#3d4fd4] leading-tight mb-6">
                 About Queensgate International School
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl text-black leading-relaxed">
@@ -56,7 +56,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
-                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#3d4fd4] mb-6">
+                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl  text-[#3d4fd4] mb-6">
                   Our Mission
                 </h2>
                 <div className="space-y-4 text-black text-base sm:text-lg leading-relaxed">
