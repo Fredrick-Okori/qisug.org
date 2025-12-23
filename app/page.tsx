@@ -10,6 +10,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { ApplySectionProduction } from "@/components/home/apply-component"
 import { Resources } from "@/components/home/resources"
 import { CTA } from "@/components/home/cta"
+import { ImprovedHomeSection } from "@/components/home/improved"
 
 export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -109,10 +110,10 @@ export default function HomePage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Link href="/admissions">
+                  <Link href="/admissions/apply-now">
                     <Button
                       size="lg"
-                      className="bg-[#ef] text-white hover:bg-[#3d4fd4]/90 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 rounded-md shadow-lg transition-all hover:shadow-xl"
+                      className="bg-[#EFBF04] text-white hover:bg-[#3d4fd4]/90 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 rounded-md shadow-lg transition-all hover:shadow-xl"
                     >
                       Apply Today
                     </Button>
@@ -154,7 +155,7 @@ export default function HomePage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <Link href="/admissions">
+                    <Link href="/admissions/apply-now">
                       <Button
                         size="lg"
                         className="bg-[#EFBF04] text-white hover:bg-[#3d4fd4]/90 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6  transition-all "
@@ -202,6 +203,7 @@ export default function HomePage() {
         </MotionWrapper>
       </main>
 <ApplySectionProduction/>
+<ImprovedHomeSection/>
 <Resources/>
 <CTA/>
       <SiteFooter />

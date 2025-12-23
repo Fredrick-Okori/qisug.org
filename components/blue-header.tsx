@@ -102,7 +102,7 @@ export function BlueSiteHeader() {
               delay: 0.2
             }}
           >
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="flex items-center pb-5">
               <motion.div 
                 className={`relative transition-all duration-300 ${
                   isScrolled

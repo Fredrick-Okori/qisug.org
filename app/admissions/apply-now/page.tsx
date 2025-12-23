@@ -113,7 +113,7 @@ export default function ApplyNowPage() {
               {/* Header */}
               <div className="relative">
                 <motion.h1 
-                  className="text-5xl md:text-6xl font-bold text-[#3d4fd4] mb-6 leading-tight"
+                  className="text-5xl md:text-6xl text-[#3d4fd4] mb-6 leading-tight"
                   style={{ fontFamily: "'Crimson Pro', serif" }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
