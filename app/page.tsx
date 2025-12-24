@@ -158,7 +158,7 @@ export default function HomePage() {
                     <Link href="/admissions/apply-now">
                       <Button
                         size="lg"
-                        className="bg-[#EFBF04] text-white hover:bg-[#3d4fd4]/90 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6  transition-all "
+                        className="bg-[#EFBF04] text-white rounded-full hover:bg-[#3d4fd4]/90 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6  transition-all "
                       >
                         Apply Today
                       </Button>

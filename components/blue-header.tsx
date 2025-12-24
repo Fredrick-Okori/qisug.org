@@ -356,40 +356,37 @@ export function BlueSiteHeader() {
                 </motion.div>
               </Link>
             </motion.div>
-
-            {/* Search Bar with animation */}
-            <motion.div 
-              className="relative"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ 
-                delay: 0.8,
-                duration: 0.4
-              }}
-            >
-              <div className={`flex items-center bg-white rounded-full pl-3 pr-1.5 border border-white/20 transition-all duration-300 ${
-                isScrolled ? "py-1 w-32 xl:w-48" : "py-1.5 w-40 xl:w-56"
-              }`}>
-                <Input
-                  type="search"
-                  placeholder="Search..."
-                  className={`flex-1 bg-transparent border-0 text-[#3d4fd4] placeholder:text-[#3d4fd4]/40 focus-visible:ring-0 focus-visible:ring-offset-0 px-0 transition-all duration-300 ${
-                    isScrolled ? "text-xs" : "text-sm"
-                  }`}
-                />
-                <motion.div 
-                  className={`flex items-center justify-center rounded-full bg-[#EFBF04] flex-shrink-0 transition-all duration-300 ${
-                    isScrolled ? "w-6 h-6 xl:w-7 xl:h-7" : "w-8 h-8 xl:w-9 xl:h-9"
-                  }`}
-                  whileHover={{ scale: 1.1, rotate: 15 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Search className={`text-white transition-all duration-300 ${
-                    isScrolled ? "h-3 w-3 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
-                  }`} />
-                </motion.div>
-              </div>
-            </motion.div>
+{/* Apply Now Button with animation */}
+<motion.div
+  initial={{ opacity: 0, x: 20 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ 
+    delay: 0.8,
+    duration: 0.4
+  }}
+>
+  <Link href="/admissions/apply-now">
+    <motion.button 
+      className={`flex items-center gap-2 bg-[#EFBF04] text-white rounded-full border border-[#3d4fd4] transition-all duration-300 hover:bg-[#2d3fb4] hover:shadow-lg ${
+        isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
+      }`}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <span className="font-medium">Apply Now</span>
+      <svg 
+        className={`transition-all duration-300 ${
+          isScrolled ? "h-3.5 w-3.5 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
+        }`}
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      </svg>
+    </motion.button>
+  </Link>
+</motion.div>
           </div>
         </div>
       </div>

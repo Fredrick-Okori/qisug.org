@@ -27,12 +27,12 @@ export default function AcademicsPage() {
 
       <main className="flex-1 relative">
         {/* Header Section - Pattern visible, fully responsive padding */}
-        <div className="pt-24 sm:pt-28 md:pt-32 lg:pt-40 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
-          <div className="container mx-auto px-4 py-5 sm:px-6 lg:px-8">
+        <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
+          <div className="container mx-auto px-4 py-5 md:text-6xl text-[#3d4fd4] mb-6">
             <div className="max-w-5xl">
               <motion.h1 
-                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl   text-[#3d4fd4]"
-                style={{ fontWeight: 700 }}
+                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10   text-[#3d4fd4]"
+              
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -114,7 +114,7 @@ export default function AcademicsPage() {
                   }}
                 >
                   <Image
-                    src="/images/certificate_mockup.avif"
+                    src="/images/student_grade.avif"
                     alt="Certificate mockup"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
