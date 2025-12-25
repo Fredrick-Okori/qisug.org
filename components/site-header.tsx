@@ -4,7 +4,6 @@ import Link from "next/link"
 import { Menu, Search, User, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -16,18 +15,48 @@ const navItems = [
     title: "About us",
     href: "/about",
     submenu: [
-      { title: "Our School", href: "/about" },
-      { title: "Our Approach", href: "/about/our-approach" },
+      { 
+        title: "Our School", 
+        href: "/about",
+        description: "Learn about our history and mission",
+        image: "/images/our-school.jpg"
+      },
+      { 
+        title: "Our Approach", 
+        href: "/about/our-approach",
+        description: "Discover our educational philosophy",
+        image: "/images/our-approach.jpg"
+      },
     ],
   },
   {
     title: "Admissions",
     href: "/admissions",
     submenu: [
-      { title: "Requirements", href: "/admissions/requirements" },
-      { title: "Admission Period", href: "/admissions/periods" },
-      { title: "How to Apply", href: "/admissions/how-to-apply" },
-      { title: "Apply Now", href: "/admissions/apply-now" },
+      { 
+        title: "Requirements", 
+        href: "/admissions/requirements",
+        description: "Find out what you need to apply",
+        image: "/images/requirements.jpg"
+      },
+      { 
+        title: "Admission Period", 
+        href: "/admissions/periods",
+        description: "View application deadlines",
+        image: "/images/admission-period.jpg"
+      },
+      { 
+        title: "How to Apply", 
+        href: "/admissions/how-to-apply",
+        description: "Step-by-step application guide",
+        image: "/images/how-to-apply.jpg"
+      },
+      { 
+        title: "Apply Now", 
+        href: "/admissions/apply-now",
+        description: "Start your application today",
+        image: "/images/apply-now.jpg"
+      },
     ],
   },
   { title: "Academics", href: "/academics" },
@@ -35,10 +64,30 @@ const navItems = [
     title: "Policies",
     href: "/policies",
     submenu: [
-      { title: "Privacy Policy", href: "/policies/privacy" },
-      { title: "Academic Integrity", href: "/policies/academic-integrity" },
-      { title: "Attendance Policy", href: "/policies/attendance" },
-      { title: "Acceptable Use Policy", href: "/policies/acceptable-use" },
+      { 
+        title: "Privacy Policy", 
+        href: "/policies/privacy",
+        description: "How we protect your information",
+        image: "/images/privacy.jpg"
+      },
+      { 
+        title: "Academic Integrity", 
+        href: "/policies/academic-integrity",
+        description: "Our standards for honest work",
+        image: "/images/academic-integrity.jpg"
+      },
+      { 
+        title: "Attendance Policy", 
+        href: "/policies/attendance",
+        description: "Attendance requirements and procedures",
+        image: "/images/attendance.jpg"
+      },
+      { 
+        title: "Acceptable Use Policy", 
+        href: "/policies/acceptable-use",
+        description: "Technology and resource guidelines",
+        image: "/images/acceptable-use.jpg"
+      },
     ],
   },
   { title: "Contact Us", href: "/contact" },
@@ -48,6 +97,7 @@ const navItems = [
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
 
   useEffect(() => {
     setIsMounted(true)
@@ -181,7 +231,7 @@ export function SiteHeader() {
                       <SheetClose asChild>
                         <Link 
                           href={item.href} 
-                          className="block py-2.5 px-3 text-base font-semibold hover:bg-[#3d4fd4]/10 rounded-md transition-colors"
+                          className="block py-2.5 px-3 text-base  hover:bg-[#3d4fd4]/10 rounded-md transition-colors"
                         >
                           {item.title}
                         </Link>
@@ -245,7 +295,7 @@ export function SiteHeader() {
           <div className={`hidden lg:flex items-center gap-2 xl:gap-3 ml-auto transition-all duration-300 ${
             isScrolled ? "py-3" : "py-6"
           }`}>
-            {/* Desktop Navigation with stagger animation */}
+            {/* Desktop Navigation with hover mega menu */}
             <motion.nav 
               className="flex items-center space-x-1"
               initial={{ opacity: 0 }}
@@ -262,61 +312,48 @@ export function SiteHeader() {
                       delay: 0.4 + index * 0.05,
                       duration: 0.3
                     }}
+                    onMouseEnter={() => setHoveredItem(item.title)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    className="relative"
                   >
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Button 
-                            variant="ghost" 
-                            className={`text-[#3d4fd4] hover:bg-[#3d4fd4]/10 font-bold transition-all duration-300 ${
-                              isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
-                            }`}
-                          >
-                            {item.title}
-                          </Button>
-                        </motion.div>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="bg-white border-[#3d4fd4]/20">
-                        {item.submenu.map((subitem) => (
-                          <DropdownMenuItem key={subitem.href} asChild>
-                            <Link
-                              href={subitem.href}
-                              className="text-[#3d4fd4] font-bold hover:bg-[#3d4fd4] hover:text-white cursor-pointer"
-                            >
-                              {subitem.title}
-                            </Link>
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                      key={item.title}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ 
-                        delay: 0.4 + index * 0.05,
-                        duration: 0.3
-                      }}
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      <Link
-                        href={item.href}
+                      <Button 
+                        variant="ghost" 
                         className={`text-[#3d4fd4] hover:bg-[#3d4fd4]/10 font-bold transition-all duration-300 ${
                           isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
                         }`}
                       >
-                        <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          {item.title}
-                        </motion.div>
-                      </Link>
+                        {item.title}
+                      </Button>
                     </motion.div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      delay: 0.4 + index * 0.05,
+                      duration: 0.3
+                    }}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`text-[#3d4fd4] hover:bg-[#3d4fd4]/10 font-bold transition-all duration-300 inline-block ${
+                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 py-2 h-9 leading-9"
+                      }`}
+                    >
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {item.title}
+                      </motion.div>
+                    </Link>
+                  </motion.div>
                 ),
               )}
             </motion.nav>
@@ -357,41 +394,96 @@ export function SiteHeader() {
               </Link>
             </motion.div>
 
-            {/* Search Button with animation */}
-{/* Apply Now Button with animation */}
-<motion.div
-  initial={{ opacity: 0, x: 20 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ 
-    delay: 0.8,
-    duration: 0.4
-  }}
->
-  <Link href="/apply-now">
-    <motion.button 
-      className={`flex items-center gap-2 bg-[#3d4fd4] text-white rounded-full border border-[#3d4fd4] transition-all duration-300 hover:bg-[#2d3fb4] hover:shadow-lg ${
-        isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
-      }`}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      <span className="font-medium">Apply Now</span>
-      <svg 
-        className={`transition-all duration-300 ${
-          isScrolled ? "h-3.5 w-3.5 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
-        }`}
-        fill="none" 
-        viewBox="0 0 24 24" 
-        stroke="currentColor"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-      </svg>
-    </motion.button>
-  </Link>
-</motion.div>
+            {/* Apply Now Button with animation */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ 
+                delay: 0.8,
+                duration: 0.4
+              }}
+            >
+              <Link href="/admissions/apply-now">
+                <motion.button 
+                  className={`flex items-center gap-2 bg-[#3d4fd4] text-white rounded-full border border-[#3d4fd4] transition-all duration-300 hover:bg-[#2d3fb4] hover:shadow-lg ${
+                    isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <span className="font-medium">Apply Now</span>
+                  <svg 
+                    className={`transition-all duration-300 ${
+                      isScrolled ? "h-3.5 w-3.5 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
+                    }`}
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </motion.button>
+              </Link>
+            </motion.div>
           </div>
         </div>
       </div>
+
+      {/* Full-width Mega Menu Dropdown */}
+      <AnimatePresence>
+        {hoveredItem && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute left-0 right-0 top-full w-full bg-white shadow-2xl border-t-4 border-[#3d4fd4]"
+            onMouseEnter={() => setHoveredItem(hoveredItem)}
+            onMouseLeave={() => setHoveredItem(null)}
+          >
+            <div className="container max-w-7xl mx-auto px-8 py-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {navItems
+                  .find(item => item.title === hoveredItem)
+                  ?.submenu?.map((subitem, index) => (
+                    <motion.div
+                      key={subitem.href}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <Link
+                        href={subitem.href}
+                        className="group block rounded-lg overflow-hidden bg-gray-50 hover:bg-[#EFBF04] transition-all duration-300 hover:shadow-xl"
+                        onClick={() => setHoveredItem(null)}
+                      >
+                        <div className="aspect-video relative bg-gradient-to-br from-[#EFBF04] to-[#ffd500] overflow-hidden">
+                          {subitem.image && (
+                            <Image
+                              src={subitem.image}
+                              alt={subitem.title}
+                              fill
+                              className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
+                            />
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                        </div>
+                        <div className="p-4">
+                          <h3 className="font-bold text-lg text-[#3d4fd4] group-hover:text-white mb-1 transition-colors">
+                            {subitem.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 group-hover:text-white/90 transition-colors">
+                            {subitem.description}
+                          </p>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   )
 }
