@@ -19,13 +19,13 @@ const navItems = [
         title: "Our School", 
         href: "/about",
         description: "Learn about our history and mission",
-        image: "/images/our-school.jpg"
+        image: "/images/chatgptimagemar272c20252c12_25_02pm.png"
       },
       { 
         title: "Our Approach", 
         href: "/about/our-approach",
         description: "Discover our educational philosophy",
-        image: "/images/our-approach.jpg"
+        image: "/images/img-2023-mature-students-home-banner-0257960.jpg"
       },
     ],
   },
@@ -37,7 +37,7 @@ const navItems = [
         title: "Requirements", 
         href: "/admissions/requirements",
         description: "Find out what you need to apply",
-        image: "/images/requirements.jpg"
+        image: "/images/design_portability_1__gfw34rh367u6_large_2x.avif"
       },
       { 
         title: "Admission Period", 
