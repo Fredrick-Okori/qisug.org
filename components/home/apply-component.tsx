@@ -97,7 +97,7 @@ export function ApplySectionProduction() {
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 
-                <div className="absolute inset-0" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#3d4fd4]/80 to-[#2d3fb4]/80" />
                 
                 <div className="absolute inset-0 p-8 lg:p-10 flex flex-col justify-between">
                   <motion.div
@@ -150,7 +150,7 @@ export function ApplySectionProduction() {
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 
-                <div className="absolute inset-0" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#3d4fd4]/80 to-[#2d3fb4]/80" />
                 
                 <div className="absolute inset-0 p-8 flex flex-col justify-between">
                   <motion.div
@@ -203,6 +203,8 @@ export function ApplySectionProduction() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-30"
                 />
+                
+                <div className="absolute inset-0 bg-gradient-to-br from-[#3d4fd4]/80 to-[#2d3fb4]/80" />
                 
                 <div className="absolute inset-0 p-8 flex flex-col justify-between">
                   <motion.div

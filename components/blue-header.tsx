@@ -97,7 +97,6 @@ const navItems = [
 export function BlueSiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
 
   useEffect(() => {
     setIsMounted(true)
@@ -295,7 +294,7 @@ export function BlueSiteHeader() {
           <div className={`hidden lg:flex items-center gap-2 xl:gap-3 ml-auto transition-all duration-300 ${
             isScrolled ? "py-3" : "py-6"
           }`}>
-            {/* Desktop Navigation with hover mega menu */}
+            {/* Desktop Navigation with simple dropdown */}
             <motion.nav 
               className="flex items-center space-x-1"
               initial={{ opacity: 0 }}
@@ -312,9 +311,7 @@ export function BlueSiteHeader() {
                       delay: 0.4 + index * 0.05,
                       duration: 0.3
                     }}
-                    onMouseEnter={() => setHoveredItem(item.title)}
-                    onMouseLeave={() => setHoveredItem(null)}
-                    className="relative"
+                    className="relative group"
                   >
                     <motion.div
                       whileHover={{ scale: 1.05 }}
@@ -329,6 +326,21 @@ export function BlueSiteHeader() {
                         {item.title}
                       </Button>
                     </motion.div>
+                    
+                    {/* Simple Dropdown Menu */}
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[9999]">
+                      <div className="bg-white shadow-xl rounded-lg border border-gray-200 py-2 min-w-[220px] overflow-hidden">
+                        {item.submenu.map((subitem) => (
+                          <Link
+                            key={subitem.href}
+                            href={subitem.href}
+                            className="block px-5 py-2.5 text-sm text-[#2a3dc8ff] hover:bg-[#2a3dc8ff]/10 hover:pl-6 transition-all duration-200 font-medium"
+                          >
+                            {subitem.title}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
                   </motion.div>
                 ) : (
                   <motion.div
@@ -342,7 +354,7 @@ export function BlueSiteHeader() {
                   >
                     <Link
                       href={item.href}
-                      className={`text-white hover:bg-white/10 font-bold transition-all duration-300 inline-block ${
+                      className={`text-white hover:bg-white/10 font-bold transition-all duration-300 inline-block rounded-md ${
                         isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 py-2 h-9 leading-9"
                       }`}
                     >
@@ -369,7 +381,7 @@ export function BlueSiteHeader() {
             >
               <Link
                 href="/login"
-                className={`text-white hover:bg-white/10 font-medium flex items-center gap-2 transition-all duration-300 ${
+                className={`text-white hover:bg-white/10 font-medium flex items-center gap-2 transition-all duration-300 rounded-md ${
                   isScrolled ? "text-xs xl:text-sm px-2 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
                 }`}
               >
@@ -428,62 +440,6 @@ export function BlueSiteHeader() {
           </div>
         </div>
       </div>
-
-      {/* Full-width Mega Menu Dropdown */}
-      <AnimatePresence>
-        {hoveredItem && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute left-0 right-0 top-full w-full bg-white shadow-2xl border-t-4 border-[#EFBF04]"
-            onMouseEnter={() => setHoveredItem(hoveredItem)}
-            onMouseLeave={() => setHoveredItem(null)}
-          >
-            <div className="container max-w-7xl mx-auto px-8 py-8">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {navItems
-                  .find(item => item.title === hoveredItem)
-                  ?.submenu?.map((subitem, index) => (
-                    <motion.div
-                      key={subitem.href}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <Link
-                        href={subitem.href}
-                        className="group block rounded-lg overflow-hidden bg-gray-50 hover:bg-[#2a3dc8ff] transition-all duration-300 hover:shadow-xl"
-                        onClick={() => setHoveredItem(null)}
-                      >
-                        <div className="aspect-video relative bg-gradient-to-br from-[#2a3dc8ff] to-[#3d4fd4] overflow-hidden">
-                          {subitem.image && (
-                            <Image
-                              src={subitem.image}
-                              alt={subitem.title}
-                              fill
-                              className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
-                            />
-                          )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                        </div>
-                        <div className="p-4">
-                          <h3 className="font-bold text-lg text-[#2a3dc8ff] group-hover:text-white mb-1 transition-colors">
-                            {subitem.title}
-                          </h3>
-                          <p className="text-sm text-gray-600 group-hover:text-white/80 transition-colors">
-                            {subitem.description}
-                          </p>
-                        </div>
-                      </Link>
-                    </motion.div>
-                  ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </motion.header>
   )
 }
