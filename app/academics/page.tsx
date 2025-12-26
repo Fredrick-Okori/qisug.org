@@ -101,7 +101,7 @@ export default function AcademicsPage() {
               <div className="order-2 lg:order-1">
                 <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#3d4fd4]">
                   <motion.p 
-                    className="text-base sm:text-lg md:text-xl leading-relaxed font-medium"
+                    className="text-base sm:text-lg md:text-xl leading-relaxed"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ 
@@ -116,7 +116,7 @@ export default function AcademicsPage() {
                   </motion.p>
 
                   <motion.p 
-                    className="text-base sm:text-lg md:text-xl leading-relaxed font-medium"
+                    className="text-base sm:text-lg md:text-xl leading-relaxed"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ 
@@ -147,7 +147,7 @@ export default function AcademicsPage() {
                     >
                       <Button
                         size="lg"
-                        className="bg-[#3d4fd4] text-white hover:bg-[#2a3dc8ff] px-8 py-6 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300"
+                        className="bg-[#3d4fd4] text-white hover:bg-[#2a3dc8ff] px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
                       >
                         Learn More <ArrowRight className="ml-2" />
                       </Button>
@@ -159,8 +159,7 @@ export default function AcademicsPage() {
               {/* Right Side - Image */}
               <motion.div 
                 className="order-1 lg:order-2 w-full"
-                initial={{ opacity: 0, scale: 0.9, rotate: 3 }}
-                animate={{ opacity: 1, scale: 1, rotate: 3 }}
+              
                 transition={{ 
                   duration: 0.8, 
                   ease: [0.22, 1, 0.36, 1],
@@ -169,10 +168,9 @@ export default function AcademicsPage() {
               >
                 <motion.div 
                   className="relative w-full aspect-[4/3] overflow-hidden rounded-lg shadow-2xl"
-                  initial={{ rotate: 3 }}
+                
                   whileHover={{ 
-                    rotate: 0,
-                    scale: 1.02,
+                   
                     boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)"
                   }}
                   transition={{ 
@@ -204,7 +202,7 @@ export default function AcademicsPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-[#3d4fd4] mb-4">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#3d4fd4] mb-4">
                 Compulsory Courses
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -224,10 +222,10 @@ export default function AcademicsPage() {
                   transition={{ duration: 0.5, delay: index * 0.05 }}
                 >
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg font-bold text-[#3d4fd4]">
+                    <h3 className="text-lg text-[#3d4fd4]">
                       {course.name}
                     </h3>
-                    <span className="bg-[#EFBF04] text-[#3d4fd4] px-3 py-1 rounded-full text-sm font-bold">
+                    <span className="bg-[#EFBF04] text-[#3d4fd4] px-3 py-1 rounded-full text-sm">
                       {course.credits} {course.credits === 1 ? 'Credit' : 'Credits'}
                     </span>
                   </div>
@@ -250,10 +248,10 @@ export default function AcademicsPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-[#3d4fd4] mb-4">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#3d4fd4] mb-4">
                 Academic Pathways & Streams
               </h2>
-              <p className="text-lg text-[#3d4fd4] max-w-3xl mx-auto font-medium">
+              <p className="text-lg text-[#3d4fd4] max-w-3xl mx-auto">
                 Choose a pathway that aligns with your passions and career goals. 
                 Our flexible curriculum allows you to specialize in areas of interest.
               </p>
@@ -273,7 +271,7 @@ export default function AcademicsPage() {
                   <div className="w-16 h-16 bg-[#3d4fd4] rounded-xl flex items-center justify-center mb-4">
                     <pathway.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-[#3d4fd4] mb-3">
+                  <h3 className="text-2xl text-[#3d4fd4] mb-3">
                     {pathway.title}
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
@@ -292,9 +290,8 @@ export default function AcademicsPage() {
               {/* Left Side - Image */}
               <motion.div 
                 className="order-1 lg:order-1 w-full"
-                initial={{ opacity: 0, scale: 0.9, rotate: -3 }}
-                animate={{ opacity: 1, scale: 1, rotate: -3 }}
-                whileInView={{ opacity: 1, scale: 1, rotate: -3 }}
+               
+
                 viewport={{ once: true }}
                 transition={{ 
                   duration: 0.8, 
@@ -304,7 +301,7 @@ export default function AcademicsPage() {
               >
                 <motion.div 
                   className="relative w-full aspect-[4/3] overflow-hidden rounded-lg shadow-2xl"
-                  initial={{ rotate: -3 }}
+                
                   whileHover={{ 
                     rotate: 0,
                     scale: 1.02,
@@ -328,7 +325,7 @@ export default function AcademicsPage() {
               {/* Right Side - Text Content */}
               <div className="order-2 lg:order-2">
                 <motion.h2 
-                  className="text-3xl lg:text-4xl font-bold text-[#3d4fd4] mb-6"
+                  className="text-3xl lg:text-4xl text-[#3d4fd4] mb-6"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -344,7 +341,7 @@ export default function AcademicsPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                   >
-                    <h3 className="text-xl font-bold text-[#3d4fd4] mb-3">
+                    <h3 className="text-xl text-[#3d4fd4] mb-3">
                       40 Hours Community Service
                     </h3>
                     <p className="text-gray-700 mb-3">
@@ -374,7 +371,7 @@ export default function AcademicsPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    <h3 className="text-xl font-bold text-[#3d4fd4] mb-3">
+                    <h3 className="text-xl text-[#3d4fd4] mb-3">
                       Ontario Secondary School Literacy Test (OSSLT)
                     </h3>
                     <p className="text-gray-700 mb-3">
@@ -412,10 +409,10 @@ export default function AcademicsPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-[#3d4fd4] mb-4">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#3d4fd4] mb-4">
                 How We Support Our Students
               </h2>
-              <p className="text-lg text-[#3d4fd4] max-w-3xl mx-auto font-medium">
+              <p className="text-lg text-[#3d4fd4] max-w-3xl mx-auto">
                 At Queensgate International School Uganda, we provide a supportive and engaging 
                 learning environment to help every student succeed and reach their full potential.
               </p>
@@ -440,7 +437,7 @@ export default function AcademicsPage() {
                 >
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-6 h-6 text-[#3d4fd4] flex-shrink-0 mt-1" />
-                    <p className="text-gray-700 font-medium">
+                    <p className="text-gray-700">
                       {service}
                     </p>
                   </div>
@@ -458,7 +455,7 @@ export default function AcademicsPage() {
               <Link href="/admissions/apply-now">
                 <Button
                   size="lg"
-                  className="bg-[#3d4fd4] text-white hover:bg-[#2a3dc8ff] px-8 py-6 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300"
+                  className="bg-[#3d4fd4] text-white hover:bg-[#2a3dc8ff] px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
                   Apply Now <ArrowRight className="ml-2" />
                 </Button>

@@ -250,7 +250,7 @@ export function SiteHeader() {
                               <SheetClose asChild>
                                 <Link 
                                   href={subitem.href} 
-                                  className="block py-1.5 px-3 text-sm text-[#3d4fd4]/80 hover:bg-[#3d4fd4]/10 rounded-md transition-colors"
+                                  className="block text-sm text-[#3d4fd4]/80 hover:bg-[#3d4fd4]/10 rounded-md transition-colors"
                                 >
                                   {subitem.title}
                                 </Link>
@@ -317,14 +317,27 @@ export function SiteHeader() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <Button 
+                      {/* <Button 
                         variant="ghost" 
                         className={`text-[#3d4fd4] hover:bg-[#3d4fd4]/10 font-bold transition-all duration-300 ${
-                          isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
+                          isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8" : "text-sm px-3 py-2"
                         }`}
                       >
                         {item.title}
-                      </Button>
+                      </Button> */}
+                   <Link
+                      href={item.href}
+                      className={`text-[#3d4fd4] hover:bg-[#3d4fd4]/10 font-bold transition-all duration-300 inline-block rounded-md ${
+                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
+                      }`}
+                    >
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {item.title}
+                      </motion.div>
+                    </Link>
                     </motion.div>
                     
                     {/* Simple Dropdown Menu */}
@@ -355,7 +368,7 @@ export function SiteHeader() {
                     <Link
                       href={item.href}
                       className={`text-[#3d4fd4] hover:bg-[#3d4fd4]/10 font-bold transition-all duration-300 inline-block rounded-md ${
-                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 py-2 h-9 leading-9"
+                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
                       }`}
                     >
                       <motion.div

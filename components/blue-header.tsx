@@ -317,14 +317,19 @@ export function BlueSiteHeader() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <Button 
-                        variant="ghost" 
-                        className={`text-white hover:bg-white/10 font-bold transition-all duration-300 ${
-                          isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
-                        }`}
+                       <Link
+                      href={item.href}
+                      className={`text-white hover:bg-white/10 font-bold transition-all duration-300 inline-block rounded-md ${
+                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5  leading-8" : "text-sm px-3  h-9 leading-9"
+                      }`}
+                    >
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
                         {item.title}
-                      </Button>
+                      </motion.div>
+                    </Link>
                     </motion.div>
                     
                     {/* Simple Dropdown Menu */}
@@ -355,7 +360,7 @@ export function BlueSiteHeader() {
                     <Link
                       href={item.href}
                       className={`text-white hover:bg-white/10 font-bold transition-all duration-300 inline-block rounded-md ${
-                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 py-2 h-9 leading-9"
+                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3  h-9 leading-9"
                       }`}
                     >
                       <motion.div
