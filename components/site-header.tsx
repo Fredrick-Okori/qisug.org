@@ -162,7 +162,7 @@ export function SiteHeader() {
                 transition={{ duration: 0.2 }}
               >
                 <Image
-                  src="/images/logo_blue.webp"
+                  src="/images/logo_blue.png"
                   alt="Queensgate International School"
                   width={340}
                   height={256}
