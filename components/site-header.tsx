@@ -31,7 +31,7 @@ const navItems = [
   },
   {
     title: "Admissions",
-    href: "/admissions",
+    href: "#",
     submenu: [
       { 
         title: "Requirements", 
