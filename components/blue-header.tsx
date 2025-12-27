@@ -62,11 +62,11 @@ const navItems = [
   { title: "Academics", href: "/academics" },
   {
     title: "Policies",
-    href: "/policies",
+    href: "#",
     submenu: [
       { 
         title: "Privacy Policy", 
-        href: "/policies/privacy",
+        href: "/policies/privacy-policy",
         description: "How we protect your information",
         image: "/images/privacy.jpg"
       },
@@ -78,13 +78,13 @@ const navItems = [
       },
       { 
         title: "Attendance Policy", 
-        href: "/policies/attendance",
+        href: "/policies/attendance-policy",
         description: "Attendance requirements and procedures",
         image: "/images/attendance.jpg"
       },
       { 
         title: "Acceptable Use Policy", 
-        href: "/policies/acceptable-use",
+        href: "/policies/acceptable-use-policy",
         description: "Technology and resource guidelines",
         image: "/images/acceptable-use.jpg"
       },
