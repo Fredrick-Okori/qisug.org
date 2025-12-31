@@ -4,7 +4,7 @@ import { Facebook, Instagram, Twitter } from "lucide-react"
 
 export function SiteFooter() {
   return (
-    <footer className="bg-[#203dce] py-8">
+    <footer className="bg-[#053F52] py-8">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-white">
           {/* Location */}

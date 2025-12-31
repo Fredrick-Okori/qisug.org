@@ -58,7 +58,7 @@ export function CTA() {
   }
 
   return (
-    <section ref={sectionRef} className="relative py-24 bg-[#203dce] overflow-hidden">
+    <section ref={sectionRef} className="relative py-24 bg-[#053F52] overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
