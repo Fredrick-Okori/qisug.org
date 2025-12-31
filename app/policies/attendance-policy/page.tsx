@@ -97,28 +97,18 @@ export default function AttendancePolicyPage() {
       <main className="flex-1 relative">
         {/* Hero Section */}
         <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               className="max-w-5xl"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             >
-              <motion.div
-                className="inline-block mb-6"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <span className="bg-[#3d4fd4] text-white px-6 py-2 text-sm tracking-wider uppercase font-semibold rounded-full inline-flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  Academic Policy
-                </span>
-              </motion.div>
-              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#3d4fd4] leading-tight mb-6">
+              
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52] leading-tight mb-6">
                 Attendance Policy
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-[#3d4fd4] leading-relaxed">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#053F52] leading-relaxed">
                 Ensuring Success Through Consistent Participation
               </p>
             </motion.div>
@@ -135,7 +125,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="space-y-6 text-[#3d4fd4] text-base sm:text-lg leading-relaxed">
+              <div className="space-y-6 text-[#053F52] text-base sm:text-lg leading-relaxed">
                 <p>
                   Queensgate International School's Attendance Policy emphasizes the importance of regular attendance 
                   as it is directly related to student success. We believe that students must attend class consistently 
@@ -163,15 +153,15 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] mb-8 font-bold">
+              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8">
                 Attendance Requirements
               </h2>
 
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-xl p-8">
+                <div className="bg-white border-2 border-[#EFBF04]/30 rounded-xl p-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <Calendar className="w-8 h-8 text-[#3d4fd4]" />
-                    <h3 className="text-2xl font-bold text-[#3d4fd4]">
+                    <Calendar className="w-8 h-8 text-[#053F52]" />
+                    <h3 className="text-2xl text-[#053F52]">
                       Class Attendance
                     </h3>
                   </div>
@@ -182,10 +172,10 @@ export default function AttendancePolicyPage() {
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-br from-[#3d4fd4]/10 to-white border-2 border-[#3d4fd4]/30 rounded-xl p-8">
+                <div className="bg-white border-2 border-[#053F52]/30 rounded-xl p-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <UserCheck className="w-8 h-8 text-[#3d4fd4]" />
-                    <h3 className="text-2xl font-bold text-[#3d4fd4]">
+                    <UserCheck className="w-8 h-8 text-[#053F52]" />
+                    <h3 className="text-2xl text-[#053F52]">
                       Active Participation
                     </h3>
                   </div>
@@ -198,11 +188,11 @@ export default function AttendancePolicyPage() {
               </div>
 
               {/* 110-Hour Requirement */}
-              <div className="mt-8 bg-gradient-to-r from-[#3d4fd4] to-[#2a3dc8ff] rounded-2xl p-8 lg:p-12 text-white">
+              <div className="mt-8 bg-gradient-to-r from-[#053F52] to-[#053F52] rounded-2xl p-8 lg:p-12 text-white">
                 <div className="flex items-start gap-4">
                   <AlertCircle className="w-10 h-10 flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="text-2xl lg:text-3xl font-bold mb-4">
+                    <h3 className="text-2xl lg:text-3xl mb-4">
                       Credit Requirements
                     </h3>
                     <p className="text-lg leading-relaxed mb-4">
@@ -231,10 +221,10 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] mb-4 font-bold text-center">
+              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-4 text-center">
                 Methods of Recording Participation
               </h2>
-              <p className="text-lg text-[#3d4fd4] text-center mb-12 max-w-3xl mx-auto">
+              <p className="text-lg text-[#053F52] text-center mb-12 max-w-3xl mx-auto">
                 Internet-based courses will, at a minimum, have weekly assignments to record student participation, 
                 which can be documented by any or all of the following methods:
               </p>
@@ -249,10 +239,10 @@ export default function AttendancePolicyPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    <div className="w-12 h-12 bg-[#3d4fd4] rounded-lg flex items-center justify-center mb-4">
+                    <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center mb-4">
                       <method.icon className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-lg font-bold text-[#3d4fd4] mb-2">
+                    <h3 className="text-lg text-[#053F52] mb-2">
                       {method.title}
                     </h3>
                     <p className="text-gray-600 text-sm leading-relaxed">
@@ -275,7 +265,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] mb-8 font-bold">
+              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8">
                 Handling Absences
               </h2>
 
@@ -283,7 +273,7 @@ export default function AttendancePolicyPage() {
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    <h3 className="text-xl text-gray-900 mb-2">
                       Missed Classes
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
@@ -296,7 +286,7 @@ export default function AttendancePolicyPage() {
               </div>
 
               {/* Absence Procedure */}
-              <h3 className="text-2xl font-bold text-[#3d4fd4] mb-6">
+              <h3 className="text-2xl text-[#053F52] mb-6">
                 Absence Procedure
               </h3>
 
@@ -310,11 +300,11 @@ export default function AttendancePolicyPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    <div className="w-12 h-12 bg-[#3d4fd4] rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold text-xl">
+                    <div className="w-12 h-12 bg-[#053F52] rounded-full flex items-center justify-center flex-shrink-0 text-white text-xl">
                       {item.step}
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-[#3d4fd4] mb-2">
+                      <h4 className="text-lg text-[#053F52] mb-2">
                         {item.title}
                       </h4>
                       <p className="text-gray-700 text-sm leading-relaxed">
@@ -338,7 +328,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] mb-8 font-bold">
+              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8">
                 Exceeding the Absence Limit
               </h2>
 
@@ -347,7 +337,7 @@ export default function AttendancePolicyPage() {
                   <div className="flex items-start gap-4">
                     <AlertTriangle className="w-8 h-8 text-red-600 flex-shrink-0 mt-1" />
                     <div>
-                      <h3 className="text-xl font-bold text-red-900 mb-2">
+                      <h3 className="text-xl text-red-900 mb-2">
                         Important Notice
                       </h3>
                       <p className="text-red-800 font-medium">
@@ -360,11 +350,11 @@ export default function AttendancePolicyPage() {
 
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#3d4fd4] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#053F52] rounded-lg flex items-center justify-center flex-shrink-0">
                       <Users className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-[#3d4fd4] mb-2">
+                      <h4 className="text-lg text-[#053F52] mb-2">
                         Administrative Review
                       </h4>
                       <p className="text-gray-700 leading-relaxed">
@@ -375,11 +365,11 @@ export default function AttendancePolicyPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#3d4fd4] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#053F52] rounded-lg flex items-center justify-center flex-shrink-0">
                       <MessageSquare className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-[#3d4fd4] mb-2">
+                      <h4 className="text-lg text-[#053F52] mb-2">
                         Student and Parent Meeting
                       </h4>
                       <p className="text-gray-700 leading-relaxed">
@@ -390,11 +380,11 @@ export default function AttendancePolicyPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#3d4fd4] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#053F52] rounded-lg flex items-center justify-center flex-shrink-0">
                       <ClipboardCheck className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-[#3d4fd4] mb-2">
+                      <h4 className="text-lg text-[#053F52] mb-2">
                         Make-Up Plan
                       </h4>
                       <p className="text-gray-700 leading-relaxed">
@@ -409,7 +399,7 @@ export default function AttendancePolicyPage() {
                       <AlertTriangle className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-red-600 mb-2">
+                      <h4 className="text-lg text-red-600 mb-2">
                         Credit Impact
                       </h4>
                       <p className="text-gray-700 leading-relaxed">
@@ -434,11 +424,11 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="bg-gradient-to-br from-[#3d4fd4] to-[#2a3dc8ff] rounded-2xl p-8 lg:p-12 text-white">
+              <div className="bg-gradient-to-br from-[#053F52] to-[#053F52] rounded-2xl p-8 lg:p-12 text-white">
                 <div className="flex items-start gap-4 mb-6">
                   <CheckCircle2 className="w-10 h-10 flex-shrink-0 mt-1" />
                   <div>
-                    <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+                    <h2 className="text-3xl lg:text-4xl mb-4">
                       Importance of Attendance
                     </h2>
                     <div className="space-y-4 text-lg leading-relaxed">
@@ -474,7 +464,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] mb-8 font-bold text-center">
+              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8 text-center">
                 Best Practices for Attendance
               </h2>
 
@@ -516,7 +506,7 @@ export default function AttendancePolicyPage() {
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-6 h-6 text-[#EFBF04] flex-shrink-0 mt-1" />
                       <div>
-                        <h3 className="text-lg font-bold text-[#3d4fd4] mb-2">
+                        <h3 className="text-lg text-[#053F52] mb-2">
                           {practice.title}
                         </h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
@@ -540,7 +530,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#3d4fd4] mb-6">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053F52] mb-6">
                 Questions About Attendance?
               </h2>
               <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
@@ -549,7 +539,7 @@ export default function AttendancePolicyPage() {
               </p>
               <Link 
                 href="/policies"
-                className="inline-flex items-center gap-2 text-[#3d4fd4] hover:underline font-medium text-lg"
+                className="inline-flex items-center gap-2 text-[#053F52] hover:underline font-medium text-lg"
               >
                 <ArrowRight className="w-5 h-5" />
                 Back to All Policies

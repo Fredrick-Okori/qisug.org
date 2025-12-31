@@ -86,7 +86,7 @@ export default function AcademicIntegrityPage() {
       <main className="flex-1 relative">
         {/* Hero Section */}
         <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               className="max-w-5xl"
               initial={{ opacity: 0, y: 30 }}
@@ -94,10 +94,10 @@ export default function AcademicIntegrityPage() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             >
               
-              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#3d4fd4] leading-tight mb-6">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52] leading-tight mb-6">
                 Academic Integrity
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-[#3d4fd4] leading-relaxed">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#053F52] leading-relaxed">
                 Upholding the Standards of Academic Excellence
               </p>
             </motion.div>
@@ -116,11 +116,11 @@ export default function AcademicIntegrityPage() {
             >
               <div className="bg-[#EFBF04] rounded-2xl p-8 lg:p-12 mb-8">
                 <div className="flex items-start gap-4 mb-6">
-                  <div className="w-12 h-12 bg-[#3d4fd4] rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center flex-shrink-0">
                     <Shield className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-3xl lg:text-4xl text-[#3d4fd4]  mb-4">
+                    <h2 className="text-3xl lg:text-4xl text-[#053F52]  mb-4">
                       Our Commitment
                     </h2>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -135,7 +135,7 @@ export default function AcademicIntegrityPage() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-[#EFBF04] rounded-xl p-6">
-                  <h3 className="text-xl  text-[#3d4fd4] mb-4">
+                  <h3 className="text-xl  text-[#053F52] mb-4">
                     What is Academic Integrity?
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
@@ -144,7 +144,7 @@ export default function AcademicIntegrityPage() {
                   </p>
                 </div>
                 <div className="bg-[#EFBF04] rounded-xl p-6">
-                  <h3 className="text-xl  text-[#3d4fd4] mb-4">
+                  <h3 className="text-xl  text-[#053F52] mb-4">
                     Why It Matters
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
@@ -167,7 +167,7 @@ export default function AcademicIntegrityPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] mb-8 ">
+              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8 ">
                 Definition of Academic Dishonesty
               </h2>
               <div className="bg-gradient-to-r from-red-50 to-white border-l-4 border-red-500 p-6 rounded-r-xl mb-8">
@@ -190,8 +190,8 @@ export default function AcademicIntegrityPage() {
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
                   <div className="flex items-center gap-3 mb-6">
-                    <FileText className="w-8 h-8 text-[#3d4fd4]" />
-                    <h3 className="text-2xl  text-[#3d4fd4]">
+                    <FileText className="w-8 h-8 text-[#053F52]" />
+                    <h3 className="text-2xl  text-[#053F52]">
                       Plagiarism
                     </h3>
                   </div>
@@ -210,15 +210,15 @@ export default function AcademicIntegrityPage() {
 
                 {/* Cheating */}
                 <motion.div
-                  className="bg-gradient-to-br from-[#3d4fd4]/10 to-white border-2 border-[#3d4fd4]/30 rounded-xl p-8"
+                  className="bg-gradient-to-br from-[#053F52]/10 to-white border-2 border-[#053F52]/30 rounded-xl p-8"
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.4 }}
                 >
                   <div className="flex items-center gap-3 mb-6">
-                    <AlertCircle className="w-8 h-8 text-[#3d4fd4]" />
-                    <h3 className="text-2xl  text-[#3d4fd4]">
+                    <AlertCircle className="w-8 h-8 text-[#053F52]" />
+                    <h3 className="text-2xl  text-[#053F52]">
                       Cheating
                     </h3>
                   </div>
@@ -249,7 +249,7 @@ export default function AcademicIntegrityPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] mb-8 ">
+              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8 ">
                 Roles and Responsibilities
               </h2>
 
@@ -257,26 +257,26 @@ export default function AcademicIntegrityPage() {
                 {/* Teacher Responsibilities */}
                 <div className="bg-[#EFBF04] rounded-xl p-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <Users className="w-6 h-6 text-[#3d4fd4]" />
-                    <h3 className="text-2xl  text-[#3d4fd4]">
+                    <Users className="w-6 h-6 text-[#053F52]" />
+                    <h3 className="text-2xl  text-[#053F52]">
                       Teacher
                     </h3>
                   </div>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-[#3d4fd4] flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700">
                         Assemble relevant evidence and interview the student if academic dishonesty is suspected
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-[#3d4fd4] flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700">
                         If the explanation is satisfactory, the process stops
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-[#3d4fd4] flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700">
                         If the explanation is unsatisfactory or if dishonesty is denied, communicate with the 
                         Principal within 24 hours
@@ -288,20 +288,20 @@ export default function AcademicIntegrityPage() {
                 {/* Principal Responsibilities */}
                 <div className="bg-[#EFBF04] rounded-xl p-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <Scale className="w-6 h-6 text-[#3d4fd4]" />
-                    <h3 className="text-2xl  text-[#3d4fd4]">
+                    <Scale className="w-6 h-6 text-[#053F52]" />
+                    <h3 className="text-2xl  text-[#053F52]">
                       Principal
                     </h3>
                   </div>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-[#3d4fd4] flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700">
                         Examine the evidence and interview the student(s)
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-[#3d4fd4] flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700">
                         Inform parent(s) as needed about the investigation, including the allegations, policy, 
                         and potential outcomes
@@ -324,7 +324,7 @@ export default function AcademicIntegrityPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] mb-4 ">
+              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-4 ">
                 Guidelines for Deciding Consequences of Academic Dishonesty
               </h2>
               
@@ -344,7 +344,7 @@ export default function AcademicIntegrityPage() {
               </div>
 
               {/* Other Evaluations */}
-              <h3 className="text-2xl  text-[#3d4fd4] mb-6">
+              <h3 className="text-2xl  text-[#053F52] mb-6">
                 Other Evaluations, Assignments, or Tests
               </h3>
 
@@ -358,7 +358,7 @@ export default function AcademicIntegrityPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    <h4 className="text-2xl  text-[#3d4fd4] mb-6">
+                    <h4 className="text-2xl  text-[#053F52] mb-6">
                       {consequence.level}
                     </h4>
 
@@ -373,7 +373,7 @@ export default function AcademicIntegrityPage() {
                         <ul className="space-y-2">
                           {consequence.firstOffence.map((item, idx) => (
                             <li key={idx} className="flex items-start gap-2">
-                              <CheckCircle2 className="w-5 h-5 text-[#3d4fd4] flex-shrink-0 mt-0.5" />
+                              <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
                               <span className="text-gray-700">{item}</span>
                             </li>
                           ))}
@@ -416,9 +416,9 @@ export default function AcademicIntegrityPage() {
             >
               <div className="bg-[#EFBF04] rounded-2xl p-8 lg:p-12">
                 <div className="flex items-start gap-4 mb-6">
-                  <BookOpen className="w-10 h-10 text-[#3d4fd4] flex-shrink-0" />
+                  <BookOpen className="w-10 h-10 text-[#053F52] flex-shrink-0" />
                   <div>
-                    <h2 className="text-3xl lg:text-4xl text-[#3d4fd4]  mb-4">
+                    <h2 className="text-3xl lg:text-4xl text-[#053F52]  mb-4">
                       Importance of Academic Integrity
                     </h2>
                     <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
@@ -432,7 +432,7 @@ export default function AcademicIntegrityPage() {
                         and the importance of integrity in their academic journey. By upholding these standards, 
                         we prepare students for ethical conduct in higher education and their future careers.
                       </p>
-                      <p className="font-medium text-[#3d4fd4]">
+                      <p className="font-medium text-[#053F52]">
                         Academic integrity is not just about following rules—it's about developing character, 
                         building trust, and contributing to a community of honest scholarship.
                       </p>
@@ -454,14 +454,14 @@ export default function AcademicIntegrityPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] mb-8  text-center">
+              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8  text-center">
                 Additional Resources
               </h2>
               
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-xl p-6 text-center">
-                  <BookOpen className="w-10 h-10 text-[#3d4fd4] mx-auto mb-4" />
-                  <h3 className="text-lg  text-[#3d4fd4] mb-2">
+                  <BookOpen className="w-10 h-10 text-[#053F52] mx-auto mb-4" />
+                  <h3 className="text-lg  text-[#053F52] mb-2">
                     Growing Success
                   </h3>
                   <p className="text-sm text-gray-600 mb-4">
@@ -471,15 +471,15 @@ export default function AcademicIntegrityPage() {
                     href="http://www.edu.gov.on.ca/eng/policyfunding/growSuccess.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#3d4fd4] hover:underline text-sm font-medium"
+                    className="text-[#053F52] hover:underline text-sm font-medium"
                   >
                     Read Document →
                   </a>
                 </div>
 
-                <div className="bg-gradient-to-br from-[#3d4fd4]/10 to-white border-2 border-[#3d4fd4]/30 rounded-xl p-6 text-center">
-                  <Users className="w-10 h-10 text-[#3d4fd4] mx-auto mb-4" />
-                  <h3 className="text-lg  text-[#3d4fd4] mb-2">
+                <div className="bg-gradient-to-br from-[#053F52]/10 to-white border-2 border-[#053F52]/30 rounded-xl p-6 text-center">
+                  <Users className="w-10 h-10 text-[#053F52] mx-auto mb-4" />
+                  <h3 className="text-lg  text-[#053F52] mb-2">
                     Student Support
                   </h3>
                   <p className="text-sm text-gray-600 mb-4">
@@ -487,15 +487,15 @@ export default function AcademicIntegrityPage() {
                   </p>
                   <Link 
                     href="/contact"
-                    className="text-[#3d4fd4] hover:underline text-sm font-medium"
+                    className="text-[#053F52] hover:underline text-sm font-medium"
                   >
                     Contact Us →
                   </Link>
                 </div>
 
                 <div className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-xl p-6 text-center">
-                  <FileText className="w-10 h-10 text-[#3d4fd4] mx-auto mb-4" />
-                  <h3 className="text-lg  text-[#3d4fd4] mb-2">
+                  <FileText className="w-10 h-10 text-[#053F52] mx-auto mb-4" />
+                  <h3 className="text-lg  text-[#053F52] mb-2">
                     All Policies
                   </h3>
                   <p className="text-sm text-gray-600 mb-4">
@@ -503,7 +503,7 @@ export default function AcademicIntegrityPage() {
                   </p>
                   <Link 
                     href="/policies"
-                    className="text-[#3d4fd4] hover:underline text-sm font-medium"
+                    className="text-[#053F52] hover:underline text-sm font-medium"
                   >
                     View Policies →
                   </Link>
@@ -522,16 +522,16 @@ export default function AcademicIntegrityPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#3d4fd4] mb-6">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053F52] mb-6">
                 Questions About This Policy?
               </h2>
-              <p className="text-lg text-[#3d4fd4] mb-8 max-w-3xl mx-auto">
+              <p className="text-lg text-[#053F52] mb-8 max-w-3xl mx-auto">
                 If you need clarification on any aspect of our Academic Integrity Policy, 
                 please don't hesitate to reach out to our administration.
               </p>
               <Link 
                 href="/policies"
-                className="inline-flex items-center gap-2 text-[#3d4fd4] hover:underline font-medium text-lg"
+                className="inline-flex items-center gap-2 text-[#053F52] hover:underline font-medium text-lg"
               >
                 <ArrowRight className="w-5 h-5" />
                 Back to All Policies

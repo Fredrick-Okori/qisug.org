@@ -71,7 +71,7 @@ export default function PrivacyPolicyPage() {
       <main className="flex-1 relative">
         {/* Hero Section */}
         <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               className="max-w-5xl"
               initial={{ opacity: 0, y: 30 }}
@@ -79,13 +79,13 @@ export default function PrivacyPolicyPage() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             >
              
-              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#3d4fd4] leading-tight mb-6">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52] leading-tight mb-6">
                 Privacy Policy
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-[#3d4fd4] leading-relaxed">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#053F52] leading-relaxed">
                 Your Privacy and Data Protection Matter to Us
               </p>
-              <p className="text-base text-[#3d4fd4] mt-4 opacity-80">
+              <p className="text-base text-[#053F52] mt-4 opacity-80">
                 Last Updated: December 2024
               </p>
             </motion.div>
@@ -102,7 +102,7 @@ export default function PrivacyPolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-2xl lg:text-3xl text-[#3d4fd4] mb-6 font-bold">
+              <h2 className="text-2xl lg:text-3xl text-[#053F52] mb-6 font-bold">
                 Quick Navigation
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -110,7 +110,7 @@ export default function PrivacyPolicyPage() {
                   <motion.a
                     key={section.id}
                     href={`#${section.id}`}
-                    className="flex items-center gap-3 p-4 bg-gradient-to-br from-[#2a3dc8ff] to-[#3d4fd4] border-2 border-[#2a3dc8ff] rounded-lg hover:border-[#3d4fd4] hover:shadow-lg transition-all duration-300"
+                    className="flex items-center gap-3 p-4 bg-gradient-to-br from-[#053F52] to-[#053F52] border-2 border-[#053F52] rounded-lg hover:border-[#053F52] hover:shadow-lg transition-all duration-300"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -138,14 +138,14 @@ export default function PrivacyPolicyPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-[#3d4fd4] rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center">
                   <Shield className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] font-bold">
+                <h2 className="text-3xl lg:text-4xl text-[#053F52] font-bold">
                   Introduction
                 </h2>
               </div>
-              <div className="space-y-4 text-[#3d4fd4] text-base sm:text-lg leading-relaxed">
+              <div className="space-y-4 text-[#053F52] text-base sm:text-lg leading-relaxed">
                 <p>
                   Queensgate International School provides online systems and resources for use by students, staff, 
                   and teachers through online courses, resources, and training. This includes all materials accessed 
@@ -175,10 +175,10 @@ export default function PrivacyPolicyPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-[#3d4fd4] rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center">
                   <Lock className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] font-bold">
+                <h2 className="text-3xl lg:text-4xl text-[#053F52] font-bold">
                   How We Manage Your Personal Information
                 </h2>
               </div>
@@ -197,8 +197,8 @@ export default function PrivacyPolicyPage() {
                   We treat emails the same way we treat letters sent to the school.
                 </p>
 
-                <div className="bg-gradient-to-r from-[#3d4fd4]/10 to-transparent border-l-4 border-[#3d4fd4] p-6 rounded-r-xl my-6">
-                  <h3 className="text-xl font-bold text-[#3d4fd4] mb-3 flex items-center gap-2">
+                <div className="bg-gradient-to-r from-[#053F52]/10 to-transparent border-l-4 border-[#053F52] p-6 rounded-r-xl my-6">
+                  <h3 className="text-xl font-bold text-[#053F52] mb-3 flex items-center gap-2">
                     <AlertCircle className="w-5 h-5" />
                     Important Commitments
                   </h3>
@@ -245,15 +245,15 @@ export default function PrivacyPolicyPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-[#3d4fd4] rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center">
                   <Eye className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] font-bold">
+                <h2 className="text-3xl lg:text-4xl text-[#053F52] font-bold">
                   What We Record Automatically
                 </h2>
               </div>
               
-              <div className="space-y-6 text-[#3d4fd4] text-base leading-relaxed">
+              <div className="space-y-6 text-[#053F52] text-base leading-relaxed">
                 <p>
                   When you access our website, our servers automatically record information that your browser 
                   routinely sends whenever you visit a website. These "server logs" may include information such as:
@@ -271,7 +271,7 @@ export default function PrivacyPolicyPage() {
                       key={index}
                       className="flex items-start gap-2  p-4 rounded-lg"
                     >
-                      <CheckCircle2 className="w-5 h-5 text-[#3d4fd4] flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700">{item}</span>
                     </div>
                   ))}
@@ -283,7 +283,7 @@ export default function PrivacyPolicyPage() {
                 </p>
 
                 <div className=" p-6 rounded-xl">
-                  <h3 className="text-xl font-bold text-[#3d4fd4] mb-3">
+                  <h3 className="text-xl font-bold text-[#053F52] mb-3">
                     We Will Not Attempt to Identify You Personally
                   </h3>
                   <p className="text-gray-700 mb-4">
@@ -302,7 +302,7 @@ export default function PrivacyPolicyPage() {
                 </div>
 
                 <div className=" p-6 rounded-xl border-l-4 border-[#EFBF04]">
-                  <h3 className="text-xl font-bold text-[#3d4fd4] mb-3">
+                  <h3 className="text-xl font-bold text-[#053F52] mb-3">
                     We Cannot Guarantee the Content of Other Sites
                   </h3>
                   <p className="text-gray-700">
@@ -328,17 +328,17 @@ export default function PrivacyPolicyPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-[#3d4fd4] rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center">
                   <Users className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] font-bold">
+                <h2 className="text-3xl lg:text-4xl text-[#053F52] font-bold">
                   Collection, Use and Disclosure of Student Personal Information
                 </h2>
               </div>
               
               <div className="space-y-6 text-gray-700 text-base leading-relaxed">
                 <div className="bg-gradient-to-r from-[#EFBF04]/10 to-transparent p-6 rounded-xl border-l-4 border-[#EFBF04]">
-                  <h3 className="text-xl font-bold text-[#3d4fd4] mb-3">
+                  <h3 className="text-xl font-bold text-[#053F52] mb-3">
                     Information Notice
                   </h3>
                   <p>
@@ -366,7 +366,7 @@ export default function PrivacyPolicyPage() {
                   affecting health or safety (providing notice of the disclosure is sent to the student's home).
                 </p>
 
-                <h3 className="text-2xl font-bold text-[#3d4fd4] mt-8 mb-4">
+                <h3 className="text-2xl font-bold text-[#053F52] mt-8 mb-4">
                   Routine Uses and Disclosures
                 </h3>
                 
@@ -386,7 +386,7 @@ export default function PrivacyPolicyPage() {
                       key={index}
                       className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg"
                     >
-                      <CheckCircle2 className="w-5 h-5 text-[#3d4fd4] flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
                   ))}
@@ -407,17 +407,17 @@ export default function PrivacyPolicyPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-[#3d4fd4] rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center">
                   <FileText className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-3xl lg:text-4xl text-[#3d4fd4] font-bold">
+                <h2 className="text-3xl lg:text-4xl text-[#053F52] font-bold">
                   Student Photographs and Media
                 </h2>
               </div>
               
-              <div className="space-y-6 text-[#3d4fd4] text-base leading-relaxed">
+              <div className="space-y-6 text-[#053F52] text-base leading-relaxed">
                 <div className=" p-6 rounded-xl">
-                  <p className="font-semibold text-lg mb-4 text-[#3d4fd4]">
+                  <p className="font-semibold text-lg mb-4 text-[#053F52]">
                     Student photographs will be used for the following purposes only when consent is provided:
                   </p>
                   
@@ -430,20 +430,20 @@ export default function PrivacyPolicyPage() {
                     ].map((item, index) => (
                       <div 
                         key={index}
-                        className="flex items-start gap-3 p-4 bg-[#EFBF04]/10 rounded-lg border-l-4 border-[#3d4fd4]"
+                        className="flex items-start gap-3 p-4 bg-[#EFBF04]/10 rounded-lg border-l-4 border-[#053F52]"
                       >
-                        <CheckCircle2 className="w-5 h-5 text-[#3d4fd4] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700">{item}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className=" p-6 rounded-xl border-2 border-[#3d4fd4]/20">
+                <div className=" p-6 rounded-xl border-2 border-[#053F52]/20">
                   <div className="flex items-start gap-3">
                     <AlertCircle className="w-6 h-6 text-[#EFBF04] flex-shrink-0 mt-1" />
                     <div>
-                      <p className="font-semibold text-[#3d4fd4] mb-2">
+                      <p className="font-semibold text-[#053F52] mb-2">
                         Important Notice for Extra-Curricular Activities
                       </p>
                       <p className="text-gray-700">
@@ -469,10 +469,10 @@ export default function PrivacyPolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-[#3d4fd4] rounded-2xl mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-[#053F52] rounded-2xl mb-6">
                 <Mail className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#3d4fd4] mb-6">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053F52] mb-6">
                 Questions About Our Privacy Policy?
               </h2>
               <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
@@ -481,13 +481,13 @@ export default function PrivacyPolicyPage() {
                 personal information and will address any issues promptly.
               </p>
               
-              <div className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-2xl p-8 max-w-2xl mx-auto mb-8">
+              <div className="bg-gradient-to-br from-[#053F52] to-[#053F52] border-2 border-[#EFBF04]/30 rounded-2xl p-8 max-w-2xl mx-auto mb-8">
                 <div className="space-y-4">
                   <div className="flex items-center justify-center gap-3">
-                    <Mail className="w-5 h-5 text-[#3d4fd4]" />
+                    <Mail className="w-5 h-5 text-white" />
                     <a 
                       href="mailto:info@queensgateschool.com" 
-                      className="text-[#3d4fd4] hover:underline font-medium"
+                      className="text-white hover:underline font-medium"
                     >
                       info@queensgateschool.com
                     </a>
@@ -513,7 +513,7 @@ export default function PrivacyPolicyPage() {
             >
               <Link 
                 href="/policies"
-                className="inline-flex items-center gap-2 text-[#3d4fd4] hover:underline font-medium"
+                className="inline-flex items-center gap-2 text-[#053F52] hover:underline font-medium"
               >
                 <ArrowRight className="w-5 h-5" />
                 View All School Policies

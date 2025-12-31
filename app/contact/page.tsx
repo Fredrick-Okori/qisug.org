@@ -69,10 +69,10 @@ export default function ContactPage() {
             
             <div className="container relative mx-auto px-4 sm:px-6 lg:px-8" >
               <div className="mx-auto max-w-3xl text-left">
-                <h1 className="mb-6 font-serif text-4xl  text-[#203dce] sm:text-5xl lg:text-6xl animate-fade-in">
+                <h1 className="mb-6 font-serif text-4xl  text-[#053F52] sm:text-5xl lg:text-6xl animate-fade-in">
                   Get in Touch
                 </h1>
-                <p className="text-lg text-[#203dce] sm:text-xl lg:text-2xl animate-fade-in-up">
+                <p className="text-lg text-[#053F52] sm:text-xl lg:text-2xl animate-fade-in-up">
                   We'd love to hear from you. Send us a message and we'll respond as soon as possible.
                 </p>
               </div>
@@ -87,7 +87,7 @@ export default function ContactPage() {
                   {/* Contact Info Cards - Left Side */}
                   <div className="space-y-6 lg:col-span-2">
                     <div className="space-y-4">
-                      <h2 className="font-serif text-2xl  text-[#3d4fd4] sm:text-3xl">
+                      <h2 className="font-serif text-2xl  text-[#053F52] sm:text-3xl">
                         Contact Information
                       </h2>
                       <p className="text-gray-600">
@@ -100,13 +100,13 @@ export default function ContactPage() {
                       <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100">
                         <div className="flex items-start space-x-4">
                           <div className="rounded-full bg-[#EFBF04] p-3 transition-colors duration-300 group-hover:bg-[#ffd500]/30">
-                            <Mail className="h-6 w-6 text-[#3d4fd4]" />
+                            <Mail className="h-6 w-6 text-[#053F52]" />
                           </div>
                           <div className="flex-1">
                             <h3 className="mb-1 font-semibold text-gray-900">Email</h3>
                             <a
                               href="mailto:queensgateinternational@gmail.com"
-                              className="text-sm text-gray-600 hover:text-[#3d4fd4] transition-colors break-all"
+                              className="text-sm text-gray-600 hover:text-[#053F52] transition-colors break-all"
                             >
                               queensgateinternational@gmail.com
                             </a>
@@ -117,7 +117,7 @@ export default function ContactPage() {
                       <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100">
                         <div className="flex items-start space-x-4">
                           <div className="rounded-full bg-[#EFBF04] p-3 transition-colors duration-300 group-hover:bg-[#EFBF04]/30">
-                            <Phone className="h-6 w-6 text-[#3d4fd4]" />
+                            <Phone className="h-6 w-6 text-[#053F52]" />
                           </div>
                           <div className="flex-1">
                             <h3 className="mb-1 font-semibold text-gray-900">Phone</h3>
@@ -129,7 +129,7 @@ export default function ContactPage() {
                       <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100">
                         <div className="flex items-start space-x-4">
                           <div className="rounded-full bg-[#EFBF04] p-3 transition-colors duration-300 group-hover:bg-[#EFBF04]/30">
-                            <Clock className="h-6 w-6 text-[#3d4fd4]" />
+                            <Clock className="h-6 w-6 text-[#053F52]" />
                           </div>
                           <div className="flex-1">
                             <h3 className="mb-1 font-semibold text-gray-900">Hours</h3>
@@ -142,7 +142,7 @@ export default function ContactPage() {
                       <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100">
                         <div className="flex items-start space-x-4">
                           <div className="rounded-full bg-[#EFBF04] p-3 transition-colors duration-300 group-hover:bg-[#EFBF04]/30">
-                            <MapPin className="h-6 w-6 text-[#3d4fd4]" />
+                            <MapPin className="h-6 w-6 text-[#053F52]" />
                           </div>
                           <div className="flex-1">
                             <h3 className="mb-1 font-semibold text-gray-900">Location</h3>
@@ -158,7 +158,7 @@ export default function ContactPage() {
                   {/* Contact Form - Right Side */}
                   <div className="lg:col-span-3">
                     <div className="rounded-3xl bg-white p-8 shadow-xl border border-gray-100 sm:p-10">
-                      <h2 className="mb-8 font-serif text-2xl  text-[#3d4fd4] sm:text-3xl">
+                      <h2 className="mb-8 font-serif text-2xl  text-[#053F52] sm:text-3xl">
                         Send Us a Message
                       </h2>
 
@@ -177,7 +177,7 @@ export default function ContactPage() {
                               onChange={(e) =>
                                 setFormData({ ...formData, firstName: e.target.value })
                               }
-                              className="h-12 rounded-xl border-gray-300 bg-gray-50 transition-all focus:border-[#3d4fd4] focus:bg-white focus:ring-2 focus:ring-[#3d4fd4]/20"
+                              className="h-12 rounded-xl border-gray-300 bg-gray-50 transition-all focus:border-[#053F52] focus:bg-white focus:ring-2 focus:ring-[#053F52]/20"
                               placeholder="John"
                               required
                             />
@@ -196,7 +196,7 @@ export default function ContactPage() {
                               onChange={(e) =>
                                 setFormData({ ...formData, lastName: e.target.value })
                               }
-                              className="h-12 rounded-xl border-gray-300 bg-gray-50 transition-all focus:border-[#3d4fd4] focus:bg-white focus:ring-2 focus:ring-[#3d4fd4]/20"
+                              className="h-12 rounded-xl border-gray-300 bg-gray-50 transition-all focus:border-[#053F52] focus:bg-white focus:ring-2 focus:ring-[#053F52]/20"
                               placeholder="Doe"
                               required
                             />
@@ -214,7 +214,7 @@ export default function ContactPage() {
                             onChange={(e) =>
                               setFormData({ ...formData, email: e.target.value })
                             }
-                            className="h-12 rounded-xl border-gray-300 bg-gray-50 transition-all focus:border-[#3d4fd4] focus:bg-white focus:ring-2 focus:ring-[#3d4fd4]/20"
+                            className="h-12 rounded-xl border-gray-300 bg-gray-50 transition-all focus:border-[#053F52] focus:bg-white focus:ring-2 focus:ring-[#053F52]/20"
                             placeholder="john.doe@example.com"
                             required
                           />
@@ -230,7 +230,7 @@ export default function ContactPage() {
                             onChange={(e) =>
                               setFormData({ ...formData, message: e.target.value })
                             }
-                            className="min-h-[160px] rounded-xl border-gray-300 bg-gray-50 transition-all focus:border-[#3d4fd4] focus:bg-white focus:ring-2 focus:ring-[#3d4fd4]/20 resize-none"
+                            className="min-h-[160px] rounded-xl border-gray-300 bg-gray-50 transition-all focus:border-[#053F52] focus:bg-white focus:ring-2 focus:ring-[#053F52]/20 resize-none"
                             placeholder="Tell us about your inquiry..."
                             required
                           />
@@ -239,7 +239,7 @@ export default function ContactPage() {
                         <Button
                           type="submit"
                           disabled={isSubmitting}
-                          className="group h-14 w-full rounded-xl bg-gradient-to-r from-[#3d4fd4] to-[#4a5fe6] text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+                          className="group h-14 w-full rounded-xl bg-gradient-to-r from-[#053F52] to-[#053F52] text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                           {isSubmitting ? (
                             <span className="flex items-center justify-center">
@@ -285,7 +285,7 @@ export default function ContactPage() {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="mx-auto max-w-6xl">
                 <div className="mb-12 text-center">
-                  <h2 className="mb-4 font-serif text-3xl  text-[#3d4fd4] sm:text-4xl lg:text-5xl">
+                  <h2 className="mb-4 font-serif text-3xl  text-[#053F52] sm:text-4xl lg:text-5xl">
                     Visit Our Campus
                   </h2>
                   <p className="text-lg text-gray-600">
@@ -303,7 +303,7 @@ export default function ContactPage() {
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#3d4fd4]/30 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#053F52]/30 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                     </div>
                   </div>
 
