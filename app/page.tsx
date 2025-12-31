@@ -57,7 +57,7 @@ export default function HomePage() {
       <SiteHeader />
 
       {/* Hero Section */}
-      <main className="flex-1 bg-[#203dce] pt-24 sm:pt-32 md:pt-20 lg:pt-25">
+      <main className="flex-1 bg-[#053f52] pt-24 sm:pt-32 md:pt-20 lg:pt-25">
         <MotionWrapper className="relative overflow-hidden">
           {/* Mobile/Tablet Layout - Image on top, text overlays at bottom */}
           <div className="lg:hidden relative min-h-[calc(100vh-8rem)] sm:min-h-[calc(100vh-10rem)]">

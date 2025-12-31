@@ -190,7 +190,7 @@ export function SiteHeader() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Button variant="ghost" size="icon" className="text-[#3d4fd4] h-10 w-10">
+                  <Button variant="ghost" size="icon" className="text-[#053F52] h-10 w-10">
                     <Menu className="h-6 w-6" />
                     <span className="sr-only">Open menu</span>
                   </Button>
@@ -198,7 +198,7 @@ export function SiteHeader() {
               </SheetTrigger>
               <SheetContent 
                 side="right" 
-                className="bg-[#ffd500] text-[#3d4fd4] border-l-0 w-[85vw] sm:w-[350px] px-4 sm:px-6"
+                className="bg-[#ffd500] text-[#053F52] border-l-0 w-[85vw] sm:w-[350px] px-4 sm:px-6"
               >
                 <motion.div 
                   className="flex items-center justify-between mb-6"
@@ -206,10 +206,10 @@ export function SiteHeader() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
                 >
-                  <h2 className="text-xl font-bold text-[#3d4fd4]">Menu</h2>
+                  <h2 className="text-xl font-bold text-[#053F52]">Menu</h2>
                   <SheetClose asChild>
                     <motion.div whileHover={{ rotate: 90 }} transition={{ duration: 0.2 }}>
-                      <Button variant="ghost" size="icon" className="text-[#3d4fd4] h-8 w-8">
+                      <Button variant="ghost" size="icon" className="text-[#053F52] h-8 w-8">
                         <X className="h-5 w-5" />
                         <span className="sr-only">Close menu</span>
                       </Button>
@@ -230,7 +230,7 @@ export function SiteHeader() {
                       <SheetClose asChild>
                         <Link 
                           href={item.href} 
-                          className="block py-2.5 px-3 text-base  hover:bg-[#3d4fd4]/10 rounded-md transition-colors"
+                          className="block py-2.5 px-3 text-base  hover:bg-[#053F52]/10 rounded-md transition-colors"
                         >
                           {item.title}
                         </Link>
@@ -250,7 +250,7 @@ export function SiteHeader() {
                               <SheetClose asChild>
                                 <Link 
                                   href={subitem.href} 
-                                  className="block text-sm text-[#3d4fd4]/80 hover:bg-[#3d4fd4]/10 rounded-md transition-colors"
+                                  className="block text-sm text-[#053F52]/80 hover:bg-[#053F52]/10 rounded-md transition-colors"
                                 >
                                   {subitem.title}
                                 </Link>
@@ -265,7 +265,7 @@ export function SiteHeader() {
                 
                 {/* Mobile Login Button */}
                 <motion.div 
-                  className="mt-6 pt-6 border-t border-[#3d4fd4]/20"
+                  className="mt-6 pt-6 border-t border-[#053F52]/20"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
@@ -273,7 +273,7 @@ export function SiteHeader() {
                   <SheetClose asChild>
                     <Link
                       href="/login"
-                      className="w-full inline-flex items-center justify-center gap-2 text-[#3d4fd4] border-[#3d4fd4] hover:bg-[#3d4fd4] hover:text-white font-medium py-2 px-3 rounded-md"
+                      className="w-full inline-flex items-center justify-center gap-2 text-[#053F52] border-[#053F52] hover:bg-[#053F52] hover:text-white font-medium py-2 px-3 rounded-md"
                     >
                       <motion.div
                         whileHover={{ scale: 1.02 }}
@@ -319,7 +319,7 @@ export function SiteHeader() {
                     >
                       {/* <Button 
                         variant="ghost" 
-                        className={`text-[#3d4fd4] hover:bg-[#3d4fd4]/10 font-bold transition-all duration-300 ${
+                        className={`text-[#053F52] hover:bg-[#053F52]/10 font-bold transition-all duration-300 ${
                           isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8" : "text-sm px-3 py-2"
                         }`}
                       >
@@ -327,7 +327,7 @@ export function SiteHeader() {
                       </Button> */}
                    <Link
                       href={item.href}
-                      className={`text-[#3d4fd4] hover:bg-[#3d4fd4]/10 font-bold transition-all duration-300 inline-block rounded-md ${
+                      className={`text-[#053F52] hover:bg-[#053F52]/10 font-bold transition-all duration-300 inline-block rounded-md ${
                         isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
                       }`}
                     >
@@ -347,7 +347,7 @@ export function SiteHeader() {
                           <Link
                             key={subitem.href}
                             href={subitem.href}
-                            className="block px-5 py-2.5 text-sm text-[#3d4fd4] hover:bg-[#EFBF04]/20 hover:pl-6 transition-all duration-200 font-medium"
+                            className="block px-5 py-2.5 text-sm text-[#053F52] hover:bg-[#EFBF04]/20 hover:pl-6 transition-all duration-200 font-medium"
                           >
                             {subitem.title}
                           </Link>
@@ -367,7 +367,7 @@ export function SiteHeader() {
                   >
                     <Link
                       href={item.href}
-                      className={`text-[#3d4fd4] hover:bg-[#3d4fd4]/10 font-bold transition-all duration-300 inline-block rounded-md ${
+                      className={`text-[#053F52] hover:bg-[#053F52]/10 font-bold transition-all duration-300 inline-block rounded-md ${
                         isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
                       }`}
                     >
@@ -394,7 +394,7 @@ export function SiteHeader() {
             >
               <Link
                 href="/login"
-                className={`text-[#3d4fd4] hover:bg-[#3d4fd4]/10 font-medium flex items-center gap-2 transition-all duration-300 rounded-md ${
+                className={`text-[#053F52] hover:bg-[#053F52]/10 font-medium flex items-center gap-2 transition-all duration-300 rounded-md ${
                   isScrolled ? "text-xs xl:text-sm px-2 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
                 }`}
               >
@@ -404,7 +404,7 @@ export function SiteHeader() {
                   className="flex items-center gap-2"
                 >
                   <motion.div 
-                    className={`flex items-center justify-center rounded-full bg-[#3d4fd4] transition-all duration-300 ${
+                    className={`flex items-center justify-center rounded-full bg-[#053F52] transition-all duration-300 ${
                       isScrolled ? "w-6 h-6 xl:w-7 xl:h-7" : "w-8 h-8 xl:w-9 xl:h-9"
                     }`}
                     whileHover={{ rotate: 360 }}
@@ -430,7 +430,7 @@ export function SiteHeader() {
             >
               <Link href="/admissions/apply-now">
                 <motion.button 
-                  className={`flex items-center gap-2 bg-[#3d4fd4] text-white rounded-full border border-[#3d4fd4] transition-all duration-300 hover:bg-[#2d3fb4] hover:shadow-lg ${
+                  className={`flex items-center gap-2 bg-[#053F52] text-white rounded-full border border-[#053F52] transition-all duration-300 hover:bg-[#2d3fb4] hover:shadow-lg ${
                     isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
                   }`}
                   whileHover={{ scale: 1.05 }}
