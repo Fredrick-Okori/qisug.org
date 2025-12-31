@@ -35,9 +35,9 @@ const cards = [
 
 export function ApplySectionProduction() {
   return (
-    <section className="relative py-16 lg:py-24 xl:py-32 bg-gradient-to-br from-[#EFBF04] via-[#f5c929] to-[#EFBF04] overflow-hidden">
+    <section className="relative py-16 lg:py-24 xl:py-32 bg-gradient-to-br from-[#EFBF04] via-[#EFBF04] to-[#EFBF04] overflow-hidden">
       {/* Decorative Elements */}
-      <div className="absolute top-10 right-10 w-72 h-72 bg-[#3d4fd4]/5 rounded-full blur-3xl" />
+      <div className="absolute top-10 right-10 w-72 h-72 bg-[#053F52]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-20 left-10 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -52,7 +52,7 @@ export function ApplySectionProduction() {
         >
           
           
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-[#3d4fd4] mb-6 leading-tight">
+          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-[#053F52] mb-6 leading-tight">
             Start Your Journey
           </h2>
           
@@ -64,7 +64,7 @@ export function ApplySectionProduction() {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
             <Link href="/admissions">
               <Button
-                className="bg-[#3d4fd4] mr-2 text-white hover:bg-[#2d3fb4] px-8 py-6 text-base font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
+                className="bg-[#053F52] mr-2 text-white hover:bg-[#2d3fb4] px-8 py-6 text-base font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
               >
                 Admissions Info
                 <ArrowRight className="ml-2 mr-2 w-5 h-5" />
@@ -97,7 +97,7 @@ export function ApplySectionProduction() {
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 
-                <div className="absolute inset-0 bg-gradient-to-br from-[#3d4fd4]/80 to-[#2d3fb4]/80" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#053F52]/80 to-[#2d3fb4]/80" />
                 
                 <div className="absolute inset-0 p-8 lg:p-10 flex flex-col justify-between">
                   <motion.div
@@ -150,7 +150,7 @@ export function ApplySectionProduction() {
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 
-                <div className="absolute inset-0 bg-gradient-to-br from-[#3d4fd4]/80 to-[#2d3fb4]/80" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#053F52]/80 to-[#2d3fb4]/80" />
                 
                 <div className="absolute inset-0 p-8 flex flex-col justify-between">
                   <motion.div
@@ -159,7 +159,7 @@ export function ApplySectionProduction() {
                   >
                     {(() => {
                       const Icon = cards[1].icon
-                      return <Icon className="w-7 h-7 text-[#3d4fd4]" />
+                      return <Icon className="w-7 h-7 text-[#053F52]" />
                     })()}
                   </motion.div>
                   
@@ -193,7 +193,7 @@ export function ApplySectionProduction() {
           >
             <Link href={cards[2].href}>
               <motion.div
-                className="relative h-[350px] lg:h-[400px] rounded-3xl overflow-hidden shadow-2xl group cursor-pointer bg-gradient-to-br from-[#3d4fd4] to-[#2d3fb4]"
+                className="relative h-[350px] lg:h-[400px] rounded-3xl overflow-hidden shadow-2xl group cursor-pointer bg-gradient-to-br from-[#053F52] to-[#2d3fb4]"
                 whileHover={{ y: -8, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
@@ -204,7 +204,7 @@ export function ApplySectionProduction() {
                   className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-30"
                 />
                 
-                <div className="absolute inset-0 bg-gradient-to-br from-[#3d4fd4]/80 to-[#2d3fb4]/80" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#053F52]/80 to-[#2d3fb4]/80" />
                 
                 <div className="absolute inset-0 p-8 flex flex-col justify-between">
                   <motion.div
@@ -243,7 +243,7 @@ export function ApplySectionProduction() {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 lg:p-10 shadow-xl">
-              <h3 className="text-2xl lg:text-3xl  text-[#3d4fd4] mb-4">
+              <h3 className="text-2xl lg:text-3xl  text-[#053F52] mb-4">
                 Need Help with Your Application?
               </h3>
               <p className="text-gray-700 mb-6 text-base lg:text-lg">
@@ -254,7 +254,7 @@ export function ApplySectionProduction() {
                 <Link href="/contact">
                   <Button
                     variant="outline"
-                    className="border-2 border-[#3d4fd4] text-[#3d4fd4] hover:bg-[#3d4fd4] hover:text-white rounded-full px-6 py-3"
+                    className="border-2 border-[#053F52] text-[#053F52] hover:bg-[#053F52] hover:text-white rounded-full px-6 py-3"
                   >
                     Contact Admissions
                   </Button>
@@ -262,7 +262,7 @@ export function ApplySectionProduction() {
                 <Link href="/faq">
                   <Button
                     variant="ghost"
-                    className="text-[#3d4fd4] hover:bg-[#3d4fd4]/10 rounded-full px-6 py-3"
+                    className="text-[#053F52] hover:bg-[#053F52]/10 rounded-full px-6 py-3"
                   >
                     View FAQs
                   </Button>

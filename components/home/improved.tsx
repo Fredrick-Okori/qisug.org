@@ -30,13 +30,16 @@ const features = [
 
 export function ImprovedHomeSection() {
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-white py-16 lg:py-24">
-      <div className="container mx-auto px-4">
+    <div className='bg-[#EFBF04]'>
+
+   
+    <section className="bg-[#053F52] max-w-7xl rounded-2xl mx-auto py-16 lg:py-24">
+      <div className="container mx-auto px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Text Content */}
           <div>
             <motion.h2
-              className="text-4xl lg:text-5xl font-bold mb-6 text-[#3d4fd4]"
+              className="text-4xl lg:text-5xl mb-6 text-white"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -45,7 +48,7 @@ export function ImprovedHomeSection() {
               Why Choose QISU
             </motion.h2>
             <motion.p
-              className="text-lg text-gray-700 mb-8"
+              className="text-lg text-white mb-8"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -69,10 +72,10 @@ export function ImprovedHomeSection() {
                     <feature.icon className="w-6 h-6 text-[#3d4fd4]" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-[#3d4fd4] mb-1">
+                    <h3 className=" text-lg text-white mb-1">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className="text-white text-sm leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -89,7 +92,7 @@ export function ImprovedHomeSection() {
               <Link href="/about">
                 <Button
                   size="lg"
-                  className="bg-[#3d4fd4] text-white hover:bg-[#2c3bb0] px-8 py-6 rounded-full flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-[#EFBF04] text-white hover:bg-[#2c3bb0] px-8 py-6 rounded-full flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Learn More <ArrowRight size={20} />
                 </Button>
@@ -117,7 +120,7 @@ export function ImprovedHomeSection() {
 
             {/* Floating Stats Card */}
             <motion.div
-              className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-xl"
+              className="absolute bottom-8 left-8 right-8 bg-[#EFBF04]/95 backdrop-blur-sm rounded-xl p-6 shadow-xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -125,15 +128,15 @@ export function ImprovedHomeSection() {
             >
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-[#3d4fd4]">1000+</div>
+                  <div className="text-2xl font-bold text-[#053F52]">1000+</div>
                   <div className="text-xs text-gray-600">Students</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-[#3d4fd4]">50+</div>
+                  <div className="text-2xl font-bold text-[#053F52]">50+</div>
                   <div className="text-xs text-gray-600">Countries</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-[#3d4fd4]">15+</div>
+                  <div className="text-2xl font-bold text-[#053F52]">15+</div>
                   <div className="text-xs text-gray-600">Years</div>
                 </div>
               </div>
@@ -142,5 +145,6 @@ export function ImprovedHomeSection() {
         </div>
       </div>
     </section>
+     </div>
   )
 }

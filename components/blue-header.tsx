@@ -128,7 +128,7 @@ export function BlueSiteHeader() {
 
       <motion.div
         className="absolute inset-0"
-        style={{ backgroundColor: '#2a3dc8ff', opacity: 0.90 }}
+        style={{ backgroundColor: '#053F52', opacity: 0.90 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.90 }}
         transition={{ duration: 0.4 }}
