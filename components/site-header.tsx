@@ -162,7 +162,7 @@ export function SiteHeader() {
                 transition={{ duration: 0.2 }}
               >
                 <Image
-                  src="/images/logo_blue.png"
+                  src="/images/zas5zz9dmzkxht9zd4vz.avif"
                   alt="Queensgate International School"
                   width={340}
                   height={256}
@@ -430,7 +430,7 @@ export function SiteHeader() {
             >
               <Link href="/admissions/apply-now">
                 <motion.button 
-                  className={`flex items-center gap-2 bg-[#053F52] text-white rounded-full border border-[#053F52] transition-all duration-300 hover:bg-[#2d3fb4] hover:shadow-lg ${
+                  className={`flex items-center gap-2 bg-[#053F52] text-white rounded-full border border-[#053F52] transition-all duration-300 hover:bg-[#20cece] hover:border-[#20cece] ${
                     isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
                   }`}
                   whileHover={{ scale: 1.05 }}

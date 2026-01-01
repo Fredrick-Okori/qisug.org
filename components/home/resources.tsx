@@ -1,9 +1,9 @@
 "use client"
 
-import React, { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useEffect, useCallback, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { motion, useInView } from "framer-motion"
+import { motion, useInView, useReducedMotion } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 const resources = [
@@ -32,24 +32,46 @@ const resources = [
     image: "/images/home-courses-img-6-1.jpg",
     href: "/resources/chemistry",
   },
-]
+] as const
+
+// Debounce utility for scroll events
+function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeout: NodeJS.Timeout | null = null
+  return (...args: Parameters<T>) => {
+    if (timeout) clearTimeout(timeout)
+    timeout = setTimeout(() => func(...args), wait)
+  }
+}
 
 export function Resources() {
   const containerRef = useRef<HTMLDivElement>(null)
   const sectionRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 })
+  const shouldReduceMotion = useReducedMotion()
+  
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(false)
 
-  const checkScroll = () => {
+  // Memoized scroll check function
+  const checkScroll = useCallback(() => {
     if (containerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = containerRef.current
-      setAtStart(scrollLeft <= 5) // Small buffer
+      setAtStart(scrollLeft <= 5)
       setAtEnd(scrollLeft >= scrollWidth - clientWidth - 5)
     }
-  }
+  }, [])
 
-  const scroll = (direction: "left" | "right") => {
+  // Debounced scroll handler for better performance
+  const debouncedCheckScroll = useMemo(
+    () => debounce(checkScroll, 100),
+    [checkScroll]
+  )
+
+  // Optimized scroll function with RAF for smooth animation
+  const scroll = useCallback((direction: "left" | "right") => {
     if (containerRef.current) {
       const scrollAmount = containerRef.current.clientWidth * 0.8
       containerRef.current.scrollBy({
@@ -57,89 +79,91 @@ export function Resources() {
         behavior: "smooth",
       })
     }
-  }
+  }, [])
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") scroll("left")
+    if (e.key === "ArrowRight") scroll("right")
+  }, [scroll])
 
   useEffect(() => {
     const container = containerRef.current
     if (container) {
-      container.addEventListener("scroll", checkScroll)
+      // Use passive listener for better scroll performance
+      container.addEventListener("scroll", debouncedCheckScroll, { passive: true })
       checkScroll()
-      return () => container.removeEventListener("scroll", checkScroll)
+      
+      return () => container.removeEventListener("scroll", debouncedCheckScroll)
     }
-  }, [])
+  }, [checkScroll, debouncedCheckScroll])
 
-  // Animation variants
-  const headerVariants = {
+  // Animation variants - optimized for reduced motion
+  const getAnimationVariants = useCallback((baseVariant: any) => {
+    if (shouldReduceMotion) {
+      return {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.2 } }
+      }
+    }
+    return baseVariant
+  }, [shouldReduceMotion])
+
+  const headerVariants = useMemo(() => getAnimationVariants({
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.6, ease: "easeOut" },
     },
-  }
+  }), [getAnimationVariants])
 
-  const descriptionVariants = {
+  const descriptionVariants = useMemo(() => getAnimationVariants({
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        delay: 0.2,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.6, delay: 0.2, ease: "easeOut" },
     },
-  }
+  }), [getAnimationVariants])
 
-  const containerVariants = {
+  const containerVariants = useMemo(() => getAnimationVariants({
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
+      transition: { staggerChildren: 0.1, delayChildren: 0.3 },
     },
-  }
+  }), [getAnimationVariants])
 
-  const cardVariants = {
+  const cardVariants = useMemo(() => getAnimationVariants({
     hidden: { opacity: 0, y: 50, scale: 0.9 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.5, ease: "easeOut" },
     },
-  }
+  }), [getAnimationVariants])
 
-  const buttonVariants = {
+  const buttonVariants = useMemo(() => getAnimationVariants({
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
       opacity: 1,
       scale: 1,
-      transition: {
-        duration: 0.4,
-        delay: 0.5,
-      },
+      transition: { duration: 0.4, delay: 0.5 },
     },
-  }
+  }), [getAnimationVariants])
 
   return (
-    <section ref={sectionRef} className="py-20 bg-[#EFBF04]">
+    <section ref={sectionRef} className="py-12 md:py-20 bg-[#EFBF04]">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-8 md:mb-16">
           <motion.h2
             variants={headerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className="text-4xl md:text-6xl text-[#3d4fd4] font-serif tracking-tight leading-tight"
+            className="text-3xl md:text-5xl lg:text-6xl text-[#053F52] font-serif tracking-tight leading-tight"
           >
             Queensgate Certified Courses
           </motion.h2>
@@ -147,101 +171,28 @@ export function Resources() {
             variants={descriptionVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className="mt-4 text-lg md:text-xl text-gray-800"
+            className="mt-3 md:mt-4 text-base md:text-lg lg:text-xl text-gray-800 px-4"
           >
             Our curriculum is designed to meet the highest standards set by the Ontario Ministry of Education, ensuring that students receive a quality education that is recognized globally.
           </motion.p>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-12">
-          {/* Left Button - Always Visible */}
-          <motion.button
-            variants={buttonVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            whileHover={{ scale: atStart ? 0.9 : 1.1 }}
-            whileTap={{ scale: atStart ? 0.9 : 0.95 }}
-            onClick={() => scroll("left")}
-            disabled={atStart}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 z-30 bg-white/95 text-gray-800 rounded-full p-4 shadow-2xl transition-all border border-gray-100 hidden md:flex items-center justify-center
-              ${atStart ? "opacity-40 cursor-not-allowed" : "opacity-100"}
-            `}
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </motion.button>
-
-          {/* Right Button - Always Visible */}
-          <motion.button
-            variants={buttonVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            whileHover={{ scale: atEnd ? 0.9 : 1.1 }}
-            whileTap={{ scale: atEnd ? 0.9 : 0.95 }}
-            onClick={() => scroll("right")}
-            disabled={atEnd}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 z-30 bg-white/95 text-gray-800 rounded-full p-4 shadow-2xl transition-all border border-gray-100 hidden md:flex items-center justify-center
-              ${atEnd ? "opacity-40 cursor-not-allowed" : "opacity-100"}
-            `}
-          >
-            <ChevronRight className="w-6 h-6" />
-          </motion.button>
-
-          {/* Scrolling Viewport */}
-          <motion.div
-            ref={containerRef}
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar py-10"
-          >
-            {resources.map((item, index) => (
-              <motion.div
-                key={index}
-                variants={cardVariants}
-                className="flex-[0_0_260px] sm:flex-[0_0_300px] md:flex-[0_0_340px] snap-center first:pl-4 last:pr-4"
-              >
-                <Link href={item.href} className="group block outline-none">
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -8 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="relative aspect-[3/4.2] rounded-[1.5rem] overflow-hidden shadow-[0_15px_45px_rgba(0,0,0,0.12)] group-hover:shadow-[0_25px_60px_rgba(0,0,0,0.22)] transition-shadow duration-500 bg-gray-100"
-                  >
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
-                    />
-
-                    <motion.div
-                      initial={{ y: 20, opacity: 0 }}
-                      whileHover={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="absolute inset-0 flex flex-col justify-end p-6"
-                    >
-                      <motion.p
-                        className="text-[#EFBF04] text-xl font-semibold"
-                        initial={{ y: 10 }}
-                        whileHover={{ y: 0 }}
-                        transition={{ duration: 0.2, delay: 0.1 }}
-                      >
-                        {item.title}
-                      </motion.p>
-                    </motion.div>
-                  </motion.div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
+        {/* Hero Image - Optimized with responsive sizes */}
+        <div className="relative max-w-7xl mx-auto px-2 sm:px-4 md:px-12 mb-8 md:mb-12">
+          <div className="relative w-full aspect-[2.4/1] md:aspect-[2.4/1]">
+            <Image
+              src="/images/chatgptimagemar272c20252c12_25_02pm.avif"
+              alt="Queensgate Certified Courses"
+              
+              width={1200}
+              height={500}
+              className="object-contain rounded-lg"
+              priority
+              quality={85}
+            />
+          </div>
         </div>
+
       </div>
 
       <style jsx global>{`
@@ -251,6 +202,15 @@ export function Resources() {
         .no-scrollbar {
           -ms-overflow-style: none;
           scrollbar-width: none;
+        }
+        
+        /* Performance optimizations */
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
         }
       `}</style>
     </section>
