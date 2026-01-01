@@ -71,7 +71,7 @@ export default function PrivacyPolicyPage() {
       <main className="flex-1 relative">
         {/* Hero Section */}
         <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               className="max-w-5xl"
               initial={{ opacity: 0, y: 30 }}
@@ -86,17 +86,17 @@ export default function PrivacyPolicyPage() {
                 Your Privacy and Data Protection Matter to Us
               </p>
               <p className="text-base text-[#053F52] mt-4 opacity-80">
-                Last Updated: December 2024
+                Last Updated: December 2025
               </p>
             </motion.div>
           </div>
         </div>
 
         {/* Table of Contents */}
-        <div className=" relative z-10">
+        <div className=" relative bg-[#EFBF04] z-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -116,7 +116,7 @@ export default function PrivacyPolicyPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.05 }}
                   >
-                    <section.icon className="w-5 h-5 text-white flex-shrink-0" />
+                    <section.icon className="w-5 h-5 text-[#20cece] flex-shrink-0" />
                     <span className="text-white font-medium text-sm">
                       {section.title}
                     </span>
@@ -139,7 +139,7 @@ export default function PrivacyPolicyPage() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-white" />
+                  <Shield className="w-6 h-6 text-[#20cece]" />
                 </div>
                 <h2 className="text-3xl lg:text-4xl text-[#053F52] font-bold">
                   Introduction
@@ -165,7 +165,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         {/* Privacy Information Section */}
-        <div id="privacy-information" className=" relative z-10">
+        <div id="privacy-information" className=" bg-[#EFBF04] relative z-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="max-w-5xl mx-auto"
@@ -176,7 +176,7 @@ export default function PrivacyPolicyPage() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center">
-                  <Lock className="w-6 h-6 text-white" />
+                  <Lock className="w-6 h-6 text-[#20cece]" />
                 </div>
                 <h2 className="text-3xl lg:text-4xl text-[#053F52] font-bold">
                   How We Manage Your Personal Information
@@ -246,7 +246,7 @@ export default function PrivacyPolicyPage() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center">
-                  <Eye className="w-6 h-6 text-white" />
+                  <Eye className="w-6 h-6 text-[#20cece]" />
                 </div>
                 <h2 className="text-3xl lg:text-4xl text-[#053F52] font-bold">
                   What We Record Automatically
@@ -329,7 +329,7 @@ export default function PrivacyPolicyPage() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center">
-                  <Users className="w-6 h-6 text-white" />
+                  <Users className="w-6 h-6 text-[#20cece]" />
                 </div>
                 <h2 className="text-3xl lg:text-4xl text-[#053F52] font-bold">
                   Collection, Use and Disclosure of Student Personal Information
@@ -386,7 +386,7 @@ export default function PrivacyPolicyPage() {
                       key={index}
                       className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg"
                     >
-                      <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-[#20cece] flex-shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
                   ))}
@@ -408,7 +408,7 @@ export default function PrivacyPolicyPage() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center">
-                  <FileText className="w-6 h-6 text-white" />
+                  <FileText className="w-6 h-6 text-[#20cece]" />
                 </div>
                 <h2 className="text-3xl lg:text-4xl text-[#053F52] font-bold">
                   Student Photographs and Media
@@ -430,9 +430,9 @@ export default function PrivacyPolicyPage() {
                     ].map((item, index) => (
                       <div 
                         key={index}
-                        className="flex items-start gap-3 p-4 bg-[#EFBF04]/10 rounded-lg border-l-4 border-[#053F52]"
+                        className="flex items-start gap-3 p-4 bg-[#EFBF04]/10 rounded-lg border-l-4 border-[#20cece]"
                       >
-                        <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-[#20cece] flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700">{item}</span>
                       </div>
                     ))}
@@ -470,7 +470,7 @@ export default function PrivacyPolicyPage() {
               transition={{ duration: 0.8 }}
             >
               <div className="inline-flex items-center justify-center w-16 h-16 bg-[#053F52] rounded-2xl mb-6">
-                <Mail className="w-8 h-8 text-white" />
+                <Mail className="w-8 h-8 text-[#20cece]" />
               </div>
               <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053F52] mb-6">
                 Questions About Our Privacy Policy?

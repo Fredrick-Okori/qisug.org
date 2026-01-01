@@ -86,7 +86,7 @@ export default function AcademicIntegrityPage() {
       <main className="flex-1 relative">
         {/* Hero Section */}
         <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               className="max-w-5xl"
               initial={{ opacity: 0, y: 30 }}
@@ -108,7 +108,7 @@ export default function AcademicIntegrityPage() {
         <div className="bg-[#EFBF04] relative z-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -183,7 +183,7 @@ export default function AcademicIntegrityPage() {
               <div className="grid md:grid-cols-2 gap-8">
                 {/* Plagiarism */}
                 <motion.div
-                  className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-xl p-8"
+                  className="bg-gradient-to-br from-[#EFBF04] to- border-2 border-[#EFBF04] rounded-xl p-8"
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -210,7 +210,7 @@ export default function AcademicIntegrityPage() {
 
                 {/* Cheating */}
                 <motion.div
-                  className="bg-gradient-to-br from-[#053F52]/10 to-white border-2 border-[#053F52]/30 rounded-xl p-8"
+                  className="bg-gradient-to-br from-[#EFBF04] to- border-2 border-[#EFBF04] rounded-xl p-8"
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}

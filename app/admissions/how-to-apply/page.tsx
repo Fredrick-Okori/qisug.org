@@ -161,7 +161,7 @@ export default function HowToApplyPage() {
                   animate="animate"
                 />
                 <motion.h1 
-                  className="text-6xl  text-[#3d4fd4] mb-6 leading-tight"
+                  className="text-6xl  text-[#053f52] mb-6 leading-tight"
                   style={{ fontFamily: "'Crimson Pro', serif" }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -170,7 +170,7 @@ export default function HowToApplyPage() {
                   How to Apply
                 </motion.h1>
                 <div 
-                  className="h-1 w-24 bg-gradient-to-r from-[#EFBF04] to-[#d4a803] rounded-full"
+                  className="h-1 w-24 bg-gradient-to-r from-[#20cece] to-[#20cece] rounded-full"
                 />
               </div>
               
@@ -199,7 +199,7 @@ export default function HowToApplyPage() {
                     custom={index + 1}
                   >
                     <h3 
-                      className="text-2xl  text-[#3d4fd4] mb-2"
+                      className="text-2xl  text-[#053f52] mb-2"
                       style={{ fontFamily: "'Crimson Pro', serif" }}
                     >
                       {step.number}. {step.title}
@@ -225,7 +225,7 @@ export default function HowToApplyPage() {
                 custom={0.4}
               >
                 <h2 
-                  className="text-3xl  text-[#3d4fd4] mb-6"
+                  className="text-3xl  text-[#053f52] mb-6"
                   style={{ fontFamily: "'Crimson Pro', serif" }}
                 >
                   Required Documentation
@@ -240,7 +240,7 @@ export default function HowToApplyPage() {
                       transition={{ duration: 0.6, delay: 0.5 + (index * 0.1) }}
                     >
                       <h3 
-                        className="text-xl  text-[#3d4fd4] mb-2"
+                        className="text-xl  text-[#053f52] mb-2"
                         style={{ fontFamily: "'Crimson Pro', serif" }}
                       >
                         {doc.title}
@@ -258,7 +258,7 @@ export default function HowToApplyPage() {
 
               {/* Important Information Box */}
               <motion.div
-                className="bg-gradient-to-br from-[#3d4fd4] to-[#3d4fd4] rounded-xl p-8 text-white"
+                className="bg-gradient-to-br from-[#053f52] to-[#053f52] rounded-xl p-8 text-white"
                 variants={fadeInVariants}
                 initial="hidden"
                 animate="visible"
@@ -308,7 +308,7 @@ export default function HowToApplyPage() {
                 custom={1.0}
               >
                 <h3 
-                  className="text-2xl  text-[#3d4fd4] mb-4"
+                  className="text-2xl  text-[#053f52] mb-4"
                   style={{ fontFamily: "'Crimson Pro', serif" }}
                 >
                   Apply Today
@@ -322,7 +322,7 @@ export default function HowToApplyPage() {
                 </p>
                 <a
                   href="/apply-now"
-                  className="inline-block bg-gradient-to-r from-[#3d4fd4] to-[#2d3eb4] text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                  className="inline-block bg-gradient-to-r from-[#053f52] to-[#053f52] text-white px-8 py-4 rounded-full text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   Apply Now

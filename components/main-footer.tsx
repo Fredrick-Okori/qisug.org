@@ -6,7 +6,7 @@ export function MainSiteFooter() {
   return (
     <footer className="bg-[#EFBF04] py-8">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-[#3d4fd4]">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-[#053f52]">
           {/* Location */}
           <div className="flex items-center gap-3">
             <MapPin className="h-5 w-5 flex-shrink-0" />
@@ -31,7 +31,7 @@ export function MainSiteFooter() {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-[#3d4fd4] p-2 text-white hover:bg-[#3d4fd4]/90 transition-colors"
+              className="rounded-full bg-[#053f52] p-2 text-white hover:bg-[#053f52]/90 transition-colors"
             >
               <Facebook className="h-5 w-5" />
             </Link>
@@ -39,7 +39,7 @@ export function MainSiteFooter() {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-[#3d4fd4] p-2 text-white hover:bg-[#3d4fd4]/90 transition-colors"
+              className="rounded-full bg-[#053f52] p-2 text-white hover:bg-[#053f52]/90 transition-colors"
             >
               <Instagram className="h-5 w-5" />
             </Link>
@@ -47,7 +47,7 @@ export function MainSiteFooter() {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-[#3d4fd4] p-2 text-white hover:bg-[#3d4fd4]/90 transition-colors"
+              className="rounded-full bg-[#053f52] p-2 text-white hover:bg-[#053f52]/90 transition-colors"
             >
               <Twitter className="h-5 w-5" />
             </Link>

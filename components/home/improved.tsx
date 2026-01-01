@@ -68,8 +68,8 @@ export function ImprovedHomeSection() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-[#EFBF04] rounded-lg flex items-center justify-center">
-                    <feature.icon className="w-6 h-6 text-[#3d4fd4]" />
+                  <div className="flex-shrink-0 w-12 h-12 bg-[#20cece] rounded-lg flex items-center justify-center">
+                    <feature.icon className="w-6 h-6 text-[#053f52]" />
                   </div>
                   <div>
                     <h3 className=" text-lg text-white mb-1">
@@ -92,7 +92,7 @@ export function ImprovedHomeSection() {
               <Link href="/about">
                 <Button
                   size="lg"
-                  className="bg-[#EFBF04] text-white hover:bg-[#2c3bb0] px-8 py-6 rounded-full flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-[#20cece] text-[#053f52] hover:bg-[#2c3bb0] px-8 py-6 rounded-full flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Learn More <ArrowRight size={20} />
                 </Button>

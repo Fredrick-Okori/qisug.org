@@ -127,7 +127,7 @@ export default function AdmissionPeriods() {
                   animate="animate"
                 />
                 <motion.h1 
-                  className="text-6xl  text-[#3d4fd4] mb-6 leading-tight"
+                  className="text-6xl  text-[#053f52] mb-6 leading-tight"
                   style={{ fontFamily: "'Crimson Pro', serif" }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -136,7 +136,7 @@ export default function AdmissionPeriods() {
                   Admission Periods
                 </motion.h1>
                 <motion.div 
-                  className="h-1 w-24 bg-gradient-to-r from-[#3d4fd4] to-[#6B1616] rounded-full"
+                  className="h-1 w-24 bg-gradient-to-r from-[#20cece] to-[#20cece] rounded-full"
                   initial={{ opacity: 0, x: -40 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
@@ -179,14 +179,14 @@ export default function AdmissionPeriods() {
               {periods.map((period, index) => (
                 <motion.div 
                   key={period.month}
-                  className="period-card relative pl-8 pr-6 py-8 border-b border-gray-200 last:border-b-0 transition-all duration-300 ease-out hover:translate-x-2 hover:bg-gradient-to-br hover:from-[rgba(139,30,30,0.03)] hover:to-[rgba(139,30,30,0.01)]"
+                  className="period-card relative pl-8 pr-6 py-8 border-b border-[#053f52] last:border-b-0 transition-all duration-300 ease-out hover:translate-x-2 hover:bg-gradient-to-br hover:from-[rgba(139,30,30,0.03)] hover:to-[rgba(139,30,30,0.01)]"
                   variants={slideInVariants}
                   initial="hidden"
                   animate="visible"
                   custom={index + 1}
                 >
                   <h2 
-                    className="text-3xl  text-[#3d4fd4] mb-3"
+                    className="text-3xl  text-[#053f52] mb-3"
                     style={{ fontFamily: "'Crimson Pro', serif" }}
                   >
                     {period.month}
@@ -211,9 +211,9 @@ export default function AdmissionPeriods() {
             custom={0.8}
           >
             <div className="flex items-center justify-center gap-2">
-              <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#3d4fd4]" />
-              <div className="w-2 h-2 rounded-full bg-[#3d4fd4]" />
-              <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#3d4fd4]" />
+              <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#053f52]" />
+              <div className="w-2 h-2 rounded-full bg-[#053f52]" />
+              <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#053f52]" />
             </div>
           </motion.div>
         </motion.div>

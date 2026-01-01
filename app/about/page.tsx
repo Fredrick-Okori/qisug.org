@@ -20,6 +20,7 @@ import {
   Star,
   Quote
 } from "lucide-react"
+import { CTA } from "@/components/home/cta"
 
 const stats = [
   { icon: Award, number: "100%", label: "University Placement Rate" },
@@ -98,7 +99,7 @@ const testimonials = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen  flex flex-col">
       <BlueSiteHeader />
 
       {/* Full-Page Background Pattern */}
@@ -118,7 +119,7 @@ export default function AboutPage() {
       <main className="flex-1 relative">
         {/* Hero Section */}
         <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               className="max-w-5xl"
               initial={{ opacity: 0, y: 30 }}
@@ -144,8 +145,8 @@ export default function AboutPage() {
         </div>
 
         {/* Our Mission Section */}
-        <div className="bg-[#EFBF04] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <div className="bg-[#EFBF04]  relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-start lg:items-center">
               {/* Left Side - Text Content */}
               <div className="order-2 lg:order-1">
@@ -227,7 +228,7 @@ export default function AboutPage() {
         </div>
 
         {/* Stats Section */}
-        <div className="bg-[#053F52] container mx-auto rounded-2xl relative z-10">
+        <div className="bg-[#053F52] max-w-7xl mx-auto rounded-2xl relative z-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.h2 
               className="text-3xl lg:text-4xl xl:text-5xl text-white text-center mb-12"
@@ -250,7 +251,7 @@ export default function AboutPage() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   whileHover={{ y: -8 }}
                 >
-                  <stat.icon className="w-12 h-12 mx-auto mb-4 text-[#EFBF04]" />
+                  <stat.icon className="w-12 h-12 mx-auto mb-4 text-[#20cece]" />
                   <div className="text-4xl md:text-5xl text-white mb-2">
                     {stat.number}
                   </div>
@@ -292,7 +293,7 @@ export default function AboutPage() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ y: -8 }}
                 >
-                  <div className="w-16 h-16 bg-[#053F52] rounded-xl flex items-center justify-center mb-4">
+                  <div className="w-16 h-16 bg-[#20cece] rounded-xl flex items-center justify-center mb-4">
                     <value.icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-2xl text-[#053F52] mb-3">
@@ -309,7 +310,7 @@ export default function AboutPage() {
 
         {/* Meet Our Educators Section */}
         <div className="bg-[#053F52] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="text-center mb-12"
               initial={{ opacity: 0, y: 20 }}
@@ -370,7 +371,7 @@ export default function AboutPage() {
 
         {/* Principal's Message Section */}
         <div className="bg-[#EFBF04] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-start lg:items-center">
               {/* Left Side - Image */}
               <motion.div 
@@ -479,13 +480,13 @@ export default function AboutPage() {
               {testimonials.map((testimonial, index) => (
                 <motion.div
                   key={testimonial.name}
-                  className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-xl p-6 hover:border-[#053F52] hover:shadow-xl transition-all duration-300"
+                  className="bg-gradient-to-br from-[#20cece]/10 to-white border-2 border-[#20cece]/30 rounded-xl p-6 hover:border-[#053F52] hover:shadow-xl transition-all duration-300"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <Quote className="w-10 h-10 text-[#EFBF04] mb-4" />
+                  <Quote className="w-10 h-10 text-[#053f52] mb-4" />
                   <p className="text-gray-700 mb-4 leading-relaxed italic">
                     "{testimonial.content}"
                   </p>
@@ -550,7 +551,7 @@ export default function AboutPage() {
                     key={index}
                     className="bg-white rounded-xl p-6 shadow-lg"
                   >
-                    <feature.icon className="w-10 h-10 text-[#053F52] mx-auto mb-3" />
+                    <feature.icon className="w-10 h-10 text-[#20cece] mx-auto mb-3" />
                     <p className="text-gray-700 font-medium">{feature.text}</p>
                   </div>
                 ))}
@@ -560,32 +561,7 @@ export default function AboutPage() {
         </div>
 
         {/* Call to Action */}
-        <div className="bg-[#053F52] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-white mb-6">
-                Begin Your Journey with Queensgate Today
-              </h2>
-              <p className="text-lg md:text-xl text-white mb-8 max-w-3xl mx-auto">
-                No matter where you are in the world, you can access our prestigious education. Join Queensgate 
-                International School and experience world-class learning tailored to your needs.
-              </p>
-              <Link href="/admissions">
-                <Button
-                  size="lg"
-                  className="bg-[#EFBF04] text-white hover:bg-[#2a3dc8ff] px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
-                >
-                  Apply Now <ArrowRight className="ml-2" />
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
-        </div>
+      <CTA/>
       </main>
 
       <SiteFooter />

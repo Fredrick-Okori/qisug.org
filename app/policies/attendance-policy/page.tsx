@@ -97,9 +97,9 @@ export default function AttendancePolicyPage() {
       <main className="flex-1 relative">
         {/* Hero Section */}
         <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
-              className="max-w-5xl"
+              className="max-w-7xl"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
@@ -117,9 +117,9 @@ export default function AttendancePolicyPage() {
 
         {/* Introduction Section */}
         <div className="bg-[#EFBF04] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -145,9 +145,9 @@ export default function AttendancePolicyPage() {
 
         {/* Attendance Requirements Section */}
         <div className="bg-white relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -160,7 +160,7 @@ export default function AttendancePolicyPage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-white border-2 border-[#EFBF04]/30 rounded-xl p-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <Calendar className="w-8 h-8 text-[#053F52]" />
+                    <Calendar className="w-8 h-8 text-[#20cece]" />
                     <h3 className="text-2xl text-[#053F52]">
                       Class Attendance
                     </h3>
@@ -174,7 +174,7 @@ export default function AttendancePolicyPage() {
 
                 <div className="bg-white border-2 border-[#053F52]/30 rounded-xl p-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <UserCheck className="w-8 h-8 text-[#053F52]" />
+                    <UserCheck className="w-8 h-8 text-[#20cece]" />
                     <h3 className="text-2xl text-[#053F52]">
                       Active Participation
                     </h3>
@@ -190,7 +190,7 @@ export default function AttendancePolicyPage() {
               {/* 110-Hour Requirement */}
               <div className="mt-8 bg-gradient-to-r from-[#053F52] to-[#053F52] rounded-2xl p-8 lg:p-12 text-white">
                 <div className="flex items-start gap-4">
-                  <AlertCircle className="w-10 h-10 flex-shrink-0 mt-1" />
+                  <AlertCircle className="w-10 h-10 text-[#20cece] flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="text-2xl lg:text-3xl mb-4">
                       Credit Requirements
@@ -215,7 +215,7 @@ export default function AttendancePolicyPage() {
         <div className="bg-[#EFBF04] relative z-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -239,7 +239,7 @@ export default function AttendancePolicyPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    <div className="w-12 h-12 bg-[#053F52] rounded-lg flex items-center justify-center mb-4">
+                    <div className="w-12 h-12 bg-[#20cece] rounded-lg flex items-center justify-center mb-4">
                       <method.icon className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="text-lg text-[#053F52] mb-2">
@@ -259,7 +259,7 @@ export default function AttendancePolicyPage() {
         <div className="bg-white relative z-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -300,7 +300,7 @@ export default function AttendancePolicyPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    <div className="w-12 h-12 bg-[#053F52] rounded-full flex items-center justify-center flex-shrink-0 text-white text-xl">
+                    <div className="w-12 h-12 bg-[#20cece] rounded-full flex items-center justify-center flex-shrink-0 text-white text-xl">
                       {item.step}
                     </div>
                     <div>
@@ -322,7 +322,7 @@ export default function AttendancePolicyPage() {
         <div className="bg-[#EFBF04] relative z-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -350,7 +350,7 @@ export default function AttendancePolicyPage() {
 
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#053F52] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#20cece] rounded-lg flex items-center justify-center flex-shrink-0">
                       <Users className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -365,7 +365,7 @@ export default function AttendancePolicyPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#053F52] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#20cece] rounded-lg flex items-center justify-center flex-shrink-0">
                       <MessageSquare className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -380,7 +380,7 @@ export default function AttendancePolicyPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#053F52] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#20cece] rounded-lg flex items-center justify-center flex-shrink-0">
                       <ClipboardCheck className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -416,7 +416,7 @@ export default function AttendancePolicyPage() {
 
         {/* Importance of Attendance */}
         <div className="bg-white relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="max-w-4xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
@@ -504,7 +504,7 @@ export default function AttendancePolicyPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <div className="flex items-start gap-3">
-                      <CheckCircle2 className="w-6 h-6 text-[#EFBF04] flex-shrink-0 mt-1" />
+                      <CheckCircle2 className="w-6 h-6 text-[#20cece] flex-shrink-0 mt-1" />
                       <div>
                         <h3 className="text-lg text-[#053F52] mb-2">
                           {practice.title}

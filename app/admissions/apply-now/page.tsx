@@ -113,7 +113,7 @@ export default function ApplyNowPage() {
               {/* Header */}
               <div className="relative">
                 <motion.h1 
-                  className="text-5xl md:text-6xl text-[#3d4fd4] mb-6 leading-tight"
+                  className="text-5xl md:text-6xl text-[#053f52] mb-6 leading-tight"
                   style={{ fontFamily: "'Crimson Pro', serif" }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -122,7 +122,7 @@ export default function ApplyNowPage() {
                   Apply Now
                 </motion.h1>
                 <motion.div 
-                  className="h-1 w-24 bg-gradient-to-r from-[#EFBF04] to-[#d4a803] rounded-full mb-6"
+                  className="h-1 w-24 bg-gradient-to-r from-[#20cece] to-[#20cece] rounded-full mb-6"
                   initial={{ opacity: 0, scaleX: 0 }}
                   animate={{ opacity: 1, scaleX: 1 }}
                   transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
@@ -165,7 +165,7 @@ export default function ApplyNowPage() {
                 custom={0.6}
               >
                 <h3 
-                  className="text-xl font-bold text-[#3d4fd4] mb-3"
+                  className="text-xl font-bold text-[#053f52] mb-3"
                   style={{ fontFamily: "'Crimson Pro', serif" }}
                 >
                   Need Help?
@@ -195,7 +195,7 @@ export default function ApplyNowPage() {
             {/* Personal Information */}
             <div className="mb-8">
               <h2 
-                className="text-xl font-bold text-[#3d4fd4] mb-4 pb-2 border-b-2 border-[#EFBF04]"
+                className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]"
                 style={{ fontFamily: "'Crimson Pro', serif" }}
               >
                 Personal Information
@@ -301,7 +301,7 @@ export default function ApplyNowPage() {
             {/* Contact Information */}
             <div className="mb-8">
               <h2 
-                className="text-xl font-bold text-[#3d4fd4] mb-4 pb-2 border-b-2 border-[#EFBF04]"
+                className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]"
                 style={{ fontFamily: "'Crimson Pro', serif" }}
               >
                 Contact Information
@@ -403,7 +403,7 @@ export default function ApplyNowPage() {
             {/* Academic Information */}
             <div className="mb-8">
               <h2 
-                className="text-xl font-bold text-[#3d4fd4] mb-4 pb-2 border-b-2 border-[#EFBF04]"
+                className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]"
                 style={{ fontFamily: "'Crimson Pro', serif" }}
               >
                 Academic Information
@@ -479,7 +479,7 @@ export default function ApplyNowPage() {
             {/* Document Uploads */}
             <div className="mb-8">
               <h2 
-                className="text-xl font-bold text-[#3d4fd4] mb-4 pb-2 border-b-2 border-[#EFBF04]"
+                className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]"
                 style={{ fontFamily: "'Crimson Pro', serif" }}
               >
                 Required Documents
@@ -591,7 +591,7 @@ export default function ApplyNowPage() {
             <div className="text-center">
               <motion.button
                 type="submit"
-                className="bg-gradient-to-r from-[#3d4fd4] to-[#2d3eb4] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all duration-300"
+                className="bg-gradient-to-r from-[#053f52] to-[#053f52] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all duration-300"
                 style={{ fontFamily: "'Inter', sans-serif" }}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}

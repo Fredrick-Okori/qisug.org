@@ -64,7 +64,7 @@ export function ApplySectionProduction() {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
             <Link href="/admissions">
               <Button
-                className="bg-[#053F52] mr-2 text-white hover:bg-[#053F52] px-8 py-6 text-base font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
+                className="bg-[#20cece] pr-2 text-[#053f52] hover:bg-[#20cece] px-8 py-6 text-base rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
               >
                 Admissions Info
                 <ArrowRight className="ml-2 mr-2 w-5 h-5" />
@@ -101,12 +101,12 @@ export function ApplySectionProduction() {
                 
                 <div className="absolute inset-0 p-8 lg:p-10 flex flex-col justify-between">
                   <motion.div
-                    className="self-start bg-white/20 backdrop-blur-md p-3 rounded-2xl"
+                    className="self-start bg-[#20cece] backdrop-blur-md p-3 rounded-2xl"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                   >
                     {(() => {
                       const Icon = cards[0].icon
-                      return <Icon className="w-8 h-8 text-white" />
+                      return <Icon className="w-8 h-8 text-[#053f52]" />
                     })()}
                   </motion.div>
                   
@@ -118,7 +118,7 @@ export function ApplySectionProduction() {
                       {cards[0].description}
                     </p>
                     <motion.div
-                      className="inline-flex items-center gap-2 text-[#EFBF04] font-semibold"
+                      className="inline-flex items-center gap-2 text-[#20cece]"
                       whileHover={{ x: 5 }}
                     >
                       Learn More
@@ -154,7 +154,7 @@ export function ApplySectionProduction() {
                 
                 <div className="absolute inset-0 p-8 flex flex-col justify-between">
                   <motion.div
-                    className="self-start bg-[#EFBF04] p-3 rounded-2xl"
+                    className="self-start bg-[#20cece] p-3 rounded-2xl"
                     whileHover={{ scale: 1.1, rotate: -5 }}
                   >
                     {(() => {
@@ -171,7 +171,7 @@ export function ApplySectionProduction() {
                       {cards[1].description}
                     </p>
                     <motion.div
-                      className="inline-flex items-center gap-2 text-[#EFBF04] font-semibold text-sm"
+                      className="inline-flex items-center gap-2 text-[#20cece] text-sm"
                       whileHover={{ x: 5 }}
                     >
                       Explore
@@ -222,7 +222,7 @@ export function ApplySectionProduction() {
                       {cards[2].description}
                     </p>
                     <motion.div
-                      className="inline-flex items-center gap-2 text-[#EFBF04] font-semibold text-sm"
+                      className="inline-flex items-center gap-2 text-[#20cece] text-sm"
                       whileHover={{ x: 5 }}
                     >
                       View Dates
@@ -254,7 +254,7 @@ export function ApplySectionProduction() {
                 <Link href="/contact">
                   <Button
                     variant="outline"
-                    className="border-2 border-[#053F52] text-[#053F52] hover:bg-[#053F52] hover:text-white rounded-full px-6 py-3"
+                    className="border-2 border-[#20cece] text-[#20cece] hover:bg-[#053F52] hover:text-white rounded-full px-6 py-3"
                   >
                     Contact Admissions
                   </Button>
@@ -262,7 +262,7 @@ export function ApplySectionProduction() {
                 <Link href="/faq">
                   <Button
                     variant="ghost"
-                    className="text-[#053F52] hover:bg-[#053F52]/10 rounded-full px-6 py-3"
+                    className="text-[#053F52] bg-[#20cece] hover:bg-[#20cece]/10 rounded-full px-6 py-3"
                   >
                     View FAQs
                   </Button>

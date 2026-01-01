@@ -68,7 +68,7 @@ export default function ContactPage() {
             <div className="absolute inset-0" />
             
             <div className="container relative mx-auto px-4 sm:px-6 lg:px-8" >
-              <div className="mx-auto max-w-3xl text-left">
+              <div className="mx-auto max-w-7xl text-left">
                 <h1 className="mb-6 font-serif text-4xl  text-[#053F52] sm:text-5xl lg:text-6xl animate-fade-in">
                   Get in Touch
                 </h1>
@@ -82,7 +82,7 @@ export default function ContactPage() {
           {/* Contact Form Section */}
           <section className="py-16 lg:py-24 bg-[#efbf04]">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="mx-auto max-w-6xl">
+              <div className="mx-auto max-w-7xl">
                 <div className="grid gap-8 lg:grid-cols-5 lg:gap-12">
                   {/* Contact Info Cards - Left Side */}
                   <div className="space-y-6 lg:col-span-2">
@@ -99,7 +99,7 @@ export default function ContactPage() {
                     <div className="space-y-4">
                       <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100">
                         <div className="flex items-start space-x-4">
-                          <div className="rounded-full bg-[#EFBF04] p-3 transition-colors duration-300 group-hover:bg-[#ffd500]/30">
+                          <div className="rounded-full bg-[#20cece] p-3 transition-colors duration-300 group-hover:bg-[#20cece]/30">
                             <Mail className="h-6 w-6 text-[#053F52]" />
                           </div>
                           <div className="flex-1">
@@ -116,7 +116,7 @@ export default function ContactPage() {
 
                       <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100">
                         <div className="flex items-start space-x-4">
-                          <div className="rounded-full bg-[#EFBF04] p-3 transition-colors duration-300 group-hover:bg-[#EFBF04]/30">
+                          <div className="rounded-full bg-[#20cece] p-3 transition-colors duration-300 group-hover:bg-[#20cece]/30">
                             <Phone className="h-6 w-6 text-[#053F52]" />
                           </div>
                           <div className="flex-1">
@@ -128,7 +128,7 @@ export default function ContactPage() {
 
                       <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100">
                         <div className="flex items-start space-x-4">
-                          <div className="rounded-full bg-[#EFBF04] p-3 transition-colors duration-300 group-hover:bg-[#EFBF04]/30">
+                          <div className="rounded-full bg-[#20cece] p-3 transition-colors duration-300 group-hover:bg-[#20cece]/30">
                             <Clock className="h-6 w-6 text-[#053F52]" />
                           </div>
                           <div className="flex-1">
@@ -141,7 +141,7 @@ export default function ContactPage() {
 
                       <div className="group rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100">
                         <div className="flex items-start space-x-4">
-                          <div className="rounded-full bg-[#EFBF04] p-3 transition-colors duration-300 group-hover:bg-[#EFBF04]/30">
+                          <div className="rounded-full bg-[#20cece] p-3 transition-colors duration-300 group-hover:bg-[#20cece]/30">
                             <MapPin className="h-6 w-6 text-[#053F52]" />
                           </div>
                           <div className="flex-1">
@@ -239,7 +239,7 @@ export default function ContactPage() {
                         <Button
                           type="submit"
                           disabled={isSubmitting}
-                          className="group h-14 w-full rounded-xl bg-gradient-to-r from-[#053F52] to-[#053F52] text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+                          className="group h-14 w-full rounded-xl bg-gradient-to-r from-[#20cece] to-[#20cece] text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                           {isSubmitting ? (
                             <span className="flex items-center justify-center">

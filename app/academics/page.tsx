@@ -55,6 +55,7 @@ const pathways = [
 
 export default function AcademicsPage() {
   return (
+   
     <div className="min-h-screen flex flex-col">
       <BlueSiteHeader />
 
@@ -75,7 +76,7 @@ export default function AcademicsPage() {
       <main className="flex-1 relative">
         {/* Header Section - Pattern visible */}
         <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
-          <div className="container mx-auto px-4 py-5">
+          <div className="max-w-7xl mx-auto px-4 py-5">
             <div className="max-w-5xl">
               <motion.h1 
                 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52]"
@@ -95,7 +96,7 @@ export default function AcademicsPage() {
 
         {/* Introduction Section */}
         <div className="bg-[#EFBF04] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12 lg:py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12 lg:py-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-start lg:items-center">
               {/* Left Side - Text Content */}
               <div className="order-2 lg:order-1">
@@ -147,7 +148,7 @@ export default function AcademicsPage() {
                     >
                       <Button
                         size="lg"
-                        className="bg-[#053F52] text-white hover:bg-[#2a3dc8ff] px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
+                        className="bg-[#20cece] text-[#053f52] hover:bg-[#053f52] hover:text-white px-8 py-6 rounded-full  transition-all duration-300"
                       >
                         Learn More <ArrowRight className="ml-2" />
                       </Button>
@@ -222,10 +223,10 @@ export default function AcademicsPage() {
                   transition={{ duration: 0.5, delay: index * 0.05 }}
                 >
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg text-[#053F52]">
+                    <h3 className="text-lg truncate text-[#053F52]">
                       {course.name}
                     </h3>
-                    <span className="bg-[#EFBF04] text-[#053F52] px-3 py-1 rounded-full text-sm">
+                    <span className="bg-[#20cece] text-[#053F52] px-3 py-1 rounded-full text-sm">
                       {course.credits} {course.credits === 1 ? 'Credit' : 'Credits'}
                     </span>
                   </div>
@@ -268,8 +269,8 @@ export default function AcademicsPage() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ y: -8 }}
                 >
-                  <div className="w-16 h-16 bg-[#053F52] rounded-xl flex items-center justify-center mb-4">
-                    <pathway.icon className="w-8 h-8 text-white" />
+                  <div className="w-16 h-16 bg-[#20cece] rounded-xl flex items-center justify-center mb-4">
+                    <pathway.icon className="w-8 h-8 text-[#053f52]" />
                   </div>
                   <h3 className="text-2xl text-[#053F52] mb-3">
                     {pathway.title}
@@ -285,7 +286,7 @@ export default function AcademicsPage() {
 
         {/* Community & Literacy Section */}
         <div className="bg-white relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-start lg:items-center">
               {/* Left Side - Image */}
               <motion.div 
@@ -300,17 +301,9 @@ export default function AcademicsPage() {
                 }}
               >
                 <motion.div 
-                  className="relative w-full aspect-[4/3] overflow-hidden rounded-lg shadow-2xl"
+                  className="relative w-full aspect-[4/3] overflow-hidden rounded-lg"
                 
-                  whileHover={{ 
-                    rotate: 0,
-                    scale: 1.02,
-                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)"
-                  }}
-                  transition={{ 
-                    duration: 0.3,
-                    ease: "easeOut"
-                  }}
+                 
                 >
                   <Image
                     src="/images/courses-800x800.jpg"
@@ -455,7 +448,7 @@ export default function AcademicsPage() {
               <Link href="/admissions/apply-now">
                 <Button
                   size="lg"
-                  className="bg-[#053F52] text-white hover:bg-[#2a3dc8ff] px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
+                  className="bg-[#20cece] text-[#053f52] hover:bg-[#20cece] px-8 py-6 rounded-full  transition-all duration-300"
                 >
                   Apply Now <ArrowRight className="ml-2" />
                 </Button>
@@ -464,8 +457,10 @@ export default function AcademicsPage() {
           </div>
         </div>
       </main>
+      
 
       <MainSiteFooter />
     </div>
+  
   )
 }

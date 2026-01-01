@@ -100,7 +100,7 @@ export function CTA() {
               variants={itemVariants}
               className="inline-block mb-4"
             >
-              <span className="px-4 py-2 bg-[#EFBF04]/20 text-[#EFBF04] rounded-full text-sm  border border-[#EFBF04]/30">
+              <span className="px-4 py-2 bg-[#20cece] text-[#053f52] rounded-full text-sm  border border-[#EFBF04]/30">
                 Join Our Community
               </span>
             </motion.div>
@@ -133,7 +133,7 @@ export function CTA() {
               >
                 <Link
                   href="/enroll"
-                  className="group inline-flex items-center gap-2 px-8 py-4 bg-[#EFBF04] text-gray-900 rounded-full  text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+                  className="group inline-flex items-center gap-2 px-8 py-4 bg-[#20cece] text-gray-900 rounded-full  text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
                   Apply Now
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

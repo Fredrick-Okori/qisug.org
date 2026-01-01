@@ -31,7 +31,7 @@ export function SiteFooter() {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-[#3d4fd4] p-2 text-white hover:bg-[#3d4fd4]/90 transition-colors"
+              className="rounded-full bg-[#20cece] p-2 text-[#053f52] hover:bg-[#20cece]/90 transition-colors"
             >
               <Facebook className="h-5 w-5" />
             </Link>
@@ -39,7 +39,7 @@ export function SiteFooter() {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-[#3d4fd4] p-2 text-white hover:bg-[#3d4fd4]/90 transition-colors"
+              className="rounded-full bg-[#20cece] p-2 text-[#053f52] hover:bg-[#20cece]/90 transition-colors"
             >
               <Instagram className="h-5 w-5" />
             </Link>
@@ -47,7 +47,7 @@ export function SiteFooter() {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-[#3d4fd4] p-2 text-white hover:bg-[#3d4fd4]/90 transition-colors"
+              className="rounded-full bg-[#20cece] p-2 text-[#053f52] hover:bg-[#20cece]/90 transition-colors"
             >
               <Twitter className="h-5 w-5" />
             </Link>

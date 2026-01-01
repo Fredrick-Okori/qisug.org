@@ -92,6 +92,31 @@ const navItems = [
   },
   { title: "Contact Us", href: "/contact" },
   { title: "FAQ", href: "/faq" },
+   {
+    title: "More",
+    href: "",
+    submenu: [
+      { 
+        title: "News & Announcements", 
+        href: "/more/news-announcement",
+        description: "What is happening at Qisu",
+        image: "/images/privacy.jpg"
+      },
+      { 
+        title: "Downloads", 
+        href: "/more/downloads",
+        description: "important files to download",
+        image: "/images/academic-integrity.jpg"
+      },
+      { 
+        title: "Calendar", 
+        href: "/more/calendar",
+        description: "Qisu Calendar",
+        image: "/images/attendance.jpg"
+      },
+      
+    ]
+  },
 ]
 
 export function BlueSiteHeader() {
@@ -111,7 +136,7 @@ export function BlueSiteHeader() {
 
   return (
     <motion.header 
-      className="fixed left-0 right-0 z-50 w-full bg-transparent"
+      className="fixed left-0 right-0 z-100 w-full bg-transparent"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ 
@@ -291,7 +316,7 @@ export function BlueSiteHeader() {
           </motion.div>
 
           {/* Desktop Navigation and Actions */}
-          <div className={`hidden lg:flex items-center gap-2 xl:gap-3 ml-auto transition-all duration-300 ${
+          <div className={`hidden z-100 lg:flex items-center gap-2 xl:gap-3 ml-auto transition-all duration-300 ${
             isScrolled ? "py-3" : "py-6"
           }`}>
             {/* Desktop Navigation with simple dropdown */}
@@ -333,13 +358,13 @@ export function BlueSiteHeader() {
                     </motion.div>
                     
                     {/* Simple Dropdown Menu */}
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[9999]">
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[1000]">
                       <div className="bg-white shadow-xl rounded-lg border border-gray-200 py-2 min-w-[220px] overflow-hidden">
                         {item.submenu.map((subitem) => (
                           <Link
                             key={subitem.href}
                             href={subitem.href}
-                            className="block px-5 py-2.5 text-sm text-[#2a3dc8ff] hover:bg-[#2a3dc8ff]/10 hover:pl-6 transition-all duration-200 font-medium"
+                            className="block px-5 py-2.5 text-sm text-[#053f52] hover:bg-[#20cece]/10 hover:pl-6 transition-all duration-200 font-medium"
                           >
                             {subitem.title}
                           </Link>
@@ -396,13 +421,13 @@ export function BlueSiteHeader() {
                   className="flex items-center gap-2"
                 >
                   <motion.div 
-                    className={`flex items-center justify-center rounded-full bg-[#EFBF04] transition-all duration-300 ${
+                    className={`flex items-center justify-center rounded-full bg-[#20cece] transition-all duration-300 ${
                       isScrolled ? "w-6 h-6 xl:w-7 xl:h-7" : "w-8 h-8 xl:w-9 xl:h-9"
                     }`}
                     whileHover={{ rotate: 360 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <User className={`text-white transition-all duration-300 ${
+                    <User className={`text-[#053f52] transition-all duration-300 ${
                       isScrolled ? "h-3 w-3 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
                     }`} />
                   </motion.div>
@@ -422,7 +447,7 @@ export function BlueSiteHeader() {
             >
               <Link href="/admissions/apply-now">
                 <motion.button 
-                  className={`flex items-center gap-2 bg-[#EFBF04] text-white rounded-full border border-[#3d4fd4] transition-all duration-300 hover:bg-[#2d3fb4] hover:shadow-lg ${
+                  className={`flex items-center gap-2 bg-[#20cece] text-[#053f52] rounded-full border border-[#20cece] transition-all duration-300 hover:bg-[#2d3fb4] hover:shadow-lg ${
                     isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
                   }`}
                   whileHover={{ scale: 1.05 }}

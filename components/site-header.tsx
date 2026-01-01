@@ -92,6 +92,31 @@ const navItems = [
   },
   { title: "Contact Us", href: "/contact" },
   { title: "FAQ", href: "/faq" },
+   {
+    title: "More",
+    href: "",
+    submenu: [
+      { 
+        title: "News & Announcements", 
+        href: "/more/news-announcement",
+        description: "What is happening at Qisu",
+        image: "/images/privacy.jpg"
+      },
+      { 
+        title: "Downloads", 
+        href: "/more/downloads",
+        description: "important files to download",
+        image: "/images/academic-integrity.jpg"
+      },
+      { 
+        title: "Calendar", 
+        href: "/more/calendar",
+        description: "Qisu Calendar",
+        image: "/images/attendance.jpg"
+      },
+      
+    ]
+  },
 ]
 
 export function SiteHeader() {

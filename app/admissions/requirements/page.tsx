@@ -147,22 +147,22 @@ export default function RequirementsPage() {
       ref={sectionRef}
       className="pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-20"
     >
-      <div className="container mx-auto px-4 pt-20">
+      <div className="mx-auto px-4 pt-20">
         {/* Header */}
         <motion.div
           variants={headerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="max-w-4xl mx-auto mb-16"
         >
          
 
-          <h2 className="text-4xl md:text-6xl text-gray-900 font-serif mb-4 leading-tight">
+          <h2 className="text-4xl md:text-6xl text-[#053f52] font-serif mb-4 leading-tight">
             Requirements to Study at{" "}
-            <span className="text-[#3d4fd4]">Queensgate</span>
+            <span className="text-[#20cece]">Queensgate</span>
           </h2>
           
-          <p className="text-lg md:text-xl text-gray-600">
+          <p className="text-lg md:text-xl text-[#053f52]">
             Everything you need to know to start your educational journey with us
           </p>
         </motion.div>
@@ -190,16 +190,16 @@ export default function RequirementsPage() {
                     <motion.div
                       whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
                       transition={{ duration: 0.5 }}
-                      className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-[#3d4fd4] to-[#2a3eb8] rounded-2xl flex items-center justify-center shadow-lg"
+                      className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-[#20cece] to-[#20cece] rounded-2xl flex items-center justify-center shadow-lg"
                     >
-                      <Icon className="w-7 h-7 text-white" />
+                      <Icon className="w-7 h-7 text-[#053f52]" />
                     </motion.div>
                     
                     <div className="flex-1">
-                      <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                      <h3 className="text-2xl md:text-3xl  text-[#053f52] mb-2">
                         {requirement.title}
                       </h3>
-                      <p className="text-gray-600 text-base md:text-lg">
+                      <p className="text-[#053f52] text-base md:text-lg">
                         {requirement.description}
                       </p>
                     </div>
@@ -223,9 +223,9 @@ export default function RequirementsPage() {
                           <motion.div
                             whileHover={{ scale: 1.2, rotate: 360 }}
                             transition={{ duration: 0.3 }}
-                            className="flex-shrink-0 w-10 h-10 bg-[#EFBF04]/20 rounded-xl flex items-center justify-center group-hover:bg-[#EFBF04]/30 transition-colors duration-300"
+                            className="flex-shrink-0 w-10 h-10 bg-[#20cece]/20 rounded-xl flex items-center justify-center group-hover:bg-[#EFBF04]/30 transition-colors duration-300"
                           >
-                            <ItemIcon className="w-5 h-5 text-[#EFBF04]" />
+                            <ItemIcon className="w-5 h-5 text-[#053f52]" />
                           </motion.div>
                           
                           <p className="text-gray-700 text-base md:text-lg leading-relaxed pt-1.5">
