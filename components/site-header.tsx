@@ -188,7 +188,7 @@ export function SiteHeader() {
         <div className="flex items-start justify-between w-full gap-2 sm:gap-4">
           {/* Left: Logo Section with animation */}
           <motion.div 
-            className={`flex-shrink-0 transition-all duration-300 ${
+            className={`flex-shrink-0 flex items-center gap-2 transition-all duration-300 ${
               isScrolled 
                 ? 'py-2' 
                 : 'py-3 sm:py-4 md:py-6'
@@ -201,12 +201,12 @@ export function SiteHeader() {
               delay: 0.2
             }}
           >
-            <Link href="/" className="flex items-center pb-5">
+            <Link href="/" className="flex items-center">
               <motion.div 
                 className={`relative transition-all duration-300 ${
                   isScrolled 
-                    ? 'w-12 h-12 sm:w-14 sm:h-14' 
-                    : 'w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-70'
+                    ? 'w-12 h-12 sm:w-14 sm:h-16' 
+                    : 'w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-43'
                 }`}
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
@@ -221,6 +221,23 @@ export function SiteHeader() {
                 />
               </motion.div>
             </Link>
+
+            {/* School Name Text - Visible after scrolling */}
+            {isScrolled && (
+              <motion.div
+                className="hidden sm:flex flex-col"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="text-[#053F52] font-bold whitespace-nowrap leading-tight text-[20px] font-serif">
+                  QUEENSGATE
+                </span>
+                <span className="text-[#053F52] whitespace-nowrap text-[11px] font-serif">
+                  INTERNATIONAL SCHOOL
+                </span>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Mobile Menu Button with animation */}
@@ -391,7 +408,7 @@ export function SiteHeader() {
                     </motion.div>
                     
                     {/* Simple Dropdown Menu */}
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[9999]">
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[999999]">
                       <div className="bg-white shadow-xl rounded-lg border border-gray-200 py-2 min-w-[220px] overflow-hidden">
                         {item.submenu.map((subitem) => (
                           <Link

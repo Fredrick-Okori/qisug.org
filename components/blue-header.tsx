@@ -160,7 +160,7 @@ export function BlueSiteHeader() {
 
   return (
     <motion.header 
-      className="fixed left-0 right-0 z-100 w-full bg-transparent"
+      className="fixed left-0 right-0 z-50 w-full bg-transparent"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ 
@@ -184,10 +184,10 @@ export function BlueSiteHeader() {
       />
 
       <div className="container max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative">
-        <div className="flex items-center justify-between w-full gap-2 sm:gap-4">
+        <div className="flex items-start justify-between w-full gap-2 sm:gap-4">
           {/* Left: Logo Section with animation */}
           <motion.div 
-            className={`flex-shrink-0 transition-all duration-300 ${
+            className={`flex-shrink-0 flex items-center gap-2 transition-all duration-300 ${
               isScrolled 
                 ? 'py-2' 
                 : 'py-3 sm:py-4 md:py-6'
@@ -200,12 +200,12 @@ export function BlueSiteHeader() {
               delay: 0.2
             }}
           >
-            <Link href="/" className="flex items-center pb-5">
+            <Link href="/" className="flex items-center">
               <motion.div 
                 className={`relative transition-all duration-300 ${
                   isScrolled
-                    ? 'w-12 h-12 sm:w-14 sm:h-14'
-                    : 'w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-36 lg:h-36'
+                    ? 'w-12 h-12 sm:w-14 sm:h-16'
+                    : 'w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-45'
                 }`}
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
@@ -220,6 +220,23 @@ export function BlueSiteHeader() {
                 />
               </motion.div>
             </Link>
+
+            {/* School Name Text - Visible after scrolling */}
+            {isScrolled && (
+              <motion.div
+                className="hidden sm:flex flex-col"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="text-white font-bold whitespace-nowrap leading-tight text-[20px] font-serif">
+                  QUEENSGATE
+                </span>
+                <span className="text-white whitespace-nowrap text-[11px] font-serif">
+                  INTERNATIONAL SCHOOL
+                </span>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Mobile Menu Button with animation */}
@@ -279,7 +296,7 @@ export function BlueSiteHeader() {
                       <SheetClose asChild>
                         <Link 
                           href={item.href} 
-                          className="block py-2.5 px-3 text-base  hover:bg-white/10 rounded-md transition-colors"
+                          className="block py-2.5 px-3 text-base hover:bg-white/10 rounded-md transition-colors"
                         >
                           {item.title}
                         </Link>
@@ -340,7 +357,7 @@ export function BlueSiteHeader() {
           </motion.div>
 
           {/* Desktop Navigation and Actions */}
-          <div className={`hidden z-100 lg:flex items-center gap-2 xl:gap-3 ml-auto transition-all duration-300 ${
+          <div className={`hidden lg:flex items-center gap-2 xl:gap-3 ml-auto transition-all duration-300 ${
             isScrolled ? "py-3" : "py-6"
           }`}>
             {/* Desktop Navigation with simple dropdown */}
@@ -366,29 +383,29 @@ export function BlueSiteHeader() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                       <Link
-                      href={item.href}
-                      className={`text-white hover:bg-white/10 font-bold transition-all duration-300 inline-block rounded-md ${
-                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5  leading-8" : "text-sm px-3  h-9 leading-9"
-                      }`}
-                    >
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                      <Link
+                        href={item.href}
+                        className={`text-white hover:bg-white/10 font-bold transition-all duration-300 inline-block rounded-md ${
+                          isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
+                        }`}
                       >
-                        {item.title}
-                      </motion.div>
-                    </Link>
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {item.title}
+                        </motion.div>
+                      </Link>
                     </motion.div>
                     
                     {/* Simple Dropdown Menu */}
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[1000]">
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[999999]">
                       <div className="bg-white shadow-xl rounded-lg border border-gray-200 py-2 min-w-[220px] overflow-hidden">
                         {item.submenu.map((subitem) => (
                           <Link
                             key={subitem.href}
                             href={subitem.href}
-                            className="block px-5 py-2.5 text-sm text-[#053f52] hover:bg-[#20cece]/10 hover:pl-6 transition-all duration-200 font-medium"
+                            className="block px-5 py-2.5 text-sm text-[#053f52] hover:bg-white/20 hover:pl-6 transition-all duration-200 font-medium"
                           >
                             {subitem.title}
                           </Link>
@@ -409,7 +426,7 @@ export function BlueSiteHeader() {
                     <Link
                       href={item.href}
                       className={`text-white hover:bg-white/10 font-bold transition-all duration-300 inline-block rounded-md ${
-                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3  h-9 leading-9"
+                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
                       }`}
                     >
                       <motion.div
@@ -471,7 +488,7 @@ export function BlueSiteHeader() {
             >
               <Link href="/admissions/apply-now">
                 <motion.button 
-                  className={`flex items-center gap-2 bg-[#20cece] text-[#053f52] rounded-full border border-[#20cece] transition-all duration-300 hover:bg-[#2d3fb4] hover:shadow-lg ${
+                  className={`flex items-center gap-2 bg-[#20cece] text-[#053f52] rounded-full border border-[#20cece] transition-all duration-300 hover:bg-white hover:border-white ${
                     isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
                   }`}
                   whileHover={{ scale: 1.05 }}
@@ -497,3 +514,4 @@ export function BlueSiteHeader() {
     </motion.header>
   )
 }
+
