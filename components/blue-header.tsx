@@ -59,7 +59,31 @@ const navItems = [
       },
     ],
   },
-  { title: "Academics", href: "/academics" },
+     {
+    title: "Academics",
+    href: "#",
+    submenu: [
+      { 
+        title: "Course Outline", 
+        href: "/academics/course-outline",
+        description: "Find out about our courses",
+        image: "/images/design_portability_1__gfw34rh367u6_large_2x.avif"
+      },
+      { 
+        title: "English Program", 
+        href: "/academics/english-program",
+        description: "ESL and language support",
+        image: "/images/admission-period.jpg"
+      },
+      { 
+        title: "Graduation Requirements", 
+        href: "/academics/graduation-requirements",
+        description: "Graduation requirements and procedures",
+        image: "/images/img-2023-mature-students-home-banner-0257960.jpg"
+      },
+      
+    ],
+  },
   {
     title: "Policies",
     href: "#",
