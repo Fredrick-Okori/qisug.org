@@ -18,45 +18,90 @@ const faqCategories = [
 const faqItems = {
   admission: [
     {
-      question: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed",
+      question: "What is the admission process at Queensgate International School?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl",
+        "The admission process includes submitting an online application form, academic transcripts from previous schools, two letters of recommendation, a personal statement, and proof of English proficiency if applicable. Applications are reviewed on a rolling basis with priority deadlines throughout the year.",
     },
     {
-      question: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed",
+      question: "What are the admission requirements?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+        "Requirements include: completed application form, academic transcripts, two recommendation letters, personal statement or essay, proof of English proficiency (if applicable), copy of passport or birth certificate, and recent photograph. Specific grade requirements may apply based on the program.",
     },
     {
-      question: "Lorem ipsum dolor sit amet, con-",
+      question: "When are the application deadlines?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+        "We have rolling admissions with priority deadlines. Early applications are recommended as spaces fill quickly. Priority deadlines are typically in December for the following academic year, with final deadlines in March.",
     },
     {
-      question: "Lorem ipsum dolor sit amet, consectetuer adipisc-",
+      question: "Is there an entrance assessment or interview?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+        "Yes, qualified applicants are invited to complete entrance assessments and participate in an interview with our admissions team. This helps us understand each student's academic background and ensure the best fit for our programs.",
     },
   ],
   curriculum: [
     {
-      question: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit",
+      question: "What curriculum does Queensgate International School follow?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+        "We follow the Ontario Secondary School Diploma (OSSD) curriculum, which is recognized worldwide. This includes compulsory courses in English, Mathematics, Science, Canadian History, Canadian Geography, Arts, Health & Physical Education, French, and Civics & Careers, plus elective courses in various pathways.",
+    },
+    {
+      question: "What academic pathways are available?",
+      answer:
+        "We offer four main pathways: Arts & Humanities (literature, social sciences), STEM (Science, Technology, Engineering, Mathematics), Business & Commerce (finance, entrepreneurship), and Health Sciences (preparation for healthcare careers).",
+    },
+    {
+      question: "How many credits are needed for graduation?",
+      answer:
+        "Students need 30 credits total: 18 compulsory credits and 12 elective credits. Additionally, 40 hours of community service and passing the Ontario Secondary School Literacy Test (OSSLT) are required.",
+    },
+    {
+      question: "Are the courses Ontario-certified?",
+      answer:
+        "Yes, all our courses are taught by certified Ontario teachers and follow the official Ontario curriculum. Graduates receive the Ontario Secondary School Diploma (OSSD), which is recognized by universities worldwide.",
     },
   ],
   online: [
     {
-      question: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit",
+      question: "How does online learning work at Queensgate International School?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+        "Our online learning platform provides 24/7 access to courses, interactive learning tools, virtual labs, discussion forums, and collaborative projects. Students receive personalized support from certified Ontario teachers through email, video calls, and our learning management system.",
+    },
+    {
+      question: "What technology and resources are provided?",
+      answer:
+        "Students receive access to virtual labs, interactive whiteboards, video conferencing tools, online libraries, academic databases, and multimedia learning resources. Technical support is available to ensure smooth online learning experiences.",
+    },
+    {
+      question: "How much interaction is there with teachers?",
+      answer:
+        "Teachers provide regular feedback on assignments, host virtual office hours, lead discussion forums, and offer one-on-one support sessions. Students can expect weekly interaction with their teachers and immediate responses to academic inquiries.",
+    },
+    {
+      question: "Is the online program flexible?",
+      answer:
+        "Yes, our online program offers flexibility while maintaining academic rigor. Students can access materials 24/7 and progress at their own pace within established timelines. This accommodates different time zones and learning styles.",
     },
   ],
   assessment: [
     {
-      question: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit",
+      question: "How are students assessed and graded?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+        "Assessment includes regular quizzes, assignments, projects, presentations, and final exams. Grades are based on the Ontario rubric system and include detailed feedback. Progress reports are issued regularly to keep students and parents informed.",
+    },
+    {
+      question: "What is the Ontario Secondary School Literacy Test (OSSLT)?",
+      answer:
+        "The OSSLT assesses reading and writing skills across all subject areas. It's typically taken in Grade 10 and is a requirement for the OSSD. We provide comprehensive preparation and support for this provincial assessment.",
+    },
+    {
+      question: "How can students track their progress?",
+      answer:
+        "Students have access to real-time grade tracking through our learning management system. Regular progress reports, parent-teacher conferences, and academic advising sessions help students stay on track and address any challenges.",
+    },
+    {
+      question: "What support is available for struggling students?",
+      answer:
+        "We offer academic advising, tutoring support, extended deadlines when appropriate, and personalized learning plans. Our certified teachers work closely with students to ensure they receive the support needed to succeed.",
     },
   ],
 }

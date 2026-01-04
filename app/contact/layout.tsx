@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import ContactForm from "@/components/contact-form"
 
 export const metadata: Metadata = {
   title: "Contact Queensgate International School | Get in Touch",
@@ -35,7 +34,50 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ContactPage() {
-  return <ContactForm />
+// Structured Data for SEO
+const contactSchemaData = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Queensgate International School",
+  "description": "Contact Queensgate International School for world-class international education in Uganda.",
+  "url": "https://www.qisug.org/contact",
+  "telephone": "+256-414-123-456",
+  "email": "queensgateinternational@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Plot 38 Martyr's village, Intinda",
+    "addressCountry": "UG"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+256-414-123-456",
+    "contactType": "customer service",
+    "availableLanguage": "English",
+    "hoursAvailable": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:00",
+      "closes": "17:00"
+    }
+  },
+  "areaServed": "Worldwide",
+  "type": "PrivateSchool"
 }
 
+export default function ContactLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(contactSchemaData),
+        }}
+      />
+      {children}
+    </>
+  )
+}

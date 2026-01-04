@@ -115,15 +115,27 @@ const publishingGuidelines = [
 
 export default function AcceptableUsePolicyPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#efbf04]">
+    <div className="min-h-screen flex flex-col">
       <BlueSiteHeader />
-
+   {/* Full-Page Background Pattern */}
+      <div
+        className="fixed inset-0 bg-center bg-repeat -z-10"
+        style={{ backgroundImage: "url('/images/pattern.webp')" }}
+      />
+      
+      <motion.div
+        className="fixed inset-0 -z-[5]"
+        style={{ backgroundColor: '#EFBF04', opacity: 0.88 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.88 }}
+        transition={{ duration: 0.4 }}
+      />
       <main className="flex-1 relative">
         {/* Hero Section */}
-        <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12 bg-[#efbf04]">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="pt-24 sm:pt-28 md:pt-40 lg:pt-50 xl:pt-48 pb-6 sm:pb-8 md:pb-10 lg:pb-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
-              className="max-w-5xl"
+              className="max-w-7xl"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
@@ -141,9 +153,9 @@ export default function AcceptableUsePolicyPage() {
 
         {/* Introduction Section */}
         <div className="bg-[#efbf04] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -174,7 +186,7 @@ export default function AcceptableUsePolicyPage() {
 
         {/* Individual Safety Rules Section */}
         <div className="bg-[#efbf04] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="max-w-6xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
@@ -222,9 +234,9 @@ export default function AcceptableUsePolicyPage() {
 
         {/* Unacceptable Sites and Materials */}
         <div className=" relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -234,7 +246,7 @@ export default function AcceptableUsePolicyPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-red-500 rounded-2xl mb-4">
                   <Ban className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-3xl lg:text-4xl text-[#203dce] mb-4">
+                <h2 className="text-3xl lg:text-4xl text-[#053f52] mb-4">
                   Unacceptable Sites and Materials
                 </h2>
               </div>
@@ -282,9 +294,9 @@ export default function AcceptableUsePolicyPage() {
 
         {/* Use Guidelines */}
         <div className="bg-[#efbf04] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -335,10 +347,10 @@ export default function AcceptableUsePolicyPage() {
         </div>
 
         {/* Prohibited Uses and Activities */}
-        <div className="bg-[#203dce] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <div className="bg-[#053f52] relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -385,7 +397,7 @@ export default function AcceptableUsePolicyPage() {
 
         {/* Consequences Section */}
         <div className="bg-[#efbf04] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="max-w-4xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
@@ -426,10 +438,10 @@ export default function AcceptableUsePolicyPage() {
         </div>
 
         {/* Online Publishing Section */}
-        <div className="bg-[#203dce] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <div className="bg-[#053f52] relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="max-w-5xl mx-auto"
+              className="max-w-7xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -466,7 +478,7 @@ export default function AcceptableUsePolicyPage() {
 
         {/* Liability Section */}
         <div className="bg-[#efbf04] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="max-w-4xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
@@ -503,7 +515,7 @@ export default function AcceptableUsePolicyPage() {
 
         {/* Summary Section */}
         <div className=" relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="max-w-4xl mx-auto text-center"
               initial={{ opacity: 0, y: 20 }}
@@ -511,16 +523,16 @@ export default function AcceptableUsePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#203dce] mb-6">
+              <h2 className="text-3xl lg:text-4xl text-[#053f52] mb-6">
                 Your Commitment to Responsible Technology Use
               </h2>
-              <p className="text-lg text-[#203dce] leading-relaxed mb-8">
+              <p className="text-lg text-[#053f52] leading-relaxed mb-8">
                 By using Queensgate International School's technology resources, you agree to follow this 
                 Acceptable Use Policy. Responsible use of technology is essential for maintaining a safe, 
                 productive, and respectful learning environment for all members of our school community.
               </p>
               <div className="bg-[#efbf04] backdrop-blur-sm rounded-xl p-6">
-                <p className="text-[#203dce] font-medium">
+                <p className="text-[#053f52] font-medium">
                   Remember: All online activities may be monitored to ensure compliance with this policy 
                   and to maintain the safety and security of our school community.
                 </p>
@@ -531,7 +543,7 @@ export default function AcceptableUsePolicyPage() {
 
         {/* Final CTA */}
         <div className="bg-[#efbf04] relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 text-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}

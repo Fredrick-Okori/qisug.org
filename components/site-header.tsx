@@ -394,7 +394,7 @@ export function SiteHeader() {
                       </Button> */}
                    <Link
                       href={item.href}
-                      className={`text-[#053F52] hover:bg-[#053F52]/10 font-bold transition-all duration-300 inline-block rounded-md ${
+                      className={`text-[#053F52] hover:border-b hover:border-[#20cece] hover:rounded-none font-bold transition-all duration-300 inline-block rounded-md ${
                         isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
                       }`}
                     >
@@ -407,8 +407,8 @@ export function SiteHeader() {
                     </Link>
                     </motion.div>
                     
-                    {/* Simple Dropdown Menu */}
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[999999]">
+                    {/* Simple Dropdown Menu - isolation creates new stacking context */}
+                    <div className="isolate absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                       <div className="bg-white shadow-xl rounded-lg border border-gray-200 py-2 min-w-[220px] overflow-hidden">
                         {item.submenu.map((subitem) => (
                           <Link
@@ -434,7 +434,7 @@ export function SiteHeader() {
                   >
                     <Link
                       href={item.href}
-                      className={`text-[#053F52] hover:bg-[#053F52]/10 font-bold transition-all duration-300 inline-block rounded-md ${
+                      className={`text-[#053F52] hover:border-b hover:border-[#20cece] hover:rounded-none font-bold transition-all duration-300 inline-block rounded-md ${
                         isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
                       }`}
                     >
@@ -461,7 +461,7 @@ export function SiteHeader() {
             >
               <Link
                 href="/login"
-                className={`text-[#053F52] hover:bg-[#053F52]/10 font-medium flex items-center gap-2 transition-all duration-300 rounded-md ${
+                className={`text-[#053F52]  font-medium flex items-center gap-2 transition-all duration-300 rounded-md ${
                   isScrolled ? "text-xs xl:text-sm px-2 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
                 }`}
               >

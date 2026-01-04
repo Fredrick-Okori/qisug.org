@@ -12,6 +12,29 @@ import { Resources } from "@/components/home/resources"
 import { CTA } from "@/components/home/cta"
 import { ImprovedHomeSection } from "@/components/home/improved"
 
+// Structured Data for SEO
+const schemaOrgData = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Queensgate International School",
+  "description": "Queensgate International School provides world-class education for students worldwide. Discover our innovative curriculum, dedicated faculty, and nurturing learning environment.",
+  "url": "https://www.qisug.org",
+  "logo": "https://www.qisug.org/images/logo_white.png",
+  "image": "https://www.qisug.org/images/ndpjkk1uol9irckqx6db.avif",
+  "telephone": "+1-234-567-8900",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "US"
+  },
+  "sameAs": [
+    "https://www.facebook.com/qisug",
+    "https://www.twitter.com/qisug",
+    "https://www.instagram.com/qisug"
+  ],
+  "areaServed": "Worldwide",
+  "type": "PrivateSchool"
+}
+
 export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [scrollY, setScrollY] = useState(0)
@@ -54,6 +77,12 @@ export default function HomePage() {
 
   return (
     <div className="w-full flex flex-col">
+      {/* JSON-LD Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgData) }}
+      />
+      
       <SiteHeader />
 
       {/* Hero Section */}
@@ -97,6 +126,7 @@ export default function HomePage() {
                 >
                   Queensgate International School
                 </motion.h1>
+              
                 
                 {/* Animated button */}
                 <motion.div
@@ -131,7 +161,7 @@ export default function HomePage() {
                 <div className="max-w-xl w-full text-center lg:text-left px-4 sm:px-6 lg:px-0">
                   {/* Animated heading with stagger effect */}
                   <motion.h1 
-                    className="font-serif text-4xl sm:text-6xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-white mb-6 sm:mb-8"
+                    className="font-serif text-4xl sm:text-6xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-white"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ 
@@ -142,7 +172,10 @@ export default function HomePage() {
                   >
                     Queensgate International School
                   </motion.h1>
-                  
+                  <div className="mb-6 sm:mb-8">
+
+                    <p className="text-white text-3xl">Your place and space to <span className="text-[#efbf04] font-serif italic">thrive</span></p>
+                  </div>
                   {/* Animated button */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}

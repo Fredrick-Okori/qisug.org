@@ -1,6 +1,57 @@
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { BlueSiteHeader } from "@/components/blue-header"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
+import {
+  GraduationCap,
+  Users,
+  Calendar,
+  FileText,
+  CheckCircle,
+  ArrowRight,
+  Phone,
+  Mail,
+  MapPin
+} from "lucide-react"
+
+const admissionSteps = [
+  {
+    step: 1,
+    title: "Submit Application",
+    description: "Complete our online application form with basic student and family information.",
+    icon: FileText
+  },
+  {
+    step: 2,
+    title: "Document Review",
+    description: "Submit academic records, recommendation letters, and any required assessments.",
+    icon: CheckCircle
+  },
+  {
+    step: 3,
+    title: "Assessment & Interview",
+    description: "Complete entrance assessments and participate in an interview with our admissions team.",
+    icon: Users
+  },
+  {
+    step: 4,
+    title: "Admission Decision",
+    description: "Receive your admission decision and complete enrollment formalities.",
+    icon: GraduationCap
+  }
+]
+
+const admissionRequirements = [
+  "Completed application form",
+  "Academic transcripts from previous schools",
+  "Two letters of recommendation",
+  "Personal statement or essay",
+  "Proof of English proficiency (if applicable)",
+  "Copy of passport or birth certificate",
+  "Recent photograph"
+]
 
 export default function AdmissionsPage() {
   return (

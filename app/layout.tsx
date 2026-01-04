@@ -18,9 +18,61 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: "Queensgate International School",
-  description: "Building the Future - Excellence in Education",
-  generator: "v0.app",
+  metadataBase: new URL("https://www.qisug.org"),
+  title: {
+    default: "Queensgate International School | Excellence in Education",
+    template: "%s | Queensgate International School",
+  },
+  description: "Queensgate International School provides world-class education for students worldwide. Discover our innovative curriculum, dedicated faculty, and nurturing learning environment.",
+  keywords: [
+    "Queensgate International School",
+    "international school",
+    "private school",
+    "education",
+    "academic excellence",
+    "students",
+    "learning",
+    "curriculum",
+    "admissions",
+    "school",
+  ],
+  authors: [{ name: "Queensgate International School" }],
+  creator: "Queensgate International School",
+  publisher: "Queensgate International School",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://www.qisug.org",
+    siteName: "Queensgate International School",
+    title: "Queensgate International School | Excellence in Education",
+    description: "Queensgate International School provides world-class education for students worldwide. Discover our innovative curriculum and nurturing learning environment.",
+    images: [
+      {
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Queensgate International School",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Queensgate International School | Excellence in Education",
+    description: "Queensgate International School provides world-class education for students worldwide.",
+    images: ["/images/og-image.jpg"],
+    creator: "@qisug",
+  },
   icons: {
     icon: [
       {
@@ -37,6 +89,11 @@ export const metadata: Metadata = {
       },
     ],
     apple: "/apple-icon.png",
+    shortcut: "/favicon.ico",
+  },
+  manifest: "/site.webmanifest",
+  verification: {
+    google: "google-site-verification-code",
   },
 }
 

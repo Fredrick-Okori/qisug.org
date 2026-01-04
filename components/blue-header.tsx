@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Menu, Search, User, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -144,8 +145,17 @@ const navItems = [
 ]
 
 export function BlueSiteHeader() {
+  const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+
+  // Check if a nav item is active based on current pathname
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/"
+    }
+    return pathname.startsWith(href)
+  }
 
   useEffect(() => {
     setIsMounted(true)
@@ -160,7 +170,7 @@ export function BlueSiteHeader() {
 
   return (
     <motion.header 
-      className="fixed left-0 right-0 z-50 w-full bg-transparent"
+      className="fixed left-0 right-0 z-[9999] w-full bg-transparent"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ 
@@ -183,7 +193,7 @@ export function BlueSiteHeader() {
         transition={{ duration: 0.4 }}
       />
 
-      <div className="container max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative">
+      <div className="container max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
         <div className="flex items-start justify-between w-full gap-2 sm:gap-4">
           {/* Left: Logo Section with animation */}
           <motion.div 
@@ -385,9 +395,9 @@ export function BlueSiteHeader() {
                     >
                       <Link
                         href={item.href}
-                        className={`text-white hover:bg-white/10 font-bold transition-all duration-300 inline-block rounded-md ${
+                        className={`text-white font-bold transition-all duration-300 inline-block ${
                           isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
-                        }`}
+                        } ${isActive(item.href) ? "border-b-2 border-[#20cece]" : "hover:border-b hover:border-[#20cece] hover:rounded-none"}`}
                       >
                         <motion.div
                           whileHover={{ scale: 1.05 }}
@@ -398,8 +408,8 @@ export function BlueSiteHeader() {
                       </Link>
                     </motion.div>
                     
-                    {/* Simple Dropdown Menu */}
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[999999]">
+                    {/* Simple Dropdown Menu - isolation creates new stacking context */}
+                    <div className="isolate absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                       <div className="bg-white shadow-xl rounded-lg border border-gray-200 py-2 min-w-[220px] overflow-hidden">
                         {item.submenu.map((subitem) => (
                           <Link
@@ -425,9 +435,9 @@ export function BlueSiteHeader() {
                   >
                     <Link
                       href={item.href}
-                      className={`text-white hover:bg-white/10 font-bold transition-all duration-300 inline-block rounded-md ${
+                      className={`text-white font-bold transition-all duration-300 inline-block rounded-md ${
                         isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
-                      }`}
+                      } ${isActive(item.href) ? "border-b-2 border-[#20cece]" : "hover:border-b hover:border-[#20cece] hover:rounded-none"}`}
                     >
                       <motion.div
                         whileHover={{ scale: 1.05 }}

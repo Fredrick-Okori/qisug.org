@@ -132,7 +132,7 @@ export function CTA() {
                 whileTap={{ scale: 0.98 }}
               >
                 <Link
-                  href="/enroll"
+                  href="/admissions/apply-now"
                   className="group inline-flex items-center gap-2 px-8 py-4 bg-[#20cece] text-gray-900 rounded-full  text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
                   Apply Now
@@ -146,11 +146,11 @@ export function CTA() {
                 whileTap={{ scale: 0.98 }}
               >
                 <Link
-                  href="/tour"
+                  href="/more/calendar"
                   className="group inline-flex items-center gap-2 px-8 py-4 bg-white/10 text-white rounded-full  text-lg border-2 border-white/30 backdrop-blur-sm hover:bg-white/20 transition-all duration-300"
                 >
                   <Calendar className="w-5 h-5" />
-                  Schedule a Tour
+                  School Calendar
                 </Link>
               </motion.div>
             </motion.div>
