@@ -82,8 +82,21 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgData) }}
       />
+      <SiteHeader/>
       
-      <SiteHeader />
+        {/* Full-Page Background Pattern - Independent Layer */}
+      <div
+        className="fixed inset-0 bg-center bg-repeat -z-10"
+        style={{ backgroundImage: "url('/images/pattern.webp')" }}
+      />
+      
+      <motion.div
+        className="fixed inset-0 -z-[5]"
+        style={{ backgroundColor: '#EFBF04', opacity: 0.88 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.88 }}
+        transition={{ duration: 0.4 }}
+      />
 
       {/* Hero Section */}
       <main className="flex-1 bg-[#053f52] pt-24 sm:pt-32 md:pt-20 lg:pt-25">

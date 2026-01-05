@@ -115,10 +115,8 @@ const navItems = [
       },
     ],
   },
-  { title: "Contact Us", href: "/contact" },
-  { title: "FAQ", href: "/faq" },
-   {
-    title: "More",
+     {
+    title: "Info",
     href: "",
     submenu: [
       { 
@@ -142,6 +140,9 @@ const navItems = [
       
     ]
   },
+  { title: "Contact Us", href: "/contact" },
+  { title: "FAQ", href: "/faq" },
+
 ]
 
 export function BlueSiteHeader() {

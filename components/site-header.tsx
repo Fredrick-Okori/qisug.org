@@ -115,10 +115,8 @@ const navItems = [
       },
     ],
   },
-  { title: "Contact Us", href: "/contact" },
-  { title: "FAQ", href: "/faq" },
-   {
-    title: "More",
+  {
+    title: "Info",
     href: "",
     submenu: [
       { 
@@ -142,6 +140,9 @@ const navItems = [
       
     ]
   },
+  { title: "Contact Us", href: "/contact" },
+  { title: "FAQ", href: "/faq" },
+   
 ]
 
 export function SiteHeader() {
@@ -407,8 +408,8 @@ export function SiteHeader() {
                     </Link>
                     </motion.div>
                     
-                    {/* Simple Dropdown Menu - isolation creates new stacking context */}
-                    <div className="isolate absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    {/* Simple Dropdown Menu - isolation creates new stacking context with z-index */}
+                    <div className="isolate absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[100]">
                       <div className="bg-white shadow-xl rounded-lg border border-gray-200 py-2 min-w-[220px] overflow-hidden">
                         {item.submenu.map((subitem) => (
                           <Link
