@@ -10,6 +10,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { ApplySectionProduction } from "@/components/home/apply-component"
 import { Resources } from "@/components/home/resources"
 import { CTA } from "@/components/home/cta"
+import { Accreditations } from "@/components/home/accreditations"
 import { ImprovedHomeSection } from "@/components/home/improved"
 
 // Structured Data for SEO
@@ -251,6 +252,7 @@ export default function HomePage() {
 <ApplySectionProduction/>
 <ImprovedHomeSection/>
 <Resources/>
+<Accreditations/>
 <CTA/>
       <SiteFooter />
     </div>

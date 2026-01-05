@@ -62,7 +62,7 @@ export function ApplySectionProduction() {
           </p>
           
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-            <Link href="/admissions">
+            <Link href="/admissions/requirements">
               <Button
                 className="bg-[#20cece] pr-2 text-[#053f52] hover:bg-[#20cece] px-8 py-6 text-base rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
               >
