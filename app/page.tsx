@@ -12,6 +12,7 @@ import { Resources } from "@/components/home/resources"
 import { CTA } from "@/components/home/cta"
 import { Accreditations } from "@/components/home/accreditations"
 import { ImprovedHomeSection } from "@/components/home/improved"
+import FeaturedNews from "@/components/home/featured-news"
 
 // Structured Data for SEO
 const schemaOrgData = {
@@ -252,6 +253,7 @@ export default function HomePage() {
 <ApplySectionProduction/>
 <ImprovedHomeSection/>
 <Resources/>
+<FeaturedNews/>
 <Accreditations/>
 <CTA/>
       <SiteFooter />

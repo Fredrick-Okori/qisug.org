@@ -557,20 +557,25 @@ export default function DownloadsPage() {
                 of our resources, our team is here to help.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="bg-[#20cece] text-[#053F52] hover:bg-white px-10 py-6 rounded-full transition-all duration-300 text-lg"
-                >
-                  Contact Us
-                  <ArrowRight className="ml-2 w-6 h-6" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#053F52] px-10 py-6 rounded-full transition-all duration-300 text-lg"
-                >
-                  View FAQ
-                </Button>
+                 <Link href="/contact">
+                      <Button
+                        size="lg"
+                        className="bg-[#20cece] text-[#053f52] rounded-full hover:bg-[#20cece]/90 border-[#20cece] text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6  transition-all "
+                      >
+                        Contact us
+                        <ArrowRight className="ml-2"/>
+                      </Button>
+                    </Link>
+               <Link href="/faq">
+                      <Button
+                        size="lg"
+                        className="border bg-transparent rounded-full border-[#20cece] text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6  transition-all "
+                      >
+                        Faqs
+                        <ArrowRight className="ml-2"/>
+                      </Button>
+                    </Link>
+              
               </div>
             </motion.div>
           </div>
