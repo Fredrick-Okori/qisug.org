@@ -189,7 +189,7 @@ export default function HomePage() {
                   </motion.h1>
                   <div className="mb-6 sm:mb-8">
 
-                    <p className="text-white text-3xl">Your place and space to <span className="text-[#efbf04] font-serif italic">thrive</span></p>
+                    <p className="text-white text-3xl font-serif">Your place and space to <span className="text-[#efbf04] font-serif italic">thrive</span></p>
                   </div>
                   {/* Animated button */}
                   <motion.div

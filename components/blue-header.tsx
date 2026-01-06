@@ -275,7 +275,7 @@ export function BlueSiteHeader() {
               </SheetTrigger>
               <SheetContent 
                 side="right" 
-                className="bg-[#2a3dc8ff] text-white border-l-0 w-[85vw] sm:w-[350px] px-4 sm:px-6"
+                className="bg-[#053f52] text-white border-l-0 w-[85vw] sm:w-[350px] px-4 sm:px-6"
               >
                 <motion.div 
                   className="flex items-center justify-between mb-6"

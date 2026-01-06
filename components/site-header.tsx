@@ -87,7 +87,7 @@ const navItems = [
   },
   {
     title: "Policies",
-    href: "/policies",
+    href: "",
     submenu: [
       { 
         title: "Privacy Policy", 
