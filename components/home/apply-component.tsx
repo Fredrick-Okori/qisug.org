@@ -7,6 +7,7 @@ import { ArrowRight, GraduationCap, FileText, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
 import { useEffect, useState } from "react"
+import type { AuthSession } from "@supabase/supabase-js"
 
 const cards = [
   {
@@ -38,28 +39,37 @@ const cards = [
 export function ApplySectionProduction() {
   const [isMounted, setIsMounted] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
-  const supabase = createClient()
+  const [supabase, setSupabase] = useState<ReturnType<typeof createClient> | null>(null)
 
   useEffect(() => {
     setIsMounted(true)
     
+    // Initialize Supabase client lazily on client side
+    const supabaseClient = createClient()
+    setSupabase(supabaseClient)
+    
+    // If Supabase is not configured, skip auth checks
+    if (!supabaseClient) {
+      return
+    }
+    
     // Check auth state
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
+      const { data: { session } } = await supabaseClient.auth.getSession()
       setIsSignedIn(!!session)
     }
     
     checkAuth()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((_event: string, session: AuthSession | null) => {
       setIsSignedIn(!!session)
     })
 
     return () => {
       subscription.unsubscribe()
     }
-  }, [supabase])
+  }, [])
 
   // Handle Apply Now click - redirect to login if not signed in
   const handleApplyClick = (e: React.MouseEvent) => {

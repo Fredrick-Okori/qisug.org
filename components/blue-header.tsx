@@ -10,6 +10,7 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { createClient } from "@/lib/supabase/client"
+import type { AuthSession } from "@supabase/supabase-js"
 
 const navItems = [
   { title: "Home", href: "/" },
@@ -151,7 +152,7 @@ export function BlueSiteHeader() {
   const [isMounted, setIsMounted] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [userEmail, setUserEmail] = useState("")
-  const supabase = createClient()
+  const [supabase, setSupabase] = useState<ReturnType<typeof createClient> | null>(null)
 
   // Check if a nav item is active based on current pathname
   const isActive = (href: string) => {
@@ -164,9 +165,18 @@ export function BlueSiteHeader() {
   useEffect(() => {
     setIsMounted(true)
     
+    // Initialize Supabase client lazily on client side
+    const supabaseClient = createClient()
+    setSupabase(supabaseClient)
+    
+    // If Supabase is not configured, skip auth checks
+    if (!supabaseClient) {
+      return
+    }
+    
     // Check auth state
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
+      const { data: { session } } = await supabaseClient.auth.getSession()
       setIsSignedIn(!!session)
       if (session?.user?.email) {
         setUserEmail(session.user.email)
@@ -176,7 +186,7 @@ export function BlueSiteHeader() {
     checkAuth()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((_event: string, session: AuthSession | null) => {
       setIsSignedIn(!!session)
       if (session?.user?.email) {
         setUserEmail(session.user.email)
@@ -186,7 +196,7 @@ export function BlueSiteHeader() {
     return () => {
       subscription.unsubscribe()
     }
-  }, [supabase])
+  }, [])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()

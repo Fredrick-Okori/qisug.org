@@ -1,13 +1,31 @@
 import { createBrowserClient } from '@supabase/ssr'
 
 // ============================================================================
-// ENVIRONMENT VALIDATION
+// ENVIRONMENT VALIDATION - Safe for build time
 // ============================================================================
 
 /**
+ * Check if we're in a browser environment (not during build/SSR)
+ */
+function isBrowser(): boolean {
+  return typeof window !== 'undefined'
+}
+
+/**
  * Validates that all required Supabase environment variables are present and valid
+ * Returns gracefully without throwing during build/SSR
  */
 function validateEnvironment(): { valid: boolean; error?: string; details?: { url?: string; keyLength?: number } } {
+  // During build/SSR, return a safe placeholder
+  if (!isBrowser()) {
+    // Don't log during build to avoid noise
+    return { 
+      valid: false, 
+      error: 'Supabase not configured (build-time)',
+      details: { url: undefined }
+    }
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
@@ -24,7 +42,7 @@ function validateEnvironment(): { valid: boolean; error?: string; details?: { ur
     return { 
       valid: false, 
       error: 'Missing NEXT_PUBLIC_SUPABASE_ANON_KEY environment variable',
-      details: { url: url.substring(0, 30) + '...' }
+      details: { url: url?.substring(0, 30) + '...' }
     }
   }
 
@@ -37,25 +55,13 @@ function validateEnvironment(): { valid: boolean; error?: string; details?: { ur
     }
   }
 
-  // Validate that it's a valid Supabase project URL (basic check)
-  if (!url.includes('.supabase.co') && !url.includes('supabase')) {
-    console.warn('[Supabase] Warning: URL does not look like a standard Supabase URL')
-  }
-
   // Basic anon key format validation
-  // Supabase anon keys are JWTs and typically start with 'eyJ' and are quite long
   if (anonKey.length < 10) {
     return { 
       valid: false, 
-      error: 'Invalid NEXT_PUBLIC_SUPABASE_ANON_KEY format. Key appears too short (should be a JWT token)',
+      error: 'Invalid NEXT_PUBLIC_SUPABASE_ANON_KEY format. Key appears too short',
       details: { url: url.substring(0, 30) + '...', keyLength: anonKey.length }
     }
-  }
-
-  // Check if it looks like a JWT (should have 3 parts separated by dots)
-  const jwtParts = anonKey.split('.')
-  if (jwtParts.length !== 3) {
-    console.warn('[Supabase] Warning: Anon key does not look like a valid JWT token')
   }
 
   return { 
@@ -77,31 +83,37 @@ let validationCache: { valid: boolean; error?: string; details?: { url?: string;
 function getValidationResult(): { valid: boolean; error?: string; details?: { url?: string; keyLength?: number } } {
   if (validationCache === null) {
     validationCache = validateEnvironment()
-    if (!validationCache.valid) {
-      console.error('[Supabase] Configuration error:', validationCache.error)
-    } else {
+    if (validationCache.valid) {
       console.log('[Supabase] Configuration validated successfully')
+    } else if (isBrowser()) {
+      // Only log in browser to avoid build noise
+      console.warn('[Supabase] Configuration warning:', validationCache.error)
     }
   }
   return validationCache
 }
 
 // ============================================================================
-// SUPABASE CLIENT
+// SUPABASE CLIENT - Lazy initialization
 // ============================================================================
 
 let supabaseInstance: ReturnType<typeof createBrowserClient> | null = null
 
 /**
  * Creates a Supabase client with environment validation
- * Throws a descriptive error if configuration is invalid
+ * Returns null if configuration is invalid (safe for build/SSR)
  */
-export function createClient() {
+export function createClient(): ReturnType<typeof createBrowserClient> | null {
+  // During build/SSR, return null instead of throwing
+  if (!isBrowser()) {
+    return null
+  }
+
   const { valid, error } = getValidationResult()
 
   if (!valid) {
-    console.error('[Supabase] Configuration error:', error)
-    throw new Error(`Supabase configuration error: ${error}. Please contact support or check your environment variables.`)
+    console.warn('[Supabase] Configuration error:', error)
+    return null
   }
 
   // Return cached instance if available
@@ -115,14 +127,13 @@ export function createClient() {
   supabaseInstance = createBrowserClient(url, anonKey)
 
   console.log('[Supabase] Client initialized successfully')
-  console.log('[Supabase] Project URL:', url.substring(0, 30) + '...')
 
   return supabaseInstance
 }
 
 /**
- * Export a named instance for cases where we don't need validation on every call
- * This is used by lib/admissions.ts
+ * Legacy export - creates client and returns it (may return null during build)
+ * Used by lib/admissions.ts - callers should handle null case
  */
 export const supabase = createClient()
 
@@ -135,6 +146,10 @@ export const supabase = createClient()
  * Safe to call on client side for UI feedback
  */
 export function isSupabaseConfigured(): boolean {
+  // During build, return false to prevent usage
+  if (!isBrowser()) {
+    return false
+  }
   const { valid } = getValidationResult()
   return valid
 }

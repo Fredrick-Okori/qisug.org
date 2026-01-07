@@ -11,6 +11,7 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { createClient } from "@/lib/supabase/client"
+import type { AuthSession } from "@supabase/supabase-js"
 
 
 
@@ -155,14 +156,31 @@ export function SiteHeader() {
   const [isMounted, setIsMounted] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [userEmail, setUserEmail] = useState("")
-  const supabase = createClient()
+  const [supabase, setSupabase] = useState<ReturnType<typeof createClient> | null>(null)
 
   useEffect(() => {
     setIsMounted(true)
     
+    // Initialize Supabase client lazily on client side
+    const supabaseClient = createClient()
+    setSupabase(supabaseClient)
+    
+    // If Supabase is not configured, skip auth checks
+    if (!supabaseClient) {
+      // Still set up scroll handler even without auth
+      const handleScroll = () => {
+        const scrollPosition = window.scrollY
+        setIsScrolled(scrollPosition > 50)
+      }
+      window.addEventListener("scroll", handleScroll)
+      return () => {
+        window.removeEventListener("scroll", handleScroll)
+      }
+    }
+    
     // Check auth state
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
+      const { data: { session } } = await supabaseClient.auth.getSession()
       setIsSignedIn(!!session)
       if (session?.user?.email) {
         setUserEmail(session.user.email)
@@ -172,7 +190,7 @@ export function SiteHeader() {
     checkAuth()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event: string, session: AuthSession | null) => {
       setIsSignedIn(!!session)
       if (session?.user?.email) {
         setUserEmail(session.user.email)
@@ -189,7 +207,7 @@ export function SiteHeader() {
       window.removeEventListener("scroll", handleScroll)
       subscription.unsubscribe()
     }
-  }, [supabase])
+  }, [])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()

@@ -6,9 +6,26 @@ export async function middleware(request: NextRequest) {
     request,
   })
 
+  // Check if Supabase environment variables are configured
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  // If not configured, skip Supabase operations (allows build to complete)
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn('[Middleware] Supabase not configured, skipping auth checks')
+    // Still protect admin routes even without Supabase
+    if (request.nextUrl.pathname.startsWith('/admin')) {
+      const redirectUrl = request.nextUrl.clone()
+      redirectUrl.pathname = '/login'
+      redirectUrl.searchParams.set('redirect', request.nextUrl.pathname)
+      return NextResponse.redirect(redirectUrl)
+    }
+    return supabaseResponse
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         get(name: string) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { BlueSiteHeader } from '@/components/blue-header';
@@ -16,7 +16,7 @@ import {
   GraduationCap, AlertCircle, CheckCircle 
 } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
@@ -485,4 +485,41 @@ export default function LoginPage() {
     </>
   );
 }
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoginLoadingSkeleton />}>
+      <LoginContent />
+    </Suspense>
+  );
+}
+
+function LoginLoadingSkeleton() {
+  return (
+    <>
+      <BlueSiteHeader />
+      <div className="min-h-screen pt-[120px] md:pt-[200px] lg:pt-[160px] pb-16 px-4 md:px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid lg:grid-cols-2 items-stretch">
+            <div className="hidden lg:flex flex-col justify-center p-8 md:p-12">
+              <div className="bg-[#053f52] rounded-l-2xl p-8 md:p-12 text-white h-full animate-pulse" />
+            </div>
+            <div className="p-6 md:p-8">
+              <div className="bg-white/95 backdrop-blur-sm rounded-r-2xl p-6 md:p-8 h-full animate-pulse">
+                <div className="h-8 w-48 bg-gray-200 rounded mx-auto mb-4" />
+                <div className="h-4 w-32 bg-gray-200 rounded mx-auto mb-8" />
+                <div className="space-y-4">
+                  <div className="h-11 bg-gray-200 rounded" />
+                  <div className="h-11 bg-gray-200 rounded" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <MainSiteFooter />
+    </>
+  );
+}
+
 
