@@ -5,6 +5,13 @@
 -- ENUMS
 -- ============================================================================
 
+DROP TYPE IF EXISTS gender_type CASCADE;
+DROP TYPE IF EXISTS citizenship_type CASCADE;
+DROP TYPE IF EXISTS visa_status_type CASCADE;
+DROP TYPE IF EXISTS intake_month_type CASCADE;
+DROP TYPE IF EXISTS program_stream_type CASCADE;
+DROP TYPE IF EXISTS application_status_type CASCADE;
+
 CREATE TYPE gender_type AS ENUM ('Male', 'Female');
 CREATE TYPE citizenship_type AS ENUM ('Ugandan', 'Non-Ugandan');
 CREATE TYPE visa_status_type AS ENUM ('Permanent Resident', 'Refugee', 'Student Visa');
@@ -72,7 +79,7 @@ CREATE TABLE applicants (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Indexes for faster lookups
+-- Indexes
 CREATE INDEX idx_applicants_email ON applicants(email);
 CREATE INDEX idx_applicants_qis_id ON applicants(qis_id);
 CREATE INDEX idx_applicants_name ON applicants(last_name, first_name);
@@ -127,11 +134,10 @@ CREATE TABLE academic_histories (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Indexes
 CREATE INDEX idx_academic_histories_application ON academic_histories(application_id);
 
 -- ============================================================================
--- AGENTS TABLE (Optional for international applicants)
+-- AGENTS TABLE
 -- ============================================================================
 
 CREATE TABLE agents (
@@ -155,7 +161,6 @@ CREATE TABLE agents (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Indexes
 CREATE INDEX idx_agents_application ON agents(application_id);
 CREATE INDEX idx_agents_email ON agents(email);
 
@@ -181,7 +186,6 @@ CREATE TABLE tuition_structures (
   UNIQUE (grade, stream, academic_year)
 );
 
--- Insert default tuition structures
 INSERT INTO tuition_structures (grade, stream, admission_fee, term_1_fee, term_2_fee, term_3_fee, exam_fee, uniform_fee, clubs_charity_fee) VALUES
 (9, 'Science', 300.00, 850000, 850000, 850000, 120, 235, 70),
 (9, 'Arts', 300.00, 750000, 750000, 750000, 120, 235, 70),
@@ -211,15 +215,119 @@ CREATE TABLE application_documents (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Indexes
 CREATE INDEX idx_documents_application ON application_documents(application_id);
 CREATE INDEX idx_documents_type ON application_documents(document_type);
 
 -- ============================================================================
--- STORAGE BUCKET SETUP (Run manually in Supabase Dashboard)
+-- PAYMENT SLIPS TABLE
 -- ============================================================================
--- Create a storage bucket named 'admission-documents' in your Supabase dashboard
+
+CREATE TABLE payment_slips (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  application_id UUID NOT NULL REFERENCES applications(id) ON DELETE CASCADE,
+  applicant_id TEXT NOT NULL,
+  file_name TEXT NOT NULL,
+  file_path TEXT NOT NULL,
+  file_size BIGINT,
+  mime_type TEXT,
+  bank_name TEXT,
+  transaction_reference TEXT,
+  amount_paid DECIMAL(10,2),
+  payment_date DATE,
+  is_verified BOOLEAN DEFAULT FALSE,
+  verified_by UUID REFERENCES auth.users(id),
+  verified_at TIMESTAMP WITH TIME ZONE,
+  notification_sent BOOLEAN DEFAULT FALSE,
+  notification_sent_at TIMESTAMP WITH TIME ZONE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX idx_payment_slips_application ON payment_slips(application_id);
+CREATE INDEX idx_payment_slips_applicant ON payment_slips(applicant_id);
+CREATE INDEX idx_payment_slips_created ON payment_slips(created_at);
+
+-- ============================================================================
+-- STORAGE BUCKET (Create manually in Supabase Dashboard)
+-- ============================================================================
 -- Go to Storage -> New Bucket -> Name: admission-documents -> Make public
+
+-- ============================================================================
+-- ADMIN ROLES TABLE
+-- ============================================================================
+
+CREATE TABLE admin_users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  email TEXT NOT NULL,
+  full_name TEXT,
+  role TEXT DEFAULT 'admin' CHECK (role IN ('admin', 'reviewer', 'viewer')),
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE (user_id),
+  UNIQUE (email)
+);
+
+-- ============================================================================
+-- ROW LEVEL SECURITY POLICIES
+-- ============================================================================
+
+-- Enable RLS on all tables
+ALTER TABLE applicants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE applications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE academic_histories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE agents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE application_documents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE payment_slips ENABLE ROW LEVEL SECURITY;
+ALTER TABLE programs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE tuition_structures ENABLE ROW LEVEL SECURITY;
+ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
+
+-- PUBLIC: Anyone can insert (for applicants submitting forms)
+CREATE POLICY "Public can insert applicants" ON applicants FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public can insert applications" ON applications FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public can insert academic histories" ON academic_histories FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public can insert agents" ON agents FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public can insert documents" ON application_documents FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public can insert payment slips" ON payment_slips FOR INSERT WITH CHECK (true);
+
+-- PUBLIC: Anyone can read programs and tuition (for display on website)
+CREATE POLICY "Public can read programs" ON programs FOR SELECT USING (true);
+CREATE POLICY "Public can read tuition" ON tuition_structures FOR SELECT USING (true);
+
+-- ADMIN: Can view all data
+CREATE POLICY "Admins can view applicants" ON applicants FOR SELECT USING (
+  EXISTS (SELECT 1 FROM admin_users WHERE admin_users.user_id = auth.uid() AND admin_users.is_active)
+);
+CREATE POLICY "Admins can view applications" ON applications FOR SELECT USING (
+  EXISTS (SELECT 1 FROM admin_users WHERE admin_users.user_id = auth.uid() AND admin_users.is_active)
+);
+CREATE POLICY "Admins can view academic histories" ON academic_histories FOR SELECT USING (
+  EXISTS (SELECT 1 FROM admin_users WHERE admin_users.user_id = auth.uid() AND admin_users.is_active)
+);
+CREATE POLICY "Admins can view agents" ON agents FOR SELECT USING (
+  EXISTS (SELECT 1 FROM admin_users WHERE admin_users.user_id = auth.uid() AND admin_users.is_active)
+);
+CREATE POLICY "Admins can view documents" ON application_documents FOR SELECT USING (
+  EXISTS (SELECT 1 FROM admin_users WHERE admin_users.user_id = auth.uid() AND admin_users.is_active)
+);
+CREATE POLICY "Admins can view payment slips" ON payment_slips FOR SELECT USING (
+  EXISTS (SELECT 1 FROM admin_users WHERE admin_users.user_id = auth.uid() AND admin_users.is_active)
+);
+CREATE POLICY "Admins can view admin_users" ON admin_users FOR SELECT USING (
+  EXISTS (SELECT 1 FROM admin_users WHERE admin_users.user_id = auth.uid() AND admin_users.is_active)
+);
+
+-- ADMIN: Can update applications (for review workflow)
+CREATE POLICY "Admins can update applications" ON applications FOR UPDATE USING (
+  EXISTS (SELECT 1 FROM admin_users WHERE admin_users.user_id = auth.uid() AND admin_users.is_active)
+);
+CREATE POLICY "Admins can update documents" ON application_documents FOR UPDATE USING (
+  EXISTS (SELECT 1 FROM admin_users WHERE admin_users.user_id = auth.uid() AND admin_users.is_active)
+);
+CREATE POLICY "Admins can update payment slips" ON payment_slips FOR UPDATE USING (
+  EXISTS (SELECT 1 FROM admin_users WHERE admin_users.user_id = auth.uid() AND admin_users.is_active)
+);
 
 -- ============================================================================
 -- FUNCTIONS AND TRIGGERS
@@ -237,7 +345,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Trigger to auto-generate QIS ID
 CREATE TRIGGER auto_generate_qis_id
   BEFORE INSERT ON applicants
   FOR EACH ROW
@@ -252,28 +359,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Apply updated_at triggers
-CREATE TRIGGER update_applicants_updated_at
-  BEFORE UPDATE ON applicants
-  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-CREATE TRIGGER update_applications_updated_at
-  BEFORE UPDATE ON applications
-  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-CREATE TRIGGER update_academic_histories_updated_at
-  BEFORE UPDATE ON academic_histories
-  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-
-CREATE TRIGGER update_agents_updated_at
-  BEFORE UPDATE ON agents
-  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+CREATE TRIGGER update_applicants_updated_at BEFORE UPDATE ON applicants FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+CREATE TRIGGER update_applications_updated_at BEFORE UPDATE ON applications FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+CREATE TRIGGER update_academic_histories_updated_at BEFORE UPDATE ON academic_histories FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+CREATE TRIGGER update_agents_updated_at BEFORE UPDATE ON agents FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+CREATE TRIGGER update_admin_users_updated_at BEFORE UPDATE ON admin_users FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 -- ============================================================================
 -- VIEWS
 -- ============================================================================
 
--- View for dashboard
 CREATE OR REPLACE VIEW application_dashboard AS
 SELECT 
   a.id as application_id,
@@ -294,7 +389,6 @@ JOIN applicants ap ON a.applicant_id = ap.id
 JOIN programs p ON a.program_id = p.id
 ORDER BY a.created_at DESC;
 
--- View for tuition calculation
 CREATE OR REPLACE VIEW tuition_calculator AS
 SELECT 
   t.grade,
@@ -312,9 +406,12 @@ WHERE t.is_active = true
 ORDER BY t.grade, t.stream;
 
 -- ============================================================================
--- VERIFICATION
+-- SETUP ADMIN USER (Replace with your Supabase user ID)
 -- ============================================================================
 
--- Run this to verify tables were created:
--- SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name;
+-- After signing up a user in Supabase Auth, run this to make them an admin:
+-- INSERT INTO admin_users (user_id, email, full_name, role) 
+-- VALUES ('your-user-id', 'admin@queensgate.ac.ug', 'Administrator', 'admin');
+
+-- To find your user ID, run: SELECT id, email FROM auth.users;
 

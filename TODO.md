@@ -1,274 +1,235 @@
-# Supabase Admissions Integration - Implementation Plan
+# Application System - Complete Implementation
 
 ## Overview
-This document outlines the plan to integrate Supabase for managing student admissions submissions with a comprehensive data structure including Applicants, Applications, Programs, Academic History, Tuition Structure, and Agents.
+Complete application flow with:
+1. User applies and gets a reference ID
+2. 48-hour window to upload bank payment slip
+3. Email notification sent to admissions when payment slip is uploaded
 
----
+## Google OAuth Status: ✅ CONFIGURED
 
-## Phase 1: Supabase Setup & Configuration
+Your Google Sign-In is now active with:
+- **Redirect URL**: `http://localhost:3000/auth/callback`
+- **Provider**: Google OAuth via Supabase
 
-### 1.1 Install Dependencies
-```bash
-npm install @supabase/supabase-js @supabase/ssr zod react-hook-form @hookform/resolvers
-```
+## Changes Made
 
-### 1.2 Create Configuration Files
-- `lib/supabase/client.ts` - Browser client
-- `lib/supabase/server.ts` - Server client  
-- `lib/supabase/middleware.ts` - Auth middleware
-- `.env.local` - Environment variables
+### Phase 1: Reference Entry System
+- [x] 1.1 Create reference entry page (`app/admissions/apply-now/reference/page.tsx`)
+- [x] 1.2 Create application reference library (`lib/application-reference.ts`)
+- [x] 1.3 Add reference generation and validation logic
 
-### 1.3 Database Schema (supabase/schema.sql)
-Create tables following the provided data structure:
-- `applicants` - Core applicant information
-- `applications` - Application records linked to applicants
-- `programs` - Available programs (grades 9-12, streams)
-- `academic_histories` - Previous schools (max 3)
-- `tuition_structures` - Fee structure
-- `agents` - Optional agent information for international applicants
+### Phase 2: Supabase Integration
+- [x] 2.1 Create Supabase client configuration (`lib/supabase/client.ts`)
+- [x] 2.2 Add reference validation against Supabase
+- [x] 2.3 Add option to generate new reference for new applicants
 
-### 1.4 TypeScript Types (types/database.ts)
-Define TypeScript interfaces matching the schema
+### Phase 3: Apply Now Page Updates
+- [x] 3.1 Modify `app/admissions/apply-now/page.tsx` - Check for valid reference on mount
+- [x] 3.2 Add redirect to reference entry if no valid reference
+- [x] 3.3 Display reference ID throughout the application process
 
----
+### Phase 4: Success Page
+- [x] 4.1 Create `app/admissions/apply-now/success/page.tsx` - Success page with summary
+- [x] 4.2 Clear localStorage after payment confirmation
+- [x] 4.3 Display application summary and reference ID
 
-## Phase 2: Database Schema Implementation
+### Phase 5: Authentication Flow Integration
+- [x] 5.1 Update site header to show sign in/out based on auth state
+- [x] 5.2 Update Apply Now button to redirect to login if not signed in
+- [x] 5.3 Update login page to handle redirect parameter
+- [x] 5.4 Update Google OAuth to preserve redirect URL through localStorage
+- [x] 5.5 Update auth callback to read redirect URL from localStorage
+- [x] 5.6 Update mobile menu to show user status and sign out option
 
-### 2.1 Main Tables
-```sql
--- applicants table
-CREATE TABLE applicants (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  qis_id TEXT UNIQUE,
-  first_name TEXT NOT NULL,
-  middle_name TEXT,
-  preferred_name TEXT,
-  former_last_name TEXT,
-  last_name TEXT NOT NULL,
-  birth_date DATE NOT NULL,
-  gender TEXT NOT NULL CHECK (gender IN ('Male', 'Female')),
-  citizenship_type TEXT NOT NULL CHECK (citizenship_type IN ('Ugandan', 'Non-Ugandan')),
-  citizenship_country TEXT,
-  visa_status TEXT CHECK (visa_status IN ('Permanent Resident', 'Refugee', 'Student Visa')),
-  email TEXT NOT NULL,
-  phone_primary TEXT NOT NULL,
-  phone_other TEXT,
-  street TEXT,
-  city TEXT,
-  district TEXT,
-  postal_code TEXT,
-  country TEXT,
-  emergency_contact_name TEXT,
-  emergency_contact_phone TEXT,
-  emergency_contact_email TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+### Phase 6: PKCE Code Verifier Fix (Supabase SSR)
+- [x] 6.1 Install @supabase/ssr package
+- [x] 6.2 Create SSR server client (`lib/supabase/server.ts`)
+- [x] 6.3 Update client to use @supabase/ssr (`lib/supabase/client.ts`)
+- [x] 6.4 Create middleware for auth session management (`middleware.ts`)
+- [x] 6.5 Update auth callback to use browser client with cookies
+- [x] 6.6 Add Google OAuth query params for offline access
 
--- programs table
-CREATE TABLE programs (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  grade INTEGER NOT NULL CHECK (grade BETWEEN 9 AND 12),
-  stream TEXT NOT NULL CHECK (stream IN ('Science', 'Arts')),
-  name TEXT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+## Implementation Details
 
--- applications table
-CREATE TABLE applications (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  applicant_id UUID REFERENCES applicants(id) ON DELETE CASCADE,
-  academic_year TEXT NOT NULL,
-  intake_month TEXT NOT NULL CHECK (intake_month IN ('January', 'March', 'May', 'September')),
-  program_id UUID REFERENCES programs(id),
-  status TEXT DEFAULT 'Draft' CHECK (status IN ('Draft', 'Submitted', 'Under Review', 'Accepted', 'Rejected')),
-  declaration_signed BOOLEAN DEFAULT FALSE,
-  declaration_date DATE,
-  has_agent BOOLEAN DEFAULT FALSE,
-  application_fee_paid BOOLEAN DEFAULT FALSE,
-  payment_reference TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+#### 1. Apply Now Page (`app/admissions/apply-now/page.tsx`)
+- [x] Users can apply directly without pre-existing reference
+- [x] Reference ID (QIS-YYYY-XXXXX) is generated AFTER successful submission
+- [x] Reference saved to applicant's `qis_id` field in database
+- [x] Reference stored in localStorage for 48-hour tracking
 
--- academic_histories table
-CREATE TABLE academic_histories (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  application_id UUID REFERENCES applications(id) ON DELETE CASCADE,
-  school_name TEXT NOT NULL,
-  province TEXT NOT NULL,
-  country TEXT NOT NULL,
-  start_date DATE NOT NULL,
-  end_date DATE NOT NULL,
-  grade_completed TEXT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+#### 2. Success Page (`app/admissions/apply-now/success/page.tsx`)
+- [x] Shows application summary (name, email, grade, admission period)
+- [x] Displays 48-hour countdown timer for payment slip upload
+- [x] File upload input for bank payment slip (PDF, JPG, PNG)
+- [x] Uploads payment slip to Supabase Storage
+- [x] Saves payment slip record to database
+- [x] Sends email notification to admissions@qisug.ac.ug
+- [x] Shows success message after upload
+- [x] Expired state handling if 48 hours pass
 
--- agents table
-CREATE TABLE agents (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  application_id UUID REFERENCES applications(id) ON DELETE CASCADE,
-  agent_id_number TEXT NOT NULL,
-  agency_name TEXT NOT NULL,
-  agent_name TEXT NOT NULL,
-  street TEXT,
-  city TEXT,
-  province TEXT,
-  postal_code TEXT,
-  country TEXT,
-  phone_primary TEXT NOT NULL,
-  phone_other TEXT,
-  email TEXT NOT NULL,
-  authorized_to_receive_info BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+#### 3. API Route (`app/api/send-payment-notification/route.ts`)
+- [x] Endpoint to handle payment notification emails
+- [x] Validates required fields
+- [x] Logs email details (ready for integration with email service)
 
--- tuition_structures table
-CREATE TABLE tuition_structures (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  grade INTEGER NOT NULL CHECK (grade BETWEEN 9 AND 12),
-  stream TEXT NOT NULL CHECK (stream IN ('Science', 'Arts')),
-  admission_fee DECIMAL(10,2) DEFAULT 300.00,
-  term_1_fee DECIMAL(10,2),
-  term_2_fee DECIMAL(10,2),
-  term_3_fee DECIMAL(10,2),
-  exam_fee DECIMAL(10,2) DEFAULT 120.00,
-  uniform_fee DECIMAL(10,2) DEFAULT 235.00,
-  clubs_charity_fee DECIMAL(10,2) DEFAULT 70.00,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-```
+#### 4. Database Schema (`supabase/schema.sql`)
+- [x] Added `payment_slips` table with fields:
+  - application_id (FK)
+  - applicant_id (reference number)
+  - file_name, file_path, file_size
+  - bank details (bank_name, transaction_reference, amount, date)
+  - verification status
+  - notification tracking
+- [x] Added RLS policies for the new table
 
-### 2.2 Storage Buckets
-```sql
--- Document storage bucket
-CREATE STORAGE BUCKET admission_documents;
+#### 5. Library Updates (`lib/application-reference.ts`)
+- [x] Changed expiration from 24 hours to 48 hours
 
--- Set storage policies for authenticated uploads
-```
+#### 6. How-to-Apply Page (`app/admissions/how-to-apply/page.tsx`)
+- [x] Updated "Apply Now" link to go directly to apply page
 
----
+#### 7. Blue Header (`components/blue-header.tsx`)
+- [x] Removed the `isScrolled` state and all scroll-based effects
+- [x] Header now maintains consistent appearance at all scroll positions
+- [x] School name text now always visible, not just after scrolling
 
-## Phase 3: Front 3.1 Updated Apply Nowend Implementation
+#### 8. Login Page (`app/login/page.tsx`)
+- [x] Created complete login/signup page with Supabase Auth
+- [x] Email/password sign in
+- [x] Email/password sign up with full name
+- [x] Password visibility toggle
+- [x] Forgot password functionality
+- [x] Google OAuth sign in ✅
+- [x] Side-by-side layout with welcome section (hidden on mobile)
+- [x] Error and success message handling
+- [x] Smooth animations with Framer Motion
+- [x] Responsive design
+- [x] Redirect to original page after login
+- [x] Store redirect URL in localStorage for OAuth flows
 
-### Page
-- Multi-step form matching the data structure
-- Step 1: Personal Information (Applicant)
-- Step 2: Contact Details & Address
-- Step 3: Emergency Contact
-- Step 4: Academic History (max 3 entries)
-- Step 5: Program Selection
-- Step 6: Agent Information (optional, for non-Ugandan)
-- Step 7: Declaration & Payment
-- Step 8: Document Uploads
+#### 9. Auth Callback Page (`app/auth/callback/page.tsx`)
+- [x] Created callback page for email verification and password reset
+- [x] Handles OAuth redirects from Supabase
+- [x] Shows loading, success, and error states
+- [x] Automatic redirect after successful authentication
+- [x] Reads redirect URL from localStorage for OAuth flows
 
-### 3.2 Supabase Integration
-- `lib/supabase/client.ts` - Client-side Supabase client
-- `lib/supabase/server.ts` - Server-side Supabase client
-- `lib/admissions.ts` - API functions for CRUD operations
+#### 10. Site Header (`components/site-header.tsx`)
+- [x] Added Supabase auth state detection
+- [x] Shows user email and Sign Out button when signed in
+- [x] Shows Log In button when signed out
+- [x] Apply Now button redirects to login if not signed in
 
-### 3.3 Form Components
-- Reuse existing UI components (Button, Input, Select, etc.)
-- Create form validation with Zod
-- Multi-step navigation with progress indicator
+#### 11. Apply Component (`components/home/apply-component.tsx`)
+- [x] Added auth state check
+- [x] Apply Now button redirects to login with redirect parameter
 
----
+#### 12. Environment Configuration (`.env.local`)
+- [x] Created environment variables file for Supabase configuration
 
-## Phase 4: API Routes (if needed)
+#### 13. Google OAuth Setup Guide (`GOOGLE_OAUTH_SETUP.md`)
+- [x] Comprehensive setup guide for Google OAuth
+- [x] Step-by-step instructions for Google Cloud Console
+- [x] Supabase configuration steps
+- [x] Troubleshooting guide
 
-- `app/api/applications/route.ts` - POST new application
-- `app/api/applications/[id]/route.ts` - GET/PUT application
-- `app/api/programs/route.ts` - GET available programs
-- `app/api/tuition/route.ts` - GET tuition structure
+#### 14. Supabase SSR Setup
+- [x] `@supabase/ssr` package installed
+- [x] Server client with cookie handling
+- [x] Browser client for client-side auth
+- [x] Middleware for session management and route protection
+- [x] PKCE code verifier properly stored in cookies
 
----
+#### 15. Middleware (`middleware.ts`)
+- [x] Protects `/admin` routes
+- [x] Redirects unauthenticated users to login
+- [x] Persists auth cookies through responses
+- [x] Handles OAuth flow cookies
 
-## Business Rules Implementation
+## New Workflow
 
-### 4.1 Validation Rules
-- [ ] Application fee ($300) must be paid before submission
-- [ ] Only ONE program per application
-- [ ] Intake months limited to: Jan, Mar, May, Sep
-- [ ] Academic history max 3 entries
-- [ ] Tuition calculated by (grade + stream)
-- [ ] Agent optional for international applicants
-- [ ] Admissions open year-round
+### Without Authentication:
+1. User fills out application form and submits
+2. Reference ID is generated (e.g., QIS-2025-12345)
+3. User sees reference on success page with copy button
+4. User has 48 hours to make bank payment
+5. User uploads bank payment slip on success page
+6. Email notification sent to admissions@qisug.ac.ug
+7. Admissions team reviews payment slip and updates application status
 
-### 4.2 Form Validation
-```typescript
-// Sample Zod schema
-const applicationSchema = z.object({
-  applicant: applicantSchema,
-  application: z.object({
-    academic_year: z.string(),
-    intake_month: z.enum(['January', 'March', 'May', 'September']),
-    program_id: z.string().uuid(),
-    has_agent: z.boolean(),
-    declaration_signed: z.literal(true),
-  }),
-  academic_history: z.array(academicHistorySchema).max(3),
-  agent: agentSchema.optional(),
-});
-```
+### With Authentication:
+1. User clicks "Apply Now" (if signed in, goes directly; if not, redirects to login)
+2. User fills out application form and submits
+3. User is automatically signed in with their account
+4. Reference ID is generated and associated with their account
+5. User sees reference on success page
+6. User can track application status in admin dashboard
 
----
+## Database Tables
+- `applicants` - Stores applicant info with qis_id (reference)
+- `applications` - Stores application records
+- `payment_slips` - NEW: Stores uploaded payment slip records
 
-## Phase 5: Environment Setup
+## Storage Buckets Needed
+- `admission-documents` - For all admission documents including payment slips
 
-### 5.1 Required Environment Variables (.env.local)
-```env
-NEXT_PUBLIC_SUPABASE_URL=your-project-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-```
+## Email Integration
+The API route currently logs email details. To send real emails, integrate with:
+- Resend (resend.com)
+- SendGrid
+- AWS SES
+- Nodemailer with SMTP
 
-### 5.2 Documentation
-- Create `supabase/SETUP.md` with setup instructions
-- Document API usage and examples
-- Include migration scripts
+Update `app/api/send-payment-notification/route.ts` with your preferred email service.
 
----
+## Routes Created
+- `/login` - Login/signup page
+- `/auth/callback` - Auth callback handler for email verification and password reset
+- `/admin` - Admin dashboard (protected)
 
-## Implementation Order
+## Testing
 
-1. Install dependencies
-2. Create Supabase config files
-3. Create TypeScript types
-4. Create database schema SQL file
-5. Update Apply Now page with multi-step form
-6. Implement Supabase client
-7. Create admissions API functions
-8. Add document upload functionality
-9. Implement payment validation
-10. Test and verify
+### Test Authentication Flow:
+1. Start development server:
+   ```bash
+   npm run dev
+   ```
 
----
+2. Navigate to `http://localhost:3000`
 
-## Files to Create/Modify
+3. Click "Apply Now" → Should redirect to `/login?redirect=/admissions/apply-now`
 
-### New Files:
-- `lib/supabase/client.ts`
-- `lib/supabase/server.ts`
-- `lib/supabase/middleware.ts`
-- `lib/admissions.ts`
-- `types/database.ts`
-- `supabase/schema.sql`
-- `supabase/SETUP.md`
-- `app/admissions/apply-now/components/*` (if needed)
+4. Sign in with Google or email/password
 
-### Modified Files:
-- `app/admissions/apply-now/page.tsx` - Complete rewrite
-- `.env.local` - Add Supabase credentials
-- `package.json` - Add dependencies
+5. After sign in, should redirect to `/admissions/apply-now`
 
----
+### Test Application Flow:
+1. From home page, click Apply Now
+2. Enter reference or generate new one
+3. Fill out application form
+4. Submit application
+5. Verify success page shows with reference ID
 
-## Timeline Estimate
-- Phase 1: 1 hour
-- Phase 2: 2 hours (including schema review)
-- Phase 3: 4-6 hours (main implementation)
-- Phase 4: 1 hour
-- Phase 5: 30 minutes
+## Production Deployment
 
-**Total: 8-10 hours**
+When deploying to production:
+
+1. Update redirect URL in Supabase:
+   - Go to Authentication > Providers > Google
+   - Update redirect URL to your production URL
+
+2. Add production URL to Google Cloud Console authorized redirect URIs
+
+3. Update Site URL in Supabase (Authentication > URL Configuration)
+
+4. Update `.env.local` with production values
+
+## Troubleshooting PKCE Errors
+
+If you see "PKCE code verifier not found in storage":
+- Ensure `@supabase/ssr` is installed
+- Check that middleware.ts is present and working
+- Verify cookies are being set properly
+- Clear browser cookies and try again
 

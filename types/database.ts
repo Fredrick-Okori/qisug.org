@@ -1,4 +1,4 @@
-// Database types for Supabase
+// Database types for Supabase - Updated to match flat column schema
 
 export type Gender = 'Male' | 'Female'
 export type CitizenshipType = 'Ugandan' | 'Non-Ugandan'
@@ -23,18 +23,15 @@ export interface Applicant {
   email: string
   phone_primary: string
   phone_other: string | null
-  address: {
-    street: string | null
-    city: string | null
-    district: string | null
-    postal_code: string | null
-    country: string | null
-  }
-  emergency_contact: {
-    name: string | null
-    phone: string | null
-    email: string | null
-  }
+  // Flat columns (matching database schema)
+  address_street: string | null
+  address_city: string | null
+  address_district: string | null
+  address_postal_code: string | null
+  address_country: string | null
+  emergency_contact_name: string | null
+  emergency_contact_phone: string | null
+  emergency_contact_email: string | null
   created_at: string
   updated_at: string
 }
@@ -44,6 +41,8 @@ export interface Program {
   grade: 9 | 10 | 11 | 12
   stream: ProgramStream
   name: string
+  description: string | null
+  is_active: boolean
   created_at: string
 }
 
@@ -59,6 +58,11 @@ export interface Application {
   has_agent: boolean
   application_fee_paid: boolean
   payment_reference: string | null
+  payment_amount: number | null
+  submitted_at: string | null
+  reviewed_at: string | null
+  reviewed_by: string | null
+  notes: string | null
   created_at: string
   updated_at: string
 }
@@ -72,7 +76,10 @@ export interface AcademicHistory {
   start_date: string
   end_date: string
   grade_completed: string
+  is_current: boolean
+  certificate_url: string | null
   created_at: string
+  updated_at: string
 }
 
 export interface Agent {
@@ -81,19 +88,34 @@ export interface Agent {
   agent_id_number: string
   agency_name: string
   agent_name: string
-  address: {
-    street: string | null
-    city: string | null
-    province: string | null
-    postal_code: string | null
-    country: string | null
-  }
-  contact: {
-    phone_primary: string
-    phone_other: string | null
-    email: string
-  }
+  // Flat columns
+  address_street: string | null
+  address_city: string | null
+  address_province: string | null
+  address_postal_code: string | null
+  address_country: string | null
+  phone_primary: string
+  phone_other: string | null
+  email: string
   authorized_to_receive_info: boolean
+  commission_rate: number | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface ApplicationDocument {
+  id: string
+  application_id: string
+  document_type: string
+  file_name: string
+  file_path: string
+  file_size: number | null
+  mime_type: string | null
+  description: string | null
+  is_verified: boolean
+  verified_by: string | null
+  verified_at: string | null
   created_at: string
 }
 
@@ -101,45 +123,75 @@ export interface TuitionStructure {
   id: string
   grade: 9 | 10 | 11 | 12
   stream: ProgramStream
-  fees: {
-    admission: number
-    term_1: number
-    term_2: number
-    term_3: number
-    exam_fee: number
-    uniform: number
-    clubs_charity: number
-  }
-  annual_total: number
+  admission_fee: number
+  term_1_fee: number
+  term_2_fee: number
+  term_3_fee: number
+  exam_fee: number
+  uniform_fee: number
+  clubs_charity_fee: number
+  is_active: boolean
+  academic_year: string
   created_at: string
 }
 
-// Form input types
+export interface PaymentSlip {
+  id: string
+  application_id: string
+  applicant_id: string
+  file_name: string
+  file_path: string
+  file_size: number | null
+  mime_type: string | null
+  bank_name: string | null
+  transaction_reference: string | null
+  amount_paid: number | null
+  payment_date: string | null
+  is_verified: boolean
+  verified_by: string | null
+  verified_at: string | null
+  notification_sent: boolean
+  notification_sent_at: string | null
+  created_at: string
+}
+
+export interface AdminUser {
+  id: string
+  user_id: string
+  email: string
+  full_name: string | null
+  role: 'admin' | 'reviewer' | 'viewer'
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+// Form input types - for creating new records
 export interface ApplicantFormData {
   firstName: string
-  middleName: string
-  preferredName: string
-  formerLastName: string
+  middleName?: string
+  preferredName?: string
+  formerLastName?: string
   lastName: string
   birthDate: string
   gender: Gender
   citizenshipType: CitizenshipType
-  citizenshipCountry: string
-  visaStatus: VisaStatus
+  citizenshipCountry?: string
+  visaStatus?: VisaStatus
   email: string
   phonePrimary: string
-  phoneOther: string
+  phoneOther?: string
   address: {
     street: string
     city: string
-    district: string
-    postalCode: string
+    district?: string
+    postalCode?: string
     country: string
   }
   emergencyContact: {
     name: string
     phone: string
-    email: string
+    email?: string
   }
 }
 
@@ -157,6 +209,7 @@ export interface AcademicHistoryFormData {
   startDate: string
   endDate: string
   gradeCompleted: string
+  isCurrent?: boolean
 }
 
 export interface AgentFormData {
@@ -166,13 +219,13 @@ export interface AgentFormData {
   address: {
     street: string
     city: string
-    province: string
-    postalCode: string
+    province?: string
+    postalCode?: string
     country: string
   }
   contact: {
     phonePrimary: string
-    phoneOther: string
+    phoneOther?: string
     email: string
   }
   authorizedToReceiveInfo: boolean
@@ -183,5 +236,35 @@ export interface FullApplicationData {
   application: ApplicationFormData
   academicHistory: AcademicHistoryFormData[]
   agent?: AgentFormData
+}
+
+// Dashboard view types
+export interface ApplicationDashboardRow {
+  application_id: string
+  status: ApplicationStatus
+  intake_month: IntakeMonth
+  academic_year: string
+  submitted_at: string | null
+  application_fee_paid: boolean
+  first_name: string
+  last_name: string
+  email: string
+  phone_primary: string
+  grade: number
+  stream: ProgramStream
+  program_name: string
+}
+
+export interface TuitionCalculatorRow {
+  grade: number
+  stream: ProgramStream
+  admission_fee: number
+  term_1_fee: number
+  term_2_fee: number
+  term_3_fee: number
+  exam_fee: number
+  uniform_fee: number
+  clubs_charity_fee: number
+  annual_total: number
 }
 

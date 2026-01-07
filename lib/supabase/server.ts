@@ -31,8 +31,3 @@ export async function createClient() {
   )
 }
 
-// For use in server components/actions (async version)
-export async function getSupabaseServer() {
-  return createClient()
-}
-

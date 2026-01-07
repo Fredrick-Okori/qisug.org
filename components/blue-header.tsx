@@ -2,13 +2,14 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, Search, User, X } from "lucide-react"
+import { Menu, Search, User, X, LogOut, UserCheck, Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
+import { createClient } from "@/lib/supabase/client"
 
 const navItems = [
   { title: "Home", href: "/" },
@@ -147,8 +148,10 @@ const navItems = [
 
 export function BlueSiteHeader() {
   const pathname = usePathname()
-  const [isScrolled, setIsScrolled] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  const [userEmail, setUserEmail] = useState("")
+  const supabase = createClient()
 
   // Check if a nav item is active based on current pathname
   const isActive = (href: string) => {
@@ -160,14 +163,40 @@ export function BlueSiteHeader() {
 
   useEffect(() => {
     setIsMounted(true)
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY
-      setIsScrolled(scrollPosition > 50)
+    
+    // Check auth state
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setIsSignedIn(!!session)
+      if (session?.user?.email) {
+        setUserEmail(session.user.email)
+      }
     }
+    
+    checkAuth()
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsSignedIn(!!session)
+      if (session?.user?.email) {
+        setUserEmail(session.user.email)
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [supabase])
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    setIsSignedIn(false)
+    setUserEmail("")
+  }
+
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <motion.header 
@@ -194,15 +223,11 @@ export function BlueSiteHeader() {
         transition={{ duration: 0.4 }}
       />
 
-      <div className="container max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
+      <div className="container max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10 py-4">
         <div className="flex items-start justify-between w-full gap-2 sm:gap-4">
           {/* Left: Logo Section with animation */}
           <motion.div 
-            className={`flex-shrink-0 flex items-center gap-2 transition-all duration-300 ${
-              isScrolled 
-                ? 'py-2' 
-                : 'py-3 sm:py-4 md:py-6'
-            }`}
+            className="flex-shrink-0 flex items-center gap-2"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ 
@@ -213,11 +238,7 @@ export function BlueSiteHeader() {
           >
             <Link href="/" className="flex items-center">
               <motion.div 
-                className={`relative transition-all duration-300 ${
-                  isScrolled
-                    ? 'w-12 h-12 sm:w-14 sm:h-16'
-                    : 'w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-45'
-                }`}
+                className="relative w-12 h-12 sm:w-14 sm:h-16"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               >
@@ -232,22 +253,15 @@ export function BlueSiteHeader() {
               </motion.div>
             </Link>
 
-            {/* School Name Text - Visible after scrolling */}
-            {isScrolled && (
-              <motion.div
-                className="hidden sm:flex flex-col"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
-              >
-                <span className="text-white font-bold whitespace-nowrap leading-tight text-[20px] font-serif">
-                  QUEENSGATE
-                </span>
-                <span className="text-white whitespace-nowrap text-[11px] font-serif">
-                  INTERNATIONAL SCHOOL
-                </span>
-              </motion.div>
-            )}
+            {/* School Name Text - Always Visible */}
+            <div className="hidden sm:flex flex-col">
+              <span className="text-white font-bold whitespace-nowrap leading-tight text-[20px] font-serif">
+                QUEENSGATE
+              </span>
+              <span className="text-white whitespace-nowrap text-[11px] font-serif">
+                INTERNATIONAL SCHOOL
+              </span>
+            </div>
           </motion.div>
 
           {/* Mobile Menu Button with animation */}
@@ -347,30 +361,51 @@ export function BlueSiteHeader() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
                 >
-                  <SheetClose asChild>
-                    <Link
-                      href="/login"
-                      className="w-full inline-flex items-center justify-center gap-2 text-white border-white hover:bg-white hover:text-[#2a3dc8ff] font-medium py-2 px-3 rounded-md"
-                    >
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="flex items-center gap-2"
+                  {isSignedIn ? (
+                    // Show user info and sign out when signed in
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm text-white">
+                        <UserCheck className="h-4 w-4" />
+                        <span className="truncate">{userEmail || "Signed in"}</span>
+                      </div>
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full inline-flex items-center justify-center gap-2 text-white border-white hover:bg-white hover:text-[#2a3dc8ff] font-medium py-2 px-3 rounded-md transition-colors"
                       >
-                        <User className="h-5 w-5" />
-                        <span>Log In</span>
-                      </motion.div>
-                    </Link>
-                  </SheetClose>
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="flex items-center gap-2"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          <span>Sign Out</span>
+                        </motion.div>
+                      </button>
+                    </div>
+                  ) : (
+                    <SheetClose asChild>
+                      <Link
+                        href="/login"
+                        className="w-full inline-flex items-center justify-center gap-2 text-white border-white hover:bg-white hover:text-[#2a3dc8ff] font-medium py-2 px-3 rounded-md"
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="flex items-center gap-2"
+                        >
+                          <User className="h-5 w-5" />
+                          <span>Log In</span>
+                        </motion.div>
+                      </Link>
+                    </SheetClose>
+                  )}
                 </motion.div>
               </SheetContent>
             </Sheet>
           </motion.div>
 
           {/* Desktop Navigation and Actions */}
-          <div className={`hidden lg:flex items-center gap-2 xl:gap-3 ml-auto transition-all duration-300 ${
-            isScrolled ? "py-3" : "py-6"
-          }`}>
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2 ml-auto">
             {/* Desktop Navigation with simple dropdown */}
             <motion.nav 
               className="flex items-center space-x-1"
@@ -396,9 +431,9 @@ export function BlueSiteHeader() {
                     >
                       <Link
                         href={item.href}
-                        className={`text-white font-bold transition-all duration-300 inline-block ${
-                          isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
-                        } ${isActive(item.href) ? "border-b-2 border-[#20cece]" : "hover:border-b hover:border-[#20cece] hover:rounded-none"}`}
+                        className={`text-white font-bold transition-all duration-300 inline-block text-sm px-2 py-2 ${
+                          isActive(item.href) ? "border-b-2 border-[#20cece]" : "hover:border-b hover:border-[#20cece] hover:rounded-none"
+                        }`}
                       >
                         <motion.div
                           whileHover={{ scale: 1.05 }}
@@ -409,7 +444,7 @@ export function BlueSiteHeader() {
                       </Link>
                     </motion.div>
                     
-                    {/* Simple Dropdown Menu - isolation creates new stacking context */}
+                    {/* Simple Dropdown Menu */}
                     <div className="isolate absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                       <div className="bg-white shadow-xl rounded-lg border border-gray-200 py-2 min-w-[220px] overflow-hidden">
                         {item.submenu.map((subitem) => (
@@ -436,9 +471,9 @@ export function BlueSiteHeader() {
                   >
                     <Link
                       href={item.href}
-                      className={`text-white font-bold transition-all duration-300 inline-block rounded-md ${
-                        isScrolled ? "text-xs xl:text-sm px-2 xl:px-3 py-1.5 h-8 leading-8" : "text-sm px-3 h-9 leading-9"
-                      } ${isActive(item.href) ? "border-b-2 border-[#20cece]" : "hover:border-b hover:border-[#20cece] hover:rounded-none"}`}
+                      className={`text-white font-bold transition-all duration-300 inline-block rounded-md text-sm px-3 py-2 ${
+                        isActive(item.href) ? "border-b-2 border-[#20cece]" : "hover:border-b hover:border-[#20cece] hover:rounded-none"
+                      }`}
                     >
                       <motion.div
                         whileHover={{ scale: 1.05 }}
@@ -452,7 +487,7 @@ export function BlueSiteHeader() {
               )}
             </motion.nav>
 
-            {/* Log In Button with animation */}
+            {/* User Dropdown / Log In Button with animation */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -460,32 +495,77 @@ export function BlueSiteHeader() {
                 delay: 0.7,
                 duration: 0.3
               }}
+              className="relative group"
             >
-              <Link
-                href="/login"
-                className={`text-white hover:bg-white/10 font-medium flex items-center gap-2 transition-all duration-300 rounded-md ${
-                  isScrolled ? "text-xs xl:text-sm px-2 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
-                }`}
-              >
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2"
-                >
-                  <motion.div 
-                    className={`flex items-center justify-center rounded-full bg-[#20cece] transition-all duration-300 ${
-                      isScrolled ? "w-6 h-6 xl:w-7 xl:h-7" : "w-8 h-8 xl:w-9 xl:h-9"
-                    }`}
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.5 }}
+              {isSignedIn ? (
+                // User dropdown when signed in - shows on hover
+                <>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 text-white hover:bg-white/10 transition-all duration-300 rounded-full px-2 py-1"
                   >
-                    <User className={`text-[#053f52] transition-all duration-300 ${
-                      isScrolled ? "h-3 w-3 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
-                    }`} />
+                    <motion.div 
+                      className="flex items-center justify-center rounded-full bg-[#20cece] w-8 h-8 xl:w-9 xl:h-9"
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <UserCheck className="h-4 w-4 xl:h-5 xl:w-5 text-[#053f52]" />
+                    </motion.div>
+                    <span className="hidden xl:inline text-sm font-medium truncate max-w-[120px]">
+                      {userEmail?.split('@')[0] || "User"}
+                    </span>
+                  </motion.button>
+
+                  {/* Hover Dropdown Menu */}
+                  <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[10000]">
+                    <div className="bg-white shadow-xl rounded-lg border border-gray-200 py-2 min-w-[220px] overflow-hidden">
+                      <div className="px-4 py-2 border-b border-gray-100">
+                        <p className="text-sm font-medium text-[#053f52] truncate">
+                          {userEmail || "User"}
+                        </p>
+                        <p className="text-xs text-gray-500">Signed in</p>
+                      </div>
+                      <Link 
+                        href="/profile" 
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-[#053f52] hover:bg-gray-50 transition-colors"
+                      >
+                        <Settings className="h-4 w-4" />
+                        <span>Settings</span>
+                      </Link>
+                      <div className="border-t border-gray-100 my-1" />
+                      <button
+                        onClick={handleSignOut}
+                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                // Log In button when signed out
+                <Link
+                  href="/login"
+                  className="text-white hover:bg-white/10 font-medium flex items-center gap-2 transition-all duration-300 rounded-md text-sm px-3 py-2"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2"
+                  >
+                    <motion.div 
+                      className="flex items-center justify-center rounded-full bg-[#20cece] w-8 h-8 xl:w-9 xl:h-9"
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <User className="h-4 w-4 xl:h-5 xl:w-5 text-[#053f52]" />
+                    </motion.div>
+                    <span className="hidden xl:inline">Log In</span>
                   </motion.div>
-                  <span className="hidden xl:inline">Log In</span>
-                </motion.div>
-              </Link>
+                </Link>
+              )}
             </motion.div>
 
             {/* Apply Now Button with animation */}
@@ -499,17 +579,13 @@ export function BlueSiteHeader() {
             >
               <Link href="/admissions/apply-now">
                 <motion.button 
-                  className={`flex items-center gap-2 bg-[#20cece] text-[#053f52] rounded-full border border-[#20cece] transition-all duration-300 hover:bg-white hover:border-white ${
-                    isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
-                  }`}
+                  className="flex items-center gap-2 bg-[#20cece] text-[#053f52] rounded-full border border-[#20cece] transition-all duration-300 hover:bg-white hover:border-white px-6 py-2.5 text-sm xl:px-8 xl:py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <span className="font-medium">Apply Now</span>
                   <svg 
-                    className={`transition-all duration-300 ${
-                      isScrolled ? "h-3.5 w-3.5 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
-                    }`}
+                    className="h-4 w-4 xl:h-5 xl:w-5"
                     fill="none" 
                     viewBox="0 0 24 24" 
                     stroke="currentColor"

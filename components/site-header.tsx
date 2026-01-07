@@ -1,13 +1,16 @@
+
 "use client"
 
 import Link from "next/link"
-import { Menu, Search, User, X } from "lucide-react"
+import { Menu, Search, User, LogOut, UserCheck, Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"
+import { X } from "lucide-react"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
+import { createClient } from "@/lib/supabase/client"
 
 const navItems = [
   { title: "Home", href: "/" },
@@ -148,17 +151,62 @@ const navItems = [
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  const [userEmail, setUserEmail] = useState("")
+  const supabase = createClient()
 
   useEffect(() => {
     setIsMounted(true)
+    
+    // Check auth state
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setIsSignedIn(!!session)
+      if (session?.user?.email) {
+        setUserEmail(session.user.email)
+      }
+    }
+    
+    checkAuth()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsSignedIn(!!session)
+      if (session?.user?.email) {
+        setUserEmail(session.user.email)
+      }
+    })
+
     const handleScroll = () => {
       const scrollPosition = window.scrollY
       setIsScrolled(scrollPosition > 50)
     }
 
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      subscription.unsubscribe()
+    }
+  }, [supabase])
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    setIsSignedIn(false)
+    setUserEmail("")
+  }
+
+  // Handle Apply Now click - redirect to login if not signed in
+  const handleApplyClick = (e: React.MouseEvent) => {
+    if (!isMounted || !isSignedIn) {
+      e.preventDefault()
+      window.location.href = "/login?redirect=/admissions/apply-now"
+    }
+  }
+
+  // Don't render until mounted to prevent hydration mismatch
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <motion.header 
@@ -331,35 +379,52 @@ export function SiteHeader() {
                   ))}
                 </nav>
                 
-                {/* Mobile Login Button */}
+                {/* Mobile Auth Button */}
                 <motion.div 
                   className="mt-6 pt-6 border-t border-[#053F52]/20"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
                 >
-                  <SheetClose asChild>
-                    <Link
-                      href="/login"
-                      className="w-full inline-flex items-center justify-center gap-2 text-[#053F52] border-[#053F52] hover:bg-[#053F52] hover:text-white font-medium py-2 px-3 rounded-md"
-                    >
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="flex items-center gap-2"
+                  {isSignedIn ? (
+                    // Show user info and sign out when signed in
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm text-[#053F52]">
+                        <UserCheck className="h-4 w-4" />
+                        <span className="truncate">{userEmail || "Signed in"}</span>
+                      </div>
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full inline-flex items-center justify-center gap-2 text-[#053F52] border-[#053F52] hover:bg-[#053F52] hover:text-white font-medium py-2 px-3 rounded-md transition-colors"
                       >
-                        <User className="h-5 w-5" />
-                        <span>Log In</span>
-                      </motion.div>
-                    </Link>
-                  </SheetClose>
+                        <LogOut className="h-4 w-4" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <SheetClose asChild>
+                      <Link
+                        href="/login"
+                        className="w-full inline-flex items-center justify-center gap-2 text-[#053F52] border-[#053F52] hover:bg-[#053F52] hover:text-white font-medium py-2 px-3 rounded-md"
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="flex items-center gap-2"
+                        >
+                          <User className="h-5 w-5" />
+                          <span>Log In</span>
+                        </motion.div>
+                      </Link>
+                    </SheetClose>
+                  )}
                 </motion.div>
               </SheetContent>
             </Sheet>
           </motion.div>
 
           {/* Desktop Navigation and Actions */}
-          <div className={`hidden lg:flex items-center gap-2 xl:gap-3 ml-auto transition-all duration-300 ${
+          <div className={`hidden lg:flex items-center gap-2 xl:gap-2 ml-auto transition-all duration-300 ${
             isScrolled ? "py-3" : "py-6"
           }`}>
             {/* Desktop Navigation with simple dropdown */}
@@ -451,7 +516,7 @@ export function SiteHeader() {
               )}
             </motion.nav>
 
-            {/* Log In Button with animation */}
+            {/* Auth Section - User Dropdown when signed in */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -459,35 +524,92 @@ export function SiteHeader() {
                 delay: 0.7,
                 duration: 0.3
               }}
+              className="relative group"
             >
-              <Link
-                href="/login"
-                className={`text-[#053F52]  font-medium flex items-center gap-2 transition-all duration-300 rounded-md ${
-                  isScrolled ? "text-xs xl:text-sm px-2 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
-                }`}
-              >
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2"
-                >
-                  <motion.div 
-                    className={`flex items-center justify-center rounded-full bg-[#053F52] transition-all duration-300 ${
-                      isScrolled ? "w-6 h-6 xl:w-7 xl:h-7" : "w-8 h-8 xl:w-9 xl:h-9"
+              {isSignedIn ? (
+                // User dropdown when signed in - shows on hover
+                <>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`flex items-center gap-2 text-[#053F52] font-medium transition-all duration-300 rounded-full hover:bg-[#053F52]/10 ${
+                      isScrolled ? "text-xs xl:text-sm px-2 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
                     }`}
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.5 }}
                   >
-                    <User className={`text-white transition-all duration-300 ${
-                      isScrolled ? "h-3 w-3 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
-                    }`} />
+                    <motion.div 
+                      className={`flex items-center justify-center rounded-full bg-[#053F52] transition-all duration-300 ${
+                        isScrolled ? "w-6 h-6 xl:w-7 xl:h-7" : "w-8 h-8 xl:w-9 xl:h-9"
+                      }`}
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <UserCheck className={`text-white transition-all duration-300 ${
+                        isScrolled ? "h-3 w-3 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
+                      }`} />
+                    </motion.div>
+                    <span className="hidden xl:inline text-sm font-medium truncate max-w-[120px]">
+                      {userEmail?.split('@')[0] || "User"}
+                    </span>
+                  </motion.button>
+
+                  {/* Hover Dropdown Menu */}
+                  <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[10000]">
+                    <div className="bg-white shadow-xl rounded-lg border border-gray-200 py-2 min-w-[220px] overflow-hidden">
+                      <div className="px-4 py-2 border-b border-gray-100">
+                        <p className="text-sm font-medium text-[#053f52] truncate">
+                          {userEmail || "User"}
+                        </p>
+                        <p className="text-xs text-gray-500">Signed in</p>
+                      </div>
+                      <Link 
+                        href="/profile" 
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-[#053f52] hover:bg-gray-50 transition-colors"
+                      >
+                        <Settings className="h-4 w-4" />
+                        <span>Settings</span>
+                      </Link>
+                      <div className="border-t border-gray-100 my-1" />
+                      <button
+                        onClick={handleSignOut}
+                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                // Log In button when signed out
+                <Link
+                  href="/login"
+                  className={`text-[#053F52] font-medium flex items-center gap-2 transition-all duration-300 rounded-md ${
+                    isScrolled ? "text-xs xl:text-sm px-2 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
+                  }`}
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2"
+                  >
+                    <motion.div 
+                      className={`flex items-center justify-center rounded-full bg-[#053F52] transition-all duration-300 ${
+                        isScrolled ? "w-6 h-6 xl:w-7 xl:h-7" : "w-8 h-8 xl:w-9 xl:h-9"
+                      }`}
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <User className={`text-white transition-all duration-300 ${
+                        isScrolled ? "h-3 w-3 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
+                      }`} />
+                    </motion.div>
+                    <span className="hidden xl:inline">Log In</span>
                   </motion.div>
-                  <span className="hidden xl:inline">Log In</span>
-                </motion.div>
-              </Link>
+                </Link>
+              )}
             </motion.div>
 
-            {/* Apply Now Button with animation */}
+            {/* Apply Now Button - redirects to login if not signed in */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -496,8 +618,9 @@ export function SiteHeader() {
                 duration: 0.4
               }}
             >
-              <Link href="/admissions/apply-now">
+              <Link href={isSignedIn ? "/admissions/apply-now" : "#"}>
                 <motion.button 
+                  onClick={handleApplyClick}
                   className={`flex items-center gap-2 bg-[#053F52] text-white rounded-full border border-[#053F52] transition-all duration-300 hover:bg-[#20cece] hover:border-[#20cece] ${
                     isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
                   }`}
@@ -524,3 +647,4 @@ export function SiteHeader() {
     </motion.header>
   )
 }
+

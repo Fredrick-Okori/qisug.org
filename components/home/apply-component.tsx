@@ -5,6 +5,8 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 import { ArrowRight, GraduationCap, FileText, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { createClient } from "@/lib/supabase/client"
+import { useEffect, useState } from "react"
 
 const cards = [
   {
@@ -34,6 +36,44 @@ const cards = [
 ]
 
 export function ApplySectionProduction() {
+  const [isMounted, setIsMounted] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  const supabase = createClient()
+
+  useEffect(() => {
+    setIsMounted(true)
+    
+    // Check auth state
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setIsSignedIn(!!session)
+    }
+    
+    checkAuth()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsSignedIn(!!session)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [supabase])
+
+  // Handle Apply Now click - redirect to login if not signed in
+  const handleApplyClick = (e: React.MouseEvent) => {
+    if (!isMounted || !isSignedIn) {
+      e.preventDefault()
+      window.location.href = "/login?redirect=/admissions/apply-now"
+    }
+  }
+
+  // Don't render until mounted to prevent hydration mismatch
+  if (!isMounted) {
+    return null
+  }
+
   return (
     <section className="relative py-16 lg:py-24 xl:py-32 bg-gradient-to-br from-[#EFBF04] via-[#EFBF04] to-[#EFBF04] overflow-hidden">
       {/* Decorative Elements */}
@@ -61,16 +101,31 @@ export function ApplySectionProduction() {
             Explore our admissions process and take the first step towards excellence.
           </p>
           
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-            <Link href="/admissions/requirements">
-              <Button
-                className="bg-[#20cece] pr-2 text-[#053f52] hover:bg-[#20cece] px-8 py-6 text-base rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
-              >
-                Admissions Info
-                <ArrowRight className="ml-2 mr-2 w-5 h-5" />
-              </Button>
-            </Link>
-          </motion.div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+              <Link href={isSignedIn ? "/admissions/apply-now/reference" : "#"}>
+                <Button
+                  onClick={handleApplyClick}
+                  className="bg-[#053f52] text-white hover:bg-[#042a38] px-8 py-6 text-base rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
+                >
+                  Apply Now
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+            </motion.div>
+            
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+              <Link href="/admissions/requirements">
+                <Button
+                  variant="outline"
+                  className="border-2 border-[#053f52] text-[#053f52] hover:bg-[#053f52] hover:text-white px-8 py-6 text-base rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
+                >
+                  Admissions Info
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* Bento Grid Cards */}

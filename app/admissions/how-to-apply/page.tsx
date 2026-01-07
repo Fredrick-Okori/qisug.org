@@ -321,7 +321,7 @@ export default function HowToApplyPage() {
                   first step towards a world-class online education.
                 </p>
                 <a
-                  href="/apply-now"
+                  href="/admissions/apply-now"
                   className="inline-block bg-gradient-to-r from-[#053f52] to-[#053f52] text-white px-8 py-4 rounded-full text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
