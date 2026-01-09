@@ -199,9 +199,29 @@ export function BlueSiteHeader() {
   }, [])
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    setIsSignedIn(false)
-    setUserEmail("")
+    try {
+      // Sign out from Supabase
+      const { error } = await supabase.auth.signOut()
+      
+      if (error) {
+        console.error('Sign out error:', error)
+        // Still redirect even if there's an error - the session might be invalid
+      }
+      
+      // Clear local auth state
+      setIsSignedIn(false)
+      setUserEmail("")
+      
+      // Force a full page redirect to home
+      // This ensures the user is completely logged out and taken to the home page
+      window.location.href = '/'
+    } catch (err) {
+      console.error('Unexpected sign out error:', err)
+      // Fallback: clear state and redirect anyway
+      setIsSignedIn(false)
+      setUserEmail("")
+      window.location.href = '/'
+    }
   }
 
   if (!isMounted) {

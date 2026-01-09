@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { BlueSiteHeader } from '@/components/blue-header';
 import { MainSiteFooter } from '@/components/main-footer';
@@ -16,6 +17,7 @@ export default function AdminLoginPage() {
   const [isSignedIn, setIsSignedIn] = useState(false);
 
   const supabase = createClient();
+  const router = useRouter();
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +63,7 @@ export default function AdminLoginPage() {
     setIsSignedIn(false);
     setEmail('');
     setPassword('');
+    router.push('/');
   };
 
   if (isSignedIn) {

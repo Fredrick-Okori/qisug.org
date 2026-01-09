@@ -293,7 +293,6 @@ export default function SuccessPage() {
                   </p>
                 </div>
               </div>
-              <p className="text-white/60 text-sm">Ref: {applicationSummary?.reference}</p>
             </motion.div>
           )}
 
@@ -319,7 +318,7 @@ export default function SuccessPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              Application Submitted Successfully!
+              Your Application Has Been Successfully Received!
             </motion.h1>
             
             <motion.p 
@@ -329,20 +328,8 @@ export default function SuccessPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              Thank you for applying to Queensgate International School.
+              Our admissions team will review your application and contact you within 24-48 hours.
             </motion.p>
-            
-            {applicationSummary && (
-              <motion.div 
-                className="bg-[#053f52] rounded-xl p-6 mb-6 inline-block"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
-                <p className="text-white/70 text-sm mb-2">Your Application Reference</p>
-                <p className="text-3xl md:text-4xl font-mono font-bold text-[#EFBF04]">{applicationSummary.reference}</p>
-              </motion.div>
-            )}
           </motion.div>
 
           {/* Application Summary */}
@@ -523,25 +510,38 @@ export default function SuccessPage() {
           >
             <h3 className="font-bold text-[#053f52] mb-4 flex items-center gap-2">
               <CreditCard className="w-5 h-5" />
-              Bank Payment Instructions
+              ABSA Bank Payment Details
             </h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-700 mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
-                  <strong>Step 1:</strong> Visit any bank
-                </p>
-                <p className="text-sm text-gray-700 mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
-                  <strong>Step 2:</strong> Pay $300 to Queensgate International School
-                </p>
+            
+            {/* ABSA Bank Details */}
+            <div className="bg-white rounded-lg p-4 mb-4 border border-yellow-200">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Account Name</p>
+                  <p className="font-semibold text-gray-800">Queensgate International School</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Account Number (UGX)</p>
+                  <p className="font-mono font-semibold text-gray-800">XXXX-XXXX-XXXX</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Branch</p>
+                  <p className="font-semibold text-gray-800">Main Branch</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Swift Code</p>
+                  <p className="font-mono font-semibold text-gray-800">ABSAUGKA</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-gray-700 mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
-                  <strong>Step 3:</strong> Get your payment receipt/slip
-                </p>
-                <p className="text-sm text-gray-700" style={{ fontFamily: "'Inter', sans-serif" }}>
-                  <strong>Step 4:</strong> Upload the receipt above
-                </p>
-              </div>
+            </div>
+            
+            <div className="mt-4 pt-4 border-t border-yellow-200">
+              <p className="text-sm text-gray-700 mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <strong>Application Fee:</strong> $300 USD (or UGX equivalent)
+              </p>
+              <p className="text-sm text-gray-600" style={{ fontFamily: "'Inter', sans-serif" }}>
+                After making the payment, please upload your bank payment receipt/slip using the upload section above.
+              </p>
             </div>
           </motion.div>
 
@@ -552,13 +552,6 @@ export default function SuccessPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
           >
-            <Button 
-              onClick={() => applicationSummary?.reference && navigator.clipboard.writeText(applicationSummary.reference)}
-              className="bg-[#20cece] text-[#053f52] hover:bg-[#20cece]/90 rounded-full px-6 py-3"
-            >
-              Copy Reference
-            </Button>
-            
             <Button 
               onClick={() => router.push('/')}
               className="bg-[#053f52] text-white hover:bg-[#042a38] rounded-full px-6 py-3"

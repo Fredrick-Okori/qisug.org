@@ -137,7 +137,8 @@ function LoginContent() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirectUrl)}`,
+          // Force localhost for development
+          redirectTo: `http://localhost:3000/auth/callback?redirect=${encodeURIComponent(redirectUrl)}`,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -146,10 +147,21 @@ function LoginContent() {
       });
 
       if (error) {
-        setError(error.message);
+        // Provide more helpful error messages for common OAuth issues
+        const errorMessage = error.message.toLowerCase();
+        
+        if (errorMessage.includes('provider is not enabled') || 
+            errorMessage.includes('provider not set') ||
+            errorMessage.includes('not enabled')) {
+          setError('Google sign-in is not configured. Please contact the administrator or use email/password to sign in.');
+        } else if (errorMessage.includes('redirect_uri') || errorMessage.includes('redirect url')) {
+          setError('OAuth redirect URL is not configured correctly. Please contact the administrator.');
+        } else {
+          setError(error.message);
+        }
       }
     } catch (err) {
-      setError('An unexpected error occurred');
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
