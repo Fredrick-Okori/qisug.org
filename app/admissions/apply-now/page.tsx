@@ -5,10 +5,13 @@ import { MainSiteFooter } from '@/components/main-footer';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient, isSupabaseConfigured, getSupabaseConfigStatus, getSupabaseErrorMessage } from '@/lib/supabase/client';
-import { Loader2, CheckCircle, AlertCircle, ChevronRight, ChevronLeft, Upload, Download, FileText } from 'lucide-react';
+import { Loader2, CheckCircle, AlertCircle, ChevronRight, ChevronLeft, Upload, Download, FileText, RotateCcw } from 'lucide-react';
 import { generateApplicationReference, storeReference } from '@/lib/application-reference';
 import confetti from 'canvas-confetti';
 import jsPDF from 'jspdf';
+
+// Local storage key
+const STORAGE_KEY = 'qis_application_progress';
 
 // Step indicator component
 const StepIndicator = ({ currentStep, totalSteps }: { currentStep: number; totalSteps: number }) => {
@@ -49,6 +52,7 @@ export default function ApplyNowPage() {
   const [applicationId, setApplicationId] = useState('');
   const [generatedReference, setGeneratedReference] = useState<string | null>(null);
   const [paymentSlip, setPaymentSlip] = useState<File | null>(null);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -69,6 +73,114 @@ export default function ApplyNowPage() {
     birthCertificate: null as File | null,
     photo: null as File | null,
   });
+
+  // Load saved progress from localStorage on mount
+  useEffect(() => {
+    const savedProgress = localStorage.getItem(STORAGE_KEY);
+    if (savedProgress) {
+      try {
+        const parsed = JSON.parse(savedProgress);
+        
+        // Restore form data (excluding files)
+        if (parsed.formData) {
+          setFormData(prev => ({
+            ...prev,
+            firstName: parsed.formData.firstName || '',
+            lastName: parsed.formData.lastName || '',
+            dateOfBirth: parsed.formData.dateOfBirth || '',
+            gender: parsed.formData.gender || '',
+            nationality: parsed.formData.nationality || '',
+            email: parsed.formData.email || '',
+            phone: parsed.formData.phone || '',
+            address: parsed.formData.address || '',
+            city: parsed.formData.city || '',
+            country: parsed.formData.country || '',
+            currentGrade: parsed.formData.currentGrade || '',
+            previousSchool: parsed.formData.previousSchool || '',
+            admissionPeriod: parsed.formData.admissionPeriod || '',
+          }));
+        }
+        
+        // Restore step and other data
+        if (parsed.currentStep) setCurrentStep(parsed.currentStep);
+        if (parsed.applicationId) setApplicationId(parsed.applicationId);
+        if (parsed.generatedReference) setGeneratedReference(parsed.generatedReference);
+        
+        console.log('[LocalStorage] Progress restored from localStorage');
+      } catch (error) {
+        console.error('[LocalStorage] Failed to parse saved progress:', error);
+      }
+    }
+  }, []);
+
+  // Save progress to localStorage whenever relevant state changes
+  useEffect(() => {
+    // Don't save if we're on the success page (step 5)
+    if (currentStep === 5) {
+      return;
+    }
+
+    const progressData = {
+      currentStep,
+      formData: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        dateOfBirth: formData.dateOfBirth,
+        gender: formData.gender,
+        nationality: formData.nationality,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        country: formData.country,
+        currentGrade: formData.currentGrade,
+        previousSchool: formData.previousSchool,
+        admissionPeriod: formData.admissionPeriod,
+        // Files cannot be stored in localStorage
+      },
+      applicationId,
+      generatedReference,
+      lastSaved: new Date().toISOString(),
+    };
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData));
+    console.log('[LocalStorage] Progress saved');
+  }, [currentStep, formData, applicationId, generatedReference]);
+
+  // Clear localStorage and reset form
+  const clearProgress = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    
+    // Reset all state
+    setCurrentStep(1);
+    setFormData({
+      firstName: '',
+      lastName: '',
+      dateOfBirth: '',
+      gender: '',
+      nationality: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      country: '',
+      currentGrade: '',
+      previousSchool: '',
+      admissionPeriod: '',
+      transcript: null,
+      passport: null,
+      birthCertificate: null,
+      photo: null,
+    });
+    setApplicationId('');
+    setGeneratedReference(null);
+    setPaymentSlip(null);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+    setShowClearConfirm(false);
+    
+    console.log('[LocalStorage] Progress cleared');
+  };
 
   // Check Supabase configuration on mount
   useEffect(() => {
@@ -100,17 +212,24 @@ export default function ApplyNowPage() {
     const fileExtension = file.name.split('.').pop();
     const fileName = `${applicantId}/${folder}/${Date.now()}.${fileExtension}`;
     
+    console.log(`[UploadDocument] Uploading to: ${fileName}`);
+    
     const { data, error } = await supabaseClient.storage
       .from('admission-documents')
       .upload(fileName, file);
     
     if (error) {
+      console.error(`[UploadDocument] Storage upload failed:`, error);
       throw new Error(`Failed to upload ${folder}: ${error.message}`);
     }
+    
+    console.log(`[UploadDocument] Upload successful:`, data.path);
     
     const { data: urlData } = supabaseClient.storage
       .from('admission-documents')
       .getPublicUrl(data.path);
+    
+    console.log(`[UploadDocument] Public URL:`, urlData.publicUrl);
     
     return urlData.publicUrl;
   };
@@ -173,6 +292,8 @@ export default function ApplyNowPage() {
         throw new Error('Program not found. Please check grade selection.');
       }
 
+      console.log('[ApplyNow] Program found:', program.id);
+
       // Step 3: Create application
       console.log('[ApplyNow] Creating application...');
       const intakeMonthMap: Record<string, string> = {
@@ -210,7 +331,8 @@ export default function ApplyNowPage() {
       setApplicationId(application.id);
 
       // Step 4: Create academic history
-      await supabase.from('academic_histories').insert({
+      console.log('[ApplyNow] Creating academic history...');
+      const { error: academicError } = await supabase.from('academic_histories').insert({
         application_id: application.id,
         school_name: formData.previousSchool,
         province: formData.city,
@@ -220,81 +342,153 @@ export default function ApplyNowPage() {
         grade_completed: `Grade ${grade - 1}`,
       });
 
+      if (academicError) {
+        console.error('[ApplyNow] Academic history creation failed:', academicError);
+        // Don't throw - this is not critical
+      } else {
+        console.log('[ApplyNow] Academic history created');
+      }
+
       // Step 5: Upload documents
       console.log('[ApplyNow] Uploading documents...');
-      const uploads = [];
+      
+      // Upload transcript
       if (formData.transcript) {
-        uploads.push(
-          uploadDocument(supabase, formData.transcript, 'transcripts', applicant.id)
-            .then(url => 
-              supabase.from('application_documents').insert({
-                application_id: application.id,
-                document_type: 'transcript',
-                file_name: formData.transcript!.name,
-                file_path: url,
-                file_size: formData.transcript!.size,
-              })
-            )
-            .catch(err => console.warn('[ApplyNow] Transcript upload failed:', err))
-        );
+        try {
+          console.log('[ApplyNow] Uploading transcript...');
+          const transcriptUrl = await uploadDocument(supabase, formData.transcript, 'transcripts', applicant.id);
+          console.log('[ApplyNow] Transcript uploaded, saving to DB...');
+          
+          const { data: transcriptDoc, error: transcriptError } = await supabase
+            .from('application_documents')
+            .insert({
+              application_id: application.id,
+              document_type: 'transcript',
+              file_name: formData.transcript.name,
+              file_path: transcriptUrl,
+              file_size: formData.transcript.size,
+            })
+            .select()
+            .single();
+          
+          if (transcriptError) {
+            console.error('[ApplyNow] Transcript DB insert failed:', transcriptError);
+            throw new Error(`Failed to save transcript: ${transcriptError.message}`);
+          }
+          console.log('[ApplyNow] Transcript saved successfully:', transcriptDoc);
+        } catch (err) {
+          console.error('[ApplyNow] Transcript upload error:', err);
+          throw err;
+        }
       }
+      
+      // Upload passport
       if (formData.passport) {
-        uploads.push(
-          uploadDocument(supabase, formData.passport, 'passports', applicant.id)
-            .then(url => 
-              supabase.from('application_documents').insert({
-                application_id: application.id,
-                document_type: 'passport',
-                file_name: formData.passport!.name,
-                file_path: url,
-                file_size: formData.passport!.size,
-              })
-            )
-            .catch(err => console.warn('[ApplyNow] Passport upload failed:', err))
-        );
+        try {
+          console.log('[ApplyNow] Uploading passport...');
+          const passportUrl = await uploadDocument(supabase, formData.passport, 'passports', applicant.id);
+          console.log('[ApplyNow] Passport uploaded, saving to DB...');
+          
+          const { data: passportDoc, error: passportError } = await supabase
+            .from('application_documents')
+            .insert({
+              application_id: application.id,
+              document_type: 'passport',
+              file_name: formData.passport.name,
+              file_path: passportUrl,
+              file_size: formData.passport.size,
+            })
+            .select()
+            .single();
+          
+          if (passportError) {
+            console.error('[ApplyNow] Passport DB insert failed:', passportError);
+            throw new Error(`Failed to save passport: ${passportError.message}`);
+          }
+          console.log('[ApplyNow] Passport saved successfully:', passportDoc);
+        } catch (err) {
+          console.error('[ApplyNow] Passport upload error:', err);
+          throw err;
+        }
       }
+      
+      // Upload birth certificate
       if (formData.birthCertificate) {
-        uploads.push(
-          uploadDocument(supabase, formData.birthCertificate, 'birth-certificates', applicant.id)
-            .then(url => 
-              supabase.from('application_documents').insert({
-                application_id: application.id,
-                document_type: 'birth_certificate',
-                file_name: formData.birthCertificate!.name,
-                file_path: url,
-                file_size: formData.birthCertificate!.size,
-              })
-            )
-            .catch(err => console.warn('[ApplyNow] Birth certificate upload failed:', err))
-        );
+        try {
+          console.log('[ApplyNow] Uploading birth certificate...');
+          const birthCertUrl = await uploadDocument(supabase, formData.birthCertificate, 'birth-certificates', applicant.id);
+          console.log('[ApplyNow] Birth certificate uploaded, saving to DB...');
+          
+          const { data: birthCertDoc, error: birthCertError } = await supabase
+            .from('application_documents')
+            .insert({
+              application_id: application.id,
+              document_type: 'birth_certificate',
+              file_name: formData.birthCertificate.name,
+              file_path: birthCertUrl,
+              file_size: formData.birthCertificate.size,
+            })
+            .select()
+            .single();
+          
+          if (birthCertError) {
+            console.error('[ApplyNow] Birth certificate DB insert failed:', birthCertError);
+            throw new Error(`Failed to save birth certificate: ${birthCertError.message}`);
+          }
+          console.log('[ApplyNow] Birth certificate saved successfully:', birthCertDoc);
+        } catch (err) {
+          console.error('[ApplyNow] Birth certificate upload error:', err);
+          throw err;
+        }
       }
+      
+      // Upload photo
       if (formData.photo) {
-        uploads.push(
-          uploadDocument(supabase, formData.photo, 'photos', applicant.id)
-            .then(url => 
-              supabase.from('application_documents').insert({
-                application_id: application.id,
-                document_type: 'photo',
-                file_name: formData.photo!.name,
-                file_path: url,
-                file_size: formData.photo!.size,
-              })
-            )
-            .catch(err => console.warn('[ApplyNow] Photo upload failed:', err))
-        );
+        try {
+          console.log('[ApplyNow] Uploading photo...');
+          const photoUrl = await uploadDocument(supabase, formData.photo, 'photos', applicant.id);
+          console.log('[ApplyNow] Photo uploaded, saving to DB...');
+          
+          const { data: photoDoc, error: photoError } = await supabase
+            .from('application_documents')
+            .insert({
+              application_id: application.id,
+              document_type: 'photo',
+              file_name: formData.photo.name,
+              file_path: photoUrl,
+              file_size: formData.photo.size,
+            })
+            .select()
+            .single();
+          
+          if (photoError) {
+            console.error('[ApplyNow] Photo DB insert failed:', photoError);
+            throw new Error(`Failed to save photo: ${photoError.message}`);
+          }
+          console.log('[ApplyNow] Photo saved successfully:', photoDoc);
+        } catch (err) {
+          console.error('[ApplyNow] Photo upload error:', err);
+          throw err;
+        }
       }
-
-      await Promise.all(uploads);
 
       // Step 6: Generate application reference and update applicant record
+      console.log('[ApplyNow] Generating reference...');
       const reference = generateApplicationReference();
       setGeneratedReference(reference);
       storeReference(reference);
       
-      await supabase
+      const { error: updateError } = await supabase
         .from('applicants')
         .update({ qis_id: reference })
         .eq('id', applicant.id);
+
+      if (updateError) {
+        console.error('[ApplyNow] Reference update failed:', updateError);
+        // Don't throw - reference is already generated and stored
+      } else {
+        console.log('[ApplyNow] Reference saved to applicant record');
+      }
 
       console.log('[ApplyNow] Application submitted successfully');
       setSubmitStatus('success');
@@ -316,8 +510,13 @@ export default function ApplyNowPage() {
       return;
     }
 
+    if (!applicationId) {
+      setErrorMessage('Application ID is missing. Please try submitting your application again.');
+      return;
+    }
+
     setIsSubmitting(true);
-    setErrorMessage(''); // Clear any previous errors
+    setErrorMessage('');
     
     try {
       const supabase = createClient();
@@ -350,34 +549,41 @@ export default function ApplyNowPage() {
 
       console.log('[PaymentUpload] Public URL:', urlData.publicUrl);
 
-      // Store payment slip reference
-      const { error: docError } = await supabase.from('application_documents').insert({
-        application_id: applicationId,
-        document_type: 'payment_slip',
-        file_name: paymentSlip.name,
-        file_path: urlData.publicUrl,
-        file_size: paymentSlip.size,
-      });
+      // Store payment slip reference in application_documents table
+      console.log('[PaymentUpload] Saving document record to DB...');
+      const { data: docData, error: docError } = await supabase
+        .from('application_documents')
+        .insert({
+          application_id: applicationId,
+          document_type: 'payment_slip',
+          file_name: paymentSlip.name,
+          file_path: urlData.publicUrl,
+          file_size: paymentSlip.size,
+        })
+        .select()
+        .single();
 
       if (docError) {
         console.error('[PaymentUpload] Document insert error:', docError);
         throw new Error(`Failed to save document record: ${docError.message}`);
       }
 
-      console.log('[PaymentUpload] Document record saved');
+      console.log('[PaymentUpload] Document record saved successfully:', docData);
 
       // Update application status
-      const { error: updateError } = await supabase
+      console.log('[PaymentUpload] Updating application status...');
+      const { data: appData, error: updateError } = await supabase
         .from('applications')
         .update({ application_fee_paid: true })
-        .eq('id', applicationId);
+        .eq('id', applicationId)
+        .select()
+        .single();
 
       if (updateError) {
         console.error('[PaymentUpload] Application update error:', updateError);
-        // Don't throw here - payment slip is uploaded, just status update failed
         console.warn('[PaymentUpload] Payment uploaded but status not updated');
       } else {
-        console.log('[PaymentUpload] Application status updated');
+        console.log('[PaymentUpload] Application status updated successfully:', appData);
       }
 
       // Trigger confetti
@@ -403,11 +609,15 @@ export default function ApplyNowPage() {
       }, 250);
 
       console.log('[PaymentUpload] Payment submission complete!');
+      
+      // Clear localStorage after successful completion
+      localStorage.removeItem(STORAGE_KEY);
+      console.log('[LocalStorage] Progress cleared after successful completion');
+      
       setCurrentStep(5); // Move to success step
     } catch (error: any) {
       console.error('[PaymentUpload] Payment submission error:', error);
       
-      // Provide more specific error messages
       let userMessage = 'Failed to submit payment slip. ';
       
       if (error.message?.includes('Invalid API key')) {
@@ -556,6 +766,71 @@ export default function ApplyNowPage() {
         `}</style>
         <div className="fixed inset-0 bg-center bg-repeat -z-10" style={{ backgroundImage: "url('/images/pattern.webp')" }} />
         <motion.div className="fixed inset-0 -z-[5]" style={{ backgroundColor: '#EFBF04', opacity: 0.88 }} />
+
+        {/* Clear Progress Button - Show on all steps except success */}
+        {currentStep !== 5 && (
+          <motion.div 
+            className="max-w-7xl mx-auto mb-4 flex justify-end"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <button
+              onClick={() => setShowClearConfirm(true)}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition-colors"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Clear & Restart
+            </button>
+          </motion.div>
+        )}
+
+        {/* Clear Confirmation Modal */}
+        <AnimatePresence>
+          {showClearConfirm && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4"
+              onClick={() => setShowClearConfirm(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl"
+              >
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <AlertCircle className="w-8 h-8 text-red-600" />
+                </div>
+                
+                <h3 className="text-2xl font-bold text-[#053f52] mb-3 text-center" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                  Clear All Progress?
+                </h3>
+                
+                <p className="text-gray-700 mb-6 text-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  This will delete all saved data and restart your application from the beginning. This action cannot be undone.
+                </p>
+                
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowClearConfirm(false)}
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={clearProgress}
+                    className="flex-1 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                  >
+                    Clear All
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <motion.div 
           className="max-w-7xl mx-auto" 
@@ -1089,7 +1364,7 @@ export default function ApplyNowPage() {
                     </motion.div>
                     
                     <h2 className="text-3xl md:text-4xl text-[#053f52] mb-4" style={{ fontFamily: "'Crimson Pro', serif" }}>
-                      Application Received!
+                     One more step to go
                     </h2>
                     
                     <p className="text-lg text-gray-700 mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -1303,6 +1578,8 @@ export default function ApplyNowPage() {
                               spread: 60,
                               origin: { y: 0.6 }
                             });
+                            // Clear storage when skipping to success
+                            localStorage.removeItem(STORAGE_KEY);
                             setCurrentStep(5);
                           }}
                           className="bg-yellow-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-yellow-600 transition-all"
