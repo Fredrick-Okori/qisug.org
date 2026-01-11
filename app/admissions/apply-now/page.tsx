@@ -639,8 +639,8 @@ export default function ApplyNowPage() {
         <div className="fixed inset-0 bg-center bg-repeat -z-10" style={{ backgroundImage: "url('/images/pattern.webp')" }} />
         <motion.div className="fixed inset-0 -z-[5]" style={{ backgroundColor: '#EFBF04', opacity: 0.88 }} />
 
-        {/* Clear Progress Button - Show on all steps except success */}
-        {currentStep !== 5 && (
+       {/* Clear Progress Button - Show on application page and payment upload page only */}
+        {(currentStep === 2 || currentStep === 4) && (
           <motion.div 
             className="max-w-7xl mx-auto mb-4 flex justify-end"
             initial={{ opacity: 0, y: -10 }}
@@ -648,7 +648,7 @@ export default function ApplyNowPage() {
           >
             <button
               onClick={() => setShowClearConfirm(true)}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition-colors"
+              className="bg-red-500  hover:bg-red-600 text-white px-5 py-3 rounded-full font-semibold text-sm flex items-center gap-2 transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
               Clear & Restart
@@ -1307,7 +1307,7 @@ export default function ApplyNowPage() {
                             Saving...
                           </span>
                         ) : (
-                          'Submit Application'
+                          'Next Step'
                         )}
                       </motion.button>
                     </div>
