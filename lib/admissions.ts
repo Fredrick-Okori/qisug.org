@@ -151,19 +151,24 @@ export async function uploadDocument(
 ) {
   const filePath = `${applicationId}/${documentType}/${Date.now()}-${file.name}`
   
-  // Upload to Supabase Storage
+  // Upload to Supabase Storage (using underscore convention)
   const { data, error } = await supabase.storage
-    .from('admission-documents')
+    .from('admission_documents')
     .upload(filePath, file)
 
   if (error) {
+    console.error('[UploadDocument] Storage upload failed:', error)
     return { success: false, error }
   }
 
+  console.log('[UploadDocument] Upload successful:', data.path)
+
   // Get public URL
   const { data: { publicUrl } } = supabase.storage
-    .from('admission-documents')
+    .from('admission_documents')
     .getPublicUrl(filePath)
+
+  console.log('[UploadDocument] Public URL:', publicUrl)
 
   // Save document reference to database
   const { error: dbError } = await supabase
@@ -178,8 +183,11 @@ export async function uploadDocument(
     })
 
   if (dbError) {
+    console.error('[UploadDocument] Database insert failed:', dbError)
     return { success: false, error: dbError }
   }
+
+  console.log('[UploadDocument] Document saved to database successfully')
 
   return { success: true, data: { url: publicUrl } }
 }
@@ -297,9 +305,11 @@ export async function confirmPayment(
     .single()
 
   if (error) {
+    console.error('[ConfirmPayment] Database update failed:', error)
     return { success: false, error }
   }
 
+  console.log('[ConfirmPayment] Payment confirmed successfully')
   return { success: true, data }
 }
 
@@ -352,4 +362,3 @@ export async function saveDraft(
 
   return { success: true, applicationId: appResult.data.id }
 }
-

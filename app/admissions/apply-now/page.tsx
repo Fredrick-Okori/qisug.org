@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { createClient, isSupabaseConfigured, getSupabaseConfigStatus, getSupabaseErrorMessage } from '@/lib/supabase/client';
 import { Loader2, CheckCircle, AlertCircle, ChevronRight, ChevronLeft, Upload, Download, FileText, RotateCcw } from 'lucide-react';
 import { generateApplicationReference, storeReference } from '@/lib/application-reference';
+import { submitApplication, uploadDocument, confirmPayment } from '@/lib/admissions';
 import confetti from 'canvas-confetti';
 import jsPDF from 'jspdf';
 
@@ -50,24 +51,43 @@ export default function ApplyNowPage() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [applicationId, setApplicationId] = useState('');
+  const [applicantId, setApplicantId] = useState('');
   const [generatedReference, setGeneratedReference] = useState<string | null>(null);
   const [paymentSlip, setPaymentSlip] = useState<File | null>(null);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const [formData, setFormData] = useState({
+    // Personal Information
     firstName: '',
+    middleName: '',
     lastName: '',
     dateOfBirth: '',
     gender: '',
     nationality: '',
+    
+    // Contact Information
     email: '',
     phone: '',
-    address: '',
-    city: '',
-    country: '',
+    phoneOther: '',
+    
+    // Address Information
+    addressStreet: '',
+    addressCity: '',
+    addressDistrict: '',
+    addressPostalCode: '',
+    addressCountry: '',
+    
+    // Emergency Contact (Required)
+    emergencyContactName: '',
+    emergencyContactPhone: '',
+    emergencyContactEmail: '',
+    
+    // Academic Information
     currentGrade: '',
     previousSchool: '',
     admissionPeriod: '',
+    
+    // Documents
     transcript: null as File | null,
     passport: null as File | null,
     birthCertificate: null as File | null,
@@ -81,29 +101,21 @@ export default function ApplyNowPage() {
       try {
         const parsed = JSON.parse(savedProgress);
         
-        // Restore form data (excluding files)
         if (parsed.formData) {
           setFormData(prev => ({
             ...prev,
-            firstName: parsed.formData.firstName || '',
-            lastName: parsed.formData.lastName || '',
-            dateOfBirth: parsed.formData.dateOfBirth || '',
-            gender: parsed.formData.gender || '',
-            nationality: parsed.formData.nationality || '',
-            email: parsed.formData.email || '',
-            phone: parsed.formData.phone || '',
-            address: parsed.formData.address || '',
-            city: parsed.formData.city || '',
-            country: parsed.formData.country || '',
-            currentGrade: parsed.formData.currentGrade || '',
-            previousSchool: parsed.formData.previousSchool || '',
-            admissionPeriod: parsed.formData.admissionPeriod || '',
+            ...parsed.formData,
+            // Files cannot be restored
+            transcript: null,
+            passport: null,
+            birthCertificate: null,
+            photo: null,
           }));
         }
         
-        // Restore step and other data
         if (parsed.currentStep) setCurrentStep(parsed.currentStep);
         if (parsed.applicationId) setApplicationId(parsed.applicationId);
+        if (parsed.applicantId) setApplicantId(parsed.applicantId);
         if (parsed.generatedReference) setGeneratedReference(parsed.generatedReference);
         
         console.log('[LocalStorage] Progress restored from localStorage');
@@ -115,7 +127,6 @@ export default function ApplyNowPage() {
 
   // Save progress to localStorage whenever relevant state changes
   useEffect(() => {
-    // Don't save if we're on the success page (step 5)
     if (currentStep === 5) {
       return;
     }
@@ -124,46 +135,58 @@ export default function ApplyNowPage() {
       currentStep,
       formData: {
         firstName: formData.firstName,
+        middleName: formData.middleName,
         lastName: formData.lastName,
         dateOfBirth: formData.dateOfBirth,
         gender: formData.gender,
         nationality: formData.nationality,
         email: formData.email,
         phone: formData.phone,
-        address: formData.address,
-        city: formData.city,
-        country: formData.country,
+        phoneOther: formData.phoneOther,
+        addressStreet: formData.addressStreet,
+        addressCity: formData.addressCity,
+        addressDistrict: formData.addressDistrict,
+        addressPostalCode: formData.addressPostalCode,
+        addressCountry: formData.addressCountry,
+        emergencyContactName: formData.emergencyContactName,
+        emergencyContactPhone: formData.emergencyContactPhone,
+        emergencyContactEmail: formData.emergencyContactEmail,
         currentGrade: formData.currentGrade,
         previousSchool: formData.previousSchool,
         admissionPeriod: formData.admissionPeriod,
-        // Files cannot be stored in localStorage
       },
       applicationId,
+      applicantId,
       generatedReference,
       lastSaved: new Date().toISOString(),
     };
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData));
-    console.log('[LocalStorage] Progress saved');
-  }, [currentStep, formData, applicationId, generatedReference]);
+  }, [currentStep, formData, applicationId, applicantId, generatedReference]);
 
   // Clear localStorage and reset form
   const clearProgress = () => {
     localStorage.removeItem(STORAGE_KEY);
     
-    // Reset all state
     setCurrentStep(1);
     setFormData({
       firstName: '',
+      middleName: '',
       lastName: '',
       dateOfBirth: '',
       gender: '',
       nationality: '',
       email: '',
       phone: '',
-      address: '',
-      city: '',
-      country: '',
+      phoneOther: '',
+      addressStreet: '',
+      addressCity: '',
+      addressDistrict: '',
+      addressPostalCode: '',
+      addressCountry: '',
+      emergencyContactName: '',
+      emergencyContactPhone: '',
+      emergencyContactEmail: '',
       currentGrade: '',
       previousSchool: '',
       admissionPeriod: '',
@@ -173,6 +196,7 @@ export default function ApplyNowPage() {
       photo: null,
     });
     setApplicationId('');
+    setApplicantId('');
     setGeneratedReference(null);
     setPaymentSlip(null);
     setSubmitStatus('idle');
@@ -208,32 +232,6 @@ export default function ApplyNowPage() {
     }
   };
 
-  const uploadDocument = async (supabaseClient: ReturnType<typeof createClient>, file: File, folder: string, applicantId: string): Promise<string> => {
-    const fileExtension = file.name.split('.').pop();
-    const fileName = `${applicantId}/${folder}/${Date.now()}.${fileExtension}`;
-    
-    console.log(`[UploadDocument] Uploading to: ${fileName}`);
-    
-    const { data, error } = await supabaseClient.storage
-      .from('admission-documents')
-      .upload(fileName, file);
-    
-    if (error) {
-      console.error(`[UploadDocument] Storage upload failed:`, error);
-      throw new Error(`Failed to upload ${folder}: ${error.message}`);
-    }
-    
-    console.log(`[UploadDocument] Upload successful:`, data.path);
-    
-    const { data: urlData } = supabaseClient.storage
-      .from('admission-documents')
-      .getPublicUrl(data.path);
-    
-    console.log(`[UploadDocument] Public URL:`, urlData.publicUrl);
-    
-    return urlData.publicUrl;
-  };
-
   const handleFormSubmit = async () => {
     if (!isSupabaseConfigured()) {
       setSubmitStatus('error');
@@ -248,37 +246,7 @@ export default function ApplyNowPage() {
     try {
       const supabase = createClient();
 
-      // Step 1: Create applicant
-      console.log('[ApplyNow] Creating applicant...');
-      const { data: applicant, error: applicantError } = await supabase
-        .from('applicants')
-        .insert({
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          birth_date: formData.dateOfBirth,
-          gender: formData.gender === 'male' ? 'Male' : formData.gender === 'female' ? 'Female' : 'Male',
-          citizenship_type: formData.nationality.toLowerCase().includes('uganda') ? 'Ugandan' : 'Non-Ugandan',
-          citizenship_country: formData.nationality,
-          email: formData.email,
-          phone_primary: formData.phone,
-          address_street: formData.address,
-          address_city: formData.city,
-          address_country: formData.country,
-        })
-        .select()
-        .single();
-
-      if (applicantError) {
-        console.error('[ApplyNow] Applicant creation failed:', applicantError);
-        if (applicantError.message.includes('Invalid API key')) {
-          throw new Error('Invalid API key. Please check your Supabase configuration.');
-        }
-        throw new Error(`Failed to create applicant: ${applicantError.message}`);
-      }
-
-      console.log('[ApplyNow] Applicant created:', applicant.id);
-
-      // Step 2: Get program ID
+      // Get program ID based on grade
       const grade = parseInt(formData.currentGrade);
       const { data: program, error: programError } = await supabase
         .from('programs')
@@ -294,185 +262,127 @@ export default function ApplyNowPage() {
 
       console.log('[ApplyNow] Program found:', program.id);
 
-      // Step 3: Create application
-      console.log('[ApplyNow] Creating application...');
+      // Determine citizenship type
+      const citizenshipType = formData.nationality.toLowerCase().includes('uganda') 
+        ? 'Ugandan' 
+        : 'Non-Ugandan';
+
+  const visaStatus = citizenshipType === 'Ugandan' 
+  ? null  // Ugandans don't need a visa
+  : 'Student Visa';  // Non-Ugandans need student visa for school
+
+      // Map intake period
       const intakeMonthMap: Record<string, string> = {
         'september': 'September',
         'january': 'January',
         'april': 'April',
-        'july': 'May',
       };
 
-      const { data: application, error: appError } = await supabase
-        .from('applications')
-        .insert({
-          applicant_id: applicant.id,
-          academic_year: '2026/2027',
-          intake_month: intakeMonthMap[formData.admissionPeriod] || 'September',
-          program_id: program.id,
-          status: 'Submitted',
-          declaration_signed: true,
-          declaration_date: new Date().toISOString().split('T')[0],
-          application_fee_paid: false,
-          has_agent: false,
-        })
-        .select()
-        .single();
+      // Prepare application data according to API schema
+      const applicationData = {
+        applicant: {
+          firstName: formData.firstName,
+          middleName: formData.middleName || null,
+          preferredName: null,
+          formerLastName: null,
+          lastName: formData.lastName,
+          birthDate: formData.dateOfBirth,
+          gender: formData.gender === 'male' ? 'Male' : formData.gender === 'female' ? 'Female' : 'Other',
+          citizenshipType: citizenshipType,
+          citizenshipCountry: formData.nationality,
+          visaStatus: visaStatus,
+          email: formData.email,
+          phonePrimary: formData.phone,
+          phoneOther: formData.phoneOther || null,
+          address: {
+            street: formData.addressStreet,
+            city: formData.addressCity,
+            district: formData.addressDistrict || '',
+            postalCode: formData.addressPostalCode || '',
+            country: formData.addressCountry,
+          },
+          emergencyContact: {
+            name: formData.emergencyContactName,
+            phone: formData.emergencyContactPhone,
+            email: formData.emergencyContactEmail || null,
+          },
+        },
+        application: {
+          academicYear: '2026/2027',
+          intakeMonth: intakeMonthMap[formData.admissionPeriod] || 'September',
+          programId: program.id,
+          hasAgent: false,
+        },
+        academicHistory: [
+          {
+            schoolName: formData.previousSchool,
+            province: formData.addressCity,
+            country: formData.addressCountry,
+            startDate: '2020-01-01',
+            endDate: '2024-12-31',
+            gradeCompleted: `Grade ${grade - 1}`,
+          }
+        ],
+        agent: null,
+      };
 
-      if (appError) {
-        console.error('[ApplyNow] Application creation failed:', appError);
-        if (appError.message.includes('Invalid API key')) {
-          throw new Error('Invalid API key. Please check your Supabase configuration.');
-        }
-        throw new Error(`Failed to create application: ${appError.message}`);
+      console.log('[ApplyNow] Submitting application...');
+      
+      // Submit application using API
+      const result = await submitApplication(applicationData);
+
+      if (!result.success || !result.data) {
+        throw new Error('Failed to submit application');
       }
 
-      console.log('[ApplyNow] Application created:', application.id);
-      setApplicationId(application.id);
+      const { applicantId, applicationId } = result.data;
+      
+      console.log('[ApplyNow] Application created:', applicationId);
+      console.log('[ApplyNow] Applicant created:', applicantId);
+      
+      setApplicationId(applicationId);
+      setApplicantId(applicantId);
 
-      // Step 4: Create academic history
-      console.log('[ApplyNow] Creating academic history...');
-      const { error: academicError } = await supabase.from('academic_histories').insert({
-        application_id: application.id,
-        school_name: formData.previousSchool,
-        province: formData.city,
-        country: formData.country,
-        start_date: '2020-01-01',
-        end_date: '2024-12-31',
-        grade_completed: `Grade ${grade - 1}`,
-      });
-
-      if (academicError) {
-        console.error('[ApplyNow] Academic history creation failed:', academicError);
-        // Don't throw - this is not critical
-      } else {
-        console.log('[ApplyNow] Academic history created');
-      }
-
-      // Step 5: Upload documents
+      // Upload documents
       console.log('[ApplyNow] Uploading documents...');
       
-      // Upload transcript
       if (formData.transcript) {
-        try {
-          console.log('[ApplyNow] Uploading transcript...');
-          const transcriptUrl = await uploadDocument(supabase, formData.transcript, 'transcripts', applicant.id);
-          console.log('[ApplyNow] Transcript uploaded, saving to DB...');
-          
-          const { data: transcriptDoc, error: transcriptError } = await supabase
-            .from('application_documents')
-            .insert({
-              application_id: application.id,
-              document_type: 'transcript',
-              file_name: formData.transcript.name,
-              file_path: transcriptUrl,
-              file_size: formData.transcript.size,
-            })
-            .select()
-            .single();
-          
-          if (transcriptError) {
-            console.error('[ApplyNow] Transcript DB insert failed:', transcriptError);
-            throw new Error(`Failed to save transcript: ${transcriptError.message}`);
-          }
-          console.log('[ApplyNow] Transcript saved successfully:', transcriptDoc);
-        } catch (err) {
-          console.error('[ApplyNow] Transcript upload error:', err);
-          throw err;
+        console.log('[ApplyNow] Uploading transcript...');
+        const transcriptResult = await uploadDocument(applicationId, 'transcript', formData.transcript);
+        if (!transcriptResult.success) {
+          throw new Error('Failed to upload transcript');
         }
-      }
-      
-      // Upload passport
-      if (formData.passport) {
-        try {
-          console.log('[ApplyNow] Uploading passport...');
-          const passportUrl = await uploadDocument(supabase, formData.passport, 'passports', applicant.id);
-          console.log('[ApplyNow] Passport uploaded, saving to DB...');
-          
-          const { data: passportDoc, error: passportError } = await supabase
-            .from('application_documents')
-            .insert({
-              application_id: application.id,
-              document_type: 'passport',
-              file_name: formData.passport.name,
-              file_path: passportUrl,
-              file_size: formData.passport.size,
-            })
-            .select()
-            .single();
-          
-          if (passportError) {
-            console.error('[ApplyNow] Passport DB insert failed:', passportError);
-            throw new Error(`Failed to save passport: ${passportError.message}`);
-          }
-          console.log('[ApplyNow] Passport saved successfully:', passportDoc);
-        } catch (err) {
-          console.error('[ApplyNow] Passport upload error:', err);
-          throw err;
-        }
-      }
-      
-      // Upload birth certificate
-      if (formData.birthCertificate) {
-        try {
-          console.log('[ApplyNow] Uploading birth certificate...');
-          const birthCertUrl = await uploadDocument(supabase, formData.birthCertificate, 'birth-certificates', applicant.id);
-          console.log('[ApplyNow] Birth certificate uploaded, saving to DB...');
-          
-          const { data: birthCertDoc, error: birthCertError } = await supabase
-            .from('application_documents')
-            .insert({
-              application_id: application.id,
-              document_type: 'birth_certificate',
-              file_name: formData.birthCertificate.name,
-              file_path: birthCertUrl,
-              file_size: formData.birthCertificate.size,
-            })
-            .select()
-            .single();
-          
-          if (birthCertError) {
-            console.error('[ApplyNow] Birth certificate DB insert failed:', birthCertError);
-            throw new Error(`Failed to save birth certificate: ${birthCertError.message}`);
-          }
-          console.log('[ApplyNow] Birth certificate saved successfully:', birthCertDoc);
-        } catch (err) {
-          console.error('[ApplyNow] Birth certificate upload error:', err);
-          throw err;
-        }
-      }
-      
-      // Upload photo
-      if (formData.photo) {
-        try {
-          console.log('[ApplyNow] Uploading photo...');
-          const photoUrl = await uploadDocument(supabase, formData.photo, 'photos', applicant.id);
-          console.log('[ApplyNow] Photo uploaded, saving to DB...');
-          
-          const { data: photoDoc, error: photoError } = await supabase
-            .from('application_documents')
-            .insert({
-              application_id: application.id,
-              document_type: 'photo',
-              file_name: formData.photo.name,
-              file_path: photoUrl,
-              file_size: formData.photo.size,
-            })
-            .select()
-            .single();
-          
-          if (photoError) {
-            console.error('[ApplyNow] Photo DB insert failed:', photoError);
-            throw new Error(`Failed to save photo: ${photoError.message}`);
-          }
-          console.log('[ApplyNow] Photo saved successfully:', photoDoc);
-        } catch (err) {
-          console.error('[ApplyNow] Photo upload error:', err);
-          throw err;
-        }
+        console.log('[ApplyNow] Transcript uploaded successfully');
       }
 
-      // Step 6: Generate application reference and update applicant record
+      if (formData.passport) {
+        console.log('[ApplyNow] Uploading passport...');
+        const passportResult = await uploadDocument(applicationId, 'passport', formData.passport);
+        if (!passportResult.success) {
+          throw new Error('Failed to upload passport');
+        }
+        console.log('[ApplyNow] Passport uploaded successfully');
+      }
+
+      if (formData.birthCertificate) {
+        console.log('[ApplyNow] Uploading birth certificate...');
+        const birthCertResult = await uploadDocument(applicationId, 'birth_certificate', formData.birthCertificate);
+        if (!birthCertResult.success) {
+          throw new Error('Failed to upload birth certificate');
+        }
+        console.log('[ApplyNow] Birth certificate uploaded successfully');
+      }
+
+      if (formData.photo) {
+        console.log('[ApplyNow] Uploading photo...');
+        const photoResult = await uploadDocument(applicationId, 'photo', formData.photo);
+        if (!photoResult.success) {
+          throw new Error('Failed to upload photo');
+        }
+        console.log('[ApplyNow] Photo uploaded successfully');
+      }
+
+      // Generate application reference and update applicant record
       console.log('[ApplyNow] Generating reference...');
       const reference = generateApplicationReference();
       setGeneratedReference(reference);
@@ -481,23 +391,22 @@ export default function ApplyNowPage() {
       const { error: updateError } = await supabase
         .from('applicants')
         .update({ qis_id: reference })
-        .eq('id', applicant.id);
+        .eq('id', applicantId);
 
       if (updateError) {
         console.error('[ApplyNow] Reference update failed:', updateError);
-        // Don't throw - reference is already generated and stored
       } else {
         console.log('[ApplyNow] Reference saved to applicant record');
       }
 
       console.log('[ApplyNow] Application submitted successfully');
       setSubmitStatus('success');
-      setCurrentStep(3); // Move to reference number step
+      setCurrentStep(3);
       
     } catch (error) {
       console.error('[ApplyNow] Submission error:', error);
       setSubmitStatus('error');
-      const userMessage = getSupabaseErrorMessage(error);
+      const userMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
       setErrorMessage(userMessage);
     } finally {
       setIsSubmitting(false);
@@ -519,71 +428,26 @@ export default function ApplyNowPage() {
     setErrorMessage('');
     
     try {
-      const supabase = createClient();
-      
       console.log('[PaymentUpload] Starting payment slip upload...');
-      console.log('[PaymentUpload] Application ID:', applicationId);
-      console.log('[PaymentUpload] File name:', paymentSlip.name);
-      console.log('[PaymentUpload] File size:', paymentSlip.size);
       
       // Upload payment slip
-      const fileExtension = paymentSlip.name.split('.').pop();
-      const fileName = `payments/${applicationId}/${Date.now()}.${fileExtension}`;
+      const paymentResult = await uploadDocument(applicationId, 'payment_slip', paymentSlip);
       
-      console.log('[PaymentUpload] Uploading to:', fileName);
-      
-      const { data, error: uploadError } = await supabase.storage
-        .from('admission-documents')
-        .upload(fileName, paymentSlip);
-      
-      if (uploadError) {
-        console.error('[PaymentUpload] Upload error:', uploadError);
-        throw new Error(`Upload failed: ${uploadError.message}`);
+      if (!paymentResult.success) {
+        throw new Error('Failed to upload payment slip');
       }
 
-      console.log('[PaymentUpload] Upload successful:', data.path);
+      console.log('[PaymentUpload] Payment slip uploaded successfully');
 
-      const { data: urlData } = supabase.storage
-        .from('admission-documents')
-        .getPublicUrl(data.path);
-
-      console.log('[PaymentUpload] Public URL:', urlData.publicUrl);
-
-      // Store payment slip reference in application_documents table
-      console.log('[PaymentUpload] Saving document record to DB...');
-      const { data: docData, error: docError } = await supabase
-        .from('application_documents')
-        .insert({
-          application_id: applicationId,
-          document_type: 'payment_slip',
-          file_name: paymentSlip.name,
-          file_path: urlData.publicUrl,
-          file_size: paymentSlip.size,
-        })
-        .select()
-        .single();
-
-      if (docError) {
-        console.error('[PaymentUpload] Document insert error:', docError);
-        throw new Error(`Failed to save document record: ${docError.message}`);
-      }
-
-      console.log('[PaymentUpload] Document record saved successfully:', docData);
-
-      // Update application status
-      console.log('[PaymentUpload] Updating application status...');
-      const { data: appData, error: updateError } = await supabase
-        .from('applications')
-        .update({ application_fee_paid: true })
-        .eq('id', applicationId)
-        .select()
-        .single();
-
-      if (updateError) {
-        console.error('[PaymentUpload] Application update error:', updateError);
-        console.warn('[PaymentUpload] Payment uploaded but status not updated');
-      } else {
-        console.log('[PaymentUpload] Application status updated successfully:', appData);
+      // Confirm payment using API
+      if (generatedReference) {
+        const confirmResult = await confirmPayment(applicationId, generatedReference, 300);
+        
+        if (!confirmResult.success) {
+          console.warn('[PaymentUpload] Payment confirmation failed, but slip was uploaded');
+        } else {
+          console.log('[PaymentUpload] Payment confirmed successfully');
+        }
       }
 
       // Trigger confetti
@@ -614,7 +478,7 @@ export default function ApplyNowPage() {
       localStorage.removeItem(STORAGE_KEY);
       console.log('[LocalStorage] Progress cleared after successful completion');
       
-      setCurrentStep(5); // Move to success step
+      setCurrentStep(5);
     } catch (error: any) {
       console.error('[PaymentUpload] Payment submission error:', error);
       
@@ -1039,7 +903,7 @@ export default function ApplyNowPage() {
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>First Name *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">First Name *</label>
                           <input 
                             type="text" 
                             name="firstName" 
@@ -1047,11 +911,20 @@ export default function ApplyNowPage() {
                             onChange={handleChange} 
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }} 
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Last Name *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">Middle Name</label>
+                          <input 
+                            type="text" 
+                            name="middleName" 
+                            value={formData.middleName} 
+                            onChange={handleChange} 
+                            className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-gray-700 font-semibold mb-2">Last Name *</label>
                           <input 
                             type="text" 
                             name="lastName" 
@@ -1059,11 +932,10 @@ export default function ApplyNowPage() {
                             onChange={handleChange} 
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }} 
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Date of Birth *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">Date of Birth *</label>
                           <input 
                             type="date" 
                             name="dateOfBirth" 
@@ -1071,33 +943,30 @@ export default function ApplyNowPage() {
                             onChange={handleChange} 
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }} 
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Gender *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">Gender *</label>
                           <select 
                             name="gender" 
                             value={formData.gender} 
                             onChange={handleChange} 
                             required 
-                            className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }}
+                            className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg"
                           >
                             <option value="">Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                           </select>
                         </div>
-                        <div className="md:col-span-2">
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Nationality *</label>
+                        <div>
+                          <label className="block text-gray-700 font-semibold mb-2">Nationality *</label>
                           <select 
                             name="nationality" 
                             value={formData.nationality} 
                             onChange={handleChange} 
                             required 
-                            className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }}
+                            className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg"
                           >
                             <option value="">Select Country</option>
                             <option value="Uganda">Uganda</option>
@@ -1128,7 +997,7 @@ export default function ApplyNowPage() {
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Email Address *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">Email Address *</label>
                           <input 
                             type="email" 
                             name="email" 
@@ -1136,11 +1005,10 @@ export default function ApplyNowPage() {
                             onChange={handleChange} 
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }} 
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Phone Number *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">Primary Phone Number *</label>
                           <input 
                             type="tel" 
                             name="phone" 
@@ -1148,43 +1016,126 @@ export default function ApplyNowPage() {
                             onChange={handleChange} 
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }} 
                           />
                         </div>
                         <div className="md:col-span-2">
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Address *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">Alternative Phone Number</label>
+                          <input 
+                            type="tel" 
+                            name="phoneOther" 
+                            value={formData.phoneOther} 
+                            onChange={handleChange} 
+                            className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Address Information */}
+                    <div className="mb-8">
+                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                        Address Information
+                      </h3>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="md:col-span-2">
+                          <label className="block text-gray-700 font-semibold mb-2">Street Address *</label>
                           <input 
                             type="text" 
-                            name="address" 
-                            value={formData.address} 
+                            name="addressStreet" 
+                            value={formData.addressStreet} 
                             onChange={handleChange} 
                             required 
+                            placeholder="House number, street name"
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }} 
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>City *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">City *</label>
                           <input 
                             type="text" 
-                            name="city" 
-                            value={formData.city} 
+                            name="addressCity" 
+                            value={formData.addressCity} 
                             onChange={handleChange} 
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }} 
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Country *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">District/State</label>
                           <input 
                             type="text" 
-                            name="country" 
-                            value={formData.country} 
+                            name="addressDistrict" 
+                            value={formData.addressDistrict} 
+                            onChange={handleChange} 
+                            className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-gray-700 font-semibold mb-2">Postal Code</label>
+                          <input 
+                            type="text" 
+                            name="addressPostalCode" 
+                            value={formData.addressPostalCode} 
+                            onChange={handleChange} 
+                            className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-gray-700 font-semibold mb-2">Country *</label>
+                          <input 
+                            type="text" 
+                            name="addressCountry" 
+                            value={formData.addressCountry} 
                             onChange={handleChange} 
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }} 
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Emergency Contact */}
+                    <div className="mb-8">
+                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                        Emergency Contact Information
+                      </h3>
+                      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r-lg">
+                        <p className="text-sm text-blue-800">
+                          Please provide details of a person we can contact in case of emergency.
+                        </p>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-gray-700 font-semibold mb-2">Contact Name *</label>
+                          <input 
+                            type="text" 
+                            name="emergencyContactName" 
+                            value={formData.emergencyContactName} 
+                            onChange={handleChange} 
+                            required 
+                            placeholder="Full name"
+                            className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-gray-700 font-semibold mb-2">Contact Phone *</label>
+                          <input 
+                            type="tel" 
+                            name="emergencyContactPhone" 
+                            value={formData.emergencyContactPhone} 
+                            onChange={handleChange} 
+                            required 
+                            className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
+                          />
+                        </div>
+                        <div className="md:col-span-2">
+                          <label className="block text-gray-700 font-semibold mb-2">Contact Email</label>
+                          <input 
+                            type="email" 
+                            name="emergencyContactEmail" 
+                            value={formData.emergencyContactEmail} 
+                            onChange={handleChange} 
+                            className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
                           />
                         </div>
                       </div>
@@ -1197,14 +1148,13 @@ export default function ApplyNowPage() {
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Current Grade/Year *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">Applying for Grade *</label>
                           <select 
                             name="currentGrade" 
                             value={formData.currentGrade} 
                             onChange={handleChange} 
                             required 
-                            className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }}
+                            className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg"
                           >
                             <option value="">Select Grade</option>
                             <option value="8">Grade 8</option>
@@ -1215,14 +1165,13 @@ export default function ApplyNowPage() {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Admission Period *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">Admission Period *</label>
                           <select 
                             name="admissionPeriod" 
                             value={formData.admissionPeriod} 
                             onChange={handleChange} 
                             required 
-                            className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }}
+                            className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg"
                           >
                             <option value="">Select Period</option>
                             <option value="september">September 2026</option>
@@ -1231,15 +1180,15 @@ export default function ApplyNowPage() {
                           </select>
                         </div>
                         <div className="md:col-span-2">
-                          <label className="block text-gray-700 font-semibold mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>Previous School *</label>
+                          <label className="block text-gray-700 font-semibold mb-2">Previous/Current School *</label>
                           <input 
                             type="text" 
                             name="previousSchool" 
                             value={formData.previousSchool} 
                             onChange={handleChange} 
                             required 
+                            placeholder="Name of your current or most recent school"
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                            style={{ fontFamily: "'Inter', sans-serif" }} 
                           />
                         </div>
                       </div>
@@ -1261,6 +1210,7 @@ export default function ApplyNowPage() {
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
                           />
+                          <p className="text-sm text-gray-500 mt-1">Most recent report card or transcript</p>
                         </div>
                         <div>
                           <label className="block text-gray-700 font-semibold mb-2">Passport/ID Bio Page *</label>
@@ -1272,6 +1222,7 @@ export default function ApplyNowPage() {
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
                           />
+                          <p className="text-sm text-gray-500 mt-1">Clear copy of passport bio page or national ID</p>
                         </div>
                         <div>
                           <label className="block text-gray-700 font-semibold mb-2">Birth Certificate *</label>
@@ -1283,6 +1234,7 @@ export default function ApplyNowPage() {
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
                           />
+                          <p className="text-sm text-gray-500 mt-1">Official birth certificate</p>
                         </div>
                         <div>
                           <label className="block text-gray-700 font-semibold mb-2">Passport Photo *</label>
@@ -1294,6 +1246,7 @@ export default function ApplyNowPage() {
                             required 
                             className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
                           />
+                          <p className="text-sm text-gray-500 mt-1">Recent passport-sized photograph</p>
                         </div>
                       </div>
                     </div>
@@ -1302,8 +1255,8 @@ export default function ApplyNowPage() {
                     <div className="mb-8">
                       <label className="flex items-start gap-3 cursor-pointer">
                         <input type="checkbox" required className="mt-1 w-5 h-5 text-[#EFBF04] border-gray-300 rounded" />
-                        <span className="text-gray-700" style={{ fontFamily: "'Inter', sans-serif" }}>
-                          I confirm all information is accurate and agree to the terms and conditions of Queensgate International School. *
+                        <span className="text-gray-700">
+                          I confirm that all information provided is accurate and truthful. I agree to the terms and conditions of Queensgate International School and understand that false information may result in application rejection. *
                         </span>
                       </label>
                     </div>
@@ -1324,7 +1277,6 @@ export default function ApplyNowPage() {
                         type="submit" 
                         disabled={isSubmitting} 
                         className={`bg-[#053f52] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
-                        style={{ fontFamily: "'Inter', sans-serif" }}
                         whileHover={!isSubmitting ? { scale: 1.05 } : {}}
                       >
                         {isSubmitting ? (
@@ -1333,7 +1285,7 @@ export default function ApplyNowPage() {
                             Submitting...
                           </span>
                         ) : (
-                          'Next Step'
+                          'Submit Application'
                         )}
                       </motion.button>
                     </div>
@@ -1364,7 +1316,7 @@ export default function ApplyNowPage() {
                     </motion.div>
                     
                     <h2 className="text-3xl md:text-4xl text-[#053f52] mb-4" style={{ fontFamily: "'Crimson Pro', serif" }}>
-                     One more step to go
+                     One More Step to Go
                     </h2>
                     
                     <p className="text-lg text-gray-700 mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -1572,13 +1524,11 @@ export default function ApplyNowPage() {
                         <motion.button
                           type="button"
                           onClick={() => {
-                            // Skip to success without uploading payment
                             confetti({
                               particleCount: 50,
                               spread: 60,
                               origin: { y: 0.6 }
                             });
-                            // Clear storage when skipping to success
                             localStorage.removeItem(STORAGE_KEY);
                             setCurrentStep(5);
                           }}
