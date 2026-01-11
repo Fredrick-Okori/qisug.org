@@ -84,6 +84,7 @@ export default function ApplyNowPage() {
     
     // Academic Information
     currentGrade: '',
+    programStream: '',
     previousSchool: '',
     admissionPeriod: '',
     
@@ -152,6 +153,7 @@ export default function ApplyNowPage() {
         emergencyContactPhone: formData.emergencyContactPhone,
         emergencyContactEmail: formData.emergencyContactEmail,
         currentGrade: formData.currentGrade,
+        programStream: formData.programStream,
         previousSchool: formData.previousSchool,
         admissionPeriod: formData.admissionPeriod,
       },
@@ -188,6 +190,7 @@ export default function ApplyNowPage() {
       emergencyContactPhone: '',
       emergencyContactEmail: '',
       currentGrade: '',
+      programStream: '',
       previousSchool: '',
       admissionPeriod: '',
       transcript: null,
@@ -246,18 +249,20 @@ export default function ApplyNowPage() {
     try {
       const supabase = createClient();
 
-      // Get program ID based on grade
+      // Get program ID based on grade and stream
       const grade = parseInt(formData.currentGrade);
+      const stream = formData.programStream;
+      
       const { data: program, error: programError } = await supabase
         .from('programs')
         .select('id')
         .eq('grade', grade)
-        .eq('stream', 'Science')
+        .eq('stream', stream)
         .single();
 
       if (programError || !program) {
         console.error('[ApplyNow] Program lookup failed:', programError);
-        throw new Error('Program not found. Please check grade selection.');
+        throw new Error(`Program not found for Grade ${grade} - ${stream}. Please check your selections.`);
       }
 
       console.log('[ApplyNow] Program found:', program.id);
@@ -267,9 +272,9 @@ export default function ApplyNowPage() {
         ? 'Ugandan' 
         : 'Non-Ugandan';
 
-  const visaStatus = citizenshipType === 'Ugandan' 
-  ? null  // Ugandans don't need a visa
-  : 'Student Visa';  // Non-Ugandans need student visa for school
+      const visaStatus = citizenshipType === 'Ugandan' 
+        ? null  // Ugandans don't need a visa
+        : 'Student Visa';  // Non-Ugandans need student visa for school
 
       // Map intake period
       const intakeMonthMap: Record<string, string> = {
@@ -525,31 +530,34 @@ export default function ApplyNowPage() {
     doc.text(`Email: ${formData.email}`, 20, 85);
     doc.text(`Phone: ${formData.phone}`, 20, 95);
     doc.text(`Grade: ${formData.currentGrade}`, 20, 105);
+    doc.text(`Stream: ${formData.programStream}`, 20, 115);
     
     // Reference number box
     doc.setFillColor(239, 191, 4);
-    doc.rect(20, 120, 170, 30, 'F');
+    doc.rect(20, 130, 170, 30, 'F');
     doc.setFontSize(16);
     doc.setTextColor(5, 63, 82);
-    doc.text('Payment Reference Number:', 25, 135);
+    doc.text('Payment Reference Number:', 25, 145);
     doc.setFontSize(20);
-    doc.text(generatedReference || '', 25, 145);
+    doc.text(generatedReference || '', 25, 155);
     
     // Bank details
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(14);
-    doc.text('Bank Payment Instructions', 20, 170);
+    doc.text('Bank Payment Instructions', 20, 180);
     
     doc.setFontSize(11);
-    doc.text('Bank: ABSA Bank Uganda', 20, 185);
-    doc.text('Account Name: Queensgate International School', 20, 195);
-    doc.text('Amount: $300 USD (Application Fee)', 20, 205);
-    doc.text(`Reference: ${generatedReference}`, 20, 215);
+    doc.text('Bank: I&M Bank (Uganda) Limited', 20, 195);
+    doc.text('Account Name: Queensgate International School', 20, 205);
+    doc.text('Account Number UGX: 5076029001', 20, 215);
+    doc.text('Account Number USD: 5076029002', 20, 225);
+    doc.text('Amount: $300 USD (Application Fee)', 20, 235);
+    doc.text(`Reference: ${generatedReference}`, 20, 245);
     
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
-    doc.text('Please present this reference number when making your payment at any ABSA branch.', 20, 235);
-    doc.text('After payment, upload your payment slip to complete your application.', 20, 245);
+    doc.text('Please present this reference number when making your payment at any I&M Bank branch.', 20, 260);
+    doc.text('After payment, upload your payment slip to complete your application.', 20, 270);
     
     // Footer
     doc.setFillColor(5, 63, 82);
@@ -839,7 +847,7 @@ export default function ApplyNowPage() {
                       <ol className="space-y-3 text-gray-700">
                         <li>1. Complete the application form</li>
                         <li>2. Receive your payment reference number</li>
-                        <li>3. Make payment at any ABSA bank branch</li>
+                        <li>3. Make payment at any I&M Bank (Uganda) Limited</li>
                         <li>4. Upload your payment slip</li>
                         <li>5. Await confirmation from our admissions team</li>
                       </ol>
@@ -1165,6 +1173,20 @@ export default function ApplyNowPage() {
                           </select>
                         </div>
                         <div>
+                          <label className="block text-gray-700 font-semibold mb-2">Program Stream *</label>
+                          <select 
+                            name="programStream" 
+                            value={formData.programStream} 
+                            onChange={handleChange} 
+                            required 
+                            className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg"
+                          >
+                            <option value="">Select Program</option>
+                            <option value="Science">Science</option>
+                            <option value="Arts">Arts</option>
+                          </select>
+                        </div>
+                        <div>
                           <label className="block text-gray-700 font-semibold mb-2">Admission Period *</label>
                           <select 
                             name="admissionPeriod" 
@@ -1368,10 +1390,14 @@ export default function ApplyNowPage() {
                           <span className="ml-2 font-semibold">Grade {formData.currentGrade}</span>
                         </div>
                         <div>
+                          <span className="text-gray-600">Stream:</span>
+                          <span className="ml-2 font-semibold">{formData.programStream}</span>
+                        </div>
+                        <div>
                           <span className="text-gray-600">Email:</span>
                           <span className="ml-2 font-semibold">{formData.email}</span>
                         </div>
-                        <div>
+                        <div className="md:col-span-2">
                           <span className="text-gray-600">Intake:</span>
                           <span className="ml-2 font-semibold capitalize">{formData.admissionPeriod}</span>
                         </div>
@@ -1389,13 +1415,15 @@ export default function ApplyNowPage() {
                         Bank Payment Instructions
                       </h3>
                       <div className="space-y-2 text-gray-700" style={{ fontFamily: "'Inter', sans-serif" }}>
-                        <p><strong>Bank:</strong> ABSA Bank Uganda</p>
+                        <p><strong>Bank:</strong> I&M Bank (Uganda) Limited</p>
                         <p><strong>Account Name:</strong> Queensgate International School</p>
+                        <p><strong>Account Number UGX:</strong> 5076029001</p>
+                        <p><strong>Account Number USD:</strong> 5076029002</p>
                         <p><strong>Amount:</strong> $300 USD (Application Fee)</p>
                         <p><strong>Reference:</strong> {generatedReference}</p>
                       </div>
                       <p className="text-sm text-gray-600 mt-4">
-                        Please present this reference number when making your payment at any ABSA branch.
+                        Please present this reference number when making your payment at any I&M Bank.
                       </p>
                     </motion.div>
 
