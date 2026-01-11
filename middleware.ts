@@ -23,6 +23,8 @@ export async function middleware(request: NextRequest) {
     return supabaseResponse
   }
 
+
+  
   const supabase = createServerClient(
     supabaseUrl,
     supabaseAnonKey,
