@@ -1304,7 +1304,7 @@ export default function ApplyNowPage() {
                         {isSubmitting ? (
                           <span className="flex items-center gap-2">
                             <Loader2 className="w-5 h-5 animate-spin" />
-                            Submitting...
+                            Saving...
                           </span>
                         ) : (
                           'Submit Application'
@@ -1342,7 +1342,7 @@ export default function ApplyNowPage() {
                     </h2>
                     
                     <p className="text-lg text-gray-700 mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
-                      Your application has been submitted successfully. Here is your payment reference number:
+                      Your information & documents has been sent successfully. Here is your payment reference number for bnak payments:
                     </p>
 
                     {/* Reference Number Box */}
@@ -1549,22 +1549,8 @@ export default function ApplyNowPage() {
                       </motion.button>
                       
                       <div className="flex flex-col sm:flex-row gap-3">
-                        <motion.button
-                          type="button"
-                          onClick={() => {
-                            confetti({
-                              particleCount: 50,
-                              spread: 60,
-                              origin: { y: 0.6 }
-                            });
-                            localStorage.removeItem(STORAGE_KEY);
-                            setCurrentStep(5);
-                          }}
-                          className="bg-yellow-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-yellow-600 transition-all"
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          Skip for Now
-                        </motion.button>
+                       
+                       
                         
                         <motion.button
                           onClick={handlePaymentSubmit}
