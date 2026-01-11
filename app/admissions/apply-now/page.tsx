@@ -404,8 +404,49 @@ export default function ApplyNowPage() {
         console.log('[ApplyNow] Reference saved to applicant record');
       }
 
-      console.log('[ApplyNow] Application submitted successfully');
-      setSubmitStatus('success');
+  console.log('[ApplyNow] Application submitted successfully');
+
+// Send confirmation email to applicant using Supabase Edge Function
+console.log('[ApplyNow] Sending confirmation email...');
+try {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  
+if (supabaseUrl && supabaseAnonKey) {
+  const emailResponse = await fetch(`${supabaseUrl}/functions/v1/resend-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${supabaseAnonKey}`,
+    },
+    body: JSON.stringify({
+      to: formData.email,
+      subject: `Application Received - Reference ${reference}`,
+      applicantName: `${formData.firstName} ${formData.lastName}`,
+      referenceNumber: reference,
+      grade: formData.currentGrade,
+      stream: formData.programStream,
+      admissionPeriod: formData.admissionPeriod.charAt(0).toUpperCase() + formData.admissionPeriod.slice(1),
+    }),
+  });
+  
+  if (emailResponse.ok) {
+    const emailResult = await emailResponse.json();
+    console.log('[ApplyNow] Confirmation email sent successfully:', emailResult);
+  } else {
+    const errorText = await emailResponse.text();
+    console.warn('[ApplyNow] Failed to send confirmation email:', errorText);
+  }
+} else {
+  console.warn('[ApplyNow] Supabase credentials not configured for email');
+}
+} catch (emailError) {
+  console.error('[ApplyNow] Error sending confirmation email:', emailError);
+  // Don't fail the application if email fails
+}
+
+setSubmitStatus('success');
+setCurrentStep(3);
       setCurrentStep(3);
       
     } catch (error) {
