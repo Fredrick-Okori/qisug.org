@@ -110,7 +110,7 @@ export default function AdminUsersPage() {
     return (
       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full ${styles[role] || 'bg-gray-100 text-gray-800'}`}>
         <Icon className="w-3 h-3" />
-        {role.charAt(0).toUpperCase() + role.slice(1)}
+        {role ? role.charAt(0).toUpperCase() + role.slice(1) : ''}
       </span>
     )
   }

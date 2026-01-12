@@ -8,6 +8,7 @@ type AuthContextType = {
   session: any | null
   isSignedIn: boolean
   isAdmin: boolean
+  adminUser?: any | null
   fullName: string | null
   loading: boolean
   signIn: (email: string, password: string) => Promise<{ error?: any; data?: any }>
@@ -23,6 +24,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<any | null>(null)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [adminUser, setAdminUser] = useState<any | null>(null)
   const [fullName, setFullName] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -38,7 +40,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const { data: { session: initialSession } } = await supabase.auth.getSession()
-      const user = initialSession?.user ?? null
+      // Verify the user by asking Supabase Auth server for an authenticated user
+      // This avoids trusting the session storage directly.
+      let verifiedUser: any = null
+      try {
+        const { data: userData, error: userError } = await supabase.auth.getUser()
+        if (!userError && userData?.user) verifiedUser = userData.user
+      } catch (e) {
+        // ignore and fallback
+      }
+      const user = verifiedUser ?? initialSession?.user ?? null
 
       if (!mounted) return
       setSession(initialSession ?? null)
@@ -48,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // derive full name from metadata when possible
       if (user) {
         const metaName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || null
-        setFullName(metaName || user.email?.split('@')[0] || null)
+        setFullName(metaName ?? (user?.email ? user.email.split('@')[0] : null))
 
         // determine admin via metadata or fallback to admin_users
         const role = (user.user_metadata && (user.user_metadata.role || user.user_metadata.roles))
@@ -64,17 +75,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (!admin) {
           try {
-            const { data: adminUser } = await supabase
+            const { data: adminRow } = await supabase
               .from('admin_users')
-              .select('role, is_active')
+              .select('id, role, is_active, full_name, email, user_id')
               .eq('user_id', user.id)
               .eq('is_active', true)
               .maybeSingle()
 
-            admin = !!adminUser
+            if (adminRow) {
+              admin = true
+              setAdminUser(adminRow)
+            } else {
+              setAdminUser(null)
+            }
           } catch (err) {
             admin = false
+            setAdminUser(null)
           }
+        } else {
+          setAdminUser(null)
         }
 
         setIsAdmin(admin)
@@ -83,18 +102,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false)
 
       // subscribe to auth changes
-      const { data } = supabase.auth.onAuthStateChange((_event: string, session: any) => {
-        const user = session?.user ?? null
+      const { data } = supabase.auth.onAuthStateChange(async (_event: string, session: any) => {
+        // Prefer an authenticated user from the Supabase Auth server
+        let verifiedUser: any = null
+        try {
+          const { data: userData, error: userError } = await supabase.auth.getUser()
+          if (!userError && userData?.user) verifiedUser = userData.user
+        } catch (e) {
+          // ignore and fallback to session user
+        }
+        const user = verifiedUser ?? session?.user ?? null
         setSession(session ?? null)
         setUser(user)
         setIsSignedIn(!!session)
 
         if (user) {
           const metaName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || null
-          setFullName(metaName || user.email?.split('@')[0] || null)
+          setFullName(metaName ?? (user?.email ? user.email.split('@')[0] : null))
+
+          // Update adminUser when auth state changes
+          try {
+            const { data: adminRow } = await supabase
+              .from('admin_users')
+              .select('id, role, is_active, full_name, email, user_id')
+              .eq('user_id', user.id)
+              .eq('is_active', true)
+              .maybeSingle()
+
+            if (adminRow) setAdminUser(adminRow)
+            else setAdminUser(null)
+          } catch (err) {
+            setAdminUser(null)
+          }
         } else {
           setFullName(null)
           setIsAdmin(false)
+          setAdminUser(null)
         }
       })
 
@@ -134,6 +177,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsSignedIn(false)
       setIsAdmin(false)
       setFullName(null)
+      setAdminUser(null)
     } catch (err) {
       console.error('Sign out error:', err)
     }
@@ -145,7 +189,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   return (
-    <AuthContext.Provider value={{ user, session, isSignedIn, isAdmin, fullName, loading, signIn, signUp, signOut, signInWithGoogle }}>
+    <AuthContext.Provider value={{ user, session, isSignedIn, isAdmin, adminUser, fullName, loading, signIn, signUp, signOut, signInWithGoogle }}>
       {children}
     </AuthContext.Provider>
   )

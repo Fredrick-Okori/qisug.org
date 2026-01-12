@@ -142,7 +142,7 @@ export default function SuccessPage() {
 
     try {
       // Upload payment slip to storage
-      const fileExtension = paymentSlip.name.split('.').pop();
+      const fileExtension = paymentSlip?.name?.split('.')?.pop() ?? '';
       const fileName = `payment-slips/${applicationSummary.reference}/${Date.now()}.${fileExtension}`;
       
       const { data: uploadData, error: uploadError } = await supabase.storage

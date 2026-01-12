@@ -1,279 +1,421 @@
-/**
- * Applications API Route
- * 
- * Handles fetching and managing applications for the admin dashboard.
- * Provides comprehensive error handling and configuration validation.
- */
-
-import { createClient, isServerConfigured, getServerConfigStatus, getServerErrorMessage } from '@/lib/supabase/server'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import type { ApplicationStatus, IntakeMonth } from '@/types/database'
 
-// ============================================================================
-// TYPES
-// ============================================================================
-
-interface ApplicationsResponse {
-  success: boolean
-  data?: unknown[]
-  count?: number
-  limit?: number
-  offset?: number
-  error?: string
-  message?: string
-}
-
-// ============================================================================
-// HELPER FUNCTIONS
-// ============================================================================
-
-/**
- * Validate status parameter
- */
-function isValidStatus(status: string | null): status is ApplicationStatus {
-  if (!status) return true
-  const validStatuses = ['Draft', 'Submitted', 'Under Review', 'Interview', 'Accepted', 'Rejected', 'Withdrawn']
-  return validStatuses.includes(status)
-}
-
-/**
- * Validate intake month parameter
- */
-function isValidIntake(intake: string | null): intake is IntakeMonth {
-  if (!intake) return true
-  const validIntakes = ['September', 'January', 'April']
-  return validIntakes.includes(intake)
-}
-
-// ============================================================================
-// GET: List Applications
-// ============================================================================
+// Mock data for when Supabase is not configured
+const MOCK_APPLICATIONS = [
+  {
+    id: '1',
+    reference: 'APP-8F7A2B1C',
+    applicant_name: 'John Kamau',
+    email: 'john.kamau@email.com',
+    phone: '+256 701234567',
+    program: 'IB Diploma',
+    grade: 'Grade 11',
+    status: 'pending',
+    submitted_at: 'Jan 15, 2024',
+    last_updated: 'Jan 15, 2024',
+    payment_status: 'paid',
+    payment: {
+      id: 'pay_1',
+      amount: 300,
+      status: 'completed',
+      payment_method: 'Bank Transfer',
+      transaction_id: 'TXN-001234',
+      receipt_url: '#',
+      created_at: 'Jan 14, 2024',
+    },
+    documents: [
+      { application_id: '1', file_name: 'passport.pdf', file_type: 'passport', status: 'approved', uploaded_at: 'Jan 14, 2024' },
+      { application_id: '1', file_name: 'transcript.pdf', file_type: 'transcript', status: 'pending', uploaded_at: 'Jan 14, 2024' },
+    ],
+  },
+  {
+    id: '2',
+    reference: 'APP-3D4E5F6A',
+    applicant_name: 'Sarah Mukiibi',
+    email: 'sarah.mukiibi@email.com',
+    phone: '+256 702345678',
+    program: 'A-Level',
+    grade: 'Grade 12',
+    status: 'approved',
+    submitted_at: 'Jan 14, 2024',
+    last_updated: 'Jan 16, 2024',
+    payment_status: 'paid',
+    payment: {
+      id: 'pay_2',
+      amount: 300,
+      status: 'completed',
+      payment_method: 'Bank Transfer',
+      transaction_id: 'TXN-001235',
+      receipt_url: '#',
+      created_at: 'Jan 13, 2024',
+    },
+    documents: [
+      { application_id: '2', file_name: 'passport.pdf', file_type: 'passport', status: 'approved', uploaded_at: 'Jan 13, 2024' },
+    ],
+  },
+  {
+    id: '3',
+    reference: 'APP-7B8C9D0E',
+    applicant_name: 'Michael Omondi',
+    email: 'michael.omondi@email.com',
+    phone: '+256 703456789',
+    program: 'IGCSE',
+    grade: 'Grade 10',
+    status: 'under_review',
+    submitted_at: 'Jan 14, 2024',
+    last_updated: 'Jan 15, 2024',
+    payment_status: 'paid',
+    payment: {
+      id: 'pay_3',
+      amount: 300,
+      status: 'completed',
+      payment_method: 'Mobile Money',
+      transaction_id: 'TXN-001236',
+      receipt_url: '#',
+      created_at: 'Jan 13, 2024',
+    },
+    documents: [],
+  },
+  {
+    id: '4',
+    reference: 'APP-1A2B3C4D',
+    applicant_name: 'Emma Nakiwala',
+    email: 'emma.nakiwala@email.com',
+    phone: '+256 704567890',
+    program: 'IB Diploma',
+    grade: 'Grade 11',
+    status: 'rejected',
+    submitted_at: 'Jan 13, 2024',
+    last_updated: 'Jan 14, 2024',
+    payment_status: 'failed',
+    payment: null,
+    documents: [],
+  },
+  {
+    id: '5',
+    reference: 'APP-5E6F7A8B',
+    applicant_name: 'David Ssentamu',
+    email: 'david.ssentamu@email.com',
+    phone: '+256 705678901',
+    program: 'A-Level',
+    grade: 'Grade 12',
+    status: 'pending',
+    submitted_at: 'Jan 13, 2024',
+    last_updated: 'Jan 13, 2024',
+    payment_status: 'pending',
+    payment: null,
+    documents: [],
+  },
+]
 
 export async function GET(request: Request) {
   try {
-    // Check if Supabase is configured
-    if (!isServerConfigured()) {
-      const status = getServerConfigStatus()
-      console.error('[Applications API] Supabase not configured:', status.error)
-      
-      return NextResponse.json<ApplicationsResponse>(
-        { 
-          success: false, 
-          error: 'System is not properly configured. Please contact support.',
-          message: status.error
-        },
-        { status: 500 }
-      )
-    }
-
+    const cookieStore = await cookies()
     const { searchParams } = new URL(request.url)
-    const status = searchParams.get('status') as ApplicationStatus | null
-    const intakeMonth = searchParams.get('intake') as IntakeMonth | null
-    const search = searchParams.get('search')
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    
+    const status = searchParams.get('status')
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    const offset = (page - 1) * limit
 
-    // Validate parameters
-    if (status && !isValidStatus(status)) {
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: 'Invalid status parameter' },
-        { status: 400 }
-      )
-    }
+    // Check if Supabase is configured
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    const isConfigured = supabaseUrl && supabaseKey && supabaseServiceKey
 
-    if (intakeMonth && !isValidIntake(intakeMonth)) {
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: 'Invalid intake month parameter' },
-        { status: 400 }
-      )
-    }
+    if (!isConfigured) {
+      // Return mock data
+      let filteredApps = [...MOCK_APPLICATIONS]
+      
+      if (status && status !== 'all') {
+        filteredApps = filteredApps.filter(app => app.status === status)
+      }
 
-    if (isNaN(limit) || limit < 1 || limit > 100) {
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: 'Invalid limit parameter (must be 1-100)' },
-        { status: 400 }
-      )
-    }
+      const total = filteredApps.length
+      const paginatedApps = filteredApps.slice(offset, offset + limit)
 
-    if (isNaN(offset) || offset < 0) {
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: 'Invalid offset parameter (must be >= 0)' },
-        { status: 400 }
-      )
+      return NextResponse.json({
+        success: true,
+        data: paginatedApps,
+        total,
+        page,
+        limit,
+        mock: true,
+      })
     }
 
     // Create Supabase client
-    const supabase = await createClient()
-
-    if (!supabase) {
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: 'Failed to create Supabase client' },
-        { status: 500 }
-      )
-    }
-
-    // Build base query
-    let query = supabase
-      .from('application_dashboard')
-      .select('*', { count: 'exact' })
-
-    // Apply filters
-    if (status) {
-      query = query.eq('status', status)
-    }
-    
-    if (intakeMonth) {
-      query = query.eq('intake_month', intakeMonth)
-    }
-
-    if (search && search.trim()) {
-      // Sanitize search term to prevent SQL injection
-      const sanitizedSearch = search.trim().replace(/[%_]/g, '')
-      if (sanitizedSearch.length > 0) {
-        query = query.or(`first_name.ilike.%${sanitizedSearch}%,last_name.ilike.%${sanitizedSearch}%,email.ilike.%${sanitizedSearch}%`)
+    const supabase = createServerClient(
+      supabaseUrl,
+      supabaseKey,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            try {
+              cookieStore.set({ name, value, ...options })
+            } catch (error) {
+              // Handle cookie errors
+            }
+          },
+          remove(name: string, options: CookieOptions) {
+            try {
+              cookieStore.set({ name, value: '', ...options })
+            } catch (error) {
+              // Handle cookie errors
+            }
+          },
+        },
       }
-    }
+    )
 
-    // Get total count for pagination
-    const { count, error: countError } = await query.count()
-
-    if (countError) {
-      console.error('[Applications API] Count error:', countError)
-      // Continue without count - not critical
-    }
-
-    // Apply pagination and ordering
-    const { data: applications, error } = await query
-      .range(offset, offset + limit - 1)
-      .order('submitted_at', { ascending: false, nullsFirst: false })
+    // Build the query
+    let query = supabase
+      .from('applications')
+      .select(`
+        id,
+        applicant_id,
+        academic_year,
+        intake_month,
+        status,
+        created_at,
+        updated_at,
+        program_id,
+        applicants (
+          id,
+          full_name,
+          email,
+          phone_number
+        ),
+        programs (
+          id,
+          name,
+          grade_level
+        ),
+        application_documents (
+          id,
+          application_id,
+          document_type,
+          file_name,
+          file_url,
+          status,
+          uploaded_at,
+          verified_at
+        ),
+        payments (
+          id,
+          amount,
+          status,
+          payment_method,
+          transaction_id,
+          payment_slip_url,
+          created_at,
+          updated_at
+        )
+      `)
       .order('created_at', { ascending: false })
 
+    // Filter by status if provided and not 'all'
+    if (status && status !== 'all') {
+      query = query.eq('status', status)
+    }
+
+    // Apply pagination
+    query = query.range(offset, offset + limit - 1)
+
+    const { data, error, count } = await query
+
     if (error) {
-      console.error('[Applications API] Fetch error:', error)
-      
-      // Check if it's a configuration error
-      if (error.message.includes('api key') || error.message.includes('Invalid API')) {
-        return NextResponse.json<ApplicationsResponse>(
-          { success: false, error: 'Configuration error: Invalid or missing API key' },
-          { status: 500 }
-        )
-      }
-
-      // Check if it's a permission error
-      if (error.message.includes('permission') || error.message.includes('RLS') || error.message.includes('row level security')) {
-        return NextResponse.json<ApplicationsResponse>(
-          { success: false, error: 'Permission denied. You do not have access to this data.' },
-          { status: 403 }
-        )
-      }
-
-      // Check if table doesn't exist
-      if (error.message.includes('does not exist') || error.message.includes('relation')) {
-        return NextResponse.json<ApplicationsResponse>(
-          { success: false, error: 'Database table not found. Please run database migrations.' },
-          { status: 500 }
-        )
-      }
-
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: 'Failed to fetch applications' },
+      console.error('Supabase error:', error)
+      return NextResponse.json(
+        { success: false, error: error.message },
         { status: 500 }
       )
     }
 
-    return NextResponse.json<ApplicationsResponse>({
+    // Transform the data to match the frontend interface
+    const transformedData = data?.map((app: any) => {
+      // Get applicant info
+      const applicant = Array.isArray(app.applicants) ? app.applicants[0] : app.applicants
+      const program = Array.isArray(app.programs) ? app.programs[0] : app.programs
+      const payment = Array.isArray(app.payments) ? app.payments[0] : app.payments
+
+      // Generate reference number (you might want to store this in DB)
+      const reference = `APP-${app.id.substring(0, 8).toUpperCase()}`
+
+      // Transform documents
+      const documents = app.application_documents?.map((doc: any) => ({
+        application_id: doc.application_id,
+        file_name: doc.file_name,
+        file_type: doc.document_type,
+        file_url: doc.file_url,
+        status: doc.status || 'pending',
+        uploaded_at: new Date(doc.uploaded_at).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        })
+      })) || []
+
+      // Transform payment
+      const paymentData = payment ? {
+        id: payment.id,
+        amount: payment.amount || 0,
+        status: payment.status || 'pending',
+        payment_method: payment.payment_method || 'N/A',
+        created_at: new Date(payment.created_at).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        }),
+        transaction_id: payment.transaction_id || 'N/A',
+        receipt_url: payment.payment_slip_url || null
+      } : null
+
+      return {
+        id: app.id,
+        reference: reference,
+        applicant_name: applicant?.full_name || 'N/A',
+        email: applicant?.email || 'N/A',
+        phone: applicant?.phone_number || 'N/A',
+        program: program?.name || 'N/A',
+        grade: program?.grade_level || 'N/A',
+        status: app.status || 'pending',
+        submitted_at: new Date(app.created_at).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        }),
+        last_updated: new Date(app.updated_at).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        }),
+        payment_status: payment?.status || 'pending',
+        payment: paymentData,
+        documents: documents
+      }
+    })
+
+    return NextResponse.json({
       success: true,
-      data: applications || [],
-      count: count || 0,
-      limit,
-      offset
+      data: transformedData,
+      total: count,
+      page,
+      limit
     })
 
   } catch (error) {
-    console.error('[Applications API] Unexpected error:', error)
-    
-    // Check for configuration errors
-    if (isServerConfigured() === false || getServerConfigStatus().error) {
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: 'System configuration error' },
-        { status: 500 }
-      )
-    }
-
-    return NextResponse.json<ApplicationsResponse>(
+    console.error('Error fetching applications:', error)
+    return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }
     )
   }
 }
 
-// ============================================================================
-// POST: Create Application (placeholder for future use)
-// ============================================================================
-
-export async function POST(request: Request) {
+// Update application status
+export async function PATCH(request: Request) {
   try {
-    // Check if Supabase is configured
-    if (!isServerConfigured()) {
-      const status = getServerConfigStatus()
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: 'System is not properly configured' },
-        { status: 500 }
-      )
-    }
-
-    // Parse request body
+    const cookieStore = await cookies()
     const body = await request.json()
+    const { applicationId, status } = body
 
-    // Validate required fields
-    if (!body.applicantId || !body.programId) {
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: 'Missing required fields: applicantId, programId' },
+    // Check if Supabase is configured
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    const isConfigured = supabaseUrl && supabaseKey && supabaseServiceKey
+
+    if (!applicationId || !status) {
+      return NextResponse.json(
+        { success: false, error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
-    // Create Supabase client
-    const supabase = await createClient()
-
-    if (!supabase) {
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: 'Failed to create Supabase client' },
-        { status: 500 }
+    if (!isConfigured) {
+      // Update mock data
+      const appIndex = MOCK_APPLICATIONS.findIndex(a => a.id === applicationId)
+      if (appIndex >= 0) {
+        MOCK_APPLICATIONS[appIndex] = {
+          ...MOCK_APPLICATIONS[appIndex],
+          status,
+          last_updated: new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+          }),
+        }
+        return NextResponse.json({
+          success: true,
+          data: MOCK_APPLICATIONS[appIndex],
+          mock: true,
+        })
+      }
+      return NextResponse.json(
+        { success: false, error: 'Application not found' },
+        { status: 404 }
       )
     }
 
-    // Create the application
-    const { data: application, error } = await supabase
+    const supabase = createServerClient(
+      supabaseUrl,
+      supabaseKey,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            try {
+              cookieStore.set({ name, value, ...options })
+            } catch (error) {
+              // Handle cookie errors
+            }
+          },
+          remove(name: string, options: CookieOptions) {
+            try {
+              cookieStore.set({ name, value: '', ...options })
+            } catch (error) {
+              // Handle cookie errors
+            }
+          },
+        },
+      }
+    )
+
+    const { data, error } = await supabase
       .from('applications')
-      .insert({
-        applicant_id: body.applicantId,
-        program_id: body.programId,
-        academic_year: body.academicYear || '2026/2027',
-        intake_month: body.intakeMonth || 'September',
-        status: 'Submitted',
-        submitted_at: new Date().toISOString(),
+      .update({ 
+        status,
+        updated_at: new Date().toISOString()
       })
+      .eq('id', applicationId)
       .select()
       .single()
 
     if (error) {
-      console.error('[Applications API] Create error:', error)
-      return NextResponse.json<ApplicationsResponse>(
-        { success: false, error: getServerErrorMessage(error) },
+      console.error('Error updating application:', error)
+      return NextResponse.json(
+        { success: false, error: error.message },
         { status: 500 }
       )
     }
 
-    return NextResponse.json<ApplicationsResponse>({
+    return NextResponse.json({
       success: true,
-      data: [application],
-      message: 'Application created successfully'
-    }, { status: 201 })
+      data
+    })
 
   } catch (error) {
-    console.error('[Applications API] POST error:', error)
-    return NextResponse.json<ApplicationsResponse>(
+    console.error('Error updating application:', error)
+    return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }
     )

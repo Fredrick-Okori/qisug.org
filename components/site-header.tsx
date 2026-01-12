@@ -394,6 +394,18 @@ export function SiteHeader() {
                         <UserCheck className="h-4 w-4" />
                         <span className="truncate">{userEmail || "Signed in"}</span>
                       </div>
+
+                      {/* Portal Link - Admin vs Student */}
+                      <Link
+                        href={isAdminState ? '/dashboard/admin' : '/dashboard'}
+                        className="w-full inline-flex items-center justify-center gap-2 text-[#053F52] border-[#053F52] hover:bg-[#053F52] hover:text-white font-medium py-2 px-3 rounded-md transition-colors"
+                      >
+                        <motion.div className="flex items-center gap-2">
+                          <Settings className="h-4 w-4" />
+                          <span>{isAdminState ? 'Admin Portal' : 'Student Portal'}</span>
+                        </motion.div>
+                      </Link>
+
                       <button
                         onClick={handleSignOut}
                         className="w-full inline-flex items-center justify-center gap-2 text-[#053F52] border-[#053F52] hover:bg-[#053F52] hover:text-white font-medium py-2 px-3 rounded-md transition-colors"
@@ -548,7 +560,7 @@ export function SiteHeader() {
                         isScrolled ? "h-3 w-3 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
                       }`} />
                     </motion.div>
-                  <span className="hidden xl:inline truncate text-sm font-medium truncate max-w-[120px]"> {userEmail?.split('@')[0] || "User"} </span>
+                  <span className="hidden xl:inline truncate text-sm font-medium truncate max-w-[120px]"> {(userEmail ? userEmail.split('@')[0] : "User")} </span>
                   </motion.button>
 
                   {/* Hover Dropdown Menu */}
@@ -561,11 +573,11 @@ export function SiteHeader() {
                         <p className="text-xs text-gray-500">Signed in</p>
                       </div>
                       <Link 
-                        href="/dashboard" 
+                        href={isAdminState ? '/dashboard/admin' : '/dashboard'} 
                         className="flex items-center gap-2 px-4 py-2 text-sm text-[#053f52] hover:bg-gray-50 transition-colors"
                       >
                         <Settings className="h-4 w-4" />
-                        <span>Applications</span>
+                        <span>{isAdminState ? 'Admin Portal' : 'Student Portal'}</span>
                       </Link>
                       <div className="border-t border-gray-100 my-1" />
                       <button

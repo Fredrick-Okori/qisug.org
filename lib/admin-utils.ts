@@ -38,7 +38,7 @@ export function getRoleDisplayName(role: AdminRole | string): string {
     case 'viewer':
       return 'Viewer'
     default:
-      return role.charAt(0).toUpperCase() + role.slice(1)
+      return role ? role.charAt(0).toUpperCase() + role.slice(1) : ''
   }
 }
 

@@ -36,6 +36,7 @@ interface DashboardStats {
   totalUsers: number
   newThisWeek: number
   documentsUploaded: number
+  approvedDocuments: number
   revenue: number
   applicationsByStatus: { name: string; value: number; color: string }[]
   applicationsByProgram: { name: string; value: number; color: string }[]
@@ -94,7 +95,7 @@ export default function AdminDashboardPage() {
       case 'rejected': return 'Rejected'
       case 'pending': return 'Pending'
       case 'under_review': return 'Under Review'
-      default: return status.charAt(0).toUpperCase() + status.slice(1)
+      default: return status ? status.charAt(0).toUpperCase() + status.slice(1) : ''
     }
   }
 
@@ -256,11 +257,11 @@ export default function AdminDashboardPage() {
               <Upload className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-green-100 text-sm">Documents Uploaded</p>
-              <p className="text-2xl font-bold">{stats.documentsUploaded} files</p>
+              <p className="text-green-100 text-sm">Documents Approved</p>
+              <p className="text-2xl font-bold">{stats.approvedDocuments} files</p>
             </div>
           </div>
-          <p className="text-green-100 text-sm mt-4">All documents reviewed and verified</p>
+          <p className="text-green-100 text-sm mt-4">{stats.documentsUploaded} total uploaded</p>
         </motion.div>
 
         <motion.div

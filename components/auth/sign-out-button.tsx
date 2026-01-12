@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { useAuth } from '@/components/auth/auth-context'
 import { Button } from '@/components/ui/button'
 import { 
   LogOut, 
@@ -35,7 +35,7 @@ export function SignOutButton({
   children 
 }: SignOutButtonProps) {
   const router = useRouter()
-  const supabase = createClient()
+  const { signOut } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -45,15 +45,9 @@ export function SignOutButton({
     setError(null)
 
     try {
-      const { error } = await supabase.auth.signOut()
-      
-      if (error) {
-        setError(error.message)
-      } else {
-        // Redirect to home page after successful sign out
-        router.push('/')
-        router.refresh()
-      }
+      await signOut()
+      router.push('/')
+      router.refresh()
     } catch (err) {
       setError('An unexpected error occurred')
     } finally {
@@ -131,37 +125,13 @@ export function SignOutButton({
   )
 }
 
-// Hook for checking authentication status
-export function useAuth() {
-  const supabase = createClient()
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      setUser(session?.user || null)
-      setLoading(false)
-    }
-    checkUser()
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event: any, session: Session | null) => {
-        setUser(session?.user || null)
-      }
-    )
-
-    return () => subscription.unsubscribe()
-  }, [supabase])
-
-  return { user, loading }
-}
+// (local auth check hook removed - use AuthProvider `useAuth` instead)
 
 // Component for showing user email in header
 export function UserMenu({ user }: { user: User | null }) {
   if (!user) return null
 
-  const userInitials = user.email?.split('@')[0]?.slice(0, 2).toUpperCase() || 'U'
+  const userInitials = user?.email ? user.email.split('@')[0].slice(0, 2).toUpperCase() : 'U'
 
   return (
     <div className="flex items-center gap-3">

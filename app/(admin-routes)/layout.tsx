@@ -14,6 +14,8 @@ import {
   Menu
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { useAuth } from '@/components/auth/auth-context'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -42,45 +44,28 @@ export default function AdminLayout({
   const [user, setUser] = useState<any>(null)
   const [adminUser, setAdminUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const { isSignedIn, isAdmin, loading: authLoading, signOut } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      
-      if (!session) {
-        window.location.href = '/login?redirect=/dashboard/admin'
-        return
-      }
+    if (authLoading) return
 
-      setUser(session.user)
-
-      // Check if user is admin
-      const { data: adminData, error } = await supabase
-        .from('admin_users')
-        .select('*')
-        .eq('user_id', session.user.id)
-        .eq('is_active', true)
-        .single()
-
-      if (error || !adminData) {
-        // Not an admin, redirect to student dashboard
-        window.location.href = '/dashboard'
-        return
-      }
-
-      setAdminUser(adminData)
-      setLoading(false)
+    if (!isSignedIn) {
+      router.push('/login?redirect=/dashboard/admin')
+      return
     }
 
-    checkAdmin()
+    if (!isAdmin) {
+      router.push('/dashboard')
+      return
+    }
+
+    setLoading(false)
   }, [supabase])
 
   const handleSignOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut()
-      if (error) {
-        console.error('Sign out error:', error)
-      }
+      await signOut()
       window.location.href = '/'
     } catch (err) {
       console.error('Sign out error:', err)

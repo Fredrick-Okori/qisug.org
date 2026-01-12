@@ -14,6 +14,8 @@ import {
   Menu
 } from 'lucide-react'
 import { createClient, getSupabaseConfigStatus } from '@/lib/supabase/client'
+import { useAuth } from '@/components/auth/auth-context'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 
 interface NavItem {
@@ -43,6 +45,8 @@ export default function AdminLayout({
   const [adminUser, setAdminUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [isMounted, setIsMounted] = useState(false)
+  const { isSignedIn, isAdmin, loading: authLoading, signOut } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
     setIsMounted(true)
@@ -51,67 +55,24 @@ export default function AdminLayout({
   useEffect(() => {
     if (!isMounted) return
 
-    // If Supabase is not configured on the client, bail out and show config message
-    if (!supabase) {
-      console.warn('[AdminLayout] Supabase client not initialized', configStatus.error)
-      setLoading(false)
+    if (authLoading) return
+
+    if (!isSignedIn) {
+      router.push('/login?redirect=/dashboard/admin')
       return
     }
 
-    const checkAdmin = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession()
-
-        console.log('[AdminLayout] session:', session)
-
-        if (!session) {
-          console.log('[AdminLayout] No session, showing admin UI for demo')
-          setLoading(false)
-          return
-        }
-
-        setUser(session.user)
-        console.log('[AdminLayout] session.user.id:', session.user?.id, 'email:', session.user?.email)
-
-        const { data: adminData, error } = await supabase
-          .from('admin_users')
-          .select('*')
-          .eq('user_id', session.user.id)
-          .eq('is_active', true)
-          .single()
-
-        console.log('[AdminLayout] admin lookup result:', { adminData, error })
-
-        if (error || !adminData) {
-          console.log('[AdminLayout] User not in admin_users table, showing admin UI for demo')
-          setLoading(false)
-          return
-        }
-
-        setAdminUser(adminData)
-        setLoading(false)
-      } catch (err) {
-        console.log('[AdminLayout] Auth check failed, showing admin UI for demo')
-        setLoading(false)
-      }
+    if (!isAdmin) {
+      router.push('/dashboard')
+      return
     }
 
-    const timeoutId = setTimeout(() => {
-      console.log('[AdminLayout] Auth check timeout, showing admin UI')
-      setLoading(false)
-    }, 3000)
-
-    checkAdmin()
-
-    return () => clearTimeout(timeoutId)
+    setLoading(false)
   }, [supabase, isMounted, configStatus])
 
   const handleSignOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut()
-      if (error) {
-        console.error('Sign out error:', error)
-      }
+      await signOut()
       window.location.href = '/'
     } catch (err) {
       console.error('Sign out error:', err)
@@ -160,9 +121,9 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="h-screen flex flex-col overflow-hidden bg-slate-50">
       {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[#053f52] z-50 flex items-center justify-between px-4">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[#053f52] z-50 flex items-center justify-between px-4 flex-shrink-0">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -252,100 +213,103 @@ export default function AdminLayout({
         </>
       )}
 
-      {/* Desktop Sidebar */}
-      <div className={`hidden lg:flex flex-col fixed left-0 top-0 bottom-0 bg-[#053f52] z-40 transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
-        {/* Logo */}
-        <div className="flex items-center justify-between p-4 border-b border-white/10">
-          {!isSidebarCollapsed && (
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#EFBF04] rounded-full flex items-center justify-center">
+      {/* Desktop Layout - Flex container with sidebar */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Desktop Sidebar */}
+        <div className={`hidden lg:flex flex-col bg-[#053f52] z-40 transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
+          {/* Logo */}
+          <div className="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
+            {!isSidebarCollapsed && (
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#EFBF04] rounded-full flex items-center justify-center">
+                  <GraduationCap className="w-6 h-6 text-[#053f52]" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-sm">QIS Admin</p>
+                  <p className="text-white/60 text-xs">Portal</p>
+                </div>
+              </div>
+            )}
+            {isSidebarCollapsed && (
+              <div className="w-10 h-10 bg-[#EFBF04] rounded-full flex items-center justify-center mx-auto">
                 <GraduationCap className="w-6 h-6 text-[#053f52]" />
               </div>
-              <div>
-                <p className="text-white font-semibold text-sm">QIS Admin</p>
-                <p className="text-white/60 text-xs">Portal</p>
-              </div>
-            </div>
-          )}
-          {isSidebarCollapsed && (
-            <div className="w-10 h-10 bg-[#EFBF04] rounded-full flex items-center justify-center mx-auto">
-              <GraduationCap className="w-6 h-6 text-[#053f52]" />
-            </div>
-          )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-            className="text-white hover:bg-white/10 ml-auto"
-          >
-            <ChevronLeft className={`h-4 w-4 transition-transform ${isSidebarCollapsed ? 'rotate-180' : ''}`} />
-          </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+              className="text-white hover:bg-white/10 ml-auto"
+            >
+              <ChevronLeft className={`h-4 w-4 transition-transform ${isSidebarCollapsed ? 'rotate-180' : ''}`} />
+            </Button>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 p-4 overflow-y-auto">
+            <ul className="space-y-2">
+              {adminNavItems.map((item) => {
+                const Icon = item.icon
+                const isActive = pathname === item.href
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        isActive
+                          ? 'bg-[#EFBF04] text-[#053f52]'
+                          : 'text-white/80 hover:bg-white/10 hover:text-white'
+                      }`}
+                      title={isSidebarCollapsed ? item.title : undefined}
+                    >
+                      <Icon className="w-5 h-5 flex-shrink-0" />
+                      {!isSidebarCollapsed && (
+                        <span className="font-medium">{item.title}</span>
+                      )}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
+
+          {/* Bottom Actions */}
+          <div className="p-4 border-t border-white/10 space-y-2 flex-shrink-0">
+            <Link
+              href="/dashboard"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                pathname === '/dashboard'
+                  ? 'bg-[#EFBF04] text-[#053f52]'
+                  : 'text-white/80 hover:bg-white/10 hover:text-white'
+              }`}
+              title={isSidebarCollapsed ? 'Student View' : undefined}
+            >
+              <GraduationCap className="w-5 h-5 flex-shrink-0" />
+              {!isSidebarCollapsed && <span className="font-medium">Student View</span>}
+            </Link>
+            <button
+              onClick={handleSignOut}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-red-300 hover:bg-red-500/10 w-full ${
+                isSidebarCollapsed ? 'justify-center' : ''
+              }`}
+              title={isSidebarCollapsed ? 'Sign Out' : undefined}
+            >
+              <LogOut className="w-5 h-5 flex-shrink-0" />
+              {!isSidebarCollapsed && <span className="font-medium">Sign Out</span>}
+            </button>
+          </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 p-4">
-          <ul className="space-y-2">
-            {adminNavItems.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      isActive
-                        ? 'bg-[#EFBF04] text-[#053f52]'
-                        : 'text-white/80 hover:bg-white/10 hover:text-white'
-                    }`}
-                    title={isSidebarCollapsed ? item.title : undefined}
-                  >
-                    <Icon className="w-5 h-5 flex-shrink-0" />
-                    {!isSidebarCollapsed && (
-                      <span className="font-medium">{item.title}</span>
-                    )}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
-        </nav>
-
-        {/* Bottom Actions */}
-        <div className="p-4 border-t border-white/10 space-y-2">
-          <Link
-            href="/dashboard"
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-              pathname === '/dashboard'
-                ? 'bg-[#EFBF04] text-[#053f52]'
-                : 'text-white/80 hover:bg-white/10 hover:text-white'
-            }`}
-            title={isSidebarCollapsed ? 'Student View' : undefined}
-          >
-            <GraduationCap className="w-5 h-5 flex-shrink-0" />
-            {!isSidebarCollapsed && <span className="font-medium">Student View</span>}
-          </Link>
-          <button
-            onClick={handleSignOut}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-red-300 hover:bg-red-500/10 w-full ${
-              isSidebarCollapsed ? 'justify-center' : ''
-            }`}
-            title={isSidebarCollapsed ? 'Sign Out' : undefined}
-          >
-            <LogOut className="w-5 h-5 flex-shrink-0" />
-            {!isSidebarCollapsed && <span className="font-medium">Sign Out</span>}
-          </button>
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Mobile Spacer */}
+          <div className="lg:hidden h-16 flex-shrink-0" />
+          
+          {/* Page Content - Scrollable */}
+          <main className="flex-1 overflow-auto p-4 lg:p-8">
+            {children}
+          </main>
         </div>
-      </div>
-
-      {/* Main Content */}
-      <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
-        {/* Mobile Spacer */}
-        <div className="lg:hidden h-16" />
-        
-        {/* Page Content */}
-        <main className="p-4 lg:p-8 pt-20 lg:pt-8">
-          {children}
-        </main>
       </div>
     </div>
   )

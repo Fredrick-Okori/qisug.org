@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { createClient } from "@/lib/supabase/client"
 import type { AuthSession } from "@supabase/supabase-js"
+import { useAuth } from "./auth/auth-context"
 
 const navItems = [
   { title: "Home", href: "/" },
@@ -152,7 +153,8 @@ export function BlueSiteHeader() {
   const [isMounted, setIsMounted] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [userEmail, setUserEmail] = useState("")
-  const [supabase, setSupabase] = useState<ReturnType<typeof createClient> | null>(null)
+    const { user, signOut } = useAuth()
+   
 
   // Check if a nav item is active based on current pathname
   const isActive = (href: string) => {
@@ -165,59 +167,20 @@ export function BlueSiteHeader() {
   useEffect(() => {
     setIsMounted(true)
     
-    // Initialize Supabase client lazily on client side
-    const supabaseClient = createClient()
-    setSupabase(supabaseClient)
-    
-    // If Supabase is not configured, skip auth checks
-    if (!supabaseClient) {
-      return
-    }
-    
-    // Check auth state
-    const checkAuth = async () => {
-      const { data: { session } } = await supabaseClient.auth.getSession()
-      setIsSignedIn(!!session)
-      if (session?.user?.email) {
-        setUserEmail(session.user.email)
-      }
-    }
-    
-    checkAuth()
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((_event: string, session: AuthSession | null) => {
-      setIsSignedIn(!!session)
-      if (session?.user?.email) {
-        setUserEmail(session.user.email)
-      }
-    })
-
-    return () => {
-      subscription.unsubscribe()
-    }
+    // derive state from AuthProvider
+    setIsSignedIn(!!user)
+    if (user?.email) setUserEmail(user.email)
+    // no subscriptions here - AuthProvider handles it
   }, [])
 
   const handleSignOut = async () => {
     try {
-      // Sign out from Supabase
-      const { error } = await supabase.auth.signOut()
-      
-      if (error) {
-        console.error('Sign out error:', error)
-        // Still redirect even if there's an error - the session might be invalid
-      }
-      
-      // Clear local auth state
+      await signOut()
       setIsSignedIn(false)
       setUserEmail("")
-      
-      // Force a full page redirect to home
-      // This ensures the user is completely logged out and taken to the home page
       window.location.href = '/'
     } catch (err) {
       console.error('Unexpected sign out error:', err)
-      // Fallback: clear state and redirect anyway
       setIsSignedIn(false)
       setUserEmail("")
       window.location.href = '/'
@@ -543,7 +506,7 @@ export function BlueSiteHeader() {
                       <UserCheck className="h-4 w-4 xl:h-5 xl:w-5 text-[#053f52]" />
                     </motion.div>
                     <span className="hidden xl:inline text-sm font-medium truncate max-w-[120px]">
-                      {userEmail?.split('@')[0] || "User"}
+                      {(userEmail ? userEmail.split('@')[0] : "User")}
                     </span>
                   </motion.button>
 

@@ -76,7 +76,7 @@ async function verifyAdminAccess(
       .select('role, is_active')
       .eq('user_id', session.user.id)
       .eq('is_active', true)
-      .single()
+      .maybeSingle()
 
     if (error || !adminUser) {
       return { authorized: false, error: 'Admin access required' }
@@ -274,7 +274,7 @@ export async function POST(request: Request) {
       .from('admin_users')
       .select('*')
       .eq('user_id', targetUser.id)
-      .single()
+      .maybeSingle()
 
     if (existingAdmin) {
       // Update existing admin
@@ -288,7 +288,7 @@ export async function POST(request: Request) {
         })
         .eq('id', existingAdmin.id)
         .select()
-        .single()
+        .maybeSingle()
 
       if (updateError) {
         console.error('Error updating admin:', updateError)
@@ -316,7 +316,7 @@ export async function POST(request: Request) {
         is_active: true
       })
       .select()
-      .single()
+      .maybeSingle()
 
     if (createError) {
       console.error('Error creating admin:', createError)

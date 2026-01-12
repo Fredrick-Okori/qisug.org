@@ -1,101 +1,151 @@
-import { NextResponse } from 'next/server'
+/**
+ * Admin Dashboard Stats API Route
+ * 
+ * Returns dashboard statistics - only for authenticated admins
+ */
+
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+
+// ============================================================================
+// Types
+// ============================================================================
+
+interface ApiResponse<T = unknown> {
+  success: boolean
+  data?: T
+  error?: string
+}
+
+// ============================================================================
+// Helper Functions
+// ============================================================================
+
+/**
+ * Verify that the current user is an admin
+ */
+async function verifyAdminAccess(
+  cookieStore: Awaited<ReturnType<typeof cookies>>
+): Promise<{ authorized: boolean; error?: string }> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseKey) {
+    return { authorized: false, error: 'Supabase not configured' }
+  }
+
+  const supabase = createServerClient(supabaseUrl, supabaseKey, {
+    cookies: {
+      get(name: string) {
+        return cookieStore.get(name)?.value
+      },
+      set(name: string, value: string, options: CookieOptions) {
+        try {
+          cookieStore.set({ name, value, ...options })
+        } catch (error) {
+          // Handle cookie errors
+        }
+      },
+      remove(name: string, options: CookieOptions) {
+        try {
+          cookieStore.set({ name, value: '', ...options })
+        } catch (error) {
+          // Handle cookie errors
+        }
+      },
+    },
+  })
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession()
+
+    if (!session?.user) {
+      return { authorized: false, error: 'Authentication required' }
+    }
+
+    // Check if user is an active admin
+    const { data: adminUser, error } = await supabase
+      .from('admin_users')
+      .select('role, is_active')
+      .eq('user_id', session.user.id)
+      .eq('is_active', true)
+      .maybeSingle()
+
+    if (error || !adminUser) {
+      return { authorized: false, error: 'Admin access required' }
+    }
+
+    return { authorized: true }
+  } catch (error) {
+    console.error('Error verifying admin access:', error)
+    return { authorized: false, error: 'Authentication verification failed' }
+  }
+}
+
+// ============================================================================
+// GET: Fetch dashboard statistics
+// ============================================================================
 
 export async function GET() {
   try {
     const cookieStore = await cookies()
     
-    // Create server client with cookie handling
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    // Verify admin access
+    const { authorized, error: authError } = await verifyAdminAccess(cookieStore)
     
-    if (!supabaseUrl || !supabaseKey) {
-      // Return mock data if Supabase is not configured
-      return NextResponse.json({
-        success: true,
-        data: {
-          totalApplications: 156,
-          pendingApplications: 42,
-          approvedApplications: 89,
-          rejectedApplications: 25,
-          totalUsers: 312,
-          newThisWeek: 18,
-          documentsUploaded: 847,
-          revenue: 124500,
-          applicationsByStatus: [
-            { name: 'Approved', value: 89, color: '#22c55e' },
-            { name: 'Pending', value: 42, color: '#eab308' },
-            { name: 'Rejected', value: 25, color: '#ef4444' },
-          ],
-          applicationsByProgram: [
-            { name: 'IB Diploma', value: 65, color: '#3b82f6' },
-            { name: 'A-Level', value: 52, color: '#8b5cf6' },
-            { name: 'IGCSE', value: 39, color: '#f59e0b' },
-          ],
-          monthlyTrend: [
-            { month: 'Aug', applications: 23 },
-            { month: 'Sep', applications: 45 },
-            { month: 'Oct', applications: 67 },
-            { month: 'Nov', applications: 89 },
-            { month: 'Dec', applications: 45 },
-            { month: 'Jan', applications: 78 },
-          ],
-        },
-        mock: true,
-      })
-    }
-
-    const supabase = (await import('@supabase/ssr')).createServerClient(
-      supabaseUrl,
-      supabaseKey,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value
-          },
-        },
-      }
-    )
-
-    // Check authentication
-    const { data: { session } } = await supabase.auth.getSession()
-    
-    if (!session) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
-
-    // Check if user is admin
-    const { data: adminUser } = await supabase
-      .from('admin_users')
-      .select('role')
-      .eq('user_id', session.user.id)
-      .eq('is_active', true)
-      .single()
-
-    if (!adminUser) {
-      return NextResponse.json(
-        { error: 'Forbidden - Admin access required' },
+    if (!authorized) {
+      return NextResponse.json<ApiResponse>(
+        { success: false, error: authError },
         { status: 403 }
       )
     }
 
-    // Fetch statistics from database
-    // Note: Adjust table/column names based on your actual schema
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json<ApiResponse>(
+        { success: false, error: 'Supabase not configured' },
+        { status: 500 }
+      )
+    }
+
+    const supabase = createServerClient(supabaseUrl, supabaseKey, {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value, ...options })
+          } catch (error) {
+            // Handle cookie errors
+          }
+        },
+        remove(name: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value: '', ...options })
+          } catch (error) {
+            // Handle cookie errors
+          }
+        },
+      },
+    })
+
+    // Fetch statistics from database using correct schema
     const [
       { count: totalApplications },
       { count: pendingApplications },
       { count: approvedApplications },
       { count: rejectedApplications },
-      { count: totalUsers },
+      { count: totalApplicants },
     ] = await Promise.all([
       supabase.from('applications').select('*', { count: 'exact', head: true }),
-      supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-      supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
-      supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'rejected'),
-      supabase.from('profiles').select('*', { count: 'exact', head: true }),
+      supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'Submitted'),
+      supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'Accepted'),
+      supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'Rejected'),
+      supabase.from('applicants').select('*', { count: 'exact', head: true }),
     ])
 
     // Get new applications this week
@@ -107,12 +157,54 @@ export async function GET() {
       .select('*', { count: 'exact', head: true })
       .gte('created_at', oneWeekAgo.toISOString())
 
-    // Fetch recent applications
-    const { data: recentApplications } = await supabase
+    // Fetch documents count
+    const { count: documentsUploaded } = await supabase
+      .from('application_documents')
+      .select('*', { count: 'exact', head: true })
+
+    // Fetch approved documents count
+    const { count: approvedDocuments } = await supabase
+      .from('application_documents')
+      .select('*', { count: 'exact', head: true })
+      .eq('is_verified', true)
+
+    // Fetch recent applications with applicant info
+    const { data: recentApplicationsRaw } = await supabase
       .from('applications')
-      .select('id, applicant_name, email, program, grade, status, created_at')
+      .select(`
+        id,
+        status,
+        created_at,
+        applicants (
+          first_name,
+          last_name,
+          email
+        ),
+        programs (
+          name,
+          grade
+        )
+      `)
       .order('created_at', { ascending: false })
       .limit(5)
+
+    // Process recent applications
+    const recentApplications = recentApplicationsRaw?.map((app: any) => {
+      const applicant = Array.isArray(app.applicants) ? app.applicants[0] : app.applicants
+      const program = Array.isArray(app.programs) ? app.programs[0] : app.programs
+      
+      return {
+        id: app.id,
+        applicantName: applicant 
+          ? `${applicant.first_name || ''} ${applicant.last_name || ''}`.trim() 
+          : 'N/A',
+        email: applicant?.email || '',
+        program: program?.name || 'N/A',
+        grade: program?.grade ? `Grade ${program.grade}` : 'N/A',
+        status: app.status || 'Submitted',
+        submittedAt: app.created_at ? new Date(app.created_at).toISOString().split('T')[0] : '',
+      }
+    }) || []
 
     // Fetch applications by status for chart
     const { data: statusDistribution } = await supabase
@@ -122,10 +214,11 @@ export async function GET() {
 
     // Process status distribution
     const statusCounts: Record<string, number> = {
-      pending: 0,
-      approved: 0,
-      rejected: 0,
-      under_review: 0,
+      Draft: 0,
+      Submitted: 0,
+      'Under Review': 0,
+      Accepted: 0,
+      Rejected: 0,
     }
     
     statusDistribution?.forEach((app: any) => {
@@ -135,30 +228,36 @@ export async function GET() {
     })
 
     const applicationsByStatus = [
-      { name: 'Approved', value: statusCounts.approved || 0, color: '#22c55e' },
-      { name: 'Pending', value: statusCounts.pending || 0, color: '#eab308' },
-      { name: 'Under Review', value: statusCounts.under_review || 0, color: '#3b82f6' },
-      { name: 'Rejected', value: statusCounts.rejected || 0, color: '#ef4444' },
+      { name: 'Accepted', value: statusCounts.Accepted || 0, color: '#22c55e' },
+      { name: 'Submitted', value: statusCounts.Submitted || 0, color: '#eab308' },
+      { name: 'Under Review', value: statusCounts['Under Review'] || 0, color: '#3b82f6' },
+      { name: 'Rejected', value: statusCounts.Rejected || 0, color: '#ef4444' },
+      { name: 'Draft', value: statusCounts.Draft || 0, color: '#6b7280' },
     ].filter(item => item.value > 0)
 
     // Fetch applications by program for chart
     const { data: programDistribution } = await supabase
       .from('applications')
-      .select('program')
-      .not('program', 'is', null)
+      .select(`
+        programs (
+          name
+        )
+      `)
+      .not('programs', 'is', null)
 
     // Process program distribution
     const programCounts: Record<string, number> = {}
     programDistribution?.forEach((app: any) => {
-      if (app.program) {
-        programCounts[app.program] = (programCounts[app.program] || 0) + 1
+      const program = Array.isArray(app.programs) ? app.programs[0] : app.programs
+      if (program?.name) {
+        programCounts[program.name] = (programCounts[program.name] || 0) + 1
       }
     })
 
     const applicationsByProgram = Object.entries(programCounts).map(([name, value], index) => ({
       name,
       value,
-      color: ['#3b82f6', '#8b5cf6', '#f59e0b', '#ec4899', '#14b8a6'][index % 5],
+      color: ['#3b82f6', '#8b5cf6', '#f59e0b', '#ec4899', '#14b8a6', '#06b6d4'][index % 6],
     }))
 
     // Generate monthly trend (last 6 months)
@@ -181,35 +280,37 @@ export async function GET() {
       })
     }
 
-    return NextResponse.json({
+    // Calculate revenue from payment slips
+    const { data: paymentData } = await supabase
+      .from('payment_slips')
+      .select('amount_paid')
+      .eq('is_verified', true)
+
+    const revenue = paymentData?.reduce((sum, p) => sum + (p.amount_paid || 0), 0) || 0
+
+    return NextResponse.json<ApiResponse<any>>({
       success: true,
       data: {
         totalApplications: totalApplications || 0,
         pendingApplications: pendingApplications || 0,
         approvedApplications: approvedApplications || 0,
         rejectedApplications: rejectedApplications || 0,
-        totalUsers: totalUsers || 0,
+        totalUsers: totalApplicants || 0,
         newThisWeek: newThisWeek || 0,
-        documentsUploaded: 0, // Would need documents table
-        revenue: 0, // Would need payments table
+        documentsUploaded: documentsUploaded || 0,
+        approvedDocuments: approvedDocuments || 0,
+        revenue,
         applicationsByStatus,
         applicationsByProgram,
         monthlyTrend,
-        recentApplications: recentApplications?.map((app: any) => ({
-          id: app.id,
-          applicantName: app.applicant_name || 'Unknown',
-          email: app.email || '',
-          program: app.program || '',
-          grade: app.grade || '',
-          status: app.status || 'pending',
-          submittedAt: app.created_at ? new Date(app.created_at).toISOString().split('T')[0] : '',
-        })) || [],
+        recentApplications,
       },
     })
+
   } catch (error) {
     console.error('Error fetching dashboard stats:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
+    return NextResponse.json<ApiResponse>(
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     )
   }

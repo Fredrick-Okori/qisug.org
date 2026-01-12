@@ -8,36 +8,50 @@ import {
   Eye,
   Check,
   X,
+  FileText,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Upload
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+
+interface Document {
+  application_id: string
+  file_name: string
+  file_type: string
+  file_url?: string
+  status: 'pending' | 'approved' | 'rejected'
+  uploaded_at: string
+}
+
+interface Payment {
+  id: string
+  amount: number
+  status: 'pending' | 'completed' | 'failed' | 'refunded'
+  payment_method: string
+  created_at: string
+  transaction_id: string
+  receipt_url: string | null
+}
 
 interface Application {
   id: string
   reference: string
-  applicantName: string
+  applicant_name: string
   email: string
   phone: string
   program: string
   grade: string
   status: 'pending' | 'approved' | 'rejected' | 'under_review'
-  submittedAt: string
-  lastUpdated: string
-  documentsComplete: boolean
-  paymentStatus: 'pending' | 'paid' | 'failed'
+  submitted_at: string
+  last_updated: string
+  payment_status: 'pending' | 'paid' | 'failed'
+  payment: Payment | null
+  documents: Document[]
 }
-
-const mockApplications: Application[] = [
-  { id: '1', reference: 'QIS-2024-001', applicantName: 'John Kamau', email: 'john@example.com', phone: '+256 701234567', program: 'IB Diploma', grade: 'Grade 11', status: 'pending', submittedAt: '2024-01-15', lastUpdated: '2024-01-15', documentsComplete: true, paymentStatus: 'paid' },
-  { id: '2', reference: 'QIS-2024-002', applicantName: 'Sarah Mukiibi', email: 'sarah@example.com', phone: '+256 702345678', program: 'A-Level', grade: 'Grade 12', status: 'approved', submittedAt: '2024-01-14', lastUpdated: '2024-01-16', documentsComplete: true, paymentStatus: 'paid' },
-  { id: '3', reference: 'QIS-2024-003', applicantName: 'Michael Omondi', email: 'michael@example.com', phone: '+256 703456789', program: 'IGCSE', grade: 'Grade 10', status: 'under_review', submittedAt: '2024-01-14', lastUpdated: '2024-01-15', documentsComplete: false, paymentStatus: 'pending' },
-  { id: '4', reference: 'QIS-2024-004', applicantName: 'Emma Nakiwala', email: 'emma@example.com', phone: '+256 704567890', program: 'IB Diploma', grade: 'Grade 11', status: 'rejected', submittedAt: '2024-01-13', lastUpdated: '2024-01-14', documentsComplete: true, paymentStatus: 'paid' },
-  { id: '5', reference: 'QIS-2024-005', applicantName: 'David Ssentamu', email: 'david@example.com', phone: '+256 705678901', program: 'A-Level', grade: 'Grade 12', status: 'pending', submittedAt: '2024-01-13', lastUpdated: '2024-01-13', documentsComplete: true, paymentStatus: 'paid' },
-  { id: '6', reference: 'QIS-2024-006', applicantName: 'Grace Nakintu', email: 'grace@example.com', phone: '+256 706789012', program: 'IB Diploma', grade: 'Grade 11', status: 'approved', submittedAt: '2024-01-12', lastUpdated: '2024-01-15', documentsComplete: true, paymentStatus: 'paid' },
-  { id: '7', reference: 'QIS-2024-007', applicantName: 'Robert Mukasa', email: 'robert@example.com', phone: '+256 707890123', program: 'IGCSE', grade: 'Grade 9', status: 'pending', submittedAt: '2024-01-11', lastUpdated: '2024-01-11', documentsComplete: false, paymentStatus: 'failed' },
-  { id: '8', reference: 'QIS-2024-008', applicantName: 'Alice Babirye', email: 'alice@example.com', phone: '+256 708901234', program: 'A-Level', grade: 'Grade 12', status: 'under_review', submittedAt: '2024-01-10', lastUpdated: '2024-01-14', documentsComplete: true, paymentStatus: 'paid' },
-]
 
 export default function AdminApplicationsPage() {
   const [applications, setApplications] = useState<Application[]>([])
@@ -47,43 +61,44 @@ export default function AdminApplicationsPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isUpdating, setIsUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const itemsPerPage = 10
 
   useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const response = await fetch(`/api/admin/applications?status=${statusFilter}&page=${currentPage}&limit=${itemsPerPage}`)
-        const data = await response.json()
-        
-        if (data.success) {
-          setApplications(data.data || [])
-          setError(null)
-        } else {
-          setError(data.error || 'Failed to fetch applications')
-          setApplications(mockApplications)
-        }
-      } catch (err) {
-        console.error('Error fetching applications:', err)
-        setError('Failed to fetch applications')
-        setApplications(mockApplications)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
     fetchApplications()
-  }, [statusFilter, currentPage])
+  }, [statusFilter])
+
+  const fetchApplications = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch(`/api/admin/applications?status=${statusFilter}`)
+      const data = await response.json()
+      
+      if (data.success) {
+        setApplications(data.data || [])
+        setError(null)
+      } else {
+        setError(data.error || 'Failed to fetch applications')
+      }
+    } catch (err) {
+      console.error('Error fetching applications:', err)
+      setError('Failed to fetch applications. Please check your connection.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
     let filtered = applications
 
     if (searchQuery) {
+      const searchLower = searchQuery.toLowerCase()
       filtered = filtered.filter(
         (app) =>
-          app.applicantName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          app.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          app.reference.toLowerCase().includes(searchQuery.toLowerCase())
+          app.applicant_name.toLowerCase().includes(searchLower) ||
+          app.email.toLowerCase().includes(searchLower) ||
+          app.reference.toLowerCase().includes(searchLower)
       )
     }
 
@@ -111,17 +126,58 @@ export default function AdminApplicationsPage() {
     )
   }
 
-  const getPaymentBadge = (status: string) => {
+  const getPaymentBadge = (status: string | null) => {
     const styles: Record<string, string> = {
       paid: 'bg-green-100 text-green-800',
+      completed: 'bg-green-100 text-green-800',
       pending: 'bg-yellow-100 text-yellow-800',
       failed: 'bg-red-100 text-red-800',
     }
+    const safeStatus = status || 'pending'
+    const label = safeStatus.charAt(0).toUpperCase() + safeStatus.slice(1)
+
     return (
-      <span className={`px-2 py-0.5 text-xs font-medium rounded ${styles[status] || 'bg-gray-100 text-gray-800'}`}>
+      <span className={`px-2 py-0.5 text-xs font-medium rounded ${styles[safeStatus] || 'bg-gray-100 text-gray-800'}`}>
+        {label}
+      </span>
+    )
+  }
+
+  const getDocStatusIcon = (status: string) => {
+    switch (status) {
+      case 'approved':
+        return <CheckCircle className="w-4 h-4 text-green-500" />
+      case 'rejected':
+        return <XCircle className="w-4 h-4 text-red-500" />
+      default:
+        return <Clock className="w-4 h-4 text-yellow-500" />
+    }
+  }
+
+  const getDocStatusBadge = (status: string) => {
+    const styles: Record<string, string> = {
+      approved: 'bg-green-100 text-green-700',
+      rejected: 'bg-red-100 text-red-700',
+      pending: 'bg-yellow-100 text-yellow-700',
+    }
+    return (
+      <span className={`px-2 py-0.5 text-xs font-medium rounded ${styles[status] || 'bg-gray-100 text-gray-700'}`}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </span>
     )
+  }
+
+  const getRequiredDocTypeLabel = (type: string) => {
+    const labels: Record<string, string> = {
+      passport: 'Passport',
+      transcript: 'Transcript',
+      recommendation: 'Recommendation Letter',
+      photo: 'Passport Photo',
+      birth_certificate: 'Birth Certificate',
+      previous_school: 'Previous School Report',
+      medical_form: 'Medical Form',
+    }
+    return labels[type] || type.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
   }
 
   const totalPages = Math.ceil(filteredApplications.length / itemsPerPage)
@@ -130,18 +186,117 @@ export default function AdminApplicationsPage() {
     currentPage * itemsPerPage
   )
 
+  const updateApplicationStatus = async (id: string, status: 'approved' | 'rejected') => {
+    setIsUpdating(true)
+    try {
+      const response = await fetch('/api/admin/applications', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          applicationId: id,
+          status
+        })
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        // Refresh the applications list
+        await fetchApplications()
+        setSelectedApplication(null)
+      } else {
+        alert(data.error || 'Failed to update application status')
+      }
+    } catch (err) {
+      console.error('Error updating application:', err)
+      alert('Failed to update application status. Please try again.')
+    } finally {
+      setIsUpdating(false)
+    }
+  }
+
   const handleApprove = (id: string) => {
-    setApplications((prev) =>
-      prev.map((app) => (app.id === id ? { ...app, status: 'approved', lastUpdated: new Date().toISOString().split('T')[0] } : app))
-    )
-    setSelectedApplication(null)
+    if (confirm('Are you sure you want to approve this application?')) {
+      updateApplicationStatus(id, 'approved')
+    }
   }
 
   const handleReject = (id: string) => {
-    setApplications((prev) =>
-      prev.map((app) => (app.id === id ? { ...app, status: 'rejected', lastUpdated: new Date().toISOString().split('T')[0] } : app))
-    )
-    setSelectedApplication(null)
+    if (confirm('Are you sure you want to reject this application?')) {
+      updateApplicationStatus(id, 'rejected')
+    }
+  }
+
+  const updatePaymentReference = async (applicationId: string, paymentReference: string) => {
+    setIsUpdating(true)
+    try {
+      const response = await fetch('/api/admin/applications', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          applicationId,
+          paymentReference
+        })
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        await fetchApplications()
+        return true
+      } else {
+        alert(data.error || 'Failed to update payment reference')
+        return false
+      }
+    } catch (err) {
+      console.error('Error updating payment reference:', err)
+      alert('Failed to update payment reference. Please try again.')
+      return false
+    } finally {
+      setIsUpdating(false)
+    }
+  }
+
+  const getDocumentCompletionStatus = (docs: Document[]) => {
+    if (!docs || docs.length === 0) return { complete: false, count: 0, total: 6 }
+    const complete = docs.filter((d) => d.status === 'approved').length
+    return { complete: complete >= 4, count: complete, total: docs.length }
+  }
+
+  const exportApplications = () => {
+    // Create CSV content
+    const headers = ['Reference', 'Name', 'Email', 'Phone', 'Program', 'Grade', 'Status', 'Payment Status', 'Submitted']
+    const rows = filteredApplications.map(app => [
+      app.reference,
+      app.applicant_name,
+      app.email,
+      app.phone,
+      app.program,
+      app.grade,
+      app.status,
+      app.payment_status,
+      app.submitted_at
+    ])
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n')
+
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `applications-${new Date().toISOString().split('T')[0]}.csv`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    window.URL.revokeObjectURL(url)
   }
 
   if (isLoading) {
@@ -161,10 +316,11 @@ export default function AdminApplicationsPage() {
           </div>
           <div>
             <p className="font-semibold text-yellow-900">{error}</p>
-            <p className="text-sm text-yellow-800">Using fallback data. Please check your connection.</p>
+            <p className="text-sm text-yellow-800">Please check your connection and try again.</p>
           </div>
         </div>
       )}
+      
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
@@ -172,12 +328,12 @@ export default function AdminApplicationsPage() {
           <p className="text-slate-600 mt-1">Manage and review student applications</p>
         </div>
         <div className="flex gap-3">
-          <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors font-medium flex items-center gap-2">
+          <button 
+            onClick={exportApplications}
+            className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors font-medium flex items-center gap-2"
+          >
             <Download className="w-4 h-4" />
             Export
-          </button>
-          <button className="px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium">
-            Add New
           </button>
         </div>
       </div>
@@ -224,6 +380,7 @@ export default function AdminApplicationsPage() {
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Reference</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Applicant</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Program</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Documents</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Payment</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Submitted</th>
@@ -231,53 +388,75 @@ export default function AdminApplicationsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {paginatedApplications.map((app) => (
-                <tr key={app.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-6 py-4">
-                    <span className="font-mono text-sm text-slate-700">{app.reference}</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div>
-                      <p className="font-medium text-slate-900">{app.applicantName}</p>
-                      <p className="text-sm text-slate-500">{app.email}</p>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div>
-                      <p className="text-slate-900">{app.program}</p>
-                      <p className="text-sm text-slate-500">{app.grade}</p>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">{getStatusBadge(app.status)}</td>
-                  <td className="px-6 py-4">{getPaymentBadge(app.paymentStatus)}</td>
-                  <td className="px-6 py-4 text-slate-600">{app.submittedAt}</td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => setSelectedApplication(app)}
-                        className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-                        title="View Details"
-                      >
-                        <Eye className="w-4 h-4 text-slate-600" />
-                      </button>
-                      <button
-                        onClick={() => handleApprove(app.id)}
-                        className="p-2 hover:bg-green-100 rounded-lg transition-colors"
-                        title="Approve"
-                      >
-                        <Check className="w-4 h-4 text-green-600" />
-                      </button>
-                      <button
-                        onClick={() => handleReject(app.id)}
-                        className="p-2 hover:bg-red-100 rounded-lg transition-colors"
-                        title="Reject"
-                      >
-                        <X className="w-4 h-4 text-red-600" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {paginatedApplications.map((app) => {
+                const docStatus = getDocumentCompletionStatus(app.documents)
+                return (
+                  <tr key={app.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4">
+                      <span className="font-mono text-sm text-slate-700">{app.reference}</span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div>
+                        <p className="font-medium text-slate-900">{app.applicant_name}</p>
+                        <p className="text-sm text-slate-500">{app.email}</p>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div>
+                        <p className="text-slate-900">{app.program}</p>
+                        <p className="text-sm text-slate-500">{app.grade}</p>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-slate-400" />
+                        <span className={`text-sm font-medium ${docStatus.complete ? 'text-green-600' : 'text-orange-600'}`}>
+                          {docStatus.count}/{docStatus.total}
+                        </span>
+                        {docStatus.complete ? (
+                          <CheckCircle className="w-4 h-4 text-green-500" />
+                        ) : (
+                          <Clock className="w-4 h-4 text-orange-500" />
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">{getStatusBadge(app.status)}</td>
+                    <td className="px-6 py-4">{getPaymentBadge(app.payment_status)}</td>
+                    <td className="px-6 py-4 text-slate-600">{app.submitted_at}</td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => setSelectedApplication(app)}
+                          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                          title="View Details"
+                        >
+                          <Eye className="w-4 h-4 text-slate-600" />
+                        </button>
+                        {app.status !== 'approved' && (
+                          <button
+                            onClick={() => handleApprove(app.id)}
+                            disabled={isUpdating}
+                            className="p-2 hover:bg-green-100 rounded-lg transition-colors disabled:opacity-50"
+                            title="Approve"
+                          >
+                            <Check className="w-4 h-4 text-green-600" />
+                          </button>
+                        )}
+                        {app.status !== 'rejected' && (
+                          <button
+                            onClick={() => handleReject(app.id)}
+                            disabled={isUpdating}
+                            className="p-2 hover:bg-red-100 rounded-lg transition-colors disabled:opacity-50"
+                            title="Reject"
+                          >
+                            <X className="w-4 h-4 text-red-600" />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>
@@ -338,10 +517,10 @@ export default function AdminApplicationsPage() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+              <div className="p-6 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
                 <div>
                   <h2 className="text-xl font-bold text-slate-900">Application Details</h2>
                   <p className="text-sm text-slate-500 font-mono">{selectedApplication.reference}</p>
@@ -353,11 +532,13 @@ export default function AdminApplicationsPage() {
                   <X className="w-5 h-5 text-slate-500" />
                 </button>
               </div>
+              
               <div className="p-6 space-y-6">
-                <div className="grid grid-cols-2 gap-6">
+                {/* Basic Info */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                   <div>
                     <p className="text-sm text-slate-500 mb-1">Applicant Name</p>
-                    <p className="font-semibold text-slate-900">{selectedApplication.applicantName}</p>
+                    <p className="font-semibold text-slate-900">{selectedApplication.applicant_name}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 mb-1">Email</p>
@@ -376,23 +557,127 @@ export default function AdminApplicationsPage() {
                     <p className="font-semibold text-slate-900">{selectedApplication.grade}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-slate-500 mb-1">Status</p>
-                    {getStatusBadge(selectedApplication.status)}
+                    <p className="text-sm text-slate-500 mb-1">Submitted</p>
+                    <p className="font-semibold text-slate-900">{selectedApplication.submitted_at}</p>
                   </div>
                 </div>
+
+                {/* Documents Section */}
+                <div className="border-t border-slate-100 pt-6">
+                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Uploaded Documents</h3>
+                  {selectedApplication.documents && selectedApplication.documents.length > 0 ? (
+                    <div className="bg-slate-50 rounded-xl p-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {selectedApplication.documents.map((doc, idx) => (
+                          <div key={idx} className="flex items-center justify-between bg-white p-3 rounded-lg border border-slate-100">
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                              <FileText className="w-5 h-5 text-[#053f52] flex-shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <p className="font-medium text-slate-900 text-sm">{getRequiredDocTypeLabel(doc.file_type)}</p>
+                                <p className="text-xs text-slate-500 truncate">{doc.file_name}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                              {getDocStatusIcon(doc.status)}
+                              {getDocStatusBadge(doc.status)}
+                              {doc.file_url && (
+                                <a
+                                  href={doc.file_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-1 hover:bg-slate-100 rounded"
+                                  title="View document"
+                                >
+                                  <Eye className="w-4 h-4 text-slate-600" />
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-slate-50 rounded-xl p-8 text-center">
+                      <FileText className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                      <p className="text-slate-500">No documents uploaded yet</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Payment Section */}
+                <div className="border-t border-slate-100 pt-6">
+                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Payment Information</h3>
+                  {selectedApplication.payment ? (
+                    <div className="bg-slate-50 rounded-xl p-4">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div>
+                          <p className="text-sm text-slate-500 mb-1">Amount</p>
+                          <p className="font-semibold text-slate-900">
+                            ${selectedApplication.payment.amount.toLocaleString()}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-slate-500 mb-1">Status</p>
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                            selectedApplication.payment.status === 'completed' ? 'bg-green-100 text-green-800' :
+                            selectedApplication.payment.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                            selectedApplication.payment.status === 'failed' ? 'bg-red-100 text-red-800' :
+                            'bg-gray-100 text-gray-800'
+                          }`}>
+                            {selectedApplication.payment.status.charAt(0).toUpperCase() + selectedApplication.payment.status.slice(1)}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="text-sm text-slate-500 mb-1">Method</p>
+                          <p className="font-semibold text-slate-900">{selectedApplication.payment.payment_method}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-slate-500 mb-1">Transaction ID</p>
+                          <p className="font-mono text-xs text-slate-900">{selectedApplication.payment.transaction_id}</p>
+                        </div>
+                      </div>
+                      {selectedApplication.payment.receipt_url && (
+                        <div className="mt-4 pt-4 border-t border-slate-200">
+                          <a 
+                            href={selectedApplication.payment.receipt_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#042d3d] transition-colors text-sm font-medium"
+                          >
+                            <Download className="w-4 h-4" />
+                            View Payment Slip
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="bg-slate-50 rounded-xl p-8 text-center">
+                      <FileText className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                      <p className="text-slate-500">No payment information available</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Action Buttons */}
                 <div className="flex gap-3 pt-4 border-t border-slate-100">
-                  <button
-                    onClick={() => handleApprove(selectedApplication.id)}
-                    className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
-                  >
-                    Approve Application
-                  </button>
-                  <button
-                    onClick={() => handleReject(selectedApplication.id)}
-                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-                  >
-                    Reject Application
-                  </button>
+                  {selectedApplication.status !== 'approved' && (
+                    <button
+                      onClick={() => handleApprove(selectedApplication.id)}
+                      disabled={isUpdating}
+                      className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium disabled:opacity-50"
+                    >
+                      {isUpdating ? 'Processing...' : 'Approve Application'}
+                    </button>
+                  )}
+                  {selectedApplication.status !== 'rejected' && (
+                    <button
+                      onClick={() => handleReject(selectedApplication.id)}
+                      disabled={isUpdating}
+                      className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium disabled:opacity-50"
+                    >
+                      {isUpdating ? 'Processing...' : 'Reject Application'}
+                    </button>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -402,4 +687,3 @@ export default function AdminApplicationsPage() {
     </div>
   )
 }
-

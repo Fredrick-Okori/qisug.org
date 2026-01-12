@@ -93,7 +93,7 @@ export async function getCurrentAdminUser(): Promise<AdminUser | null> {
       .select('*')
       .eq('user_id', session.user.id)
       .eq('is_active', true)
-      .single()
+      .maybeSingle()
 
     if (error || !adminUser) {
       return null
@@ -167,7 +167,7 @@ export async function getAuthenticatedAdmin(): Promise<AuthenticatedAdmin | null
       .select('*')
       .eq('user_id', session.user.id)
       .eq('is_active', true)
-      .single()
+      .maybeSingle()
 
     if (error || !adminUser) {
       return null
@@ -227,7 +227,7 @@ export async function addAdminUser(
       .from('admin_users')
       .select('*')
       .eq('user_id', targetUser.id)
-      .single()
+      .maybeSingle()
 
     if (existingAdmin) {
       // Update existing admin
@@ -241,7 +241,7 @@ export async function addAdminUser(
         })
         .eq('id', existingAdmin.id)
         .select()
-        .single()
+        .maybeSingle()
 
       if (error) {
         return { success: false, error: error.message }
@@ -261,7 +261,7 @@ export async function addAdminUser(
         is_active: true
       })
       .select()
-      .single()
+      .maybeSingle()
 
     if (error) {
       return { success: false, error: error.message }

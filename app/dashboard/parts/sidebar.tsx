@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -17,9 +17,9 @@ import {
   GraduationCap,
   BookOpen
 } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
+import { /* createClient */ } from '@/lib/supabase/client'
 import { getRoleBadgeColor, getRoleDisplayName, type AdminUser } from '@/lib/admin-utils'
-import type { User as SupabaseUser } from '@supabase/supabase-js'
+import { useAuth } from '@/components/auth/auth-context'
 
 interface AdminSidebarProps {
   children?: React.ReactNode
@@ -28,53 +28,21 @@ interface AdminSidebarProps {
 export default function AdminSidebar({ children }: AdminSidebarProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const supabase = createClient()
-  const [user, setUser] = useState<SupabaseUser | null>(null)
-  const [adminUser, setAdminUser] = useState<AdminUser | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { user, adminUser, loading, signOut } = useAuth()
   const [isSigningOut, setIsSigningOut] = useState(false)
 
+  const isLoading = loading
+
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession()
-
-        if (session?.user) {
-          setUser(session.user)
-
-          // Get admin user details
-          const { data: adminData } = await supabase
-            .from('admin_users')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .eq('is_active', true)
-            .single()
-
-          if (adminData) {
-            setAdminUser(adminData)
-          }
-        }
-      } catch (error) {
-        console.error('Error getting user:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    getUser()
-  }, [supabase])
+    // auth state is provided by AuthProvider; no local fetch required
+  }, [])
 
   const handleSignOut = async () => {
     setIsSigningOut(true)
     try {
-      const { error } = await supabase.auth.signOut()
-
-      if (error) {
-        console.error('Sign out error:', error)
-      } else {
-        router.push('/')
-        router.refresh()
-      }
+      await signOut()
+      router.push('/')
+      router.refresh()
     } catch (error) {
       console.error('Sign out error:', error)
     } finally {
@@ -147,7 +115,7 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
 
       {/* User Info Section */}
       <div className="px-4 py-3 border-t border-slate-800">
-        {isLoading ? (
+            {isLoading ? (
           <div className="animate-pulse">
             <div className="h-4 bg-slate-700 rounded w-3/4 mb-2"></div>
             <div className="h-3 bg-slate-700 rounded w-1/2"></div>
@@ -161,10 +129,10 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-white truncate">
-                  {adminUser?.full_name || user.email?.split('@')[0] || 'Admin'}
+                  {adminUser?.full_name ?? (user?.email ? user.email.split('@')[0] : 'Admin')}
                 </p>
                 <p className="text-xs text-slate-500 truncate">
-                  {user.email}
+                  {user?.email}
                 </p>
               </div>
             </div>

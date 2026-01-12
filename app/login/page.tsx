@@ -57,7 +57,8 @@ function LoginContent() {
   const redirectPath = searchParams.get('redirect') || '/admissions/apply-now';
 
   /**
-   * Helper function to determine where a user belongs
+   * Helper function to determine where a user belongs based on their role
+   * This checks both Supabase auth metadata and the admin_users table
    */
   const getRedirectDestination = async (userId: string) => {
     try {
@@ -101,11 +102,14 @@ function LoginContent() {
       if (adminUser && !adminError && adminUser.is_active) {
         return '/dashboard/admin';
       }
+
+      // User is not an admin, redirect to applicant/student portal
+      return '/dashboard';
     } catch (err) {
       console.error('Error checking admin status:', err);
+      // Default to student portal on error
+      return '/dashboard';
     }
-    // Default for everyone else (applicants)
-    return redirectPath;
   };
 
   // Check configuration and session on mount

@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -12,8 +12,7 @@ import {
   LogOut,
   GraduationCap
 } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
-import type { User as SupabaseUser } from '@supabase/supabase-js'
+import { useAuth } from '@/components/auth/auth-context'
 
 interface ApplicantSidebarProps {
   children?: React.ReactNode
@@ -21,71 +20,19 @@ interface ApplicantSidebarProps {
 
 export default function ApplicantSidebar({ children }: ApplicantSidebarProps) {
   const router = useRouter()
-  const supabase = createClient()
-  const [user, setUser] = useState<SupabaseUser | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { user, fullName, loading, signOut } = useAuth()
   const [isSigningOut, setIsSigningOut] = useState(false)
-  const [fullName, setFullName] = useState<string>('')
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession()
+  const isLoading = loading
 
-        if (session?.user) {
-          setUser(session.user)
-
-          // Prefer using auth user metadata when available (safer and avoids missing profiles table)
-          const metaFullName = (session.user.user_metadata && (
-            session.user.user_metadata.full_name ||
-            session.user.user_metadata.name ||
-            session.user.user_metadata.fullName
-          )) || null
-
-          if (metaFullName) {
-            setFullName(metaFullName)
-          } else {
-            // Fallback: try to get user profile data from public `profiles` table if it exists
-            try {
-              const { data: profileData, error: profileError } = await supabase
-                .from('profiles')
-                .select('full_name')
-                .eq('user_id', session.user.id)
-                .maybeSingle()
-
-              if (!profileError && profileData?.full_name) {
-                setFullName(profileData.full_name)
-              } else {
-                setFullName(session.user.email?.split('@')[0] || 'Applicant')
-              }
-            } catch (err) {
-              // If the `profiles` table or `user_id` column does not exist, ignore and use fallback
-              console.warn('Profiles lookup skipped (missing table/column):', err)
-              setFullName(session.user.email?.split('@')[0] || 'Applicant')
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error getting user:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    getUser()
-  }, [supabase])
+  // auth provider supplies user and fullName; no local session fetch required
 
   const handleSignOut = async () => {
     setIsSigningOut(true)
     try {
-      const { error } = await supabase.auth.signOut()
-
-      if (error) {
-        console.error('Sign out error:', error)
-      } else {
-        router.push('/')
-        router.refresh()
-      }
+      await signOut()
+      router.push('/')
+      router.refresh()
     } catch (error) {
       console.error('Sign out error:', error)
     } finally {

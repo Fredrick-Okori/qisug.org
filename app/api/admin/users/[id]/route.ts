@@ -36,7 +36,7 @@ interface ApiResponse<T = unknown> {
  */
 async function verifyAdminAccess(
   cookieStore: Awaited<ReturnType<typeof cookies>>
-): Promise<{ authorized: boolean; error?: string; currentAdminId?: string }> {
+): Promise<{ authorized: boolean; error?: string; currentAdminRowId?: string; currentUserId?: string }> {
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -70,23 +70,32 @@ async function verifyAdminAccess(
       return { authorized: false, error: 'Authentication required' }
     }
 
-    // Check if user is an active admin
-    const { data: adminUser, error } = await supabase
+    // First, try to find an admin_users row for this user
+    const { data: adminUser, error: adminFetchError } = await supabase
       .from('admin_users')
-      .select('id, role, is_active')
+      .select('id, role, is_active, user_id')
       .eq('user_id', session.user.id)
-      .eq('is_active', true)
-      .single()
+      .maybeSingle()
 
-    if (error || !adminUser) {
-      return { authorized: false, error: 'Admin access required' }
+    const currentUserId = session.user.id
+
+    if (adminFetchError) {
+      console.warn('Error fetching admin_users row:', adminFetchError)
     }
 
-    if (adminUser.role !== 'admin') {
-      return { authorized: false, error: 'Only administrators can manage admin users' }
+    if (adminUser && adminUser.is_active && adminUser.role === 'admin') {
+      return { authorized: true, currentAdminRowId: adminUser.id, currentUserId }
     }
 
-    return { authorized: true, currentAdminId: adminUser.id }
+    // Fallback: check auth metadata (user_metadata or app_metadata)
+    const metaRole = (session.user.user_metadata as any)?.role || (session.user.app_metadata as any)?.role
+    const metaActive = (session.user.user_metadata as any)?.is_active ?? (session.user.app_metadata as any)?.is_active
+
+    if (metaRole === 'admin' && metaActive !== false) {
+      return { authorized: true, currentUserId }
+    }
+
+    return { authorized: false, error: 'Admin access required' }
   } catch (error) {
     console.error('Error verifying admin access:', error)
     return { authorized: false, error: 'Authentication verification failed' }
@@ -125,14 +134,38 @@ export async function PATCH(
     // Parse request body
     const body: UpdateAdminUserRequest = await request.json()
 
-    // Prevent modifying yourself
-    if (adminUserId === currentAdminId) {
+    // Fetch the target admin row so we can validate existence and prevent self-modification
+    const { data: targetAdminRow, error: targetFetchErr } = await supabase
+      .from('admin_users')
+      .select('id, user_id')
+      .eq('id', adminUserId)
+      .maybeSingle()
+
+    if (targetFetchErr) {
+      console.error('Error fetching target admin row:', targetFetchErr)
+      return NextResponse.json<ApiResponse>(
+        { success: false, error: 'Failed to fetch target admin user' },
+        { status: 500 }
+      )
+    }
+
+    if (!targetAdminRow) {
+      return NextResponse.json<ApiResponse>(
+        { success: false, error: 'Admin user not found' },
+        { status: 404 }
+      )
+    }
+
+    // Prevent modifying yourself: either the same admin row or same underlying auth user
+    if (
+      (currentAdminId && adminUserId === currentAdminId) ||
+      (targetAdminRow.user_id && targetAdminRow.user_id === (currentUserId ?? ''))
+    ) {
       return NextResponse.json<ApiResponse>(
         { success: false, error: 'You cannot modify your own admin account' },
         { status: 400 }
       )
     }
-
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -182,7 +215,7 @@ export async function PATCH(
       .update(updateData)
       .eq('id', adminUserId)
       .select()
-      .single()
+      .maybeSingle()
 
     if (updateError) {
       console.error('Error updating admin user:', updateError)
@@ -265,14 +298,33 @@ export async function DELETE(
     // Check if the admin user exists
     const { data: targetAdmin, error: fetchError } = await supabase
       .from('admin_users')
-      .select('id, email, full_name')
+      .select('id, email, full_name, user_id')
       .eq('id', adminUserId)
-      .single()
+      .maybeSingle()
 
-    if (fetchError || !targetAdmin) {
+    if (fetchError) {
+      console.error('Error fetching admin user for delete:', fetchError)
+      return NextResponse.json<ApiResponse>(
+        { success: false, error: 'Failed to fetch admin user' },
+        { status: 500 }
+      )
+    }
+
+    if (!targetAdmin) {
       return NextResponse.json<ApiResponse>(
         { success: false, error: 'Admin user not found' },
         { status: 404 }
+      )
+    }
+
+    // Prevent deleting yourself
+    if (
+      (currentAdminId && adminUserId === currentAdminId) ||
+      (targetAdmin.user_id && targetAdmin.user_id === (currentUserId ?? ''))
+    ) {
+      return NextResponse.json<ApiResponse>(
+        { success: false, error: 'You cannot remove your own admin access' },
+        { status: 400 }
       )
     }
 

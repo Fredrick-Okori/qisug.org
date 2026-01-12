@@ -108,7 +108,7 @@ export default function AdminDocumentsPage() {
   }
 
   const getFileIcon = (fileName: string) => {
-    const ext = fileName.split('.').pop()?.toLowerCase()
+    const ext = fileName ? fileName.split('.').pop()?.toLowerCase() : ''
     if (['jpg', 'jpeg', 'png', 'gif'].includes(ext || '')) {
       return <FileImage className="w-5 h-5 text-blue-500" />
     }

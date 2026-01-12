@@ -342,9 +342,9 @@ export default function ApplyNowPage() {
       const applicationData = {
         applicant: {
           firstName: formData.firstName,
-          middleName: formData.middleName || null,
-          preferredName: null,
-          formerLastName: null,
+          middleName: formData.middleName || undefined,
+          preferredName: undefined,
+          formerLastName: undefined,
           lastName: formData.lastName,
           birthDate: formData.dateOfBirth,
           gender: formData.gender === 'male' ? 'Male' : formData.gender === 'female' ? 'Female' : 'Other',
@@ -353,7 +353,7 @@ export default function ApplyNowPage() {
           visaStatus: visaStatus,
           email: formData.email,
           phonePrimary: formData.phone,
-          phoneOther: formData.phoneOther || null,
+          phoneOther: formData.phoneOther || undefined,
           address: {
             street: formData.addressStreet,
             city: formData.addressCity,
@@ -364,7 +364,7 @@ export default function ApplyNowPage() {
           emergencyContact: {
             name: formData.emergencyContactName,
             phone: formData.emergencyContactPhone,
-            email: formData.emergencyContactEmail || null,
+            email: formData.emergencyContactEmail || undefined,
           },
         },
         application: {
@@ -481,7 +481,7 @@ if (supabaseUrl && supabaseAnonKey) {
       referenceNumber: reference,
       grade: formData.currentGrade,
       stream: formData.programStream,
-      admissionPeriod: formData.admissionPeriod.charAt(0).toUpperCase() + formData.admissionPeriod.slice(1),
+      admissionPeriod: formData.admissionPeriod ? formData.admissionPeriod.charAt(0).toUpperCase() + formData.admissionPeriod.slice(1) : '',
     }),
   });
   

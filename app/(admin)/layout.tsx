@@ -17,6 +17,8 @@ import {
   XSquare
 } from 'lucide-react'
 import { createClient, getSupabaseConfigStatus } from '@/lib/supabase/client'
+import { useAuth } from '@/components/auth/auth-context'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -42,6 +44,8 @@ export default function AdminLayout({
   const pathname = usePathname()
   const supabase = createClient()
   const configStatus = getSupabaseConfigStatus()
+  const { isSignedIn, isAdmin, loading: authLoading, signOut } = useAuth()
+  const router = useRouter()
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [user, setUser] = useState<any>(null)
@@ -49,47 +53,23 @@ export default function AdminLayout({
   const { toast } = useToast()
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      if (!supabase) {
-        console.warn('[AdminLayout] Supabase client not initialized', configStatus.error)
-        return
-      }
+    // Use AuthProvider state for gating
+    if (authLoading) return
 
-      const { data: { session } } = await supabase.auth.getSession()
-      
-      if (!session) {
-        window.location.href = '/login?redirect=/dashboard/admin'
-        return
-      }
-
-      setUser(session.user)
-
-      // Check if user is admin
-      const { data: adminData } = await supabase
-        .from('admin_users')
-        .select('*')
-        .eq('user_id', session.user.id)
-        .eq('is_active', true)
-        .single()
-
-      if (!adminData) {
-        // Not an admin, redirect to student dashboard
-        window.location.href = '/dashboard'
-        return
-      }
-
-      setAdminUser(adminData)
+    if (!isSignedIn) {
+      router.push('/login?redirect=/dashboard/admin')
+      return
     }
 
-    checkAdmin()
-  }, [supabase, configStatus])
+    if (!isAdmin) {
+      router.push('/dashboard')
+      return
+    }
+  }, [authLoading, isSignedIn, isAdmin, router])
 
   const handleSignOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut()
-      if (error) {
-        console.error('Sign out error:', error)
-      }
+      await signOut()
       window.location.href = '/'
     } catch (err) {
       console.error('Sign out error:', err)
@@ -97,24 +77,23 @@ export default function AdminLayout({
     }
   }
 
-  if (!user || !adminUser) {
-    // If Supabase config is missing, show actionable message
-    if (configStatus && !configStatus.configured) {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
-          <div className="text-center max-w-xl">
-            <h2 className="text-2xl font-semibold text-slate-900 mb-2">Supabase Not Configured</h2>
-            <p className="text-slate-600 mb-4">The Supabase client could not initialize on the browser. Please ensure the following environment variables are set in your .env.local and restart the dev server:</p>
-            <ul className="text-left list-disc list-inside text-sm text-slate-700">
-              <li>NEXT_PUBLIC_SUPABASE_URL</li>
-              <li>NEXT_PUBLIC_SUPABASE_ANON_KEY</li>
-            </ul>
-            <p className="text-sm text-slate-500 mt-4">Config error: {configStatus.error}</p>
-          </div>
+  if (configStatus && !configStatus.configured) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
+        <div className="text-center max-w-xl">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-2">Supabase Not Configured</h2>
+          <p className="text-slate-600 mb-4">The Supabase client could not initialize on the browser. Please ensure the following environment variables are set in your .env.local and restart the dev server:</p>
+          <ul className="text-left list-disc list-inside text-sm text-slate-700">
+            <li>NEXT_PUBLIC_SUPABASE_URL</li>
+            <li>NEXT_PUBLIC_SUPABASE_ANON_KEY</li>
+          </ul>
+          <p className="text-sm text-slate-500 mt-4">Config error: {configStatus.error}</p>
         </div>
-      )
-    }
+      </div>
+    )
+  }
 
+  if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-4">

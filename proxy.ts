@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
 
   // If not configured, skip Supabase operations (allows build to complete)
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('[Middleware] Supabase not configured, skipping auth checks')
+    console.warn('[Proxy] Supabase not configured, skipping auth checks')
     // Still protect admin routes even without Supabase
     if (request.nextUrl.pathname.startsWith('/admin')) {
       const redirectUrl = request.nextUrl.clone()
@@ -83,7 +83,7 @@ export async function middleware(request: NextRequest) {
         .select('role, is_active')
         .eq('user_id', session.user.id)
         .eq('is_active', true)
-        .single()
+        .maybeSingle()
 
       if (!adminUser) {
         // User is logged in but not an admin
@@ -94,7 +94,7 @@ export async function middleware(request: NextRequest) {
       }
       // Admin users (admin, reviewer, viewer) are allowed access
     } catch (error) {
-      console.error('[Middleware] Admin auth check error:', error)
+      console.error('[Proxy] Admin auth check error:', error)
       // On error, redirect to login
       const redirectUrl = request.nextUrl.clone()
       redirectUrl.pathname = '/login'
@@ -121,7 +121,7 @@ export async function middleware(request: NextRequest) {
         .select('role, is_active')
         .eq('user_id', session.user.id)
         .eq('is_active', true)
-        .single()
+        .maybeSingle()
 
       if (!adminUser) {
         // User is logged in but not an admin
@@ -132,7 +132,7 @@ export async function middleware(request: NextRequest) {
       }
       // Admin users (admin, reviewer, viewer) are allowed access
     } catch (error) {
-      console.error('[Middleware] Admin auth check error:', error)
+      console.error('[Proxy] Admin auth check error:', error)
       // On error, redirect to login
       const redirectUrl = request.nextUrl.clone()
       redirectUrl.pathname = '/login'
@@ -153,7 +153,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(redirectUrl)
       }
     } catch (error) {
-      console.error('[Middleware] Dashboard auth check error:', error)
+      console.error('[Proxy] Dashboard auth check error:', error)
       // On error, redirect to login
       const redirectUrl = request.nextUrl.clone()
       redirectUrl.pathname = '/login'
