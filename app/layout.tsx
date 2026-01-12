@@ -4,6 +4,7 @@ import { Geist, Geist_Mono, Spectral, Montserrat } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import PageTransition from "@/components/page-transition"
+import { AuthProvider } from '@/components/auth/auth-context'
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -105,9 +106,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable} ${spectral.variable} font-sans antialiased`}>
-        <PageTransition>
-          {children}
-        </PageTransition>
+        <AuthProvider>
+          <PageTransition>
+            {children}
+          </PageTransition>
+        </AuthProvider>
         <Analytics />
       </body>
     </html>

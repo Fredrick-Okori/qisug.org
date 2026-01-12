@@ -23,8 +23,6 @@ export async function middleware(request: NextRequest) {
     return supabaseResponse
   }
 
-
-  
   const supabase = createServerClient(
     supabaseUrl,
     supabaseAnonKey,
@@ -67,11 +65,96 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Protect admin routes
+  // Protect admin routes - require authentication AND admin role
+  if (request.nextUrl.pathname.startsWith('/dashboard/admin')) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session) {
+        const redirectUrl = request.nextUrl.clone()
+        redirectUrl.pathname = '/login'
+        redirectUrl.searchParams.set('redirect', request.nextUrl.pathname)
+        return NextResponse.redirect(redirectUrl)
+      }
+
+      // Check if user is an active admin (any role: admin, reviewer, viewer)
+      const { data: adminUser } = await supabase
+        .from('admin_users')
+        .select('role, is_active')
+        .eq('user_id', session.user.id)
+        .eq('is_active', true)
+        .single()
+
+      if (!adminUser) {
+        // User is logged in but not an admin
+        // Redirect to student dashboard instead of login to avoid confusion
+        const dashboardUrl = request.nextUrl.clone()
+        dashboardUrl.pathname = '/dashboard'
+        return NextResponse.redirect(dashboardUrl)
+      }
+      // Admin users (admin, reviewer, viewer) are allowed access
+    } catch (error) {
+      console.error('[Middleware] Admin auth check error:', error)
+      // On error, redirect to login
+      const redirectUrl = request.nextUrl.clone()
+      redirectUrl.pathname = '/login'
+      redirectUrl.searchParams.set('redirect', request.nextUrl.pathname)
+      return NextResponse.redirect(redirectUrl)
+    }
+  }
+
+  // Keep old /admin routes protection for backward compatibility
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    const { data: { session } } = await supabase.auth.getSession()
-    
-    if (!session) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session) {
+        const redirectUrl = request.nextUrl.clone()
+        redirectUrl.pathname = '/login'
+        redirectUrl.searchParams.set('redirect', request.nextUrl.pathname)
+        return NextResponse.redirect(redirectUrl)
+      }
+
+      // Check if user is an active admin (any role: admin, reviewer, viewer)
+      const { data: adminUser } = await supabase
+        .from('admin_users')
+        .select('role, is_active')
+        .eq('user_id', session.user.id)
+        .eq('is_active', true)
+        .single()
+
+      if (!adminUser) {
+        // User is logged in but not an admin
+        // Redirect to student dashboard instead of login to avoid confusion
+        const dashboardUrl = request.nextUrl.clone()
+        dashboardUrl.pathname = '/dashboard'
+        return NextResponse.redirect(dashboardUrl)
+      }
+      // Admin users (admin, reviewer, viewer) are allowed access
+    } catch (error) {
+      console.error('[Middleware] Admin auth check error:', error)
+      // On error, redirect to login
+      const redirectUrl = request.nextUrl.clone()
+      redirectUrl.pathname = '/login'
+      redirectUrl.searchParams.set('redirect', request.nextUrl.pathname)
+      return NextResponse.redirect(redirectUrl)
+    }
+  }
+
+  // Protect dashboard routes (require authentication)
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session) {
+        const redirectUrl = request.nextUrl.clone()
+        redirectUrl.pathname = '/login'
+        redirectUrl.searchParams.set('redirect', request.nextUrl.pathname)
+        return NextResponse.redirect(redirectUrl)
+      }
+    } catch (error) {
+      console.error('[Middleware] Dashboard auth check error:', error)
+      // On error, redirect to login
       const redirectUrl = request.nextUrl.clone()
       redirectUrl.pathname = '/login'
       redirectUrl.searchParams.set('redirect', request.nextUrl.pathname)
@@ -86,6 +169,7 @@ export const config = {
   matcher: [
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     '/admin/:path*',
+    '/dashboard/:path*',
   ],
 }
 

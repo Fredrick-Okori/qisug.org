@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase/client'
+import { createClient, isSupabaseConfigured, getSupabaseErrorMessage } from '@/lib/supabase/client'
 import type { 
   FullApplicationData, 
   ApplicantFormData, 
@@ -10,34 +10,56 @@ import type {
 } from '@/types/database'
 
 // ============================================================================
+// CLIENT FACTORY - Safe client creation
+// ============================================================================
+
+/**
+ * Get or create Supabase client
+ * Returns null if not configured (safe for SSR/build)
+ */
+function getSupabaseClient() {
+  if (!isSupabaseConfigured()) {
+    console.warn('[Admissions] Supabase not configured, cannot perform operations')
+    return null
+  }
+  return createClient()
+}
+
+// ============================================================================
 // APPLICATION SUBMISSION
 // ============================================================================
 
 export async function submitApplication(data: FullApplicationData) {
   try {
+    const supabase = getSupabaseClient()
+    
+    if (!supabase) {
+      return { 
+        success: false, 
+        error: new Error('Supabase is not configured. Please check your environment variables.') 
+      }
+    }
+
     // 1. Create applicant
-    const applicantResult = await createApplicant(data.applicant)
+    const applicantResult = await createApplicant(supabase, data.applicant)
     if (applicantResult.error) throw applicantResult.error
     
     const applicantId = applicantResult.data.id
 
     // 2. Create application
-    const applicationResult = await createApplication(
-      applicantId, 
-      data.application
-    )
+    const applicationResult = await createApplication(supabase, applicantId, data.application)
     if (applicationResult.error) throw applicationResult.error
     
     const applicationId = applicationResult.data.id
 
     // 3. Create academic histories
     for (const history of data.academicHistory) {
-      await createAcademicHistory(applicationId, history)
+      await createAcademicHistory(supabase, applicationId, history)
     }
 
     // 4. Create agent if applicable
     if (data.agent) {
-      await createAgent(applicationId, data.agent)
+      await createAgent(supabase, applicationId, data.agent)
     }
 
     return { 
@@ -50,7 +72,7 @@ export async function submitApplication(data: FullApplicationData) {
   }
 }
 
-async function createApplicant(data: ApplicantFormData) {
+async function createApplicant(supabase: ReturnType<typeof createClient>, data: ApplicantFormData) {
   return await supabase
     .from('applicants')
     .insert({
@@ -81,6 +103,7 @@ async function createApplicant(data: ApplicantFormData) {
 }
 
 async function createApplication(
+  supabase: ReturnType<typeof createClient>,
   applicantId: string, 
   data: ApplicationFormData
 ) {
@@ -100,6 +123,7 @@ async function createApplication(
 }
 
 async function createAcademicHistory(
+  supabase: ReturnType<typeof createClient>,
   applicationId: string, 
   data: AcademicHistoryFormData
 ) {
@@ -118,7 +142,7 @@ async function createAcademicHistory(
     .single()
 }
 
-async function createAgent(applicationId: string, data: AgentFormData) {
+async function createAgent(supabase: ReturnType<typeof createClient>, applicationId: string, data: AgentFormData) {
   return await supabase
     .from('agents')
     .insert({
@@ -149,6 +173,14 @@ export async function uploadDocument(
   documentType: string,
   file: File
 ) {
+  const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    const error = new Error('Supabase is not configured')
+    console.error('[UploadDocument] Configuration error:', error.message)
+    return { success: false, error }
+  }
+
   const filePath = `${applicationId}/${documentType}/${Date.now()}-${file.name}`
   
   // Upload to Supabase Storage (using underscore convention)
@@ -197,6 +229,13 @@ export async function uploadDocument(
 // ============================================================================
 
 export async function getPrograms() {
+  const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    console.warn('[GetPrograms] Supabase not configured')
+    return { success: false, error: new Error('Supabase not configured'), data: null }
+  }
+
   const { data, error } = await supabase
     .from('programs')
     .select('*')
@@ -205,6 +244,7 @@ export async function getPrograms() {
     .order('stream', { ascending: true })
 
   if (error) {
+    console.error('[GetPrograms] Error:', error)
     return { success: false, error, data: null }
   }
 
@@ -212,6 +252,13 @@ export async function getPrograms() {
 }
 
 export async function getTuitionStructure(grade: number, stream: string) {
+  const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    console.warn('[GetTuitionStructure] Supabase not configured')
+    return { success: false, error: new Error('Supabase not configured'), data: null }
+  }
+
   const { data, error } = await supabase
     .from('tuition_structures')
     .select('*')
@@ -221,6 +268,7 @@ export async function getTuitionStructure(grade: number, stream: string) {
     .single()
 
   if (error) {
+    console.error('[GetTuitionStructure] Error:', error)
     return { success: false, error, data: null }
   }
 
@@ -228,6 +276,13 @@ export async function getTuitionStructure(grade: number, stream: string) {
 }
 
 export async function getApplicationById(applicationId: string) {
+  const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    console.warn('[GetApplicationById] Supabase not configured')
+    return { success: false, error: new Error('Supabase not configured'), data: null }
+  }
+
   const { data, error } = await supabase
     .from('applications')
     .select(`
@@ -241,6 +296,7 @@ export async function getApplicationById(applicationId: string) {
     .single()
 
   if (error) {
+    console.error('[GetApplicationById] Error:', error)
     return { success: false, error, data: null }
   }
 
@@ -256,6 +312,13 @@ export async function updateApplicationStatus(
   status: string,
   reviewedBy?: string
 ) {
+  const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    console.warn('[UpdateApplicationStatus] Supabase not configured')
+    return { success: false, error: new Error('Supabase not configured') }
+  }
+
   const updates: Record<string, unknown> = {
     status,
     updated_at: new Date().toISOString(),
@@ -277,6 +340,7 @@ export async function updateApplicationStatus(
     .single()
 
   if (error) {
+    console.error('[UpdateApplicationStatus] Error:', error)
     return { success: false, error }
   }
 
@@ -292,6 +356,13 @@ export async function confirmPayment(
   paymentReference: string,
   amount: number = 300
 ) {
+  const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    console.warn('[ConfirmPayment] Supabase not configured')
+    return { success: false, error: new Error('Supabase not configured') }
+  }
+
   const { data, error } = await supabase
     .from('applications')
     .update({
@@ -321,9 +392,16 @@ export async function saveDraft(
   applicantId: string | null,
   data: FullApplicationData
 ) {
+  const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    console.warn('[SaveDraft] Supabase not configured')
+    return { success: false, error: new Error('Supabase not configured') }
+  }
+
   // If no applicant ID, create a new draft
   if (!applicantId) {
-    const applicantResult = await createApplicant(data.applicant)
+    const applicantResult = await createApplicant(supabase, data.applicant)
     if (applicantResult.error) return applicantResult
     
     applicantId = applicantResult.data.id
@@ -353,7 +431,7 @@ export async function saveDraft(
   }
 
   // Create new draft
-  const appResult = await createApplication(applicantId, {
+  const appResult = await createApplication(supabase, applicantId, {
     ...data.application,
     academicYear: data.application.academicYear || '2026/2027',
   })
@@ -362,3 +440,122 @@ export async function saveDraft(
 
   return { success: true, applicationId: appResult.data.id }
 }
+
+// ============================================================================
+// USER CHECK HELPER
+// ============================================================================
+
+/**
+ * Check if user exists by email
+ * Returns: { exists: boolean, error?: string }
+ */
+export async function checkUserExists(email: string): Promise<{ exists: boolean; error?: string }> {
+  const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    return { exists: false, error: 'Supabase not configured' }
+  }
+
+  try {
+    // Try to get user by email using admin API
+    const { data: { users }, error } = await supabase.auth.admin.listUsers()
+
+    if (error) {
+      // Admin API not accessible with anon key
+      console.warn('[CheckUserExists] Admin API not accessible:', error.message)
+      
+      // Alternative: Try to sign in with the email
+      // This won't actually sign in, but will fail if user doesn't exist
+      return { exists: true } // Can't determine with anon key
+    }
+
+    const userExists = users?.some((user: { email?: string | null }) => 
+      user.email?.toLowerCase() === email.toLowerCase()
+    )
+
+    return { exists: userExists || false }
+  } catch (err) {
+    console.error('[CheckUserExists] Error:', err)
+    return { exists: false, error: 'Unable to verify user' }
+  }
+}
+
+/**
+ * Sign in user with email and password
+ * Returns: { session, user, error }
+ */
+export async function signInUser(email: string, password: string) {
+  const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    return { 
+      session: null, 
+      user: null, 
+      error: new Error('Supabase is not configured. Please check your environment variables.') 
+    }
+  }
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (error) {
+      console.error('[SignInUser] Sign in error:', error)
+      return { session: null, user: null, error }
+    }
+
+    return { session: data.session, user: data.user, error: null }
+  } catch (err) {
+    console.error('[SignInUser] Unexpected error:', err)
+    return { 
+      session: null, 
+      user: null, 
+      error: new Error('An unexpected error occurred during sign in') 
+    }
+  }
+}
+
+/**
+ * Sign up new user
+ * Returns: { session, user, error }
+ */
+export async function signUpUser(email: string, password: string, fullName?: string) {
+  const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    return { 
+      session: null, 
+      user: null, 
+      error: new Error('Supabase is not configured. Please check your environment variables.') 
+    }
+  }
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+        },
+      },
+    })
+
+    if (error) {
+      console.error('[SignUpUser] Sign up error:', error)
+      return { session: null, user: null, error }
+    }
+
+    return { session: data.session, user: data.user, error: null }
+  } catch (err) {
+    console.error('[SignUpUser] Unexpected error:', err)
+    return { 
+      session: null, 
+      user: null, 
+      error: new Error('An unexpected error occurred during sign up') 
+    }
+  }
+}
+

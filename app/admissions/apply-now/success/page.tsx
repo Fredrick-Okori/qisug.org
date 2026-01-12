@@ -553,6 +553,12 @@ export default function SuccessPage() {
             transition={{ delay: 0.8 }}
           >
             <Button 
+              onClick={() => router.push('/dashboard/applied')}
+              className="bg-[#EFBF04] text-[#053f52] hover:bg-[#e0ad00] rounded-full px-6 py-3 font-semibold"
+            >
+              Track Application Status
+            </Button>
+            <Button 
               onClick={() => router.push('/')}
               className="bg-[#053f52] text-white hover:bg-[#042a38] rounded-full px-6 py-3"
             >

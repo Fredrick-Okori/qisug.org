@@ -11,7 +11,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
-import { createClient } from "@/lib/supabase/client"
+import { useAuth } from '@/components/auth/auth-context'
 import type { AuthSession } from "@supabase/supabase-js"
 
 
@@ -155,86 +155,39 @@ const navItems = [
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
-  const [isSignedIn, setIsSignedIn] = useState(false)
-  const [userEmail, setUserEmail] = useState("")
-  const [supabase, setSupabase] = useState<ReturnType<typeof createClient> | null>(null)
+    const { user, isSignedIn: ctxSignedIn, isAdmin, fullName, signOut } = useAuth()
+    const isSignedIn = ctxSignedIn
+    const [userEmail, setUserEmail] = useState("")
 
   useEffect(() => {
     setIsMounted(true)
     
     // Initialize Supabase client lazily on client side
-    const supabaseClient = createClient()
-    setSupabase(supabaseClient)
     
-    // If Supabase is not configured, skip auth checks
-    if (!supabaseClient) {
-      // Still set up scroll handler even without auth
+    
+
       const handleScroll = () => {
-        const scrollPosition = window.scrollY
-        setIsScrolled(scrollPosition > 50)
+        setIsScrolled(window.scrollY > 50)
       }
-      window.addEventListener("scroll", handleScroll)
+      window.addEventListener('scroll', handleScroll)
+
+      // sync with auth context
+      if (user?.email) setUserEmail(user.email)
+
       return () => {
-        window.removeEventListener("scroll", handleScroll)
+        window.removeEventListener('scroll', handleScroll)
       }
-    }
-    
-    // Check auth state
-    const checkAuth = async () => {
-      const { data: { session } } = await supabaseClient.auth.getSession()
-      setIsSignedIn(!!session)
-      if (session?.user?.email) {
-        setUserEmail(session.user.email)
-      }
-    }
-    
-    checkAuth()
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event: string, session: AuthSession | null) => {
-      setIsSignedIn(!!session)
-      if (session?.user?.email) {
-        setUserEmail(session.user.email)
-      }
-    })
-
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY
-      setIsScrolled(scrollPosition > 50)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-      subscription.unsubscribe()
-    }
-  }, [])
+    }, [ctxSignedIn, user])
 
   const router = useRouter()
 
   const handleSignOut = async () => {
     try {
-      // Sign out from Supabase
-      const { error } = await supabase.auth.signOut()
-      
-      if (error) {
-        console.error('Sign out error:', error)
-        // Still redirect even if there's an error - the session might be invalid
-      }
-      
-      // Clear local auth state
-      setIsSignedIn(false)
+      await signOut()
       setUserEmail("")
-      
-      // Force a full page redirect to home
-      // This ensures the user is completely logged out and taken to the home page
       window.location.href = '/'
     } catch (err) {
       console.error('Unexpected sign out error:', err)
-      // Fallback: clear state and redirect anyway
-      setIsSignedIn(false)
-      setUserEmail("")
-      window.location.href = '/'
     }
   }
 
@@ -245,6 +198,11 @@ export function SiteHeader() {
       window.location.href = "/login?redirect=/admissions/apply-now"
     }
   }
+
+  const [isAdminState, setIsAdminState] = useState(false)
+  useEffect(() => {
+    setIsAdminState(!!isAdmin)
+  }, [isAdmin])
 
   // Don't render until mounted to prevent hydration mismatch
   if (!isMounted) {
@@ -590,9 +548,7 @@ export function SiteHeader() {
                         isScrolled ? "h-3 w-3 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
                       }`} />
                     </motion.div>
-                    <span className="hidden xl:inline text-sm font-medium truncate max-w-[120px]">
-                      {userEmail?.split('@')[0] || "User"}
-                    </span>
+                  <span className="hidden xl:inline truncate text-sm font-medium truncate max-w-[120px]"> {userEmail?.split('@')[0] || "User"} </span>
                   </motion.button>
 
                   {/* Hover Dropdown Menu */}
@@ -605,11 +561,11 @@ export function SiteHeader() {
                         <p className="text-xs text-gray-500">Signed in</p>
                       </div>
                       <Link 
-                        href="/profile" 
+                        href="/dashboard" 
                         className="flex items-center gap-2 px-4 py-2 text-sm text-[#053f52] hover:bg-gray-50 transition-colors"
                       >
                         <Settings className="h-4 w-4" />
-                        <span>Settings</span>
+                        <span>Applications</span>
                       </Link>
                       <div className="border-t border-gray-100 my-1" />
                       <button
