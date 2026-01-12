@@ -262,34 +262,44 @@ export async function GET(
     const academicHistories = Array.isArray(application.academic_histories) ? application.academic_histories : []
     const agents = Array.isArray(application.agents) ? application.agents[0] : application.agents
 
-    // Build full address
+    // Build full address from applicant data
     const fullAddress = [
-      application.address_street,
-      application.address_city,
-      application.address_district,
-      application.address_postal_code,
-      application.address_country
+      applicant?.address_street,
+      applicant?.address_city,
+      applicant?.address_district,
+      applicant?.address_postal_code,
+      applicant?.address_country
     ].filter(Boolean).join(', ')
 
-    // Transform documents
-    const transformedDocs = documents.map((doc: any) => ({
-      id: doc.id,
-      document_type: doc.document_type,
-      file_name: doc.file_name,
-      file_path: doc.file_path,
-      file_size: doc.file_size,
-      mime_type: doc.mime_type,
-      is_verified: doc.is_verified,
-      verified_by: doc.verified_by,
-      verified_at: doc.verified_at,
-      uploaded_at: doc.created_at
-        ? new Date(doc.created_at).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          })
-        : ''
-    }))
+    // Transform documents - construct full Supabase storage URL
+    const bucketName = 'admission_documents'
+    const transformedDocs = documents.map((doc: any) => {
+      let fileUrl = doc.file_path
+      // If file_path is a relative path, construct the full URL
+      if (doc.file_path && !doc.file_path.startsWith('http')) {
+        fileUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${doc.file_path}`
+      }
+      
+      return {
+        id: doc.id,
+        document_type: doc.document_type,
+        file_name: doc.file_name,
+        file_path: doc.file_path,
+        file_url: fileUrl,
+        file_size: doc.file_size,
+        mime_type: doc.mime_type,
+        is_verified: doc.is_verified,
+        verified_by: doc.verified_by,
+        verified_at: doc.verified_at,
+        uploaded_at: doc.created_at
+          ? new Date(doc.created_at).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })
+          : ''
+      }
+    })
 
     // Transform academic history
     const transformedAcademicHistory = academicHistories.map((history: any) => ({
