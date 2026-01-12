@@ -143,7 +143,7 @@ export async function GET() {
     ] = await Promise.all([
       supabase.from('applications').select('*', { count: 'exact', head: true }),
       supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'Submitted'),
-      supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'Accepted'),
+      supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'Approved'),
       supabase.from('applications').select('*', { count: 'exact', head: true }).eq('status', 'Rejected'),
       supabase.from('applicants').select('*', { count: 'exact', head: true }),
     ])
@@ -217,7 +217,7 @@ export async function GET() {
       Draft: 0,
       Submitted: 0,
       'Under Review': 0,
-      Accepted: 0,
+      Approved: 0,
       Rejected: 0,
     }
     
@@ -228,7 +228,7 @@ export async function GET() {
     })
 
     const applicationsByStatus = [
-      { name: 'Accepted', value: statusCounts.Accepted || 0, color: '#22c55e' },
+      { name: 'Approved', value: statusCounts.Approved || 0, color: '#22c55e' },
       { name: 'Submitted', value: statusCounts.Submitted || 0, color: '#eab308' },
       { name: 'Under Review', value: statusCounts['Under Review'] || 0, color: '#3b82f6' },
       { name: 'Rejected', value: statusCounts.Rejected || 0, color: '#ef4444' },

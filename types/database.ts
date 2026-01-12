@@ -5,7 +5,7 @@ export type CitizenshipType = 'Ugandan' | 'Non-Ugandan'
 export type VisaStatus = 'Permanent Resident' | 'Refugee' | 'Student Visa' | null
 export type IntakeMonth = 'January' | 'March' | 'May' | 'September'
 export type ProgramStream = 'Science' | 'Arts'
-export type ApplicationStatus = 'Draft' | 'Submitted' | 'Under Review' | 'Accepted' | 'Rejected'
+export type ApplicationStatus = 'Draft' | 'Submitted' | 'Under Review' | 'Approved' | 'Rejected'
 
 export interface Applicant {
   id: string

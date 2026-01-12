@@ -17,7 +17,7 @@ CREATE TYPE citizenship_type AS ENUM ('Ugandan', 'Non-Ugandan');
 CREATE TYPE visa_status_type AS ENUM ('Permanent Resident', 'Refugee', 'Student Visa');
 CREATE TYPE intake_month_type AS ENUM ('January', 'March', 'May', 'September');
 CREATE TYPE program_stream_type AS ENUM ('Science', 'Arts');
-CREATE TYPE application_status_type AS ENUM ('Draft', 'Submitted', 'Under Review', 'Accepted', 'Rejected');
+CREATE TYPE application_status_type AS ENUM ('Submitted', 'Under Review', 'Approved', 'Rejected');
 
 -- ============================================================================
 -- PROGRAMS TABLE

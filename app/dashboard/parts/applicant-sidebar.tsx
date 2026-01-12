@@ -43,7 +43,6 @@ export default function ApplicantSidebar({ children }: ApplicantSidebarProps) {
   const menuItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'My Applications', href: '/dashboard/applied', icon: FileText },
-    { name: 'Upload Documents', href: '/more/downloads', icon: Upload },
   ];
 
   return (

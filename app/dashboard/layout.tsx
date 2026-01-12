@@ -6,6 +6,38 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/auth/auth-context'
 import ApplicantSidebar from './parts/applicant-sidebar'
 
+// Skeleton component for loading states
+function DashboardSkeleton() {
+  return (
+    <div className="min-h-screen bg-slate-50 p-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Header Skeleton */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <div className="h-8 w-48 bg-slate-200 rounded animate-pulse mb-2" />
+            <div className="h-4 w-64 bg-slate-200 rounded animate-pulse" />
+          </div>
+          <div className="h-10 w-40 bg-slate-200 rounded animate-pulse" />
+        </div>
+        {/* Stats Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="h-28 bg-slate-200 rounded-xl animate-pulse" />
+          <div className="h-28 bg-slate-200 rounded-xl animate-pulse" />
+          <div className="h-28 bg-slate-200 rounded-xl animate-pulse" />
+        </div>
+        {/* Card Skeleton */}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
+          <div className="h-6 w-40 bg-slate-200 rounded animate-pulse mb-4" />
+          <div className="space-y-4">
+            <div className="h-20 bg-slate-100 rounded-lg animate-pulse" />
+            <div className="h-20 bg-slate-100 rounded-lg animate-pulse" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function DashboardLayout({
   children,
 }: {
@@ -22,31 +54,21 @@ export default function DashboardLayout({
     setMounted(true)
   }, [])
 
+  // Redirect if not authenticated (only after mount to avoid hydration mismatch)
   useEffect(() => {
     if (!mounted || authLoading) return
 
     if (!isSignedIn) {
       router.push('/login?redirect=/dashboard')
-      return
     }
-
-    // Note: Admin-specific routes are handled by the admin layout
-    // Don't redirect admins here - let them access their intended pages
   }, [mounted, authLoading, isSignedIn, router])
 
-  // Show loading state
+  // Show skeleton while checking auth
   if (!mounted || authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-600">Loading your portal...</p>
-        </div>
-      </div>
-    )
+    return <DashboardSkeleton />
   }
 
-  // If not signed in, show loading while redirect happens
+  // Show loading while redirecting
   if (!isSignedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">

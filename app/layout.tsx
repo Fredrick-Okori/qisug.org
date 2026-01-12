@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import PageTransition from "@/components/page-transition"
 import { AuthProvider } from '@/components/auth/auth-context'
+import { Toaster } from '@/components/ui/toaster'
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -111,6 +112,7 @@ export default function RootLayout({
             {children}
           </PageTransition>
         </AuthProvider>
+        <Toaster />
         <Analytics />
       </body>
     </html>

@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import {
   LayoutDashboard,
-  FileUser,
   CheckCircle,
   ClipboardList,
   Settings,
@@ -14,8 +13,7 @@ import {
   Shield,
   ShieldCheck,
   User,
-  GraduationCap,
-  BookOpen
+  GraduationCap
 } from 'lucide-react'
 import { /* createClient */ } from '@/lib/supabase/client'
 import { getRoleBadgeColor, getRoleDisplayName, type AdminUser } from '@/lib/admin-utils'
@@ -54,8 +52,6 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Applications', href: '/dashboard/admin/applications', icon: ClipboardList },
     { name: 'Applied Students', href: '/dashboard/admin/users', icon: Users },
-    { name: 'Review Documents', href: '/dashboard/admin/documents', icon: FileUser },
-    { name: 'Classes & Streams', href: '/dashboard/admin/classes', icon: BookOpen },
     { name: 'Approved Students', href: '/dashboard/admin/approved', icon: CheckCircle },
   ];
 

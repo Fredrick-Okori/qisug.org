@@ -19,7 +19,7 @@ const statusColors: Record<ApplicationStatus, string> = {
   'Draft': 'bg-gray-100 text-gray-700',
   'Submitted': 'bg-blue-100 text-blue-700',
   'Under Review': 'bg-yellow-100 text-yellow-700',
-  'Accepted': 'bg-green-100 text-green-700',
+  'Approved': 'bg-green-100 text-green-700',
   'Rejected': 'bg-red-100 text-red-700'
 }
 
@@ -134,7 +134,7 @@ export default function AppliedStudentsPage() {
               <option value="">All Statuses</option>
               <option value="Submitted">Submitted</option>
               <option value="Under Review">Under Review</option>
-              <option value="Accepted">Accepted</option>
+              <option value="Approved">Approved</option>
               <option value="Rejected">Rejected</option>
             </select>
           </div>

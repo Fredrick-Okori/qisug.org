@@ -271,13 +271,24 @@ export async function GET(
       applicant?.address_country
     ].filter(Boolean).join(', ')
 
-    // Transform documents - construct full Supabase storage URL
+    // Transform documents - construct full Supabase storage URL (only if bucket exists)
     const bucketName = 'admission_documents'
+    const supabaseStorageUrl = supabaseUrl ? `${supabaseUrl}/storage/v1/object/public/${bucketName}` : ''
     const transformedDocs = documents.map((doc: any) => {
-      let fileUrl = doc.file_path
-      // If file_path is a relative path, construct the full URL
-      if (doc.file_path && !doc.file_path.startsWith('http')) {
-        fileUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${doc.file_path}`
+      let fileUrl = null
+      let fileError = null
+      
+      // Only construct URL if we have a file_path and the bucket URL is configured
+      if (doc.file_path) {
+        if (supabaseStorageUrl && doc.file_path.startsWith('admission_documents/')) {
+          fileUrl = `${supabaseStorageUrl}/${doc.file_path}`
+        } else if (!doc.file_path.startsWith('http')) {
+          // Try to construct URL anyway, but it might fail if bucket doesn't exist
+          fileUrl = supabaseUrl 
+            ? `${supabaseUrl}/storage/v1/object/public/${bucketName}/${doc.file_path}`
+            : null
+          fileError = supabaseUrl ? null : 'Storage not configured'
+        }
       }
       
       return {
@@ -286,6 +297,7 @@ export async function GET(
         file_name: doc.file_name,
         file_path: doc.file_path,
         file_url: fileUrl,
+        file_error: fileError,
         file_size: doc.file_size,
         mime_type: doc.mime_type,
         is_verified: doc.is_verified,

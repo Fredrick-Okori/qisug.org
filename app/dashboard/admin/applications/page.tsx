@@ -13,8 +13,10 @@ import {
   ChevronRight,
   CheckCircle,
   Clock,
-  ExternalLink
+  ExternalLink,
+  Eye
 } from 'lucide-react'
+import { useToast } from '@/components/ui/use-toast'
 
 interface Document {
   application_id: string
@@ -43,7 +45,7 @@ interface Application {
   phone: string
   program: string
   grade: string
-  status: 'pending' | 'approved' | 'rejected' | 'under_review'
+  status: 'Submitted' | 'Under Review' | 'Approved' | 'Rejected'
   submitted_at: string
   last_updated: string
   payment_status: 'pending' | 'paid' | 'failed'
@@ -60,6 +62,7 @@ export default function AdminApplicationsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isUpdating, setIsUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { toast } = useToast()
   const itemsPerPage = 10
 
   useEffect(() => {
@@ -105,20 +108,14 @@ export default function AdminApplicationsPage() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      pending: 'bg-yellow-100 text-yellow-800',
-      approved: 'bg-green-100 text-green-800',
-      rejected: 'bg-red-100 text-red-800',
-      under_review: 'bg-blue-100 text-blue-800',
-    }
-    const labels: Record<string, string> = {
-      pending: 'Pending',
-      approved: 'Approved',
-      rejected: 'Rejected',
-      under_review: 'Under Review',
+      Submitted: 'bg-blue-100 text-blue-800',
+      'Under Review': 'bg-yellow-100 text-yellow-800',
+      Approved: 'bg-green-100 text-green-800',
+      Rejected: 'bg-red-100 text-red-800',
     }
     return (
       <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${styles[status] || 'bg-gray-100 text-gray-800'}`}>
-        {labels[status] || status}
+        {status}
       </span>
     )
   }
@@ -152,7 +149,7 @@ export default function AdminApplicationsPage() {
     currentPage * itemsPerPage
   )
 
-  const updateApplicationStatus = async (id: string, status: 'approved' | 'rejected') => {
+  const updateApplicationStatus = async (id: string, status: 'Approved' | 'Rejected' | 'Under Review') => {
     setIsUpdating(true)
     try {
       const response = await fetch('/api/admin/applications', {
@@ -170,12 +167,25 @@ export default function AdminApplicationsPage() {
 
       if (data.success) {
         await fetchApplications()
+        toast({
+          title: 'Success',
+          description: `Application has been ${status.toLowerCase()}.`,
+          variant: 'default'
+        })
       } else {
-        alert(data.error || 'Failed to update application status')
+        toast({
+          title: 'Error',
+          description: data.error || 'Failed to update application status',
+          variant: 'destructive'
+        })
       }
     } catch (err) {
       console.error('Error updating application:', err)
-      alert('Failed to update application status. Please try again.')
+      toast({
+        title: 'Error',
+        description: 'Failed to update application status. Please try again.',
+        variant: 'destructive'
+      })
     } finally {
       setIsUpdating(false)
     }
@@ -183,13 +193,19 @@ export default function AdminApplicationsPage() {
 
   const handleApprove = (id: string) => {
     if (confirm('Are you sure you want to approve this application?')) {
-      updateApplicationStatus(id, 'approved')
+      updateApplicationStatus(id, 'Approved')
+    }
+  }
+
+  const handleUnderReview = (id: string) => {
+    if (confirm('Are you sure you want to mark this application as under review?')) {
+      updateApplicationStatus(id, 'Under Review')
     }
   }
 
   const handleReject = (id: string) => {
     if (confirm('Are you sure you want to reject this application?')) {
-      updateApplicationStatus(id, 'rejected')
+      updateApplicationStatus(id, 'Rejected')
     }
   }
 
@@ -284,10 +300,10 @@ export default function AdminApplicationsPage() {
               className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
             >
               <option value="all">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="under_review">Under Review</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
+              <option value="Submitted">Submitted</option>
+              <option value="Under Review">Under Review</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
             </select>
             <button className="px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-2">
               <Filter className="w-4 h-4" />
@@ -399,9 +415,9 @@ export default function AdminApplicationsPage() {
                           className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
                           title="View Full Details"
                         >
-                          <ExternalLink className="w-4 h-4 text-slate-600" />
+                          <Eye className="w-4 h-4 text-slate-600" />
                         </Link>
-                        {app.status !== 'approved' && (
+                        {app.status !== 'Approved' && (
                           <button
                             onClick={() => handleApprove(app.id)}
                             disabled={isUpdating}
@@ -411,7 +427,17 @@ export default function AdminApplicationsPage() {
                             <Check className="w-4 h-4 text-green-600" />
                           </button>
                         )}
-                        {app.status !== 'rejected' && (
+                        {app.status !== 'Under Review' && app.status !== 'Approved' && (
+                          <button
+                            onClick={() => handleUnderReview(app.id)}
+                            disabled={isUpdating}
+                            className="p-2 hover:bg-blue-100 rounded-lg transition-colors disabled:opacity-50"
+                            title="Mark as Under Review"
+                          >
+                            <Clock className="w-4 h-4 text-blue-600" />
+                          </button>
+                        )}
+                        {app.status !== 'Rejected' && (
                           <button
                             onClick={() => handleReject(app.id)}
                             disabled={isUpdating}

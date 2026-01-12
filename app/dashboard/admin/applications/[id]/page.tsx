@@ -18,6 +18,7 @@ import {
   Briefcase
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useToast } from '@/components/ui/use-toast'
 
 interface Document {
   id: string
@@ -25,6 +26,7 @@ interface Document {
   file_name: string
   file_path?: string
   file_url?: string
+  file_error?: string | null
   file_size?: number
   mime_type?: string
   is_verified: boolean
@@ -73,7 +75,7 @@ interface Application {
   reference: string
   academic_year: string
   intake_month: string
-  status: string
+  status: 'Submitted' | 'Under Review' | 'Approved' | 'Rejected'
   has_agent: boolean
   submitted_at: string
   declaration_signed: boolean
@@ -128,6 +130,7 @@ export default function ApplicationDetailPage({
   const [isLoading, setIsLoading] = useState(true)
   const [isUpdating, setIsUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { toast } = useToast()
 
   useEffect(() => {
     fetchApplicationDetails()
@@ -153,8 +156,8 @@ export default function ApplicationDetailPage({
     }
   }
 
-  const updateApplicationStatus = async (status: 'approved' | 'rejected') => {
-    if (!confirm(`Are you sure you want to ${status} this application?`)) {
+  const updateApplicationStatus = async (status: 'Approved' | 'Rejected' | 'Under Review') => {
+    if (!confirm(`Are you sure you want to ${status.toLowerCase()} this application?`)) {
       return
     }
 
@@ -173,12 +176,25 @@ export default function ApplicationDetailPage({
 
       if (data.success) {
         await fetchApplicationDetails()
+        toast({
+          title: 'Success',
+          description: `Application has been ${status.toLowerCase()}.`,
+          variant: 'default'
+        })
       } else {
-        alert(data.error || `Failed to ${status} application`)
+        toast({
+          title: 'Error',
+          description: data.error || `Failed to ${status.toLowerCase()} application`,
+          variant: 'destructive'
+        })
       }
     } catch (err) {
       console.error('Error updating application:', err)
-      alert('Failed to update application status. Please try again.')
+      toast({
+        title: 'Error',
+        description: 'Failed to update application status. Please try again.',
+        variant: 'destructive'
+      })
     } finally {
       setIsUpdating(false)
     }
@@ -186,20 +202,14 @@ export default function ApplicationDetailPage({
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      pending: 'bg-yellow-100 text-yellow-800',
-      approved: 'bg-green-100 text-green-800',
-      rejected: 'bg-red-100 text-red-800',
-      under_review: 'bg-blue-100 text-blue-800',
-    }
-    const labels: Record<string, string> = {
-      pending: 'Pending',
-      approved: 'Approved',
-      rejected: 'Rejected',
-      under_review: 'Under Review',
+      Submitted: 'bg-blue-100 text-blue-800',
+      'Under Review': 'bg-yellow-100 text-yellow-800',
+      Approved: 'bg-green-100 text-green-800',
+      Rejected: 'bg-red-100 text-red-800',
     }
     return (
       <span className={`px-3 py-1 text-sm font-medium rounded-full ${styles[status] || 'bg-gray-100 text-gray-800'}`}>
-        {labels[status] || status}
+        {status}
       </span>
     )
   }
@@ -233,6 +243,11 @@ export default function ApplicationDetailPage({
       return doc.file_url
     }
     return doc.file_path || ''
+  }
+
+  // Check if document has a valid accessible URL
+  const isDocumentAccessible = (doc: Document) => {
+    return !!getDocumentUrl(doc) && !doc.file_error
   }
 
   const formatFileSize = (bytes?: number) => {
@@ -295,9 +310,9 @@ export default function ApplicationDetailPage({
 
       {/* Action Buttons */}
       <div className="flex flex-wrap gap-3">
-        {application.status !== 'approved' && (
+        {application.status !== 'Approved' && (
           <button
-            onClick={() => updateApplicationStatus('approved')}
+            onClick={() => updateApplicationStatus('Approved')}
             disabled={isUpdating}
             className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium disabled:opacity-50 flex items-center gap-2"
           >
@@ -305,9 +320,19 @@ export default function ApplicationDetailPage({
             {isUpdating ? 'Processing...' : 'Approve'}
           </button>
         )}
-        {application.status !== 'rejected' && (
+        {application.status !== 'Under Review' && application.status !== 'Approved' && (
           <button
-            onClick={() => updateApplicationStatus('rejected')}
+            onClick={() => updateApplicationStatus('Under Review')}
+            disabled={isUpdating}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 flex items-center gap-2"
+          >
+            <Clock className="w-4 h-4" />
+            {isUpdating ? 'Processing...' : 'Mark as Under Review'}
+          </button>
+        )}
+        {application.status !== 'Rejected' && (
+          <button
+            onClick={() => updateApplicationStatus('Rejected')}
             disabled={isUpdating}
             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium disabled:opacity-50 flex items-center gap-2"
           >
@@ -517,6 +542,12 @@ export default function ApplicationDetailPage({
                           <p className="font-medium text-slate-900">{getDocTypeLabel(doc.document_type)}</p>
                           <p className="text-sm text-slate-500 truncate">{doc.file_name}</p>
                           <p className="text-xs text-slate-400">{formatFileSize(doc.file_size)}</p>
+                          {doc.file_error && (
+                            <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                              <XCircle className="w-3 h-3" />
+                              {doc.file_error}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0 ml-2">
@@ -530,7 +561,7 @@ export default function ApplicationDetailPage({
                         </span>
                       </div>
                     </div>
-                    {getDocumentUrl(doc) && (
+                    {isDocumentAccessible(doc) ? (
                       <div className="mt-3 flex gap-2">
                         <a
                           href={getDocumentUrl(doc)}
@@ -552,6 +583,13 @@ export default function ApplicationDetailPage({
                             Download
                           </a>
                         )}
+                      </div>
+                    ) : (
+                      <div className="mt-3">
+                        <p className="text-xs text-amber-600 flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          Document pending upload or storage unavailable
+                        </p>
                       </div>
                     )}
                   </div>

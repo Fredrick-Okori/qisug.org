@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 type AuthContextType = {
@@ -19,6 +19,10 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
+// Cache for admin user status to reduce database queries
+const adminCache = new Map<string, { data: any; timestamp: number }>()
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any | null>(null)
   const [session, setSession] = useState<any | null>(null)
@@ -29,6 +33,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true)
 
   const supabase = createClient()
+
+  // Cached admin check function
+  const checkAdminStatus = useCallback(async (userId: string): Promise<{ admin: boolean; adminUser: any | null }> => {
+    // Check cache first
+    const cached = adminCache.get(userId)
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      return { admin: cached.data.admin, adminUser: cached.data.adminUser }
+    }
+
+    try {
+      const { data: adminRow } = await supabase
+        .from('admin_users')
+        .select('id, role, is_active, full_name, email, user_id')
+        .eq('user_id', userId)
+        .eq('is_active', true)
+        .maybeSingle()
+
+      const result = { 
+        admin: !!adminRow, 
+        adminUser: adminRow 
+      }
+
+      // Cache the result
+      adminCache.set(userId, { data: result, timestamp: Date.now() })
+
+      return result
+    } catch (err) {
+      return { admin: false, adminUser: null }
+    }
+  }, [supabase])
+
+  // Clear admin cache on sign out
+  const clearAdminCache = useCallback(() => {
+    adminCache.clear()
+  }, [])
 
   useEffect(() => {
     let mounted = true
@@ -61,42 +100,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const metaName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || null
         setFullName(metaName ?? (user?.email ? user.email.split('@')[0] : null))
 
-        // determine admin via metadata or fallback to admin_users
-        const role = (user.user_metadata && (user.user_metadata.role || user.user_metadata.roles))
-          || (user.app_metadata && user.app_metadata.role) || null
-
-        const adminRoles = ['admin', 'reviewer', 'viewer']
-        let admin = false
-
-        if (role) {
-          if (typeof role === 'string' && adminRoles.includes(role)) admin = true
-          if (Array.isArray(role) && role.some((r: string) => adminRoles.includes(r))) admin = true
-        }
-
-        if (!admin) {
-          try {
-            const { data: adminRow } = await supabase
-              .from('admin_users')
-              .select('id, role, is_active, full_name, email, user_id')
-              .eq('user_id', user.id)
-              .eq('is_active', true)
-              .maybeSingle()
-
-            if (adminRow) {
-              admin = true
-              setAdminUser(adminRow)
-            } else {
-              setAdminUser(null)
-            }
-          } catch (err) {
-            admin = false
-            setAdminUser(null)
-          }
-        } else {
-          setAdminUser(null)
-        }
-
+        // Check admin status (cached)
+        const { admin, adminUser: adminResult } = await checkAdminStatus(user.id)
         setIsAdmin(admin)
+        setAdminUser(adminResult)
       }
 
       setLoading(false)
@@ -120,20 +127,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const metaName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || null
           setFullName(metaName ?? (user?.email ? user.email.split('@')[0] : null))
 
-          // Update adminUser when auth state changes
-          try {
-            const { data: adminRow } = await supabase
-              .from('admin_users')
-              .select('id, role, is_active, full_name, email, user_id')
-              .eq('user_id', user.id)
-              .eq('is_active', true)
-              .maybeSingle()
-
-            if (adminRow) setAdminUser(adminRow)
-            else setAdminUser(null)
-          } catch (err) {
-            setAdminUser(null)
-          }
+          // Update adminUser when auth state changes (cached)
+          const { admin, adminUser: adminResult } = await checkAdminStatus(user.id)
+          setIsAdmin(admin)
+          setAdminUser(adminResult)
         } else {
           setFullName(null)
           setIsAdmin(false)
@@ -150,7 +147,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     init()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [supabase, checkAdminStatus])
 
   const signIn = async (email: string, password: string) => {
     if (!supabase) return { error: new Error('Supabase not configured') }
@@ -171,6 +168,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signOut = async () => {
     if (!supabase) return
     try {
+      // Clear admin cache on sign out
+      clearAdminCache()
       await supabase.auth.signOut()
       setUser(null)
       setSession(null)
