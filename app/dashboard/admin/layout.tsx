@@ -89,8 +89,14 @@ export default function AdminLayout({
   }
 
   const handleSignOut = async () => {
-    await signOut()
-    // signOut already redirects to '/', so no need for window.location.href
+    try {
+      await signOut()
+      // signOut() already redirects to home with window.location.replace('/')
+    } catch (error) {
+      console.error('Sign out error:', error)
+      // Force redirect on error
+      window.location.replace('/')
+    }
   }
 
   return (

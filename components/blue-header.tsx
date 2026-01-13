@@ -151,9 +151,9 @@ const navItems = [
 export function BlueSiteHeader() {
   const pathname = usePathname()
   const [isMounted, setIsMounted] = useState(false)
-  const [isSignedIn, setIsSignedIn] = useState(false)
-  const [userEmail, setUserEmail] = useState("")
-    const { user, signOut } = useAuth()
+  const { user, isSignedIn: ctxSignedIn, isAdmin, signOut } = useAuth()
+  const isSignedIn = ctxSignedIn
+  const userEmail = user?.email || ""
    
 
   // Check if a nav item is active based on current pathname
@@ -166,24 +166,15 @@ export function BlueSiteHeader() {
 
   useEffect(() => {
     setIsMounted(true)
-    
-    // derive state from AuthProvider
-    setIsSignedIn(!!user)
-    if (user?.email) setUserEmail(user.email)
-    // no subscriptions here - AuthProvider handles it
   }, [])
 
   const handleSignOut = async () => {
     try {
-      await signOut()
-      setIsSignedIn(false)
-      setUserEmail("")
-      window.location.href = '/'
+      // Navigate to dedicated sign-out page which handles complete cleanup
+      window.location.href = '/auth/signout'
     } catch (err) {
       console.error('Unexpected sign out error:', err)
-      setIsSignedIn(false)
-      setUserEmail("")
-      window.location.href = '/'
+      window.location.href = '/auth/signout'
     }
   }
 
@@ -561,7 +552,8 @@ export function BlueSiteHeader() {
               )}
             </motion.div>
 
-            {/* Apply Now Button with animation */}
+            {/* Apply Now Button with animation - Hidden for admins */}
+            {!isAdmin && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -588,6 +580,7 @@ export function BlueSiteHeader() {
                 </motion.button>
               </Link>
             </motion.div>
+            )}
           </div>
         </div>
       </div>

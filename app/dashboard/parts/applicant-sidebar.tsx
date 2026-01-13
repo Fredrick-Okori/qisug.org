@@ -30,13 +30,13 @@ export default function ApplicantSidebar({ children }: ApplicantSidebarProps) {
   const handleSignOut = async () => {
     setIsSigningOut(true)
     try {
-      await signOut()
-      router.push('/')
-      router.refresh()
+      // Navigate to dedicated sign-out page which handles complete cleanup
+      window.location.href = '/auth/signout'
     } catch (error) {
       console.error('Sign out error:', error)
+      window.location.href = '/auth/signout'
     } finally {
-      setIsSigningOut(false)
+      // Don't set isSigningOut false since we're redirecting
     }
   }
 

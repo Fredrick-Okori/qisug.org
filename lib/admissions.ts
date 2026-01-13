@@ -73,34 +73,88 @@ export async function submitApplication(data: FullApplicationData, userId?: stri
 }
 
 async function createApplicant(supabase: ReturnType<typeof createClient>, data: ApplicantFormData, userId?: string) {
-  return await supabase
+  // Try insert with user_id first (requires schema cache to be updated)
+  const insertData: Record<string, unknown> = {
+    first_name: data.firstName,
+    middle_name: data.middleName || null,
+    preferred_name: data.preferredName || null,
+    former_last_name: data.formerLastName || null,
+    last_name: data.lastName,
+    birth_date: data.birthDate,
+    gender: data.gender,
+    citizenship_type: data.citizenshipType,
+    citizenship_country: data.citizenshipCountry || null,
+    visa_status: data.visaStatus,
+    email: data.email,
+    phone_primary: data.phonePrimary,
+    phone_other: data.phoneOther || null,
+    address_street: data.address.street,
+    address_city: data.address.city,
+    address_district: data.address.district,
+    address_postal_code: data.address.postalCode,
+    address_country: data.address.country,
+    emergency_contact_name: data.emergencyContact.name,
+    emergency_contact_phone: data.emergencyContact.phone,
+    emergency_contact_email: data.emergencyContact.email || null,
+  }
+
+  // Try with user_id first (works if schema cache is updated)
+  if (userId) {
+    insertData.user_id = userId
+  }
+
+  let result = await supabase
     .from('applicants')
-    .insert({
-      user_id: userId || null,  // Link to auth user if available
-      first_name: data.firstName,
-      middle_name: data.middleName || null,
-      preferred_name: data.preferredName || null,
-      former_last_name: data.formerLastName || null,
-      last_name: data.lastName,
-      birth_date: data.birthDate,
-      gender: data.gender,
-      citizenship_type: data.citizenshipType,
-      citizenship_country: data.citizenshipCountry || null,
-      visa_status: data.visaStatus,
-      email: data.email,
-      phone_primary: data.phonePrimary,
-      phone_other: data.phoneOther || null,
-      address_street: data.address.street,
-      address_city: data.address.city,
-      address_district: data.address.district,
-      address_postal_code: data.address.postalCode,
-      address_country: data.address.country,
-      emergency_contact_name: data.emergencyContact.name,
-      emergency_contact_phone: data.emergencyContact.phone,
-      emergency_contact_email: data.emergencyContact.email || null,
-    })
+    .insert(insertData)
     .select()
     .single()
+
+  // If error is PGRST204 (column not found) or any schema cache issue, retry without user_id
+  // This handles the case where schema cache hasn't been reloaded yet
+  const shouldRetry = result.error && (
+    result.error.code === 'PGRST204' || 
+    result.error.message?.includes('user_id') ||
+    result.error.message?.includes('schema cache')
+  )
+  
+  if (shouldRetry) {
+    console.warn('[CreateApplicant] Schema cache issue detected, retrying without user_id...', result.error?.message)
+    
+    const insertDataWithoutUserId: Record<string, unknown> = { ...insertData }
+    delete insertDataWithoutUserId.user_id
+    
+    result = await supabase
+      .from('applicants')
+      .insert(insertDataWithoutUserId)
+      .select()
+      .single()
+
+    if (result.error) {
+      console.error('[CreateApplicant] Retry failed:', result.error)
+      return result
+    } else if (userId) {
+      // Successfully created applicant, now try to update with user_id
+      console.log('[CreateApplicant] Applicant created, attempting to link user_id...')
+      
+      // Update the applicant with user_id (this is a best-effort operation)
+      // userId is guaranteed to be a string here due to the `else if (userId)` check
+      const userIdStr: string = userId as string
+      
+      const updateResult = await supabase
+        .from('applicants')
+        .update({ user_id: userIdStr })
+        .eq('id', result.data.id)
+      
+      if (updateResult.error) {
+        console.warn('[CreateApplicant] Failed to link user_id (non-critical):', updateResult.error)
+        // Continue anyway - applicant was created successfully
+      } else {
+        console.log('[CreateApplicant] User_id linked successfully')
+      }
+    }
+  }
+
+  return result
 }
 
 async function createApplication(

@@ -156,32 +156,37 @@ export function SiteHeader() {
   useEffect(() => {
     setIsMounted(true)
     
-    // Initialize Supabase client lazily on client side
-    
-    
+    // sync with auth context - update when auth state changes
+    if (ctxSignedIn && user?.email) {
+      setUserEmail(user.email)
+    } else {
+      setUserEmail("")
+    }
+  }, [ctxSignedIn, user])
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
       const handleScroll = () => {
         setIsScrolled(window.scrollY > 50)
       }
       window.addEventListener('scroll', handleScroll)
 
-      // sync with auth context
-      if (user?.email) setUserEmail(user.email)
-
       return () => {
         window.removeEventListener('scroll', handleScroll)
       }
-    }, [ctxSignedIn, user])
+    }
+  }, [])
 
   const router = useRouter()
 
   const handleSignOut = async () => {
     try {
       setUserEmail("")
-      await signOut()
+      // Navigate to dedicated sign-out page which handles complete cleanup
+      window.location.href = '/auth/signout'
     } catch (err) {
       console.error('Unexpected sign out error:', err)
-      window.location.href = '/'
+      window.location.href = '/auth/signout'
     }
   }
 
