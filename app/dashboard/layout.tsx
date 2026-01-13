@@ -55,13 +55,14 @@ export default function DashboardLayout({
   }, [])
 
   // Redirect if not authenticated (only after mount to avoid hydration mismatch)
+  // Don't wait for authLoading - redirect immediately when we know user is not signed in
   useEffect(() => {
-    if (!mounted || authLoading) return
+    if (!mounted) return
 
     if (!isSignedIn) {
       router.push('/login?redirect=/dashboard')
     }
-  }, [mounted, authLoading, isSignedIn, router])
+  }, [mounted, isSignedIn, router])
 
   // Show skeleton only during initial mount, then show content immediately
   // This prevents long loading times even when user is authenticated

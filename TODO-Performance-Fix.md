@@ -23,6 +23,7 @@ Login is fast locally but skeleton takes long in deployed environment.
 ### Step 3: Optimize Dashboard Layout (app/dashboard/layout.tsx) ✅ DONE
 - [x] Show content immediately after mount, don't wait on authLoading
 - [x] Only show skeleton during initial SSR/mount, then show real content
+- [x] Redirect immediately when not signed in (removed authLoading from redirect condition)
 
 ### Step 4: Create Middleware for Auth (middleware.ts) - OPTIONAL
 - [ ] Add Next.js middleware for faster edge auth verification
