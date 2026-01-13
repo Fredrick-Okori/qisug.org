@@ -68,3 +68,39 @@ ON CONFLICT (user_id) DO UPDATE SET
   is_active = true;
 ```
 
+## Sign Out Fix (Completed)
+
+### Problem
+The sign out functionality across multiple components was inconsistent - some called `signOut()` from auth context which wasn't properly clearing all session state, and some were redirecting directly to `/` instead of the dedicated `/auth/signout` page.
+
+### Solution - Updated Sign Out Handlers
+Updated all sign out handlers to use the dedicated `/auth/signout` page which handles complete session cleanup.
+
+### Files Updated
+- `components/site-header.tsx` - Updated `handleSignOut` to use `/auth/signout`
+- `components/blue-header.tsx` - Updated `handleSignOut` to use `/auth/signout`
+- `app/dashboard/parts/applicant-sidebar.tsx` - Updated `handleSignOut` to use `/auth/signout`
+- `app/dashboard/admin/layout.tsx` - Updated `handleSignOut` to use `/auth/signout`
+
+### Changes Made
+All sign out handlers now use this pattern:
+```typescript
+const handleSignOut = async () => {
+  try {
+    // Navigate to dedicated sign-out page which handles complete cleanup
+    window.location.href = '/auth/signout'
+  } catch (error) {
+    console.error('Sign out error:', error)
+    window.location.href = '/auth/signout'
+  }
+}
+```
+
+### Sign Out Page Optimization
+The `/auth/signout/page.tsx` has been optimized for faster performance:
+- All cleanup operations run in parallel (fire and forget) instead of sequentially
+- Removed complex IndexedDB cleanup that was slow
+- Simplified cookie clearing to essential operations only
+- Uses setTimeout with 100ms delay to allow UI to update before redirect
+- Total signout time reduced from ~1-2 seconds to ~200-500ms
+

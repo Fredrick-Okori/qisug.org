@@ -2,106 +2,75 @@
 
 import { useEffect, useState, Suspense } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+
+// Fast cookie clearing - minimal version
+function clearCookies() {
+  const cookies = document.cookie.split(';')
+  for (const cookie of cookies) {
+    const [name] = cookie.split('=')
+    const nameTrimmed = name.trim()
+    if (nameTrimmed) {
+      // Clear with multiple path variations
+      document.cookie = `${nameTrimmed}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`
+      document.cookie = `${nameTrimmed}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`
+    }
+  }
+}
 
 function SignOutContent() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClient()
   const [status, setStatus] = useState('Signing out...')
   const redirectTo = searchParams.get('redirect') || '/'
 
   useEffect(() => {
+    let cleanupStarted = false
+
     const signOut = async () => {
+      if (cleanupStarted) return
+      cleanupStarted = true
+
       try {
-        setStatus('Clearing session...')
-        
-        // 1. First, call server-side signout to clear cookies on the server
+        // Fire and forget - don't await
+        fetch('/api/auth/signout', { method: 'POST' }).catch(() => {})
+
+        // Sign out from Supabase (fire and forget)
+        supabase.auth.signOut().catch(() => {})
+
+        // Clear localStorage in one go
         try {
-          await fetch('/api/auth/signout', { method: 'POST' })
-        } catch (e) {
-          console.warn('Server signout failed:', e)
-        }
+          localStorage.clear()
+        } catch (e) {}
 
-        // 2. Client-side sign out from Supabase
-        await supabase.auth.signOut()
-
-        // 3. Clear ALL possible Supabase-related cookies
-        const cookieNames = [
-          'sb-access-token',
-          'sb-refresh-token', 
-          'sb-provider-token',
-          'supabase-auth-token',
-          'auth-token',
-          'session',
-          'user-email',
-          'user_session'
-        ]
-
-        // Clear each cookie for all paths, domains, and variations
-        const domains = ['', window.location.hostname, '.' + window.location.hostname]
-        const paths = ['/', '/dashboard', '/admin', '/api', '']
-
-        cookieNames.forEach(name => {
-          domains.forEach(domain => {
-            paths.forEach(path => {
-              const cookieParts = []
-              if (name) cookieParts.push(`${name}=`)
-              cookieParts.push('expires=Thu, 01 Jan 1970 00:00:00 UTC')
-              if (path) cookieParts.push(`path=${path}`)
-              if (domain) cookieParts.push(`domain=${domain}`)
-              cookieParts.push('SameSite=Lax')
-              document.cookie = cookieParts.join('; ')
-            })
-          })
-          // Also clear with no domain/path variations
-          document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`
-          document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure`
-        })
-
-        // 4. Clear ALL localStorage (except Next.js cache)
-        const localStorageKeys = Object.keys(localStorage)
-        localStorageKeys.forEach(key => {
-          if (
-            key.startsWith('next.') && 
-            !key.includes('supabase') && 
-            !key.includes('auth') &&
-            !key.includes('sb-')
-          ) {
-            return
-          }
-          localStorage.removeItem(key)
-        })
-
-        // 5. Clear sessionStorage completely
-        sessionStorage.clear()
-
-        // 6. Clear any Supabase IndexedDB
+        // Clear sessionStorage
         try {
-          indexedDB.databases().then(dbs => {
-            dbs.forEach(db => {
-              if (db.name && db.name.toLowerCase().includes('supabase')) {
-                indexedDB.deleteDatabase(db.name)
-              }
-            })
-          })
-        } catch (e) {
-          console.warn('IndexedDB cleanup failed:', e)
-        }
+          sessionStorage.clear()
+        } catch (e) {}
 
-        setStatus('Redirecting...')
+        // Clear cookies
+        clearCookies()
 
-        // 7. Force a hard redirect to clear any React state
-        window.location.replace(redirectTo)
+        // Update status and redirect quickly
+        setStatus('Almost done...')
+
+        // Use setTimeout to allow UI to update before redirect
+        setTimeout(() => {
+          // Hard redirect to clear all state
+          window.location.replace(redirectTo)
+        }, 100)
 
       } catch (err) {
         console.error('Sign out error:', err)
-        setStatus('Error signing out, redirecting...')
+        // Still redirect even on error
         window.location.replace(redirectTo)
       }
     }
 
-    signOut()
+    // Small delay to allow the page to render first
+    const timer = setTimeout(signOut, 50)
+
+    return () => clearTimeout(timer)
   }, [supabase, redirectTo])
 
   return (
@@ -109,7 +78,6 @@ function SignOutContent() {
       <div className="flex flex-col items-center gap-4">
         <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
         <p className="text-slate-600">{status}</p>
-        <p className="text-sm text-slate-400">Please wait while we sign you out...</p>
       </div>
     </div>
   )
