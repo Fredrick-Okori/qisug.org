@@ -23,6 +23,50 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 const adminCache = new Map<string, { data: any; timestamp: number }>()
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
 
+// localStorage key for persistent admin cache
+const ADMIN_CACHE_KEY = 'qis_admin_status_cache'
+
+/**
+ * Load admin cache from localStorage
+ */
+function loadAdminCacheFromStorage(): Map<string, { data: any; timestamp: number }> {
+  try {
+    if (typeof window === 'undefined') return adminCache
+    const stored = localStorage.getItem(ADMIN_CACHE_KEY)
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      const cache = new Map<string, { data: any; timestamp: number }>()
+      // Only include non-expired entries
+      const now = Date.now()
+      Object.entries(parsed).forEach(([key, value]: [string, any]) => {
+        if (now - value.timestamp < CACHE_TTL) {
+          cache.set(key, value)
+        }
+      })
+      return cache
+    }
+  } catch (e) {
+    // Ignore localStorage errors
+  }
+  return adminCache
+}
+
+/**
+ * Save admin cache to localStorage
+ */
+function saveAdminCacheToStorage(cache: Map<string, { data: any; timestamp: number }>) {
+  try {
+    if (typeof window === 'undefined') return
+    const obj: Record<string, { data: any; timestamp: number }> = {}
+    cache.forEach((value, key) => {
+      obj[key] = value
+    })
+    localStorage.setItem(ADMIN_CACHE_KEY, JSON.stringify(obj))
+  } catch (e) {
+    // Ignore localStorage errors
+  }
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any | null>(null)
   const [session, setSession] = useState<any | null>(null)
@@ -36,8 +80,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Cached admin check function
   const checkAdminStatus = useCallback(async (userId: string): Promise<{ admin: boolean; adminUser: any | null }> => {
-    // Check cache first
-    const cached = adminCache.get(userId)
+    // Load cache from localStorage first
+    const storageCache = loadAdminCacheFromStorage()
+    const cached = storageCache.get(userId)
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
       return { admin: cached.data.admin, adminUser: cached.data.adminUser }
     }
@@ -55,8 +100,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         adminUser: adminRow 
       }
 
-      // Cache the result
-      adminCache.set(userId, { data: result, timestamp: Date.now() })
+      // Cache the result in memory and localStorage
+      storageCache.set(userId, { data: result, timestamp: Date.now() })
+      saveAdminCacheToStorage(storageCache)
 
       return result
     } catch (err) {
@@ -67,6 +113,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Clear admin cache on sign out
   const clearAdminCache = useCallback(() => {
     adminCache.clear()
+    try {
+      localStorage.removeItem(ADMIN_CACHE_KEY)
+    } catch (e) {
+      // Ignore localStorage errors
+    }
   }, [])
 
   useEffect(() => {
@@ -78,17 +129,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return
       }
 
+      // Use getSession instead of getUser for faster initial check
+      // getSession reads from localStorage/cache, getUser makes a network request
       const { data: { session: initialSession } } = await supabase.auth.getSession()
-      // Verify the user by asking Supabase Auth server for an authenticated user
-      // This avoids trusting the session storage directly.
-      let verifiedUser: any = null
-      try {
-        const { data: userData, error: userError } = await supabase.auth.getUser()
-        if (!userError && userData?.user) verifiedUser = userData.user
-      } catch (e) {
-        // ignore and fallback
-      }
-      const user = verifiedUser ?? initialSession?.user ?? null
+      
+      // For initial render, trust the session - avoid blocking getUser() call
+      // We'll verify user on next interaction if needed
+      const user = initialSession?.user ?? null
 
       if (!mounted) return
       setSession(initialSession ?? null)
@@ -100,27 +147,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const metaName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || null
         setFullName(metaName ?? (user?.email ? user.email.split('@')[0] : null))
 
-        // Check admin status (cached) - must complete before setting loading=false
-        const { admin, adminUser: adminResult } = await checkAdminStatus(user.id)
-        setIsAdmin(admin)
-        setAdminUser(adminResult)
+        // Check admin status ASYNCHRONOUSLY - don't block rendering
+        // This allows UI to render immediately while we verify admin status
+        checkAdminStatus(user.id).then(({ admin, adminUser: adminResult }) => {
+          if (mounted) {
+            setIsAdmin(admin)
+            setAdminUser(adminResult)
+          }
+        }).catch(() => {
+          // Silently fail - user can still use the app as non-admin
+          if (mounted) {
+            setIsAdmin(false)
+            setAdminUser(null)
+          }
+        })
       }
 
-      // Only set loading=false AFTER admin check completes
-      // This ensures isAdmin is properly determined before rendering
+      // Set loading=false immediately to unblock UI
+      // Admin status will update asynchronously
       setLoading(false)
 
       // subscribe to auth changes
       const { data } = supabase.auth.onAuthStateChange(async (_event: string, session: any) => {
-        // Prefer an authenticated user from the Supabase Auth server
-        let verifiedUser: any = null
-        try {
-          const { data: userData, error: userError } = await supabase.auth.getUser()
-          if (!userError && userData?.user) verifiedUser = userData.user
-        } catch (e) {
-          // ignore and fallback to session user
-        }
-        const user = verifiedUser ?? session?.user ?? null
+        const user = session?.user ?? null
         setSession(session ?? null)
         setUser(user)
         setIsSignedIn(!!session)
@@ -129,10 +178,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const metaName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || null
           setFullName(metaName ?? (user?.email ? user.email.split('@')[0] : null))
 
-          // Update adminUser when auth state changes (cached)
-          const { admin, adminUser: adminResult } = await checkAdminStatus(user.id)
-          setIsAdmin(admin)
-          setAdminUser(adminResult)
+          // Update adminUser when auth state changes (async, non-blocking)
+          checkAdminStatus(user.id).then(({ admin, adminUser: adminResult }) => {
+            if (mounted) {
+              setIsAdmin(admin)
+              setAdminUser(adminResult)
+            }
+          }).catch(() => {
+            if (mounted) {
+              setIsAdmin(false)
+              setAdminUser(null)
+            }
+          })
         } else {
           setFullName(null)
           setIsAdmin(false)

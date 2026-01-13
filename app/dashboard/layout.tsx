@@ -63,8 +63,9 @@ export default function DashboardLayout({
     }
   }, [mounted, authLoading, isSignedIn, router])
 
-  // Show skeleton while checking auth
-  if (!mounted || authLoading) {
+  // Show skeleton only during initial mount, then show content immediately
+  // This prevents long loading times even when user is authenticated
+  if (!mounted) {
     return <DashboardSkeleton />
   }
 

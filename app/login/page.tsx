@@ -188,10 +188,10 @@ function LoginContent() {
         
         setSuccess('Login successful! Redirecting...');
         
-        // Final Redirection Logic
+        // Reduced redirect delay for faster perceived performance
         setTimeout(() => {
           router.push(destination);
-        }, 1200);
+        }, 500);
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
