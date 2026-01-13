@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { 
   LayoutDashboard, 
   Users, 
@@ -16,6 +16,7 @@ import {
   FolderOpen
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/components/auth/auth-context'
 
 interface NavItem {
   title: string
@@ -33,17 +34,63 @@ const adminNavItems: NavItem[] = [
   { title: 'Settings', href: '/dashboard/admin/settings', icon: Settings },
 ]
 
+// Skeleton component for admin loading state
+function AdminSkeleton() {
+  return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+        <p className="text-slate-600">Verifying admin access...</p>
+      </div>
+    </div>
+  )
+}
+
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const { isSignedIn, isAdmin, loading: authLoading, signOut } = useAuth()
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const handleSignOut = () => {
-    window.location.href = '/'
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!authLoading && !isSignedIn) {
+      router.push('/login?redirect=/dashboard/admin')
+    }
+  }, [authLoading, isSignedIn, router])
+
+  // Redirect non-admins to student dashboard
+  useEffect(() => {
+    if (!authLoading && isSignedIn && !isAdmin) {
+      router.push('/dashboard')
+    }
+  }, [authLoading, isSignedIn, isAdmin, router])
+
+  // Show skeleton while checking auth
+  if (authLoading || !isSignedIn) {
+    return <AdminSkeleton />
+  }
+
+  // Redirecting message while non-admin is being redirected
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+          <p className="text-slate-600">Redirecting to student portal...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const handleSignOut = async () => {
+    await signOut()
+    // signOut already redirects to '/', so no need for window.location.href
   }
 
   return (

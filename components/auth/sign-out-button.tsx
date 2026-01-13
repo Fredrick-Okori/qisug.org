@@ -46,8 +46,7 @@ export function SignOutButton({
 
     try {
       await signOut()
-      router.push('/')
-      router.refresh()
+      // signOut() already handles redirect to '/'
     } catch (err) {
       setError('An unexpected error occurred')
     } finally {
@@ -144,4 +143,5 @@ export function UserMenu({ user }: { user: User | null }) {
     </div>
   )
 }
+
 

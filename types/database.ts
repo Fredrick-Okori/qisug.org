@@ -1,6 +1,6 @@
 // Database types for Supabase - Updated to match flat column schema
 
-export type Gender = 'Male' | 'Female'
+export type Gender = 'Male' | 'Female' | 'Other'
 export type CitizenshipType = 'Ugandan' | 'Non-Ugandan'
 export type VisaStatus = 'Permanent Resident' | 'Refugee' | 'Student Visa' | null
 export type IntakeMonth = 'January' | 'March' | 'May' | 'September'
@@ -10,6 +10,7 @@ export type ApplicationStatus = 'Draft' | 'Submitted' | 'Under Review' | 'Approv
 export interface Applicant {
   id: string
   qis_id: string | null
+  user_id: string | null  // Linked auth user ID
   first_name: string
   middle_name: string | null
   preferred_name: string | null

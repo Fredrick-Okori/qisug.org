@@ -66,7 +66,46 @@ export default function DashboardPage() {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session?.user) return
 
-      // Add limit to reduce data transfer
+      // Step 1: Find the applicant record for this user
+      // First try to find by user_id (if the column exists and is populated)
+      // Fall back to email match for existing applications
+      let applicantId: string | null = null
+
+      // Try to get applicant by user_id first (preferred method)
+      const { data: applicantByUserId } = await supabase
+        .from('applicants')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .single()
+
+      if (applicantByUserId) {
+        applicantId = applicantByUserId.id
+      } else {
+        // Fallback: Find applicant by email (for existing applications before user_id was added)
+        const { data: applicantByEmail } = await supabase
+          .from('applicants')
+          .select('id')
+          .eq('email', session.user.email)
+          .single()
+
+        if (applicantByEmail) {
+          applicantId = applicantByEmail.id
+          
+          // Update the applicant record with user_id for future lookups
+          await supabase
+            .from('applicants')
+            .update({ user_id: session.user.id })
+            .eq('id', applicantId)
+        }
+      }
+
+      if (!applicantId) {
+        setApplications([])
+        setApplicationsLoading(false)
+        return
+      }
+
+      // Step 2: Query applications for this applicant
       const { data, error } = await supabase
         .from('applications')
         .select(`
@@ -81,12 +120,13 @@ export default function DashboardPage() {
             name
           )
         `)
-        .eq('applicant_id', session.user.id)
+        .eq('applicant_id', applicantId)
         .order('created_at', { ascending: false })
-        .limit(10) // Limit results for performance
+        .limit(10)
 
       if (error) {
         console.error('Error fetching applications:', error)
+        setApplicationsLoading(false)
         return
       }
 

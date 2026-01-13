@@ -29,7 +29,7 @@ function getSupabaseClient() {
 // APPLICATION SUBMISSION
 // ============================================================================
 
-export async function submitApplication(data: FullApplicationData) {
+export async function submitApplication(data: FullApplicationData, userId?: string) {
   try {
     const supabase = getSupabaseClient()
     
@@ -40,8 +40,8 @@ export async function submitApplication(data: FullApplicationData) {
       }
     }
 
-    // 1. Create applicant
-    const applicantResult = await createApplicant(supabase, data.applicant)
+    // 1. Create applicant (with user_id link if user is authenticated)
+    const applicantResult = await createApplicant(supabase, data.applicant, userId)
     if (applicantResult.error) throw applicantResult.error
     
     const applicantId = applicantResult.data.id
@@ -72,10 +72,11 @@ export async function submitApplication(data: FullApplicationData) {
   }
 }
 
-async function createApplicant(supabase: ReturnType<typeof createClient>, data: ApplicantFormData) {
+async function createApplicant(supabase: ReturnType<typeof createClient>, data: ApplicantFormData, userId?: string) {
   return await supabase
     .from('applicants')
     .insert({
+      user_id: userId || null,  // Link to auth user if available
       first_name: data.firstName,
       middle_name: data.middleName || null,
       preferred_name: data.preferredName || null,

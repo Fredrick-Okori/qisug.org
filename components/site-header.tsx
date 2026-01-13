@@ -58,12 +58,6 @@ const navItems = [
         description: "Step-by-step application guide",
         image: "/images/img-2023-mature-students-home-banner-0257960.jpg"
       },
-      { 
-        title: "Apply Now", 
-        href: "/admissions/apply-now",
-        description: "Start your application today",
-        image: "/images/apply-now.jpg"
-      },
     ],
   },
 
@@ -183,11 +177,11 @@ export function SiteHeader() {
 
   const handleSignOut = async () => {
     try {
-      await signOut()
       setUserEmail("")
-      window.location.href = '/'
+      await signOut()
     } catch (err) {
       console.error('Unexpected sign out error:', err)
+      window.location.href = '/'
     }
   }
 
@@ -531,38 +525,40 @@ export function SiteHeader() {
 
 
 
-            {/* Apply Now Button - redirects to login if not signed in */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ 
-                delay: 0.8,
-                duration: 0.4
-              }}
-            >
-              <Link href={isSignedIn ? "/admissions/apply-now" : "#"}>
-                <motion.button 
-                  onClick={handleApplyClick}
-                  className={`flex items-center gap-2 bg-[#053F52] text-white rounded-full border border-[#053F52] transition-all duration-300 hover:bg-[#20cece] hover:border-[#20cece] ${
-                    isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
-                  }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className="font-medium">Apply Now</span>
-                  <svg 
-                    className={`transition-all duration-300 ${
-                      isScrolled ? "h-3.5 w-3.5 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
+            {/* Apply Now Button - redirects to login if not signed in - hide for admin users */}
+            {!isAdminState && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ 
+                  delay: 0.8,
+                  duration: 0.4
+                }}
+              >
+                <Link href={isSignedIn ? "/admissions/apply-now" : "#"}>
+                  <motion.button 
+                    onClick={handleApplyClick}
+                    className={`flex items-center gap-2 bg-[#053F52] text-white rounded-full border border-[#053F52] transition-all duration-300 hover:bg-[#20cece] hover:border-[#20cece] ${
+                      isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
                     }`}
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </motion.button>
-              </Link>
-            </motion.div>
+                    <span className="font-medium">Apply Now</span>
+                    <svg 
+                      className={`transition-all duration-300 ${
+                        isScrolled ? "h-3.5 w-3.5 xl:h-4 xl:w-4" : "h-4 w-4 xl:h-5 xl:w-5"
+                      }`}
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </motion.button>
+                </Link>
+              </motion.div>
+            )}
 
             {/* Auth Section - User Dropdown when signed in */}
             <motion.div

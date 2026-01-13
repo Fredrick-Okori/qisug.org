@@ -100,12 +100,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const metaName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || null
         setFullName(metaName ?? (user?.email ? user.email.split('@')[0] : null))
 
-        // Check admin status (cached)
+        // Check admin status (cached) - must complete before setting loading=false
         const { admin, adminUser: adminResult } = await checkAdminStatus(user.id)
         setIsAdmin(admin)
         setAdminUser(adminResult)
       }
 
+      // Only set loading=false AFTER admin check completes
+      // This ensures isAdmin is properly determined before rendering
       setLoading(false)
 
       // subscribe to auth changes
@@ -171,14 +173,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Clear admin cache on sign out
       clearAdminCache()
       await supabase.auth.signOut()
+      
+      // Clear all Supabase-related cookies
+      const cookieNames = [
+        'sb-access-token',
+        'sb-refresh-token',
+        'sb-provider-token',
+        'supabase-auth-token',
+        'auth-token',
+        'session'
+      ]
+      
+      // Clear each cookie for all paths and domains
+      cookieNames.forEach(name => {
+        // Clear with various path combinations
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname}`
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure`
+      })
+      
+      // Clear any localStorage items related to auth
+      localStorage.removeItem('supabase.auth.token')
+      localStorage.removeItem('qisug-auth-token')
+      
+      // Clear sessionStorage
+      sessionStorage.clear()
+      
+      // Clear React state
       setUser(null)
       setSession(null)
       setIsSignedIn(false)
       setIsAdmin(false)
       setFullName(null)
       setAdminUser(null)
+      
+      // Force redirect to home page
+      window.location.href = '/'
     } catch (err) {
       console.error('Sign out error:', err)
+      // Even on error, redirect to home
+      window.location.href = '/'
     }
   }
 

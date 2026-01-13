@@ -6,7 +6,7 @@
 
 import { createClient } from '@/lib/supabase/client'
 
-export type UserRole = 'admin' | 'reviewer' | 'viewer' | 'user' | null
+export type UserRole = 'admin' | 'reviewer' | 'viewer' | 'public' | null
 
 export interface AuthState {
   isAuthenticated: boolean
@@ -19,6 +19,10 @@ export interface AuthState {
 /**
  * Check if user is authenticated and get their role
  * Returns null if Supabase is not configured or error occurs
+ * 
+ * NOTE: All authenticated users get 'public' role by default.
+ * Admin access (admin/reviewer/viewer) is only granted via admin_users table
+ * which is managed by superadmin.
  */
 export async function checkUserAuth(): Promise<AuthState> {
   try {
@@ -49,7 +53,7 @@ export async function checkUserAuth(): Promise<AuthState> {
     // Log the logged-in user's details for debugging (who is currently signed in)
     console.log('[AuthHelper] logged-in user:', session.user)
 
-    // Check if user is an active admin
+    // Check if user is an active admin (only superadmin manages admin_users)
     const { data: adminUser, error } = await supabase
       .from('admin_users')
       .select('role, is_active')
@@ -59,22 +63,22 @@ export async function checkUserAuth(): Promise<AuthState> {
 
     if (error) console.warn('[AuthHelper] admin_users lookup error:', error)
 
-    if (!adminUser) {
-      // User is authenticated but not an admin
+    if (adminUser) {
+      // User is an active admin - get their assigned role
       return {
         isAuthenticated: true,
-        isAdmin: false,
-        userRole: 'user',
+        isAdmin: true,
+        userRole: adminUser.role as UserRole,
         user: session.user,
         loading: false
       }
     }
 
-    // User is an active admin
+    // All other authenticated users get 'public' role by default
     return {
       isAuthenticated: true,
-      isAdmin: true,
-      userRole: adminUser.role as UserRole,
+      isAdmin: false,
+      userRole: 'public',
       user: session.user,
       loading: false
     }

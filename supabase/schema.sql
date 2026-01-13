@@ -12,7 +12,7 @@ DROP TYPE IF EXISTS intake_month_type CASCADE;
 DROP TYPE IF EXISTS program_stream_type CASCADE;
 DROP TYPE IF EXISTS application_status_type CASCADE;
 
-CREATE TYPE gender_type AS ENUM ('Male', 'Female');
+CREATE TYPE gender_type AS ENUM ('Male', 'Female', 'Other');
 CREATE TYPE citizenship_type AS ENUM ('Ugandan', 'Non-Ugandan');
 CREATE TYPE visa_status_type AS ENUM ('Permanent Resident', 'Refugee', 'Student Visa');
 CREATE TYPE intake_month_type AS ENUM ('January', 'March', 'May', 'September');
@@ -54,6 +54,7 @@ ON CONFLICT (grade, stream) DO NOTHING;
 CREATE TABLE applicants (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   qis_id TEXT UNIQUE,
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   first_name TEXT NOT NULL,
   middle_name TEXT,
   preferred_name TEXT,
@@ -82,6 +83,7 @@ CREATE TABLE applicants (
 -- Indexes
 CREATE INDEX idx_applicants_email ON applicants(email);
 CREATE INDEX idx_applicants_qis_id ON applicants(qis_id);
+CREATE INDEX idx_applicants_user_id ON applicants(user_id);
 CREATE INDEX idx_applicants_name ON applicants(last_name, first_name);
 
 -- ============================================================================

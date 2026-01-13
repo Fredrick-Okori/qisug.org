@@ -5,10 +5,10 @@ import { MainSiteFooter } from '@/components/main-footer';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient, isSupabaseConfigured, getSupabaseConfigStatus } from '@/lib/supabase/client';
-import { checkUserAuth, redirectAdmins } from '@/lib/auth-helper';
 import { Loader2, CheckCircle, AlertCircle, ChevronRight, ChevronLeft, Upload, Download, FileText, RotateCcw } from 'lucide-react';
 import { generateApplicationReference, storeReference } from '@/lib/application-reference';
 import { submitApplication, uploadDocument, confirmPayment } from '@/lib/admissions';
+import { useAuth } from '@/components/auth/auth-context';
 import confetti from 'canvas-confetti';
 import jsPDF from 'jspdf';
 
@@ -45,6 +45,7 @@ const StepIndicator = ({ currentStep, totalSteps }: { currentStep: number; total
 };
 
 export default function ApplyNowPage() {
+  const { user, isSignedIn } = useAuth()
   const [currentStep, setCurrentStep] = useState(1);
   const [supabaseError, setSupabaseError] = useState<string | null>(null);
   const [supabaseConfigStatus, setSupabaseConfigStatus] = useState<{ configured: boolean; error?: string; url?: string } | null>(null);
@@ -56,11 +57,6 @@ export default function ApplyNowPage() {
   const [generatedReference, setGeneratedReference] = useState<string | null>(null);
   const [paymentSlip, setPaymentSlip] = useState<File | null>(null);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [authLoading, setAuthLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     // Personal Information
@@ -225,55 +221,6 @@ export default function ApplyNowPage() {
     }
   }, []);
 
-  // Check if user is an admin - redirect to admin dashboard if so
-  useEffect(() => {
-    const checkAdminAndRedirect = async () => {
-      if (!isMounted) return;
-      
-      try {
-        // First check if Supabase is configured
-        const supabase = createClient();
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session?.user) {
-          // User is not authenticated - redirect to login
-          console.log('[ApplyNow] User not authenticated, redirecting to login...');
-          window.location.href = '/login?redirect=/admissions/apply-now';
-          return;
-        }
-
-        // User is authenticated, check if they're an admin
-        setIsAuthenticated(true);
-        
-        const response = await fetch('/api/auth/admin-check');
-        const data = await response.json();
-        console.log('[ApplyNow] /api/auth/admin-check response:', data)
-        
-        if (data.success && data.isAdmin) {
-          // User is an admin - redirect to admin dashboard
-          console.log('[ApplyNow] Admin user detected, redirecting to admin dashboard...');
-          window.location.href = '/dashboard/admin';
-          return;
-        }
-      } catch (error) {
-        console.error('[ApplyNow] Admin check error:', error);
-        setAuthError('Failed to verify authentication. Please try again.');
-        // On error, allow the page to render (user might still be authenticated)
-        // The Supabase client-side check will handle the session
-      }
-      
-      // User is not an admin or check failed - stop loading and show the page
-      setAuthLoading(false);
-    };
-
-    // Small delay to ensure Supabase is initialized
-    const timer = setTimeout(() => {
-      checkAdminAndRedirect();
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [isMounted]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     if (type === 'file') {
@@ -347,7 +294,7 @@ export default function ApplyNowPage() {
           formerLastName: undefined,
           lastName: formData.lastName,
           birthDate: formData.dateOfBirth,
-          gender: formData.gender === 'male' ? 'Male' : formData.gender === 'female' ? 'Female' : 'Other',
+          gender: (formData.gender === 'male' ? 'Male' : formData.gender === 'female' ? 'Female' : 'Other') as 'Male' | 'Female' | 'Other',
           citizenshipType: citizenshipType,
           citizenshipCountry: formData.nationality,
           visaStatus: visaStatus,
@@ -448,15 +395,19 @@ export default function ApplyNowPage() {
       setGeneratedReference(reference);
       storeReference(reference);
       
+      // Update applicant record with reference AND user_id if logged in
       const { error: updateError } = await supabase
         .from('applicants')
-        .update({ qis_id: reference })
+        .update({ 
+          qis_id: reference,
+          ...(user?.id ? { user_id: user.id } : {})
+        })
         .eq('id', applicantId);
 
       if (updateError) {
         console.error('[ApplyNow] Reference update failed:', updateError);
       } else {
-        console.log('[ApplyNow] Reference saved to applicant record');
+        console.log('[ApplyNow] Reference and user_id saved to applicant record');
       }
 
   console.log('[ApplyNow] Application submitted successfully');
@@ -716,70 +667,6 @@ setCurrentStep(3);
             >
               Please contact the system administrator or check your environment variables.
             </motion.p>
-          </motion.div>
-        </div>
-        <MainSiteFooter />
-      </>
-    );
-  }
-
-  // Loading state while checking authentication
-  if (authLoading) {
-    return (
-      <>
-        <BlueSiteHeader />
-        <div className="min-h-screen pt-[120px] md:pt-[200px] lg:pt-[240px] pb-16 px-6">
-          <div className="fixed inset-0 bg-center bg-repeat -z-10" style={{ backgroundImage: "url('/images/pattern.webp')" }} />
-          <motion.div className="fixed inset-0 -z-[5]" style={{ backgroundColor: '#EFBF04', opacity: 0.88 }} />
-          <motion.div 
-            className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-          >
-            <motion.div 
-              className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: 'spring' }}
-            >
-              <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
-            </motion.div>
-            
-            <motion.h1 
-              className="text-3xl md:text-4xl text-[#053f52] mb-4"
-              style={{ fontFamily: "'Crimson Pro', serif" }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              Verifying Access
-            </motion.h1>
-            
-            <motion.p 
-              className="text-lg text-gray-700 mb-6"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              {authError || 'Please wait while we verify your authentication status...'}
-            </motion.p>
-            
-            {authError && (
-              <motion.button
-                onClick={() => {
-                  setAuthLoading(true);
-                  setAuthError(null);
-                  window.location.reload();
-                }}
-                className="bg-[#053f52] text-white px-8 py-3 rounded-full font-semibold hover:shadow-xl transition-all"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                Try Again
-              </motion.button>
-            )}
           </motion.div>
         </div>
         <MainSiteFooter />
@@ -1125,6 +1012,7 @@ setCurrentStep(3);
                             <option value="">Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
+                            <option value="other">Other</option>
                           </select>
                         </div>
                         <div>
@@ -1835,10 +1723,10 @@ setCurrentStep(3);
                       transition={{ delay: 0.7 }}
                     >
                       <a
-                        href="/"
-                        className="inline-block bg-[#053f52] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all"
+                        href="/dashboard"
+                        className="inline-block bg-[#EFBF04] text-[#053f52] px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all"
                       >
-                        Return to Homepage
+                        View My Application
                       </a>
                     </motion.div>
                   </div>

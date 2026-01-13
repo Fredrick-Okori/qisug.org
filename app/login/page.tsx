@@ -103,7 +103,7 @@ function LoginContent() {
         return '/dashboard/admin';
       }
 
-      // User is not an admin, redirect to applicant/student portal
+      // User is not an admin, redirect to student portal (not apply-now)
       return '/dashboard';
     } catch (err) {
       console.error('Error checking admin status:', err);

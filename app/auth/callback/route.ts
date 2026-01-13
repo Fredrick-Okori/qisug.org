@@ -7,8 +7,8 @@ export async function GET(request: Request) {
   const code = searchParams.get('code')
   const redirectParam = searchParams.get('redirect')
   
-  // Default redirect for regular users
-  const defaultNext = '/admissions/apply-now'
+  // Default redirect for regular users - go to student dashboard
+  const defaultNext = '/dashboard'
 
   if (code) {
     const cookieStore = await cookies()
@@ -53,7 +53,7 @@ export async function GET(request: Request) {
         }
       }
 
-      // Regular users go to the intended page or default
+      // Regular users go to the student dashboard (not apply-now)
       const next = redirectParam || defaultNext
       return NextResponse.redirect(`${origin}${next}`)
     }

@@ -15,49 +15,140 @@ import {
   Clock,
   CheckCircle,
   XCircle,
-  AlertCircle
+  AlertCircle,
+  RefreshCw
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-interface Document {
+// ============================================================================
+// Types
+// ============================================================================
+
+interface ApplicationDocument {
   id: string
-  applicantName: string
-  email: string
-  documentType: string
-  fileName: string
-  fileSize: string
-  uploadedAt: string
-  status: 'pending' | 'verified' | 'rejected'
-  notes?: string
+  application_id: string
+  file_name: string
+  file_type: string
+  status: 'pending' | 'approved' | 'rejected'
+  uploaded_at: string
 }
 
-const mockDocuments: Document[] = [
-  { id: '1', applicantName: 'John Kamau', email: 'john@example.com', documentType: 'Birth Certificate', fileName: 'birth_certificate.pdf', fileSize: '245 KB', uploadedAt: '2024-01-15', status: 'pending' },
-  { id: '2', applicantName: 'Sarah Mukiibi', email: 'sarah@example.com', documentType: 'Passport Photo', fileName: 'photo.jpg', fileSize: '125 KB', uploadedAt: '2024-01-14', status: 'verified' },
-  { id: '3', applicantName: 'Michael Omondi', email: 'michael@example.com', documentType: 'Academic Transcript', fileName: 'transcript.pdf', fileSize: '1.2 MB', uploadedAt: '2024-01-14', status: 'pending' },
-  { id: '4', applicantName: 'Emma Nakiwala', email: 'emma@example.com', documentType: 'Recommendation Letter', fileName: 'recommendation.pdf', fileSize: '890 KB', uploadedAt: '2024-01-13', status: 'rejected', notes: 'Letter is outdated - needs new one' },
-  { id: '5', applicantName: 'David Ssentamu', email: 'david@example.com', documentType: 'Birth Certificate', fileName: 'birth_cert.pdf', fileSize: '312 KB', uploadedAt: '2024-01-13', status: 'pending' },
-  { id: '6', applicantName: 'Grace Nakintu', email: 'grace@example.com', documentType: 'Passport Photo', fileName: 'passport_photo.jpg', fileSize: '98 KB', uploadedAt: '2024-01-12', status: 'verified' },
-  { id: '7', applicantName: 'Robert Mukasa', email: 'robert@example.com', documentType: 'Academic Transcript', fileName: 'grades.pdf', fileSize: '2.1 MB', uploadedAt: '2024-01-11', status: 'pending' },
-  { id: '8', applicantName: 'Alice Babirye', email: 'alice@example.com', documentType: 'Recommendation Letter', fileName: 'ref_letter.pdf', fileSize: '567 KB', uploadedAt: '2024-01-10', status: 'pending' },
-]
+interface Application {
+  id: string
+  reference: string
+  applicant_name: string
+  email: string
+  phone: string
+  program: string
+  grade: string
+  status: string
+  submitted_at: string
+  last_updated: string
+  documents: ApplicationDocument[]
+}
+
+// ============================================================================
+// API Response Types
+// ============================================================================
+
+interface ApiResponse<T = unknown> {
+  success: boolean
+  data?: T
+  error?: string
+  message?: string
+  total?: number
+}
+
+// ============================================================================
+// Document Page Component
+// ============================================================================
 
 export default function AdminDocumentsPage() {
-  const [documents, setDocuments] = useState<Document[]>(mockDocuments)
-  const [filteredDocuments, setFilteredDocuments] = useState<Document[]>(mockDocuments)
+  const [applications, setApplications] = useState<Application[]>([])
+  const [allDocuments, setAllDocuments] = useState<Array<{
+    id: string
+    applicationId: string
+    applicantName: string
+    email: string
+    documentType: string
+    fileName: string
+    fileSize: string
+    uploadedAt: string
+    status: 'pending' | 'verified' | 'rejected'
+    notes?: string
+    applicationStatus: string
+    program: string
+    grade: string
+  }>>([])
+  const [filteredDocuments, setFilteredDocuments] = useState<typeof allDocuments>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [typeFilter, setTypeFilter] = useState<string>('all')
-  const [selectedDocument, setSelectedDocument] = useState<Document | null>(null)
+  const [selectedDocument, setSelectedDocument] = useState<typeof allDocuments[0] | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  // Fetch applications with documents from API
+  const fetchDocuments = async () => {
+    setIsLoading(true)
+    setError(null)
+    
+    try {
+      const response = await fetch('/api/admin/applications')
+      const data: ApiResponse<Application[]> = await response.json()
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to fetch applications')
+      }
+
+      // Flatten documents from all applications
+      const docs: typeof allDocuments = []
+      
+      data.data?.forEach((app) => {
+        app.documents.forEach((doc) => {
+          docs.push({
+            id: doc.id,
+            applicationId: app.id,
+            applicantName: app.applicant_name,
+            email: app.email,
+            documentType: doc.file_type || 'Unknown',
+            fileName: doc.file_name || 'Unknown',
+            fileSize: calculateFileSize(doc.id), // Placeholder - we'd need actual file size from storage
+            uploadedAt: doc.uploaded_at || 'N/A',
+            status: doc.status === 'approved' ? 'verified' : doc.status === 'rejected' ? 'rejected' : 'pending',
+            applicationStatus: app.status,
+            program: app.program,
+            grade: app.grade
+          })
+        })
+      })
+
+      setApplications(data.data || [])
+      setAllDocuments(docs)
+      setFilteredDocuments(docs)
+
+    } catch (err) {
+      console.error('Error fetching documents:', err)
+      setError(err instanceof Error ? err.message : 'Failed to load documents')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Calculate file size (placeholder - in real app this would come from storage metadata)
+  const calculateFileSize = (docId: string): string => {
+    // Generate consistent "random" size for demo
+    const sizes = ['125 KB', '245 KB', '890 KB', '1.2 MB', '312 KB', '98 KB', '2.1 MB', '567 KB']
+    const index = docId.charCodeAt(0) % sizes.length
+    return sizes[index]
+  }
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 300)
-    return () => clearTimeout(timer)
+    fetchDocuments()
   }, [])
 
   useEffect(() => {
-    let filtered = documents
+    let filtered = allDocuments
 
     if (searchQuery) {
       filtered = filtered.filter(
@@ -77,9 +168,9 @@ export default function AdminDocumentsPage() {
     }
 
     setFilteredDocuments(filtered)
-  }, [searchQuery, statusFilter, typeFilter, documents])
+  }, [searchQuery, statusFilter, typeFilter, allDocuments])
 
-  const documentTypes = [...new Set(documents.map((d) => d.documentType))]
+  const documentTypes = [...new Set(allDocuments.map((d) => d.documentType))]
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
@@ -118,32 +209,51 @@ export default function AdminDocumentsPage() {
     return <File className="w-5 h-5 text-slate-500" />
   }
 
-  const handleVerify = (id: string) => {
-    setDocuments((prev) =>
+  const handleVerify = (docId: string) => {
+    setAllDocuments((prev) =>
       prev.map((doc) =>
-        doc.id === id ? { ...doc, status: 'verified' } : doc
+        doc.id === docId ? { ...doc, status: 'verified' } : doc
       )
     )
     setSelectedDocument(null)
   }
 
-  const handleReject = (id: string) => {
-    setDocuments((prev) =>
+  const handleReject = (docId: string) => {
+    setAllDocuments((prev) =>
       prev.map((doc) =>
-        doc.id === id ? { ...doc, status: 'rejected' } : doc
+        doc.id === docId ? { ...doc, status: 'rejected' } : doc
       )
     )
     setSelectedDocument(null)
   }
 
-  const pendingCount = documents.filter((d) => d.status === 'pending').length
-  const verifiedCount = documents.filter((d) => d.status === 'verified').length
-  const rejectedCount = documents.filter((d) => d.status === 'rejected').length
+  const pendingCount = allDocuments.filter((d) => d.status === 'pending').length
+  const verifiedCount = allDocuments.filter((d) => d.status === 'verified').length
+  const rejectedCount = allDocuments.filter((d) => d.status === 'rejected').length
 
+  // Show loading state
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 space-y-4">
+        <AlertCircle className="w-12 h-12 text-red-500" />
+        <p className="text-slate-600">Failed to load documents</p>
+        <p className="text-sm text-slate-500">{error}</p>
+        <button
+          onClick={fetchDocuments}
+          className="px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors flex items-center gap-2"
+        >
+          <RefreshCw className="w-4 h-4" />
+          Retry
+        </button>
       </div>
     )
   }
@@ -154,8 +264,15 @@ export default function AdminDocumentsPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Document Review</h1>
-          <p className="text-slate-600 mt-1">Review and verify uploaded documents</p>
+          <p className="text-slate-600 mt-1">Review and verify uploaded documents from all applications</p>
         </div>
+        <button
+          onClick={fetchDocuments}
+          className="px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors flex items-center gap-2"
+        >
+          <RefreshCw className="w-4 h-4" />
+          Refresh
+        </button>
       </div>
 
       {/* Stats Cards */}
@@ -254,7 +371,7 @@ export default function AdminDocumentsPage() {
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Document</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Applicant</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Type</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Size</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Program</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Uploaded</th>
                 <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
@@ -268,7 +385,7 @@ export default function AdminDocumentsPage() {
                       {getFileIcon(doc.fileName)}
                       <div>
                         <p className="font-medium text-slate-900 truncate max-w-xs">{doc.fileName}</p>
-                        <p className="text-xs text-slate-500">{doc.uploadedAt}</p>
+                        <p className="text-xs text-slate-500">{doc.fileSize}</p>
                       </div>
                     </div>
                   </td>
@@ -279,7 +396,12 @@ export default function AdminDocumentsPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-slate-700">{doc.documentType}</td>
-                  <td className="px-6 py-4 text-slate-600">{doc.fileSize}</td>
+                  <td className="px-6 py-4">
+                    <div>
+                      <p className="text-slate-900">{doc.program}</p>
+                      <p className="text-sm text-slate-500">{doc.grade}</p>
+                    </div>
+                  </td>
                   <td className="px-6 py-4">{getStatusBadge(doc.status)}</td>
                   <td className="px-6 py-4 text-slate-600">{doc.uploadedAt}</td>
                   <td className="px-6 py-4 text-right">
@@ -327,6 +449,9 @@ export default function AdminDocumentsPage() {
           <div className="px-6 py-12 text-center">
             <FileText className="w-12 h-12 text-slate-300 mx-auto mb-4" />
             <p className="text-slate-500">No documents found matching your criteria</p>
+            {allDocuments.length === 0 && (
+              <p className="text-sm text-slate-400 mt-2">No applications with documents have been submitted yet</p>
+            )}
           </div>
         )}
       </div>
@@ -384,6 +509,14 @@ export default function AdminDocumentsPage() {
                   <div>
                     <p className="text-sm text-slate-500 mb-1">Email</p>
                     <p className="font-semibold text-slate-900">{selectedDocument.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-slate-500 mb-1">Program</p>
+                    <p className="font-semibold text-slate-900">{selectedDocument.program} ({selectedDocument.grade})</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-slate-500 mb-1">Application Status</p>
+                    <p className="font-semibold text-slate-900">{selectedDocument.applicationStatus}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-500 mb-1">File Size</p>
