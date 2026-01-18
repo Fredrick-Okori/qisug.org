@@ -25,7 +25,7 @@ interface CheckUserRequest {
 
 interface UserCheckResponse {
   success: boolean
-  exists?: boolean
+  exists?: boolean | null
   error?: string
   message?: string
 }

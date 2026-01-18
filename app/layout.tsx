@@ -1,36 +1,11 @@
 
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono, Spectral, Montserrat } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import PageTransition from "@/components/page-transition"
 import { AuthProvider } from '@/components/auth/auth-context'
 import { Toaster } from '@/components/ui/toaster'
-
-
-const geist = Geist({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-geist",
-})
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-geist-mono",
-})
-
-
-
-const spectral = Spectral({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-spectral",
-})
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-montserrat",
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.qisug.org"),
@@ -119,7 +94,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geist.variable} ${geistMono.variable} ${montserrat.variable} ${spectral.variable} font-sans antialiased`}>
+      <body className="font-sans antialiased">
         <AuthProvider>
           <PageTransition>
             {children}

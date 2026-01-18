@@ -2,7 +2,13 @@
 // File: supabase/functions/resend-email/index.ts
 // Enhanced version with support for all email notification types
 
-import "jsr:@supabase/functions-js/edge-runtime.d.ts"
+// TypeScript declaration for Deno globals in Supabase Edge Functions
+declare const Deno: {
+  env: {
+    get(name: string): string | undefined
+  }
+  serve(handler: (req: Request) => Promise<Response>): void
+}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

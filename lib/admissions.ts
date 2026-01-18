@@ -451,6 +451,10 @@ export async function saveDraft(
   }
 
   // Create new draft
+  if (!applicantId) {
+    return { success: false, error: 'No applicant ID provided' }
+  }
+  
   const appResult = await createApplication(supabase, applicantId, {
     ...data.application,
     academicYear: data.application.academicYear || '2026/2027',

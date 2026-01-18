@@ -36,7 +36,7 @@ interface ApiResponse<T = unknown> {
  */
 async function verifyAdminAccess(
   cookieStore: Awaited<ReturnType<typeof cookies>>
-): Promise<{ authorized: boolean; error?: string; currentAdminRowId?: string; currentUserId?: string }> {
+): Promise<{ authorized: boolean; error?: string; currentAdminRowId?: string; currentUserId?: string; currentAdminId?: string }> {
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -122,7 +122,7 @@ export async function PATCH(
     const cookieStore = await cookies()
     
     // Verify admin access
-    const { authorized, error: authError, currentAdminId } = await verifyAdminAccess(cookieStore)
+    const { authorized, error: authError, currentAdminId, currentUserId } = await verifyAdminAccess(cookieStore)
     
     if (!authorized) {
       return NextResponse.json<ApiResponse>(
@@ -133,6 +133,32 @@ export async function PATCH(
 
     // Parse request body
     const body: UpdateAdminUserRequest = await request.json()
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            try {
+              cookieStore.set({ name, value, ...options })
+            } catch (err) {
+              // Handle cookie errors
+            }
+          },
+          remove(name: string, options: CookieOptions) {
+            try {
+              cookieStore.set({ name, value: '', ...options })
+            } catch (err) {
+              // Handle cookie errors
+            }
+          },
+        },
+      }
+    )
 
     // Fetch the target admin row so we can validate existence and prevent self-modification
     const { data: targetAdminRow, error: targetFetchErr } = await supabase
@@ -166,31 +192,6 @@ export async function PATCH(
         { status: 400 }
       )
     }
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value
-          },
-          set(name: string, value: string, options: CookieOptions) {
-            try {
-              cookieStore.set({ name, value, ...options })
-            } catch (err) {
-              // Handle cookie errors
-            }
-          },
-          remove(name: string, options: CookieOptions) {
-            try {
-              cookieStore.set({ name, value: '', ...options })
-            } catch (err) {
-              // Handle cookie errors
-            }
-          },
-        },
-      }
-    )
 
     // Validate role if provided
     if (body.role && !isValidRole(body.role)) {
@@ -252,7 +253,7 @@ export async function DELETE(
     const cookieStore = await cookies()
     
     // Verify admin access
-    const { authorized, error: authError, currentAdminId } = await verifyAdminAccess(cookieStore)
+    const { authorized, error: authError, currentAdminId, currentUserId } = await verifyAdminAccess(cookieStore)
     
     if (!authorized) {
       return NextResponse.json<ApiResponse>(

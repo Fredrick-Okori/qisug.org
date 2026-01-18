@@ -250,7 +250,8 @@ export async function GET(request: Request) {
         grade: prog.grade,
         stream: prog.stream,
         capacity: prog.capacity || 30, // Use capacity from DB or default
-        applicantCount: 0
+        applicantCount: 0,
+        capacityPercentage: 0 // Will be calculated after counting applicants
       })
     })
 

@@ -7,6 +7,9 @@
 
 import { createBrowserClient, isBrowser } from '@supabase/ssr'
 
+// Re-export for external usage
+export { createBrowserClient, isBrowser }
+
 // ============================================================================
 // TYPES
 // ============================================================================
