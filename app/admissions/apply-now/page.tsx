@@ -9,6 +9,7 @@ import { Loader2, CheckCircle, AlertCircle, ChevronRight, ChevronLeft, Upload, D
 import { generateApplicationReference, storeReference } from '@/lib/application-reference';
 import { submitApplication, uploadDocument, confirmPayment } from '@/lib/admissions';
 import { useAuth } from '@/components/auth/auth-context';
+import type { CitizenshipType, VisaStatus, IntakeMonth, FullApplicationData } from '@/types/database';
 import confetti from 'canvas-confetti';
 import jsPDF from 'jspdf';
 
@@ -270,13 +271,13 @@ export default function ApplyNowPage() {
       console.log('[ApplyNow] Program found:', program.id);
 
       // Determine citizenship type
-      const citizenshipType = formData.nationality.toLowerCase().includes('uganda') 
+      const citizenshipType: CitizenshipType = formData.nationality.toLowerCase().includes('uganda') 
         ? 'Ugandan' 
         : 'Non-Ugandan';
 
-      const visaStatus = citizenshipType === 'Ugandan' 
+      const visaStatus: VisaStatus = citizenshipType === 'Ugandan' 
         ? null  // Ugandans don't need a visa
-        : 'Student Visa';  // Non-Ugandans need student visa for school
+        : 'Student Visa' as VisaStatus;  // Non-Ugandans need student visa for school
 
       // Map intake period
       const intakeMonthMap: Record<string, string> = {
@@ -295,7 +296,7 @@ export default function ApplyNowPage() {
           lastName: formData.lastName,
           birthDate: formData.dateOfBirth,
           gender: (formData.gender === 'male' ? 'Male' : formData.gender === 'female' ? 'Female' : 'Other') as 'Male' | 'Female' | 'Other',
-          citizenshipType: citizenshipType,
+          citizenshipType: citizenshipType as CitizenshipType,
           citizenshipCountry: formData.nationality,
           visaStatus: visaStatus,
           email: formData.email,
@@ -316,7 +317,7 @@ export default function ApplyNowPage() {
         },
         application: {
           academicYear: '2026/2027',
-          intakeMonth: intakeMonthMap[formData.admissionPeriod] || 'September',
+          intakeMonth: (intakeMonthMap[formData.admissionPeriod] || 'September') as IntakeMonth,
           programId: program.id,
           hasAgent: false,
         },
@@ -336,7 +337,7 @@ export default function ApplyNowPage() {
       console.log('[ApplyNow] Submitting application...');
       
       // Submit application using API
-      const result = await submitApplication(applicationData);
+      const result = await submitApplication(applicationData as FullApplicationData);
 
       if (!result.success || !result.data) {
         throw new Error('Failed to submit application');
