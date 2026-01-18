@@ -233,7 +233,7 @@ export function SiteHeader() {
         transition={{ duration: 0.4 }}
       />
 
-      <div className=" max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative">
+      <div className=" max-w-7xl mx-auto sm:px-4  relative">
         <div className="flex items-start justify-between w-full gap-2 sm:gap-4">
           {/* Left: Logo Section with animation */}
           <motion.div 
