@@ -92,7 +92,7 @@ export default function HowToApplyPage() {
       y: [0, -20, 0],
       transition: {
         duration: 6,
-        ease: 'easeInOut',
+        ease: 'easeInOut' as const,
         repeat: Infinity
       }
     }

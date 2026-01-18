@@ -114,7 +114,7 @@ export function Resources() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: { duration: 0.6, ease: "easeOut" as const },
     },
   }), [getAnimationVariants])
 
@@ -123,7 +123,7 @@ export function Resources() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, delay: 0.2, ease: "easeOut" },
+      transition: { duration: 0.6, delay: 0.2, ease: "easeOut" as const },
     },
   }), [getAnimationVariants])
 
@@ -141,7 +141,7 @@ export function Resources() {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.5, ease: "easeOut" as const },
     },
   }), [getAnimationVariants])
 

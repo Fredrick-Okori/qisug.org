@@ -30,7 +30,7 @@ export default function AdmissionPeriods() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' }
+      transition: { duration: 0.8, ease: 'easeOut' as const }
     }
   };
 
@@ -39,7 +39,7 @@ export default function AdmissionPeriods() {
     visible: (i) => ({
       opacity: 1,
       x: 0,
-      transition: { duration: 0.6, ease: 'easeOut', delay: i * 0.1 }
+      transition: { duration: 0.6, ease: 'easeOut' as const, delay: i * 0.1 }
     })
   };
 
@@ -48,7 +48,7 @@ export default function AdmissionPeriods() {
     visible: (delay) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut', delay }
+      transition: { duration: 0.8, ease: 'easeOut' as const, delay }
     })
   };
 
@@ -58,7 +58,7 @@ export default function AdmissionPeriods() {
       y: [0, -20, 0],
       transition: {
         duration: 6,
-        ease: 'easeInOut',
+        ease: 'easeInOut' as const,
         repeat: Infinity
       }
     }

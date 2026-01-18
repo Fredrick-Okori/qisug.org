@@ -72,7 +72,7 @@ export default function HomePage() {
       transition: {
         duration: 3,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     })
   }, [controls])
