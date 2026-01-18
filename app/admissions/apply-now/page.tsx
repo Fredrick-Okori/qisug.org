@@ -331,7 +331,7 @@ export default function ApplyNowPage() {
             gradeCompleted: `Grade ${grade - 1}`,
           }
         ],
-        agent: null,
+        agent: undefined,
       };
 
       console.log('[ApplyNow] Submitting application...');
@@ -723,8 +723,7 @@ export default function ApplyNowPage() {
             </motion.div>
             
             <motion.h1 
-              className="text-3xl md:text-4xl text-[#053f52] mb-4"
-              style={{ fontFamily: "'Crimson Pro', serif" }}
+              className="text-3xl md:text-4xl text-[#053f52] mb-4 font-serif"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -733,8 +732,7 @@ export default function ApplyNowPage() {
             </motion.h1>
             
             <motion.p 
-              className="text-lg text-gray-700 mb-6"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="text-lg text-gray-700 mb-6 font-sans"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
@@ -743,8 +741,7 @@ export default function ApplyNowPage() {
             </motion.p>
             
             <motion.p 
-              className="text-gray-600"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="text-gray-600 font-sans"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
@@ -763,7 +760,6 @@ export default function ApplyNowPage() {
       <BlueSiteHeader />
       <div className="min-h-screen pt-[120px] md:pt-[200px] lg:pt-[240px] pb-16 px-6">
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
           .form-input:focus { outline: none; border-color: #EFBF04; box-shadow: 0 0 0 3px rgba(239, 191, 4, 0.1); }
           .form-select:focus { outline: none; border-color: #EFBF04; box-shadow: 0 0 0 3px rgba(239, 191, 4, 0.1); }
         `}</style>
@@ -808,11 +804,11 @@ export default function ApplyNowPage() {
                   <AlertCircle className="w-8 h-8 text-red-600" />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-[#053f52] mb-3 text-center" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                <h3 className="text-2xl font-bold text-[#053f52] mb-3 text-center font-serif">
                   Clear All Progress?
                 </h3>
                 
-                <p className="text-gray-700 mb-6 text-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <p className="text-gray-700 mb-6 text-center font-sans">
                   This will delete all saved data and restart your application from the beginning. This action cannot be undone.
                 </p>
                 
@@ -853,12 +849,11 @@ export default function ApplyNowPage() {
               >
                 {/* Left Side - Image and Title */}
                 <div className="flex flex-col gap-8">
-                  <motion.h1 
-                    className="text-5xl md:text-6xl text-[#053f52] leading-tight" 
-                    style={{ fontFamily: "'Crimson Pro', serif" }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
+                    <motion.h1 
+                      className="text-5xl md:text-6xl text-[#053f52] leading-tight font-serif"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
                     Apply Now
                   </motion.h1>
                   
@@ -868,13 +863,12 @@ export default function ApplyNowPage() {
                     animate={{ opacity: 1, scaleX: 1 }} 
                   />
                   
-                  <motion.p 
-                    className="text-lg text-gray-700 leading-relaxed" 
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
+                    <motion.p 
+                      className="text-lg text-gray-700 leading-relaxed font-sans"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
                     Take the first step toward your educational journey at Queensgate International School.
                   </motion.p>
                   
@@ -893,13 +887,13 @@ export default function ApplyNowPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                   >
-                    <h3 className="text-xl font-bold text-[#053f52] mb-3" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                    <h3 className="text-xl font-bold text-[#053f52] mb-3 font-serif">
                       Need Help?
                     </h3>
-                    <p className="text-gray-700 mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <p className="text-gray-700 mb-2 font-sans">
                       Contact our admissions team:
                     </p>
-                    <a href="mailto:admissions@queensgate.ac.ug" className="text-[#EFBF04] font-semibold hover:underline" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <a href="mailto:admissions@queensgate.ac.ug" className="text-[#EFBF04] font-semibold hover:underline font-sans">
                       admissions@queensgate.ac.ug
                     </a>
                   </motion.div>
@@ -913,8 +907,7 @@ export default function ApplyNowPage() {
                   transition={{ delay: 0.2 }}
                 >
                   <motion.h2 
-                    className="text-3xl md:text-4xl text-[#053f52] mb-6"
-                    style={{ fontFamily: "'Crimson Pro', serif" }}
+                    className="text-3xl md:text-4xl text-[#053f52] mb-6 font-serif"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
@@ -922,7 +915,7 @@ export default function ApplyNowPage() {
                     Welcome to Queensgate International School
                   </motion.h2>
                   
-                  <div className="prose prose-lg max-w-none" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="prose prose-lg max-w-none font-sans">
                     <motion.p 
                       className="text-gray-700 mb-6"
                       initial={{ opacity: 0 }}
@@ -938,7 +931,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.5 }}
                     >
-                      <h3 className="text-xl font-bold text-[#053f52] mb-3" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                      <h3 className="text-xl font-bold text-[#053f52] mb-3 font-serif">
                         Important Information
                       </h3>
                       <ul className="space-y-2 text-gray-700">
@@ -955,7 +948,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.6 }}
                     >
-                      <h3 className="text-xl font-bold text-[#053f52] mb-3" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                      <h3 className="text-xl font-bold text-[#053f52] mb-3 font-serif">
                         Required Documents
                       </h3>
                       <ul className="space-y-2 text-gray-700">
@@ -972,7 +965,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.7 }}
                     >
-                      <h3 className="text-xl font-bold text-[#053f52] mb-3" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                      <h3 className="text-xl font-bold text-[#053f52] mb-3 font-serif">
                         Application Process
                       </h3>
                       <ol className="space-y-3 text-gray-700">
@@ -993,8 +986,7 @@ export default function ApplyNowPage() {
                   >
                     <motion.button
                       onClick={() => setCurrentStep(2)}
-                      className="bg-[#053f52] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all flex items-center gap-2"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
+                      className="bg-[#053f52] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all flex items-center gap-2 font-sans"
                       whileHover={{ scale: 1.05 }}
                     >
                       Proceed to Application
@@ -1030,14 +1022,14 @@ export default function ApplyNowPage() {
                 )}
 
                 <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
-                  <h2 className="text-3xl font-bold text-[#053f52] mb-8 text-center" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                  <h2 className="text-3xl font-bold text-[#053f52] mb-8 text-center font-serif">
                     Application Form
                   </h2>
 
                   <form onSubmit={(e) => { e.preventDefault(); handleFormSubmit(); }}>
                     {/* Personal Information */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Personal Information
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -1132,7 +1124,7 @@ export default function ApplyNowPage() {
 
                     {/* Contact Information */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Contact Information
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -1173,7 +1165,7 @@ export default function ApplyNowPage() {
 
                     {/* Address Information */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Address Information
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -1236,7 +1228,7 @@ export default function ApplyNowPage() {
 
                     {/* Emergency Contact */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Emergency Contact Information
                       </h3>
                       <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r-lg">
@@ -1283,7 +1275,7 @@ export default function ApplyNowPage() {
 
                     {/* Academic Information */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Academic Information
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -1350,7 +1342,7 @@ export default function ApplyNowPage() {
 
                     {/* Required Documents */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04]" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Required Documents
                       </h3>
                       <div className="space-y-4">
@@ -1469,11 +1461,11 @@ export default function ApplyNowPage() {
                       <FileText className="w-12 h-12 text-blue-600" />
                     </motion.div>
                     
-                    <h2 className="text-3xl md:text-4xl text-[#053f52] mb-4" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                    <h2 className="text-3xl md:text-4xl text-[#053f52] mb-4 font-serif">
                      One More Step to Go
                     </h2>
                     
-                    <p className="text-lg text-gray-700 mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <p className="text-lg text-gray-700 mb-8 font-sans">
                       Your information & documents has been sent successfully. Here is your payment reference number for bnak payments:
                     </p>
 
@@ -1484,7 +1476,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
                     >
-                      <p className="text-white/70 text-sm mb-3" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <p className="text-white/70 text-sm mb-3 font-sans">
                         Payment Reference Number
                       </p>
                       <p className="text-4xl md:text-5xl font-mono font-bold text-[#EFBF04] mb-4">
@@ -1509,7 +1501,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
                     >
-                      <h3 className="font-semibold text-[#053f52] mb-4 text-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <h3 className="font-semibold text-[#053f52] mb-4 text-center font-sans">
                         Application Summary
                       </h3>
                       <div className="grid md:grid-cols-2 gap-4 text-sm">
@@ -1543,10 +1535,10 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5 }}
                     >
-                      <h3 className="font-semibold text-[#053f52] mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <h3 className="font-semibold text-[#053f52] mb-4 font-sans">
                         Bank Payment Instructions
                       </h3>
-                      <div className="space-y-2 text-gray-700" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="space-y-2 text-gray-700 font-sans">
                         <p><strong>Bank:</strong> I&M Bank (Uganda) Limited</p>
                         <p><strong>Account Name:</strong> Queensgate International School</p>
                         <p><strong>Account Number UGX:</strong> 5076029001</p>
@@ -1606,11 +1598,11 @@ export default function ApplyNowPage() {
                 
                 <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
                   <div className="max-w-2xl mx-auto">
-                    <h2 className="text-3xl md:text-4xl text-[#053f52] mb-6 text-center" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                    <h2 className="text-3xl md:text-4xl text-[#053f52] mb-6 text-center font-serif">
                       Upload Payment Slip
                     </h2>
                     
-                    <p className="text-center text-gray-700 mb-8" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <p className="text-center text-gray-700 mb-8 font-sans">
                       After making your payment at the bank, please upload your payment slip to complete your application.
                     </p>
 
@@ -1739,8 +1731,7 @@ export default function ApplyNowPage() {
                     </motion.div>
                     
                     <motion.h1 
-                      className="text-4xl md:text-5xl text-[#053f52] mb-6"
-                      style={{ fontFamily: "'Crimson Pro', serif" }}
+                      className="text-4xl md:text-5xl text-[#053f52] mb-6 font-serif"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
@@ -1749,8 +1740,7 @@ export default function ApplyNowPage() {
                     </motion.h1>
                     
                     <motion.p 
-                      className="text-xl text-gray-700 mb-8"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
+                      className="text-xl text-gray-700 mb-8 font-sans"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
@@ -1764,10 +1754,10 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5 }}
                     >
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                      <h3 className="text-xl font-bold text-[#053f52] mb-4 font-serif">
                         What Happens Next?
                       </h3>
-                      <div className="text-left space-y-3" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <div className="text-left space-y-3 font-sans">
                         <div className="flex items-start gap-3">
                           <div className="w-6 h-6 bg-[#053f52] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">1</div>
                           <p className="text-gray-700">Our admissions team will review your application and documents</p>
@@ -1793,7 +1783,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6 }}
                     >
-                      <p className="text-gray-700" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <p className="text-gray-700 font-sans">
                         <strong>Need help?</strong> Contact our admissions team at{' '}
                         <a href="mailto:admissions@queensgate.ac.ug" className="text-[#EFBF04] font-semibold underline">
                           admissions@queensgate.ac.ug
