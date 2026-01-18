@@ -36,7 +36,7 @@ export default function AdmissionPeriods() {
 
   const slideInVariants = {
     hidden: { opacity: 0, x: 40 },
-    visible: (i) => ({
+    visible: (i: number) => ({
       opacity: 1,
       x: 0,
       transition: { duration: 0.6, ease: 'easeOut' as const, delay: i * 0.1 }
@@ -45,7 +45,7 @@ export default function AdmissionPeriods() {
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: (delay) => ({
+    visible: (delay: number) => ({
       opacity: 1,
       y: 0,
       transition: { duration: 0.8, ease: 'easeOut' as const, delay }
