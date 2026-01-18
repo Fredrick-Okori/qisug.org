@@ -281,9 +281,10 @@ export default function ApplyNowPage() {
 
       // Map intake period
       const intakeMonthMap: Record<string, string> = {
-        'september': 'September',
-        'january': 'January',
-        'april': 'April',
+        'Fall (September)': 'September',
+        'Winter (January)': 'January',
+        'Spring (April)': 'April',
+        'Summer (July)': 'July',
       };
 
       // Prepare application data according to API schema
@@ -1214,14 +1215,53 @@ export default function ApplyNowPage() {
                         </div>
                         <div>
                           <label className="block text-gray-700 font-semibold mb-2">Country *</label>
-                          <input 
-                            type="text" 
+                          <select 
                             name="addressCountry" 
                             value={formData.addressCountry} 
                             onChange={handleChange} 
                             required 
-                            className="form-input w-full px-4 py-3 border border-gray-300 rounded-lg" 
-                          />
+                            className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg"
+                          >
+                            <option value="">Select Country</option>
+                            <option value="Afghanistan">Afghanistan</option>
+                            <option value="Albania">Albania</option>
+                            <option value="Algeria">Algeria</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Burundi">Burundi</option>
+                            <option value="Canada">Canada</option>
+                            <option value="China">China</option>
+                            <option value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
+                            <option value="Denmark">Denmark</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="Ethiopia">Ethiopia</option>
+                            <option value="France">France</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="India">India</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Kenya">Kenya</option>
+                            <option value="Malawi">Malawi</option>
+                            <option value="Mozambique">Mozambique</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="Rwanda">Rwanda</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="South Sudan">South Sudan</option>
+                            <option value="Spain">Spain</option>
+                            <option value="Sweden">Sweden</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Tanzania">Tanzania</option>
+                            <option value="Uganda">Uganda</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="United States">United States</option>
+                            <option value="Zambia">Zambia</option>
+                            <option value="Zimbabwe">Zimbabwe</option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -1229,11 +1269,11 @@ export default function ApplyNowPage() {
                     {/* Emergency Contact */}
                     <div className="mb-8">
                       <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
-                        Emergency Contact Information
+                        Parent/Guardian Information
                       </h3>
                       <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r-lg">
                         <p className="text-sm text-blue-800">
-                          Please provide details of a person we can contact in case of emergency.
+                          Please provide details of a parent or guardian we can contact.
                         </p>
                       </div>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -1320,9 +1360,10 @@ export default function ApplyNowPage() {
                             className="form-select w-full px-4 py-3 border border-gray-300 rounded-lg"
                           >
                             <option value="">Select Period</option>
-                            <option value="september">September 2026</option>
-                            <option value="january">January 2027</option>
-                            <option value="april">April 2027</option>
+                            <option value="Fall (September)">Fall (September) 2026</option>
+                            <option value="Winter (January)">Winter (January) 2027</option>
+                            <option value="Spring (April)">Spring (April) 2027</option>
+                            <option value="Summer (July)">Summer (July) 2027</option>
                           </select>
                         </div>
                         <div className="md:col-span-2">

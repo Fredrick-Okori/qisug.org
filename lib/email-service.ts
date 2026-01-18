@@ -12,6 +12,7 @@
 export type EmailType = 
   | 'application_submitted'
   | 'payment_received'
+  | 'payment_approved'
   | 'application_under_review'
   | 'application_accepted'
   | 'application_rejected'
@@ -103,6 +104,8 @@ export function generateEmailHTML(data: EmailPayload): string {
       return generateApplicationSubmittedEmail(data, baseStyles)
     case 'payment_received':
       return generatePaymentReceivedEmail(data, baseStyles)
+    case 'payment_approved':
+      return generatePaymentApprovedEmail(data, baseStyles)
     case 'application_under_review':
       return generateUnderReviewEmail(data, baseStyles)
     case 'application_accepted':
@@ -129,6 +132,8 @@ export function generateEmailText(data: EmailPayload): string {
       return generateApplicationSubmittedText(data)
     case 'payment_received':
       return generatePaymentReceivedText(data)
+    case 'payment_approved':
+      return generatePaymentApprovedText(data)
     case 'application_under_review':
       return generateUnderReviewText(data)
     case 'application_accepted':
@@ -292,6 +297,81 @@ WHAT HAPPENS NEXT:
 
 Thank you for choosing Queensgate International School!
 The Admissions Team
+  `
+}
+
+function generatePaymentApprovedEmail(data: EmailPayload, styles: string): string {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Approved - Application Under Review</title>
+  ${styles}
+</head>
+<body>
+  <div class="email-container">
+    <div class="header" style="background-color: #16a34a;">
+      <h1>✅ Payment Approved</h1>
+      <p>Queensgate International School</p>
+    </div>
+    <div class="content">
+      <h2>Dear ${data.applicantName},</h2>
+      <p>We are pleased to confirm that your application fee payment has been received and approved. Your application is now under review by our admissions team.</p>
+      <div class="reference-box">
+        <div class="label">Application Reference</div>
+        <div class="number">${data.referenceNumber}</div>
+      </div>
+      <div class="details" style="background-color: #dcfce7;">
+        <h3 style="color: #166534;">✅ Payment Status: Approved</h3>
+        <p><strong>Reference:</strong> ${data.referenceNumber}</p>
+      </div>
+      <div class="details">
+        <h3>📋 Current Status</h3>
+        <p><strong>Status:</strong> <span class="status-badge status-review">Under Review</span></p>
+      </div>
+      <div class="details">
+        <h3>⏳ Next Steps</h3>
+        <p>Our admissions team will now carefully review your complete application. You will be notified once a decision has been made.</p>
+        <p>Please note that the review process typically takes 5-7 business days.</p>
+      </div>
+      <p>Thank you for choosing Queensgate International School.</p>
+      <p>Kind regards,<br><strong>The Admissions Team</strong><br>Queensgate International School</p>
+    </div>
+    <div class="footer">
+      <p><strong>Queensgate International School</strong></p>
+      <p>Excellence in Education | Nurturing Future Leaders</p>
+      <p><a href="mailto:admissions@qgis.ac.ug">admissions@qgis.ac.ug</a></p>
+    </div>
+  </div>
+</body>
+</html>
+  `
+}
+
+function generatePaymentApprovedText(data: EmailPayload): string {
+  return `
+QUEENSGATE INTERNATIONAL SCHOOL
+Payment Approved - Application Under Review
+
+Dear ${data.applicantName},
+
+We are pleased to confirm that your application fee payment has been received and approved. Your application is now under review by our admissions team.
+
+APPLICATION REFERENCE: ${data.referenceNumber}
+STATUS: Under Review
+
+NEXT STEPS:
+Our admissions team will now carefully review your complete application. You will be notified once a decision has been made.
+
+Please note that the review process typically takes 5-7 business days.
+
+Thank you for choosing Queensgate International School.
+
+Kind regards,
+The Admissions Team
+Queensgate International School
   `
 }
 
@@ -948,6 +1028,23 @@ export async function sendAdminStatusUpdateEmail(
     emailType: 'admin_review_status',
     adminEmail,
     notes: status,
+  })
+}
+
+/**
+ * Send payment approved notification to user (payment approved + application under review)
+ */
+export async function sendPaymentApprovedEmail(
+  to: string,
+  applicantName: string,
+  referenceNumber: string
+): Promise<EmailResponse> {
+  return sendEmail({
+    to,
+    subject: `Payment Approved - Application Under Review - Reference ${referenceNumber}`,
+    applicantName,
+    referenceNumber,
+    emailType: 'payment_approved',
   })
 }
 

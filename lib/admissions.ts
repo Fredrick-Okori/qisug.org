@@ -386,10 +386,13 @@ export async function confirmPayment(
     return { success: false, error: new Error('Supabase not configured') }
   }
 
+  // Note: application_fee_paid is NOT set here automatically
+  // It will be set to true only when admin approves the payment in the dashboard
+  
   const { data, error } = await supabase
     .from('applications')
     .update({
-      application_fee_paid: true,
+      // application_fee_paid: true, // REMOVED - admin must approve payment manually
       payment_reference: paymentReference,
       payment_amount: amount,
       updated_at: new Date().toISOString(),

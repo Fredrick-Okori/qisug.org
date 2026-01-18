@@ -8,6 +8,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { sendAcceptedEmail, sendRejectedEmail, sendUnderReviewEmail } from '@/lib/email-service'
 
 // ============================================================================
 // Types
@@ -236,6 +237,7 @@ export async function GET(request: Request) {
       }))
 
       // Payment data from application table
+      // slip_verified is true if application_fee_paid is true (payment approved)
       const paymentData = {
         id: null,
         amount: app.payment_amount || 0,
@@ -243,7 +245,8 @@ export async function GET(request: Request) {
         payment_method: 'Bank Transfer',
         transaction_id: app.payment_reference || 'N/A',
         created_at: '',
-        receipt_url: null
+        receipt_url: null,
+        slip_verified: app.application_fee_paid
       }
 
       return {
@@ -298,7 +301,7 @@ export async function PATCH(request: Request) {
   try {
     const cookieStore = await cookies()
     const body = await request.json()
-    const { applicationId, status, paymentReference } = body
+    const { applicationId, status, paymentReference, approvePayment, resetPayment } = body
 
     // Verify admin access
     const { authorized, error: authError } = await verifyAdminAccess(cookieStore)
@@ -366,6 +369,92 @@ export async function PATCH(request: Request) {
       updateData.payment_reference = paymentReference
     }
 
+    // Approve payment - approve payment for ALL applications of this applicant
+    if (approvePayment === true) {
+      const adminUserId = (await verifyAdminAccess(cookieStore)).userId
+      
+      // First get the applicant_id from the application
+      const { data: appData, error: appError } = await supabase
+        .from('applications')
+        .select('applicant_id, payment_reference')
+        .eq('id', applicationId)
+        .single()
+
+      if (appError || !appData) {
+        return NextResponse.json<ApiResponse>(
+          { success: false, error: 'Application not found' },
+          { status: 404 }
+        )
+      }
+
+      const applicantId = appData.applicant_id
+      const ref = paymentReference || appData.payment_reference
+
+      console.log(`Approving payment for applicant ${applicantId} by admin ${adminUserId}`)
+
+      // Call the SQL function to approve payment for ALL applications of this applicant
+      const { data: paymentResult, error: paymentError } = await supabase
+        .rpc('approve_applicant_payment', {
+          p_applicant_id: applicantId,
+          p_admin_user_id: adminUserId,
+          p_payment_reference: ref || null
+        })
+
+      if (paymentError) {
+        console.error('Error approving payment via SQL function:', paymentError)
+        return NextResponse.json<ApiResponse>(
+          { success: false, error: 'Failed to approve payment: ' + paymentError.message },
+          { status: 500 }
+        )
+      }
+
+      console.log('Payment approval result:', paymentResult)
+
+      return NextResponse.json<ApiResponse>({
+        success: true,
+        message: `Payment approved for ${paymentResult?.data?.applications_updated || 'all'} application(s)`,
+        data: paymentResult
+      })
+    }
+
+    // Reset payment - reset for ALL applications of this applicant
+    if (resetPayment === true) {
+      // First get the applicant_id from the application
+      const { data: appData, error: appError } = await supabase
+        .from('applications')
+        .select('applicant_id')
+        .eq('id', applicationId)
+        .single()
+
+      if (appError || !appData) {
+        return NextResponse.json<ApiResponse>(
+          { success: false, error: 'Application not found' },
+          { status: 404 }
+        )
+      }
+
+      const applicantId = appData.applicant_id
+
+      const { data: resetResult, error: resetError } = await supabase
+        .rpc('reset_applicant_payment', {
+          p_applicant_id: applicantId
+        })
+
+      if (resetError) {
+        console.error('Error resetting payment via SQL function:', resetError)
+        return NextResponse.json<ApiResponse>(
+          { success: false, error: 'Failed to reset payment: ' + resetError.message },
+          { status: 500 }
+        )
+      }
+
+      return NextResponse.json<ApiResponse>({
+        success: true,
+        message: `Payment reset for ${resetResult?.data?.applications_updated || 'all'} application(s)`,
+        data: resetResult
+      })
+    }
+
     const { data, error } = await supabase
       .from('applications')
       .update(updateData)
@@ -381,10 +470,47 @@ export async function PATCH(request: Request) {
       )
     }
 
+    // Send email notification if status was updated
+    if (status && (status === 'Approved' || status === 'Rejected' || status === 'Under Review')) {
+      // Fetch applicant info for email
+      const { data: applicantData } = await supabase
+        .from('applicants')
+        .select('email, first_name, last_name, qis_id')
+        .eq('id', data.applicant_id)
+        .single()
+
+      if (applicantData?.email) {
+        const applicantName = `${applicantData.first_name || ''} ${applicantData.last_name || ''}`.trim()
+        const referenceNumber = applicantData.qis_id || `APP-${applicationId.substring(0, 8).toUpperCase()}`
+
+        try {
+          if (status === 'Approved') {
+            await sendAcceptedEmail(applicantData.email, applicantName, referenceNumber)
+            console.log(`Accepted email sent to ${applicantData.email}`)
+          } else if (status === 'Rejected') {
+            await sendRejectedEmail(applicantData.email, applicantName, referenceNumber)
+            console.log(`Rejected email sent to ${applicantData.email}`)
+          } else if (status === 'Under Review') {
+            await sendUnderReviewEmail(applicantData.email, applicantName, referenceNumber)
+            console.log(`Under Review email sent to ${applicantData.email}`)
+          }
+        } catch (emailError) {
+          console.error('Error sending status email:', emailError)
+          // Don't fail the request if email fails
+        }
+      }
+    }
+
     return NextResponse.json<ApiResponse<typeof data>>({
       success: true,
       data,
-      message: status ? 'Application status updated successfully' : 'Payment reference updated successfully'
+      message: approvePayment 
+        ? 'Payment approved successfully' 
+        : resetPayment
+          ? 'Payment status reset to pending'
+          : status 
+            ? 'Application status updated successfully' 
+            : 'Payment reference updated successfully'
     })
 
   } catch (error) {

@@ -15,10 +15,23 @@ import {
   GraduationCap,
   Building,
   CreditCard,
-  Briefcase
+  Briefcase,
+  DollarSign
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useToast } from '@/components/ui/use-toast'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { createClient } from '@/lib/supabase/client'
+import { sendPaymentApprovedEmail } from '@/lib/email-service'
 
 interface Document {
   id: string
@@ -68,6 +81,7 @@ interface Payment {
   payment_method: string
   transaction_id: string
   created_at: string
+  slip_verified?: boolean
 }
 
 interface Application {
@@ -130,6 +144,11 @@ export default function ApplicationDetailPage({
   const [isLoading, setIsLoading] = useState(true)
   const [isUpdating, setIsUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showApproveDialog, setShowApproveDialog] = useState(false)
+  const [statusDialogConfig, setStatusDialogConfig] = useState<{
+    show: boolean
+    status: 'Approved' | 'Rejected' | 'Under Review' | null
+  }>({ show: false, status: null })
   const { toast } = useToast()
 
   useEffect(() => {
@@ -143,6 +162,11 @@ export default function ApplicationDetailPage({
       const data = await response.json()
 
       if (data.success && data.data) {
+        console.log('Application data loaded:', {
+          id: data.data.id,
+          application_fee_paid: data.data.payment?.status,
+          transaction_id: data.data.payment?.transaction_id
+        })
         setApplication(data.data)
         setError(null)
       } else {
@@ -157,10 +181,14 @@ export default function ApplicationDetailPage({
   }
 
   const updateApplicationStatus = async (status: 'Approved' | 'Rejected' | 'Under Review') => {
-    if (!confirm(`Are you sure you want to ${status.toLowerCase()} this application?`)) {
-      return
-    }
+    setStatusDialogConfig({ show: true, status })
+  }
 
+  const confirmUpdateStatus = async () => {
+    const status = statusDialogConfig.status
+    if (!status) return
+
+    setStatusDialogConfig({ show: false, status: null })
     setIsUpdating(true)
     try {
       const response = await fetch('/api/admin/applications', {
@@ -193,6 +221,144 @@ export default function ApplicationDetailPage({
       toast({
         title: 'Error',
         description: 'Failed to update application status. Please try again.',
+        variant: 'destructive'
+      })
+    } finally {
+      setIsUpdating(false)
+    }
+  }
+
+  const approvePayment = async () => {
+    setShowApproveDialog(true)
+  }
+
+  const confirmApprovePayment = async () => {
+    setShowApproveDialog(false)
+    setIsUpdating(true)
+    
+    try {
+      const supabase = createClient()
+      
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        toast({
+          title: 'Error',
+          description: 'You must be logged in to approve payments',
+          variant: 'destructive'
+        })
+        setIsUpdating(false)
+        return
+      }
+
+      // Generate a payment reference if one doesn't exist
+      const paymentRef = application?.payment?.transaction_id && application?.payment?.transaction_id !== 'N/A' 
+        ? application.payment.transaction_id
+        : `PAY-${Date.now()}`
+
+      // Update the application directly - set application_fee_paid to true
+      // Also set payment_reference to satisfy the trigger requirement
+      const { data, error } = await supabase
+        .from('applications')
+        .update({
+          application_fee_paid: true,
+          payment_reference: paymentRef,
+          status: application?.status === 'Submitted' ? 'Under Review' : application?.status,
+          reviewed_at: new Date().toISOString(),
+          reviewed_by: user.id,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', resolvedParams.id)
+        .select()
+        .single()
+
+      if (error) {
+        console.error('Error approving payment:', error)
+        toast({
+          title: 'Error',
+          description: 'Failed to approve payment: ' + error.message,
+          variant: 'destructive'
+        })
+      } else {
+        console.log('Payment approved successfully:', data)
+        
+        // Send email notification to applicant
+        if (application?.applicant?.email && application?.applicant?.full_name) {
+          try {
+            await sendPaymentApprovedEmail(
+              application.applicant.email,
+              application.applicant.full_name,
+              application.reference
+            )
+            console.log('Payment approval email sent to:', application.applicant.email)
+          } catch (emailError) {
+            console.error('Failed to send payment approval email:', emailError)
+          }
+        }
+        
+        // Refresh the data
+        await fetchApplicationDetails()
+        toast({
+          title: 'Success',
+          description: 'Payment has been approved. Applicant has been notified via email.',
+          variant: 'default'
+        })
+      }
+    } catch (err) {
+      console.error('Error approving payment:', err)
+      toast({
+        title: 'Error',
+        description: 'Failed to approve payment. Please try again.',
+        variant: 'destructive'
+      })
+    } finally {
+      setIsUpdating(false)
+    }
+  }
+
+  const resetPayment = async () => {
+    if (!confirm('Are you sure you want to reset the payment status to pending?')) {
+      return
+    }
+
+    setIsUpdating(true)
+    try {
+      const supabase = createClient()
+      
+      // Update the application - set application_fee_paid to false
+      // Clear the payment_reference as well
+      const { data, error } = await supabase
+        .from('applications')
+        .update({
+          application_fee_paid: false,
+          payment_reference: null,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', resolvedParams.id)
+        .select()
+        .single()
+
+      if (error) {
+        console.error('Error resetting payment:', error)
+        toast({
+          title: 'Error',
+          description: 'Failed to reset payment: ' + error.message,
+          variant: 'destructive'
+        })
+      } else {
+        console.log('Payment reset successfully:', data)
+        await fetchApplicationDetails()
+        toast({
+          title: 'Success',
+          description: 'Payment status has been reset to pending.',
+          variant: 'default'
+        })
+      }
+    } catch (err) {
+      console.error('Error resetting payment:', err)
+      toast({
+        title: 'Error',
+        description: 'Failed to reset payment. Please try again.',
         variant: 'destructive'
       })
     } finally {
@@ -533,67 +699,88 @@ export default function ApplicationDetailPage({
             
             {application.documents && application.documents.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {application.documents.map((doc, index) => (
-                  <div key={doc.id || index} className="bg-slate-50 rounded-lg p-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-3 flex-1 min-w-0">
-                        <FileText className="w-5 h-5 text-[#053f52] flex-shrink-0 mt-0.5" />
-                        <div className="min-w-0 flex-1">
-                          <p className="font-medium text-slate-900">{getDocTypeLabel(doc.document_type)}</p>
-                          <p className="text-sm text-slate-500 truncate">{doc.file_name}</p>
-                          <p className="text-xs text-slate-400">{formatFileSize(doc.file_size)}</p>
-                          {doc.file_error && (
-                            <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
-                              <XCircle className="w-3 h-3" />
-                              {doc.file_error}
-                            </p>
-                          )}
+                {application.documents.map((doc, index) => {
+                  // Check if document is a payment slip (case-insensitive, partial match)
+                  const isPaymentSlip = doc.document_type && 
+                    (doc.document_type.toLowerCase().includes('payment') || 
+                     doc.document_type.toLowerCase().includes('slip'))
+                  return (
+                    <div key={doc.id || index} className={`bg-slate-50 rounded-lg p-4 ${isPaymentSlip ? 'border-green-200 border' : ''}`}>
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-3 flex-1 min-w-0">
+                          <FileText className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isPaymentSlip ? 'text-green-600' : 'text-[#053f52]'}`} />
+                          <div className="min-w-0 flex-1">
+                            <p className="font-medium text-slate-900">{getDocTypeLabel(doc.document_type)}</p>
+                            <p className="text-sm text-slate-500 truncate">{doc.file_name}</p>
+                            <p className="text-xs text-slate-400">{formatFileSize(doc.file_size)}</p>
+                            {doc.file_error && (
+                              <p className="text-xs text-red-500 mt-1 flex items-center gap-1">
+                                <XCircle className="w-3 h-3" />
+                                {doc.file_error}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                          {getDocStatusIcon(doc.is_verified)}
+                          <span className={`px-2 py-1 text-xs font-medium rounded ${
+                            doc.is_verified 
+                              ? 'bg-green-100 text-green-700' 
+                              : 'bg-yellow-100 text-yellow-700'
+                          }`}>
+                            {doc.is_verified ? 'Verified' : 'Pending'}
+                          </span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                        {getDocStatusIcon(doc.is_verified)}
-                        <span className={`px-2 py-1 text-xs font-medium rounded ${
-                          doc.is_verified 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-yellow-100 text-yellow-700'
-                        }`}>
-                          {doc.is_verified ? 'Verified' : 'Pending'}
-                        </span>
-                      </div>
-                    </div>
-                    {isDocumentAccessible(doc) ? (
-                      <div className="mt-3 flex gap-2">
-                        <a
-                          href={getDocumentUrl(doc)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#053f52] text-white rounded-lg hover:bg-[#042d3d] transition-colors text-sm font-medium"
-                        >
-                          <FileText className="w-4 h-4" />
-                          View
-                        </a>
-                        {getDocumentUrl(doc).match(/\.(jpg|jpeg|png|gif)$/i) && (
+                      {isDocumentAccessible(doc) ? (
+                        <div className="mt-3 flex flex-wrap gap-2">
                           <a
                             href={getDocumentUrl(doc)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#053f52] text-white rounded-lg hover:bg-[#042d3d] transition-colors text-sm font-medium"
                           >
-                            <Download className="w-4 h-4" />
-                            Download
+                            <FileText className="w-4 h-4" />
+                            View
                           </a>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="mt-3">
-                        <p className="text-xs text-amber-600 flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          Document pending upload or storage unavailable
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                          {getDocumentUrl(doc).match(/\.(jpg|jpeg|png|gif)$/i) && (
+                            <a
+                              href={getDocumentUrl(doc)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium"
+                            >
+                              <Download className="w-4 h-4" />
+                              Download
+                            </a>
+                          )}
+                          {/* Approve Payment button for payment slip documents */}
+                          {isPaymentSlip && (
+                            <button
+                              onClick={approvePayment}
+                              disabled={isUpdating || application.payment.status === 'completed'}
+                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ml-auto ${
+                                application.payment.status === 'completed'
+                                  ? 'bg-green-100 text-green-700 cursor-default'
+                                  : 'bg-green-600 text-white hover:bg-green-700'
+                              }`}
+                            >
+                              <Check className="w-4 h-4" />
+                              {application.payment.status === 'completed' ? 'Approved' : 'Approve Payment'}
+                            </button>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="mt-3">
+                          <p className="text-xs text-amber-600 flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            Document pending upload or storage unavailable
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             ) : (
               <div className="bg-slate-50 rounded-lg p-8 text-center">
@@ -708,15 +895,22 @@ export default function ApplicationDetailPage({
               </div>
               <div>
                 <p className="text-sm text-slate-500 mb-1">Status</p>
-                <span className={`px-3 py-1 text-sm font-medium rounded-full ${
-                  application.payment.status === 'completed' 
-                    ? 'bg-green-100 text-green-800' 
-                    : application.payment.status === 'pending'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : 'bg-red-100 text-red-800'
-                }`}>
-                  {application.payment.status.charAt(0).toUpperCase() + application.payment.status.slice(1)}
-                </span>
+                {application.payment.status === 'completed' ? (
+                  <div className="flex items-center gap-2">
+                    <span className="px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800">
+                      Completed
+                    </span>
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                  </div>
+                ) : (
+                  <span className={`px-3 py-1 text-sm font-medium rounded-full ${
+                    application.payment.status === 'pending' 
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {application.payment.status.charAt(0).toUpperCase() + application.payment.status.slice(1)}
+                  </span>
+                )}
               </div>
               <div>
                 <p className="text-sm text-slate-500 mb-1">Method</p>
@@ -725,6 +919,46 @@ export default function ApplicationDetailPage({
               <div>
                 <p className="text-sm text-slate-500 mb-1">Transaction ID</p>
                 <p className="font-mono text-xs text-slate-900">{application.payment.transaction_id}</p>
+              </div>
+              
+              {/* Payment Status Indicator */}
+              <div className="pt-4 border-t border-slate-100">
+                <p className="text-sm text-slate-500 mb-2">Payment Status</p>
+                {application.payment.status === 'completed' ? (
+                  <div className="flex items-center gap-2 bg-green-50 text-green-700 rounded-lg p-3">
+                    <CheckCircle className="w-5 h-5" />
+                    <span className="font-medium">Payment Approved</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 bg-yellow-50 text-yellow-700 rounded-lg p-3">
+                    <Clock className="w-5 h-5" />
+                    <span className="font-medium">Payment Pending Approval</span>
+                  </div>
+                )}
+              </div>
+              
+              {/* Approve Payment Button */}
+              <div className="pt-4 border-t border-slate-100">
+                {application.payment.status !== 'completed' ? (
+                  <button
+                    onClick={approvePayment}
+                    disabled={isUpdating || !application.payment.transaction_id || application.payment.transaction_id === 'N/A'}
+                    className="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    <Check className="w-4 h-4" />
+                    {isUpdating ? 'Processing...' : 'Approve Payment'}
+                  </button>
+                ) : (
+                  <div className="w-full px-4 py-3 bg-green-100 text-green-700 rounded-lg flex items-center justify-center gap-2 font-medium">
+                    <CheckCircle className="w-5 h-5" />
+                    Payment Approved
+                  </div>
+                )}
+                {!application.payment.transaction_id || application.payment.transaction_id === 'N/A' ? (
+                  <p className="text-xs text-amber-600 mt-2 text-center">
+                    Payment reference required before approval
+                  </p>
+                ) : null}
               </div>
             </div>
           </motion.div>
@@ -743,6 +977,59 @@ export default function ApplicationDetailPage({
           )}
         </div>
       </div>
+
+      {/* Approve Payment Confirmation Dialog */}
+      <AlertDialog open={showApproveDialog} onOpenChange={setShowApproveDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Approve Payment</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to approve this payment? This will mark the application fee as paid and update the payment status to completed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmApprovePayment}>
+              Approve Payment
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Status Change Confirmation Dialog */}
+      <AlertDialog open={statusDialogConfig.show} onOpenChange={(open) => !open && setStatusDialogConfig({ show: false, status: null })}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {statusDialogConfig.status === 'Approved' && 'Approve Application'}
+              {statusDialogConfig.status === 'Under Review' && 'Mark as Under Review'}
+              {statusDialogConfig.status === 'Rejected' && 'Reject Application'}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {statusDialogConfig.status === 'Approved' && 'Are you sure you want to approve this application? This will change the status to Approved.'}
+              {statusDialogConfig.status === 'Under Review' && 'Are you sure you want to mark this application as Under Review?'}
+              {statusDialogConfig.status === 'Rejected' && 'Are you sure you want to reject this application? This action cannot be undone.'}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setStatusDialogConfig({ show: false, status: null })}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmUpdateStatus}
+              className={
+                statusDialogConfig.status === 'Approved' ? 'bg-green-600 hover:bg-green-700 text-white' :
+                statusDialogConfig.status === 'Rejected' ? 'bg-red-600 hover:bg-red-700 text-white' :
+                'bg-blue-600 hover:bg-blue-700 text-white'
+              }
+            >
+              {statusDialogConfig.status === 'Approved' && 'Approve'}
+              {statusDialogConfig.status === 'Under Review' && 'Mark as Under Review'}
+              {statusDialogConfig.status === 'Rejected' && 'Reject'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

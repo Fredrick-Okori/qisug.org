@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ReactNode } from 'react'
 import Link from 'next/link'
 import { 
   Search, 
@@ -17,6 +17,16 @@ import {
   Eye
 } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 
 interface Document {
   application_id: string
@@ -64,6 +74,33 @@ export default function AdminApplicationsPage() {
   const [error, setError] = useState<string | null>(null)
   const { toast } = useToast()
   const itemsPerPage = 10
+
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalApplicationId, setModalApplicationId] = useState<string | null>(null)
+  const [modalAction, setModalAction] = useState<'Approved' | 'Rejected' | 'Under Review' | null>(null)
+
+  // Modal configuration for each action type
+  const modalConfig = {
+    Approved: {
+      title: 'Approve Application',
+      description: 'Are you sure you want to approve this application? This will change the status to Approved.',
+      confirmText: 'Approve',
+      confirmClass: 'bg-green-600 hover:bg-green-700 text-white',
+    },
+    'Under Review': {
+      title: 'Mark as Under Review',
+      description: 'Are you sure you want to mark this application as Under Review?',
+      confirmText: 'Mark as Under Review',
+      confirmClass: 'bg-blue-600 hover:bg-blue-700 text-white',
+    },
+    Rejected: {
+      title: 'Reject Application',
+      description: 'Are you sure you want to reject this application? This action cannot be undone.',
+      confirmText: 'Reject',
+      confirmClass: 'bg-red-600 hover:bg-red-700 text-white',
+    },
+  }
 
   useEffect(() => {
     fetchApplications()
@@ -120,7 +157,7 @@ export default function AdminApplicationsPage() {
     )
   }
 
-  const getPaymentBadge = (status: string | null) => {
+  const getPaymentBadge = (status: string | null): ReactNode => {
     const styles: Record<string, string> = {
       paid: 'bg-green-100 text-green-800',
       completed: 'bg-green-100 text-green-800',
@@ -129,6 +166,18 @@ export default function AdminApplicationsPage() {
     }
     const safeStatus = status || 'pending'
     const label = safeStatus.charAt(0).toUpperCase() + safeStatus.slice(1)
+
+    // If payment is completed, show green with verified check
+    if (safeStatus === 'completed' || safeStatus === 'paid') {
+      return (
+        <div className="flex items-center gap-1.5">
+          <span className="px-2 py-0.5 text-xs font-medium rounded bg-green-100 text-green-800">
+            {label}
+          </span>
+          <CheckCircle className="w-4 h-4 text-green-600" />
+        </div>
+      )
+    }
 
     return (
       <span className={`px-2 py-0.5 text-xs font-medium rounded ${styles[safeStatus] || 'bg-gray-100 text-gray-800'}`}>
@@ -192,21 +241,36 @@ export default function AdminApplicationsPage() {
   }
 
   const handleApprove = (id: string) => {
-    if (confirm('Are you sure you want to approve this application?')) {
-      updateApplicationStatus(id, 'Approved')
-    }
+    setModalApplicationId(id)
+    setModalAction('Approved')
+    setModalOpen(true)
   }
 
   const handleUnderReview = (id: string) => {
-    if (confirm('Are you sure you want to mark this application as under review?')) {
-      updateApplicationStatus(id, 'Under Review')
-    }
+    setModalApplicationId(id)
+    setModalAction('Under Review')
+    setModalOpen(true)
   }
 
   const handleReject = (id: string) => {
-    if (confirm('Are you sure you want to reject this application?')) {
-      updateApplicationStatus(id, 'Rejected')
+    setModalApplicationId(id)
+    setModalAction('Rejected')
+    setModalOpen(true)
+  }
+
+  const handleModalConfirm = () => {
+    if (modalApplicationId && modalAction) {
+      updateApplicationStatus(modalApplicationId, modalAction)
     }
+    setModalOpen(false)
+    setModalApplicationId(null)
+    setModalAction(null)
+  }
+
+  const handleModalCancel = () => {
+    setModalOpen(false)
+    setModalApplicationId(null)
+    setModalAction(null)
   }
 
   const exportApplications = () => {
@@ -497,6 +561,31 @@ export default function AdminApplicationsPage() {
           </div>
         )}
       </div>
+
+      {/* Status Change Confirmation Modal */}
+      <AlertDialog open={modalOpen} onOpenChange={setModalOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {modalAction ? modalConfig[modalAction].title : ''}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {modalAction ? modalConfig[modalAction].description : ''}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleModalCancel}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleModalConfirm}
+              className={modalAction ? modalConfig[modalAction].confirmClass : ''}
+            >
+              {modalAction ? modalConfig[modalAction].confirmText : ''}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

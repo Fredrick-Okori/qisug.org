@@ -511,11 +511,11 @@ export function BlueSiteHeader() {
                         <p className="text-xs text-gray-500">Signed in</p>
                       </div>
                       <Link 
-                        href="/profile" 
+                        href="/dashboard" 
                         className="flex items-center gap-2 px-4 py-2 text-sm text-[#053f52] hover:bg-gray-50 transition-colors"
                       >
                         <Settings className="h-4 w-4" />
-                        <span>Settings</span>
+                        <span>Student Portal</span>
                       </Link>
                       <div className="border-t border-gray-100 my-1" />
                       <button
