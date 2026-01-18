@@ -43,14 +43,14 @@ async function verifyAdminAccess(
       set(name: string, value: string, options: CookieOptions) {
         try {
           cookieStore.set({ name, value, ...options })
-        } catch (error) {
+        } catch {
           // Handle cookie errors
         }
       },
       remove(name: string, options: CookieOptions) {
         try {
           cookieStore.set({ name, value: '', ...options })
-        } catch (error) {
+        } catch {
           // Handle cookie errors
         }
       },
@@ -77,8 +77,7 @@ async function verifyAdminAccess(
     }
 
     return { authorized: true }
-  } catch (error) {
-    console.error('Error verifying admin access:', error)
+  } catch {
     return { authorized: false, error: 'Authentication verification failed' }
   }
 }
@@ -119,14 +118,14 @@ export async function GET() {
         set(name: string, value: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value, ...options })
-          } catch (error) {
+          } catch {
             // Handle cookie errors
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: '', ...options })
-          } catch (error) {
+          } catch {
             // Handle cookie errors
           }
         },
@@ -307,8 +306,7 @@ export async function GET() {
       },
     })
 
-  } catch (error) {
-    console.error('Error fetching dashboard stats:', error)
+  } catch {
     return NextResponse.json<ApiResponse>(
       { success: false, error: 'Internal server error' },
       { status: 500 }

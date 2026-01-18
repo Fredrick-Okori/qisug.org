@@ -1,23 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono, Spectral, Montserrat } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import PageTransition from "@/components/page-transition"
 import { AuthProvider } from '@/components/auth/auth-context'
 import { Toaster } from '@/components/ui/toaster'
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
-const spectral = Spectral({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-spectral",
-})
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-montserrat",
-})
+// Note: Using system fonts for better performance and Turbopack compatibility
+// For custom fonts, use local font files in /public/fonts/
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.qisug.org"),
@@ -106,7 +96,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} ${spectral.variable} font-sans antialiased`}>
+      <body className="font-sans antialiased">
         <AuthProvider>
           <PageTransition>
             {children}

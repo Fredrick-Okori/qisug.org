@@ -3,7 +3,6 @@
  * 
  * This endpoint checks if the currently authenticated user is an admin.
  * Returns { isAdmin: true } if user is an active admin, { isAdmin: false } otherwise.
- * This is used after login to redirect admins to the admin dashboard.
  */
 
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
@@ -76,7 +75,6 @@ export async function GET(request: NextRequest) {
     const { data: { session }, error: sessionError } = await supabase.auth.getSession()
 
     if (sessionError || !session?.user) {
-      console.warn('[AdminCheck] No authenticated session found')
       return NextResponse.json<AdminCheckResponse>(
         { success: false, isAdmin: false, error: 'Not authenticated' },
         { status: 401 }
@@ -85,8 +83,6 @@ export async function GET(request: NextRequest) {
 
     // Check if user is an admin
     const isAdmin = await checkIsAdmin(supabase, session.user.id)
-
-    console.log(`[AdminCheck] User ${session.user.id} admin status: ${isAdmin}`)
 
     return NextResponse.json<AdminCheckResponse>({
       success: true,
@@ -150,7 +146,6 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('[AdminCheck] Unexpected error:', error)
     return NextResponse.json<AdminCheckResponse>(
       { success: false, isAdmin: false, error: 'Internal server error' },
       { status: 500 }

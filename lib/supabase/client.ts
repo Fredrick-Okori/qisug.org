@@ -139,13 +139,6 @@ let validationCache: ValidationResult | null = null
 function getCachedValidation(): ValidationResult {
   if (validationCache === null) {
     validationCache = validateSupabaseConfig()
-    
-    if (validationCache.valid) {
-      console.log('[Supabase] Configuration validated successfully')
-    } else if (isBrowser()) {
-      // Only log in browser to avoid build noise
-      console.warn('[Supabase] Configuration warning:', validationCache.error)
-    }
   }
   return validationCache
 }
@@ -156,7 +149,6 @@ function getCachedValidation(): ValidationResult {
 export function resetSupabaseValidation(): void {
   validationCache = null
   supabaseInstance = null
-  console.log('[Supabase] Validation cache reset')
 }
 
 // ============================================================================
@@ -178,7 +170,6 @@ export function createClient(): ReturnType<typeof createBrowserClient> | null {
   const result = getCachedValidation()
 
   if (!result.valid) {
-    console.warn('[Supabase] Configuration error:', result.error)
     return null
   }
 
@@ -191,8 +182,6 @@ export function createClient(): ReturnType<typeof createBrowserClient> | null {
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
   supabaseInstance = createBrowserClient(url, anonKey)
-
-  console.log('[Supabase] Client initialized successfully')
 
   return supabaseInstance
 }

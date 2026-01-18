@@ -1,16 +1,25 @@
-// Supabase Edge Function: resend-email
-// File: supabase/functions/resend-email/index.ts
-// Enhanced version with support for all email notification types
+/**
+ * Email Service Module
+ * 
+ * Provides email notification functionality for the QIS application lifecycle.
+ * Uses Supabase Edge Functions with Resend API for sending emails.
+ */
 
-import "jsr:@supabase/functions-js/edge-runtime.d.ts"
+// ============================================================================
+// TYPES
+// ============================================================================
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+export type EmailType = 
+  | 'application_submitted'
+  | 'payment_received'
+  | 'application_under_review'
+  | 'application_accepted'
+  | 'application_rejected'
+  | 'admin_new_application'
+  | 'admin_payment_received'
+  | 'admin_review_status'
 
-// Email request interface
-interface EmailRequest {
+export interface EmailPayload {
   to: string
   subject?: string
   applicantName: string
@@ -18,161 +27,28 @@ interface EmailRequest {
   grade?: string
   stream?: string
   admissionPeriod?: string
-  emailType: string
-  rejectionReason?: string
-  notes?: string
+  emailType: EmailType
+  // Admin notification fields
   adminEmail?: string
   adminName?: string
+  rejectionReason?: string
+  notes?: string
 }
 
-Deno.serve(async (req: Request) => {
-  // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
-  }
-
-  try {
-    // Get Resend API key from environment variable
-    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
-    
-    if (!RESEND_API_KEY) {
-      console.error('RESEND_API_KEY not configured')
-      return new Response(
-        JSON.stringify({ error: 'Email service not configured - RESEND_API_KEY missing' }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      )
-    }
-
-    // Parse request body
-    const requestData: EmailRequest = await req.json()
-    
-    console.log('Email request received:', {
-      to: requestData.to,
-      type: requestData.emailType,
-      name: requestData.applicantName,
-      reference: requestData.referenceNumber
-    })
-
-    // Validate required fields
-    if (!requestData.to || !requestData.applicantName || !requestData.referenceNumber) {
-      return new Response(
-        JSON.stringify({ 
-          error: 'Missing required fields',
-          required: ['to', 'applicantName', 'referenceNumber']
-        }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      )
-    }
-
-    // Generate email HTML and text based on email type
-    const emailHtml = generateEmailHtml(requestData)
-    const emailText = generateEmailText(requestData)
-
-    // Determine subject line based on email type
-    const subject = requestData.subject || getDefaultSubject(requestData)
-
-    // Send email via Resend
-    console.log(`Sending ${requestData.emailType} email via Resend...`)
-    const resendResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${RESEND_API_KEY}`
-      },
-      body: JSON.stringify({
-        from: 'onboarding@resend.dev', // Use Resend's default domain (no verification needed)
-        to: [requestData.to],
-        subject: subject,
-        html: emailHtml,
-        text: emailText
-      })
-    })
-
-    if (resendResponse.ok) {
-      const result = await resendResponse.json()
-      console.log('Email sent successfully:', result.id)
-      
-      return new Response(
-        JSON.stringify({ 
-          success: true, 
-          emailId: result.id,
-          emailType: requestData.emailType,
-          message: `${requestData.emailType} email sent successfully`
-        }),
-        {
-          status: 200,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      )
-    } else {
-      const errorText = await resendResponse.text()
-      console.error('Resend API error:', errorText)
-      
-      return new Response(
-        JSON.stringify({ 
-          error: 'Failed to send email via Resend',
-          details: errorText,
-          status: resendResponse.status
-        }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      )
-    }
-
-  } catch (error) {
-    console.error('Edge function error:', error)
-    
-    return new Response(
-      JSON.stringify({ 
-        error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      }
-    )
-  }
-})
-
-/**
- * Get default subject line based on email type
- */
-function getDefaultSubject(requestData: EmailRequest): string {
-  switch (requestData.emailType) {
-    case 'application_submitted':
-      return `Application Received - Reference ${requestData.referenceNumber}`
-    case 'payment_received':
-      return `Payment Received - Reference ${requestData.referenceNumber}`
-    case 'application_under_review':
-      return `Application Now Under Review - Reference ${requestData.referenceNumber}`
-    case 'application_accepted':
-      return `Congratulations! Application Accepted - Reference ${requestData.referenceNumber}`
-    case 'application_rejected':
-      return `Application Update - Reference ${requestData.referenceNumber}`
-    case 'admin_new_application':
-      return `New Application - ${requestData.applicantName}`
-    case 'admin_payment_received':
-      return `Payment Received - ${requestData.applicantName}`
-    case 'admin_review_status':
-      return `Status Updated - ${requestData.applicantName}`
-    default:
-      return `QIS Notification - ${requestData.referenceNumber}`
-  }
+export interface EmailResponse {
+  success: boolean
+  emailId?: string
+  error?: string
 }
+
+// ============================================================================
+// EMAIL TEMPLATES
+// ============================================================================
 
 /**
  * Generate HTML email based on email type
  */
-function generateEmailHtml(data: EmailRequest): string {
+export function generateEmailHTML(data: EmailPayload): string {
   const baseStyles = `
     <style>
       body {
@@ -247,7 +123,7 @@ function generateEmailHtml(data: EmailRequest): string {
 /**
  * Generate plain text email based on email type
  */
-function generateEmailText(data: EmailRequest): string {
+export function generateEmailText(data: EmailPayload): string {
   switch (data.emailType) {
     case 'application_submitted':
       return generateApplicationSubmittedText(data)
@@ -274,7 +150,7 @@ function generateEmailText(data: EmailRequest): string {
 // USER EMAIL TEMPLATES
 // ============================================================================
 
-function generateApplicationSubmittedEmail(data: EmailRequest, styles: string): string {
+function generateApplicationSubmittedEmail(data: EmailPayload, styles: string): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -323,7 +199,7 @@ function generateApplicationSubmittedEmail(data: EmailRequest, styles: string): 
   `
 }
 
-function generateApplicationSubmittedText(data: EmailRequest): string {
+function generateApplicationSubmittedText(data: EmailPayload): string {
   return `
 QUEENSGATE INTERNATIONAL SCHOOL
 Application Received Successfully
@@ -349,7 +225,7 @@ Queensgate International School
   `
 }
 
-function generatePaymentReceivedEmail(data: EmailRequest, styles: string): string {
+function generatePaymentReceivedEmail(data: EmailPayload, styles: string): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -383,7 +259,7 @@ function generatePaymentReceivedEmail(data: EmailRequest, styles: string): strin
         <p>2. You will receive a notification when your application is moved to "Under Review"</p>
         <p>3. The review process typically takes 5-7 business days</p>
       </div>
-      <p>Thank you for choosing Queensgate International School!</p>
+      you for choosing Queens <p>Thankgate International School!</p>
       <p>Warm regards,<br><strong>The Admissions Team</strong><br>Queensgate International School</p>
     </div>
     <div class="footer">
@@ -397,7 +273,7 @@ function generatePaymentReceivedEmail(data: EmailRequest, styles: string): strin
   `
 }
 
-function generatePaymentReceivedText(data: EmailRequest): string {
+function generatePaymentReceivedText(data: EmailPayload): string {
   return `
 QUEENSGATE INTERNATIONAL SCHOOL
 Payment Received Confirmation
@@ -419,7 +295,7 @@ The Admissions Team
   `
 }
 
-function generateUnderReviewEmail(data: EmailRequest, styles: string): string {
+function generateUnderReviewEmail(data: EmailPayload, styles: string): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -437,7 +313,7 @@ function generateUnderReviewEmail(data: EmailRequest, styles: string): string {
     </div>
     <div class="content">
       <h2>Dear ${data.applicantName},</h2>
-      <p>Great news! Your application is now being reviewed by our admissions committee.</p>
+      <p>Great news! Your application is now being reviewed by our admissions committee. This is an important step in the admissions process.</p>
       <div class="reference-box">
         <div class="label">Application Reference</div>
         <div class="number">${data.referenceNumber}</div>
@@ -449,11 +325,12 @@ function generateUnderReviewEmail(data: EmailRequest, styles: string): string {
       </div>
       <div class="details">
         <h3>⏳ What to Expect</h3>
-        <p>• Our admissions committee is carefully reviewing your application</p>
+        <p>• Our admissions committee is carefully reviewing your application and supporting documents</p>
         <p>• The review process typically takes 5-7 business days</p>
         <p>• You will receive another email once a decision has been made</p>
+        <p>• Please check your email regularly for updates</p>
       </div>
-      <p>We appreciate your patience!</p>
+      <p>We appreciate your patience and look forward to getting back to you soon!</p>
       <p>Warm regards,<br><strong>The Admissions Team</strong><br>Queensgate International School</p>
     </div>
     <div class="footer">
@@ -467,7 +344,7 @@ function generateUnderReviewEmail(data: EmailRequest, styles: string): string {
   `
 }
 
-function generateUnderReviewText(data: EmailRequest): string {
+function generateUnderReviewText(data: EmailPayload): string {
   return `
 QUEENSGATE INTERNATIONAL SCHOOL
 Application Now Under Review
@@ -483,13 +360,14 @@ WHAT TO EXPECT:
 • Our admissions committee is carefully reviewing your application
 • The review process typically takes 5-7 business days
 • You will receive another email once a decision has been made
+• Please check your email regularly for updates
 
 We appreciate your patience!
 The Admissions Team
   `
 }
 
-function generateAcceptedEmail(data: EmailRequest, styles: string): string {
+function generateAcceptedEmail(data: EmailPayload, styles: string): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -518,11 +396,12 @@ function generateAcceptedEmail(data: EmailRequest, styles: string): string {
       </div>
       <div class="details">
         <h3>📄 Next Steps</h3>
-        <p>1. You will receive an official acceptance letter</p>
+        <p>1. You will receive an official acceptance letter with detailed instructions</p>
         <p>2. Review the enrollment requirements and deadlines</p>
-        <p>3. Complete the enrollment process</p>
+        <p>3. Complete the enrollment process before the deadline</p>
+        <p>4. Contact us if you have any questions about enrollment</p>
       </div>
-      <p>Welcome to the Queensgate family!</p>
+      <p>Welcome to the Queensgate family! We are excited to have you join our community of learners.</p>
       <p>Warm regards,<br><strong>The Admissions Team</strong><br>Queensgate International School</p>
     </div>
     <div class="footer">
@@ -536,29 +415,30 @@ function generateAcceptedEmail(data: EmailRequest, styles: string): string {
   `
 }
 
-function generateAcceptedText(data: EmailRequest): string {
+function generateAcceptedText(data: EmailPayload): string {
   return `
 QUEENSGATE INTERNATIONAL SCHOOL
 Congratulations! Application Accepted!
 
 Dear ${data.applicantName},
 
-We are thrilled to inform you that your application has been ACCEPTED!
+We are thrilled to inform you that your application to Queensgate International School has been ACCEPTED!
 
 APPLICATION REFERENCE: ${data.referenceNumber}
 STATUS: ACCEPTED
 
 NEXT STEPS:
-1. You will receive an official acceptance letter
+1. You will receive an official acceptance letter with detailed instructions
 2. Review the enrollment requirements and deadlines
-3. Complete the enrollment process
+3. Complete the enrollment process before the deadline
+4. Contact us if you have any questions
 
 Welcome to the Queensgate family!
 The Admissions Team
   `
 }
 
-function generateRejectedEmail(data: EmailRequest, styles: string): string {
+function generateRejectedEmail(data: EmailPayload, styles: string): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -595,8 +475,9 @@ function generateRejectedEmail(data: EmailRequest, styles: string): string {
         <h3>📝 Notes</h3>
         <p>• This decision is final for this admissions cycle</p>
         <p>• You may reapply in a future admissions period</p>
+        <p>• We encourage you to strengthen your application for next time</p>
       </div>
-      <p>We wish you the best in your educational journey.</p>
+      <p>We appreciate the effort you put into your application and wish you the best in your educational journey.</p>
       <p>Warm regards,<br><strong>The Admissions Team</strong><br>Queensgate International School</p>
     </div>
     <div class="footer">
@@ -610,7 +491,7 @@ function generateRejectedEmail(data: EmailRequest, styles: string): string {
   `
 }
 
-function generateRejectedText(data: EmailRequest): string {
+function generateRejectedText(data: EmailPayload): string {
   return `
 QUEENSGATE INTERNATIONAL SCHOOL
 Application Update
@@ -624,6 +505,11 @@ STATUS: Not Accepted
 
 ${data.rejectionReason ? `REASON: ${data.rejectionReason}` : ''}
 
+NOTES:
+• This decision is final for this admissions cycle
+• You may reapply in a future admissions period
+• We encourage you to strengthen your application for next time
+
 We wish you the best in your educational journey.
 The Admissions Team
   `
@@ -633,7 +519,7 @@ The Admissions Team
 // ADMIN EMAIL TEMPLATES
 // ============================================================================
 
-function generateAdminNewApplicationEmail(data: EmailRequest, styles: string): string {
+function generateAdminNewApplicationEmail(data: EmailPayload, styles: string): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -651,20 +537,29 @@ function generateAdminNewApplicationEmail(data: EmailRequest, styles: string): s
     </div>
     <div class="content">
       <h2>Dear Admissions Team,</h2>
-      <p>A new application has been submitted.</p>
+      <p>A new application has been submitted and is awaiting review.</p>
       <div class="details" style="background-color: #f3e8ff;">
         <h3 style="color: #7c3aed;">📋 Applicant Details</h3>
         <p><strong>Name:</strong> ${data.applicantName}</p>
         <p><strong>Email:</strong> ${data.to}</p>
         <p><strong>Grade:</strong> Grade ${data.grade || 'N/A'}</p>
         <p><strong>Stream:</strong> ${data.stream || 'N/A'}</p>
+        <p><strong>Admission Period:</strong> ${data.admissionPeriod || 'N/A'}</p>
         <p><strong>Reference:</strong> ${data.referenceNumber}</p>
+        <p><strong>Payment Status:</strong> ⏳ Pending</p>
       </div>
-      <p>Please review the application in the admin dashboard.</p>
+      <div class="details">
+        <h3>📝 Admin Actions</h3>
+        <p>• Review the application in the admin dashboard</p>
+        <p>• Wait for payment receipt upload from applicant</p>
+        <p>• Update application status when ready for review</p>
+      </div>
+      <p>Log in to the admin dashboard to view the full application.</p>
     </div>
     <div class="footer">
       <p><strong>Queensgate International School</strong></p>
       <p>Admissions Management System</p>
+      <p><a href="mailto:admissions@qgis.ac.ug">admissions@qgis.ac.ug</a></p>
     </div>
   </div>
 </body>
@@ -672,26 +567,29 @@ function generateAdminNewApplicationEmail(data: EmailRequest, styles: string): s
   `
 }
 
-function generateAdminNewApplicationText(data: EmailRequest): string {
+function generateAdminNewApplicationText(data: EmailPayload): string {
   return `
 QUEENSGATE INTERNATIONAL SCHOOL
 NEW APPLICATION RECEIVED
 
 Dear Admissions Team,
 
-A new application has been submitted.
+A new application has been submitted and is awaiting review.
 
 APPLICANT DETAILS:
 - Name: ${data.applicantName}
 - Email: ${data.to}
 - Grade: Grade ${data.grade || 'N/A'}
+- Stream: ${data.stream || 'N/A'}
+- Admission Period: ${data.admissionPeriod || 'N/A'}
 - Reference: ${data.referenceNumber}
+- Payment Status: Pending
 
 Please review the application in the admin dashboard.
   `
 }
 
-function generateAdminPaymentReceivedEmail(data: EmailRequest, styles: string): string {
+function generateAdminPaymentReceivedEmail(data: EmailPayload, styles: string): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -705,23 +603,31 @@ function generateAdminPaymentReceivedEmail(data: EmailRequest, styles: string): 
   <div class="email-container">
     <div class="header" style="background-color: #16a34a;">
       <h1>💰 Payment Received</h1>
-      <p>Queensgate International School</p>
+      <p>Queensgate International School - Admin Notification</p>
     </div>
     <div class="content">
       <h2>Dear Admissions Team,</h2>
-      <p>Payment has been received and verified.</p>
+      <p>Payment has been received and verified for the following application.</p>
       <div class="details" style="background-color: #dcfce7;">
         <h3 style="color: #166034;">✅ Payment Confirmed</h3>
         <p><strong>Name:</strong> ${data.applicantName}</p>
         <p><strong>Email:</strong> ${data.to}</p>
         <p><strong>Reference:</strong> ${data.referenceNumber}</p>
         <p><strong>Amount:</strong> $300 USD</p>
+        <p><strong>Payment Method:</strong> Bank Transfer</p>
       </div>
-      <p>Application is ready for review.</p>
+      <div class="details">
+        <h3>📝 Admin Actions</h3>
+        <p>• Payment verification complete</p>
+        <p>• Application is ready for review</p>
+        <p>• Consider moving application to "Under Review" status</p>
+      </div>
+      <p>The applicant has been notified via email. Log in to the admin dashboard to continue processing.</p>
     </div>
     <div class="footer">
       <p><strong>Queensgate International School</strong></p>
       <p>Admissions Management System</p>
+      <p><a href="mailto:admissions@qgis.ac.ug">admissions@qgis.ac.ug</a></p>
     </div>
   </div>
 </body>
@@ -729,7 +635,7 @@ function generateAdminPaymentReceivedEmail(data: EmailRequest, styles: string): 
   `
 }
 
-function generateAdminPaymentReceivedText(data: EmailRequest): string {
+function generateAdminPaymentReceivedText(data: EmailPayload): string {
   return `
 QUEENSGATE INTERNATIONAL SCHOOL
 PAYMENT RECEIVED
@@ -743,12 +649,13 @@ APPLICANT DETAILS:
 - Email: ${data.to}
 - Reference: ${data.referenceNumber}
 - Amount: $300 USD
+- Payment Method: Bank Transfer
 
-Application is ready for review.
+Payment verification complete. Application is ready for review.
   `
 }
 
-function generateAdminReviewStatusEmail(data: EmailRequest, styles: string): string {
+function generateAdminReviewStatusEmail(data: EmailPayload, styles: string): string {
   const statusColor = data.notes?.includes('Approved') || data.notes?.includes('Accepted') 
     ? '#16a34a' 
     : data.notes?.includes('Rejected') 
@@ -773,21 +680,29 @@ function generateAdminReviewStatusEmail(data: EmailRequest, styles: string): str
   <div class="email-container">
     <div class="header" style="background-color: ${statusColor};">
       <h1>📋 Status Update</h1>
-      <p>Queensgate International School</p>
+      <p>Queensgate International School - Admin Notification</p>
     </div>
     <div class="content">
       <h2>Dear Admissions Team,</h2>
-      <p>An application status has been updated.</p>
+      <p>An application status has been updated. The applicant has been notified.</p>
       <div class="details" style="background-color: ${statusBg};">
         <h3 style="color: ${statusColor};">${data.notes || 'Status Updated'}</h3>
         <p><strong>Name:</strong> ${data.applicantName}</p>
         <p><strong>Email:</strong> ${data.to}</p>
         <p><strong>Reference:</strong> ${data.referenceNumber}</p>
       </div>
+      <div class="details">
+        <h3>📝 Actions Taken</h3>
+        <p>• Status changed to: ${data.notes || 'Updated'}</p>
+        <p>• Applicant notified via email</p>
+        <p>• Application updated in system</p>
+      </div>
+      <p>Log in to the admin dashboard to continue managing applications.</p>
     </div>
     <div class="footer">
       <p><strong>Queensgate International School</strong></p>
       <p>Admissions Management System</p>
+      <p><a href="mailto:admissions@qgis.ac.ug">admissions@qgis.ac.ug</a></p>
     </div>
   </div>
 </body>
@@ -795,14 +710,14 @@ function generateAdminReviewStatusEmail(data: EmailRequest, styles: string): str
   `
 }
 
-function generateAdminReviewStatusText(data: EmailRequest): string {
+function generateAdminReviewStatusText(data: EmailPayload): string {
   return `
 QUEENSGATE INTERNATIONAL SCHOOL
 APPLICATION STATUS UPDATE
 
 Dear Admissions Team,
 
-An application status has been updated.
+An application status has been updated. The applicant has been notified.
 
 APPLICANT DETAILS:
 - Name: ${data.applicantName}
@@ -810,6 +725,229 @@ APPLICANT DETAILS:
 - Reference: ${data.referenceNumber}
 
 STATUS: ${data.notes || 'Updated'}
+
+The applicant has been notified via email.
   `
+}
+
+// ============================================================================
+// EMAIL SENDING FUNCTION
+// ============================================================================
+
+/**
+ * Send email via Supabase Edge Function
+ */
+export async function sendEmail(payload: EmailPayload): Promise<EmailResponse> {
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      console.error('[EmailService] Supabase credentials not configured')
+      return { success: false, error: 'Supabase not configured' }
+    }
+
+    const endpoint = `${supabaseUrl}/functions/v1/resend-email`
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${supabaseAnonKey}`,
+      },
+      body: JSON.stringify({
+        to: payload.to,
+        subject: payload.subject,
+        applicantName: payload.applicantName,
+        referenceNumber: payload.referenceNumber,
+        grade: payload.grade,
+        stream: payload.stream,
+        admissionPeriod: payload.admissionPeriod,
+        emailType: payload.emailType,
+        rejectionReason: payload.rejectionReason,
+        notes: payload.notes,
+        adminEmail: payload.adminEmail,
+        adminName: payload.adminName,
+      }),
+    })
+
+    if (response.ok) {
+      const result = await response.json()
+      console.log(`[EmailService] Email sent successfully: ${result.emailId}`)
+      return { success: true, emailId: result.emailId }
+    } else {
+      const errorText = await response.text()
+      console.error(`[EmailService] Failed to send email: ${errorText}`)
+      return { success: false, error: errorText }
+    }
+  } catch (error) {
+    console.error('[EmailService] Error sending email:', error)
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    }
+  }
+}
+
+// ============================================================================
+// CONVENIENCE FUNCTIONS
+// ============================================================================
+
+/**
+ * Send application submitted confirmation to user
+ */
+export async function sendApplicationSubmittedEmail(
+  to: string,
+  applicantName: string,
+  referenceNumber: string,
+  grade: string,
+  stream: string,
+  admissionPeriod: string
+): Promise<EmailResponse> {
+  return sendEmail({
+    to,
+    subject: `Application Received - Reference ${referenceNumber}`,
+    applicantName,
+    referenceNumber,
+    grade,
+    stream,
+    admissionPeriod,
+    emailType: 'application_submitted',
+  })
+}
+
+/**
+ * Send payment received confirmation to user
+ */
+export async function sendPaymentReceivedEmail(
+  to: string,
+  applicantName: string,
+  referenceNumber: string
+): Promise<EmailResponse> {
+  return sendEmail({
+    to,
+    subject: `Payment Received - Reference ${referenceNumber}`,
+    applicantName,
+    referenceNumber,
+    emailType: 'payment_received',
+  })
+}
+
+/**
+ * Send application under review notification to user
+ */
+export async function sendUnderReviewEmail(
+  to: string,
+  applicantName: string,
+  referenceNumber: string
+): Promise<EmailResponse> {
+  return sendEmail({
+    to,
+    subject: `Application Now Under Review - Reference ${referenceNumber}`,
+    applicantName,
+    referenceNumber,
+    emailType: 'application_under_review',
+  })
+}
+
+/**
+ * Send application accepted notification to user
+ */
+export async function sendAcceptedEmail(
+  to: string,
+  applicantName: string,
+  referenceNumber: string
+): Promise<EmailResponse> {
+  return sendEmail({
+    to,
+    subject: `Congratulations! Application Accepted - Reference ${referenceNumber}`,
+    applicantName,
+    referenceNumber,
+    emailType: 'application_accepted',
+  })
+}
+
+/**
+ * Send application rejected notification to user
+ */
+export async function sendRejectedEmail(
+  to: string,
+  applicantName: string,
+  referenceNumber: string,
+  rejectionReason?: string
+): Promise<EmailResponse> {
+  return sendEmail({
+    to,
+    subject: `Application Update - Reference ${referenceNumber}`,
+    applicantName,
+    referenceNumber,
+    emailType: 'application_rejected',
+    rejectionReason,
+  })
+}
+
+/**
+ * Send new application notification to admin
+ */
+export async function sendAdminNewApplicationEmail(
+  adminEmail: string,
+  applicantName: string,
+  applicantEmail: string,
+  referenceNumber: string,
+  grade: string,
+  stream: string,
+  admissionPeriod: string
+): Promise<EmailResponse> {
+  return sendEmail({
+    to: adminEmail,
+    subject: `New Application - ${applicantName}`,
+    applicantName,
+    referenceNumber,
+    grade,
+    stream,
+    admissionPeriod,
+    emailType: 'admin_new_application',
+    adminEmail,
+  })
+}
+
+/**
+ * Send payment received notification to admin
+ */
+export async function sendAdminPaymentReceivedEmail(
+  adminEmail: string,
+  applicantName: string,
+  applicantEmail: string,
+  referenceNumber: string
+): Promise<EmailResponse> {
+  return sendEmail({
+    to: adminEmail,
+    subject: `Payment Received - ${applicantName}`,
+    applicantName,
+    referenceNumber,
+    emailType: 'admin_payment_received',
+    adminEmail,
+  })
+}
+
+/**
+ * Send status update notification to admin
+ */
+export async function sendAdminStatusUpdateEmail(
+  adminEmail: string,
+  applicantName: string,
+  applicantEmail: string,
+  referenceNumber: string,
+  status: string
+): Promise<EmailResponse> {
+  return sendEmail({
+    to: adminEmail,
+    subject: `Status Updated - ${applicantName}`,
+    applicantName,
+    referenceNumber,
+    emailType: 'admin_review_status',
+    adminEmail,
+    notes: status,
+  })
 }
 

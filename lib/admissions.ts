@@ -19,7 +19,6 @@ import type {
  */
 function getSupabaseClient() {
   if (!isSupabaseConfigured()) {
-    console.warn('[Admissions] Supabase not configured, cannot perform operations')
     return null
   }
   return createClient()
@@ -118,8 +117,6 @@ async function createApplicant(supabase: ReturnType<typeof createClient>, data: 
   )
   
   if (shouldRetry) {
-    console.warn('[CreateApplicant] Schema cache issue detected, retrying without user_id...', result.error?.message)
-    
     const insertDataWithoutUserId: Record<string, unknown> = { ...insertData }
     delete insertDataWithoutUserId.user_id
     
@@ -130,14 +127,9 @@ async function createApplicant(supabase: ReturnType<typeof createClient>, data: 
       .single()
 
     if (result.error) {
-      console.error('[CreateApplicant] Retry failed:', result.error)
       return result
     } else if (userId) {
       // Successfully created applicant, now try to update with user_id
-      console.log('[CreateApplicant] Applicant created, attempting to link user_id...')
-      
-      // Update the applicant with user_id (this is a best-effort operation)
-      // userId is guaranteed to be a string here due to the `else if (userId)` check
       const userIdStr: string = userId as string
       
       const updateResult = await supabase
@@ -145,12 +137,7 @@ async function createApplicant(supabase: ReturnType<typeof createClient>, data: 
         .update({ user_id: userIdStr })
         .eq('id', result.data.id)
       
-      if (updateResult.error) {
-        console.warn('[CreateApplicant] Failed to link user_id (non-critical):', updateResult.error)
-        // Continue anyway - applicant was created successfully
-      } else {
-        console.log('[CreateApplicant] User_id linked successfully')
-      }
+      // Continue anyway - applicant was created successfully
     }
   }
 
@@ -231,9 +218,7 @@ export async function uploadDocument(
   const supabase = getSupabaseClient()
   
   if (!supabase) {
-    const error = new Error('Supabase is not configured')
-    console.error('[UploadDocument] Configuration error:', error.message)
-    return { success: false, error }
+    return { success: false, error: new Error('Supabase not configured') }
   }
 
   const filePath = `${applicationId}/${documentType}/${Date.now()}-${file.name}`
@@ -244,18 +229,13 @@ export async function uploadDocument(
     .upload(filePath, file)
 
   if (error) {
-    console.error('[UploadDocument] Storage upload failed:', error)
     return { success: false, error }
   }
-
-  console.log('[UploadDocument] Upload successful:', data.path)
 
   // Get public URL
   const { data: { publicUrl } } = supabase.storage
     .from('admission_documents')
     .getPublicUrl(filePath)
-
-  console.log('[UploadDocument] Public URL:', publicUrl)
 
   // Save document reference to database
   const { error: dbError } = await supabase
@@ -270,11 +250,8 @@ export async function uploadDocument(
     })
 
   if (dbError) {
-    console.error('[UploadDocument] Database insert failed:', dbError)
     return { success: false, error: dbError }
   }
-
-  console.log('[UploadDocument] Document saved to database successfully')
 
   return { success: true, data: { url: publicUrl } }
 }
@@ -287,7 +264,6 @@ export async function getPrograms() {
   const supabase = getSupabaseClient()
   
   if (!supabase) {
-    console.warn('[GetPrograms] Supabase not configured')
     return { success: false, error: new Error('Supabase not configured'), data: null }
   }
 
@@ -299,7 +275,6 @@ export async function getPrograms() {
     .order('stream', { ascending: true })
 
   if (error) {
-    console.error('[GetPrograms] Error:', error)
     return { success: false, error, data: null }
   }
 
@@ -310,7 +285,6 @@ export async function getTuitionStructure(grade: number, stream: string) {
   const supabase = getSupabaseClient()
   
   if (!supabase) {
-    console.warn('[GetTuitionStructure] Supabase not configured')
     return { success: false, error: new Error('Supabase not configured'), data: null }
   }
 
@@ -323,7 +297,6 @@ export async function getTuitionStructure(grade: number, stream: string) {
     .single()
 
   if (error) {
-    console.error('[GetTuitionStructure] Error:', error)
     return { success: false, error, data: null }
   }
 
@@ -334,7 +307,6 @@ export async function getApplicationById(applicationId: string) {
   const supabase = getSupabaseClient()
   
   if (!supabase) {
-    console.warn('[GetApplicationById] Supabase not configured')
     return { success: false, error: new Error('Supabase not configured'), data: null }
   }
 
@@ -351,7 +323,6 @@ export async function getApplicationById(applicationId: string) {
     .single()
 
   if (error) {
-    console.error('[GetApplicationById] Error:', error)
     return { success: false, error, data: null }
   }
 
@@ -370,7 +341,6 @@ export async function updateApplicationStatus(
   const supabase = getSupabaseClient()
   
   if (!supabase) {
-    console.warn('[UpdateApplicationStatus] Supabase not configured')
     return { success: false, error: new Error('Supabase not configured') }
   }
 
@@ -395,7 +365,6 @@ export async function updateApplicationStatus(
     .single()
 
   if (error) {
-    console.error('[UpdateApplicationStatus] Error:', error)
     return { success: false, error }
   }
 
@@ -414,7 +383,6 @@ export async function confirmPayment(
   const supabase = getSupabaseClient()
   
   if (!supabase) {
-    console.warn('[ConfirmPayment] Supabase not configured')
     return { success: false, error: new Error('Supabase not configured') }
   }
 
@@ -431,11 +399,9 @@ export async function confirmPayment(
     .single()
 
   if (error) {
-    console.error('[ConfirmPayment] Database update failed:', error)
     return { success: false, error }
   }
 
-  console.log('[ConfirmPayment] Payment confirmed successfully')
   return { success: true, data }
 }
 
@@ -450,7 +416,6 @@ export async function saveDraft(
   const supabase = getSupabaseClient()
   
   if (!supabase) {
-    console.warn('[SaveDraft] Supabase not configured')
     return { success: false, error: new Error('Supabase not configured') }
   }
 
@@ -517,10 +482,6 @@ export async function checkUserExists(email: string): Promise<{ exists: boolean;
 
     if (error) {
       // Admin API not accessible with anon key
-      console.warn('[CheckUserExists] Admin API not accessible:', error.message)
-      
-      // Alternative: Try to sign in with the email
-      // This won't actually sign in, but will fail if user doesn't exist
       return { exists: true } // Can't determine with anon key
     }
 
@@ -529,8 +490,7 @@ export async function checkUserExists(email: string): Promise<{ exists: boolean;
     )
 
     return { exists: userExists || false }
-  } catch (err) {
-    console.error('[CheckUserExists] Error:', err)
+  } catch {
     return { exists: false, error: 'Unable to verify user' }
   }
 }
@@ -557,13 +517,11 @@ export async function signInUser(email: string, password: string) {
     })
 
     if (error) {
-      console.error('[SignInUser] Sign in error:', error)
       return { session: null, user: null, error }
     }
 
     return { session: data.session, user: data.user, error: null }
-  } catch (err) {
-    console.error('[SignInUser] Unexpected error:', err)
+  } catch {
     return { 
       session: null, 
       user: null, 
@@ -599,13 +557,11 @@ export async function signUpUser(email: string, password: string, fullName?: str
     })
 
     if (error) {
-      console.error('[SignUpUser] Sign up error:', error)
       return { session: null, user: null, error }
     }
 
     return { session: data.session, user: data.user, error: null }
-  } catch (err) {
-    console.error('[SignUpUser] Unexpected error:', err)
+  } catch {
     return { 
       session: null, 
       user: null, 

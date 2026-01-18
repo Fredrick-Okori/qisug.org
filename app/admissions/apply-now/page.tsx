@@ -412,47 +412,70 @@ export default function ApplyNowPage() {
 
   console.log('[ApplyNow] Application submitted successfully');
 
-// Send confirmation email to applicant using Supabase Edge Function
-console.log('[ApplyNow] Sending confirmation email...');
-try {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  
-if (supabaseUrl && supabaseAnonKey) {
-  const emailResponse = await fetch(`${supabaseUrl}/functions/v1/resend-email`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${supabaseAnonKey}`,
-    },
-    body: JSON.stringify({
-      to: formData.email,
-      subject: `Application Received - Reference ${reference}`,
-      applicantName: `${formData.firstName} ${formData.lastName}`,
-      referenceNumber: reference,
-      grade: formData.currentGrade,
-      stream: formData.programStream,
-      admissionPeriod: formData.admissionPeriod ? formData.admissionPeriod.charAt(0).toUpperCase() + formData.admissionPeriod.slice(1) : '',
-    }),
-  });
-  
-  if (emailResponse.ok) {
-    const emailResult = await emailResponse.json();
-    console.log('[ApplyNow] Confirmation email sent successfully:', emailResult);
-  } else {
-    const errorText = await emailResponse.text();
-    console.warn('[ApplyNow] Failed to send confirmation email:', errorText);
-  }
-} else {
-  console.warn('[ApplyNow] Supabase credentials not configured for email');
-}
-} catch (emailError) {
-  console.error('[ApplyNow] Error sending confirmation email:', emailError);
-  // Don't fail the application if email fails
-}
+      // Send confirmation email to applicant via server-side API
+      console.log('[ApplyNow] Sending confirmation email...');
+      try {
+        const emailResponse = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            to: formData.email,
+            subject: `Application Received - Reference ${reference}`,
+            applicantName: `${formData.firstName} ${formData.lastName}`,
+            referenceNumber: reference,
+            grade: formData.currentGrade,
+            stream: formData.programStream,
+            admissionPeriod: formData.admissionPeriod ? formData.admissionPeriod.charAt(0).toUpperCase() + formData.admissionPeriod.slice(1) : '',
+            emailType: 'application_submitted',
+          }),
+        });
+        
+        if (emailResponse.ok) {
+          const emailResult = await emailResponse.json();
+          console.log('[ApplyNow] Confirmation email sent successfully:', emailResult);
+        } else {
+          const errorText = await emailResponse.text();
+          console.warn('[ApplyNow] Failed to send confirmation email:', errorText);
+        }
+      } catch (emailError) {
+        console.error('[ApplyNow] Error sending confirmation email:', emailError);
+      }
 
-setSubmitStatus('success');
-setCurrentStep(3);
+      // Send admin notification for new application
+      console.log('[ApplyNow] Sending admin notification for new application...');
+      try {
+        const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'admissions@qgis.ac.ug';
+        
+        const adminEmailResponse = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            to: adminEmail,
+            applicantName: `${formData.firstName} ${formData.lastName}`,
+            referenceNumber: reference,
+            grade: formData.currentGrade,
+            stream: formData.programStream,
+            admissionPeriod: formData.admissionPeriod ? formData.admissionPeriod.charAt(0).toUpperCase() + formData.admissionPeriod.slice(1) : '',
+            emailType: 'admin_new_application',
+          }),
+        });
+        
+        if (adminEmailResponse.ok) {
+          const adminEmailResult = await adminEmailResponse.json();
+          console.log('[ApplyNow] Admin notification sent successfully:', adminEmailResult);
+        } else {
+          const errorText = await adminEmailResponse.text();
+          console.warn('[ApplyNow] Failed to send admin notification:', errorText);
+        }
+      } catch (adminEmailError) {
+        console.error('[ApplyNow] Error sending admin notification:', adminEmailError);
+      }
+
+      setSubmitStatus('success');
       setCurrentStep(3);
       
     } catch (error) {
@@ -525,6 +548,66 @@ setCurrentStep(3);
       }, 250);
 
       console.log('[PaymentUpload] Payment submission complete!');
+
+      // Send payment receipt email to applicant
+      console.log('[PaymentUpload] Sending payment receipt email to applicant...');
+      try {
+        if (generatedReference) {
+          const emailResponse = await fetch('/api/send-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              to: formData.email,
+              applicantName: `${formData.firstName} ${formData.lastName}`,
+              referenceNumber: generatedReference,
+              emailType: 'payment_received',
+            }),
+          });
+          
+          if (emailResponse.ok) {
+            const emailResult = await emailResponse.json();
+            console.log('[PaymentUpload] Payment receipt email sent successfully:', emailResult);
+          } else {
+            const errorText = await emailResponse.text();
+            console.warn('[PaymentUpload] Failed to send payment receipt email:', errorText);
+          }
+        }
+      } catch (emailError) {
+        console.error('[PaymentUpload] Error sending payment receipt email:', emailError);
+      }
+
+      // Send admin notification for payment received
+      console.log('[PaymentUpload] Sending admin notification for payment received...');
+      try {
+        const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'admissions@qgis.ac.ug';
+        
+        if (generatedReference) {
+          const adminEmailResponse = await fetch('/api/send-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              to: adminEmail,
+              applicantName: `${formData.firstName} ${formData.lastName}`,
+              referenceNumber: generatedReference,
+              emailType: 'admin_payment_received',
+            }),
+          });
+          
+          if (adminEmailResponse.ok) {
+            const emailResult = await adminEmailResponse.json();
+            console.log('[PaymentUpload] Admin notification sent successfully:', emailResult);
+          } else {
+            const errorText = await adminEmailResponse.text();
+            console.warn('[PaymentUpload] Failed to send admin notification:', errorText);
+          }
+        }
+      } catch (adminEmailError) {
+        console.error('[PaymentUpload] Error sending admin notification:', adminEmailError);
+      }
       
       // Clear localStorage after successful completion
       localStorage.removeItem(STORAGE_KEY);

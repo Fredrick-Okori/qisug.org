@@ -50,9 +50,6 @@ export async function checkUserAuth(): Promise<AuthState> {
       }
     }
 
-    // Log the logged-in user's details for debugging (who is currently signed in)
-    console.log('[AuthHelper] logged-in user:', session.user)
-
     // Check if user is an active admin (only superadmin manages admin_users)
     const { data: adminUser, error } = await supabase
       .from('admin_users')
@@ -111,9 +108,6 @@ export async function redirectAdmins(): Promise<boolean> {
     if (!session?.user) {
       return false
     }
-
-    // Debug: show who is attempting a redirect check
-    console.log('[AuthHelper] redirectAdmins check for user:', session.user)
 
     const { data: adminUser, error } = await supabase
       .from('admin_users')
