@@ -207,7 +207,7 @@ export function BlueSiteHeader() {
         transition={{ duration: 0.4 }}
       />
 
-      <div className="container max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 relative z-10 py-4">
+      <div className="container max-w-7xl mx-auto relative z-10 py-4">
         <div className="flex items-start justify-between w-full gap-2 sm:gap-4">
           {/* Left: Logo Section with animation */}
           <motion.div 
@@ -415,7 +415,7 @@ export function BlueSiteHeader() {
                     >
                       <Link
                         href={item.href}
-                        className={`text-white font-bold transition-all duration-300 inline-block text-sm px-2 py-2 ${
+                        className={`text-white font-bold transition-all truncate duration-300 inline-block text-sm px-2 py-2 ${
                           isActive(item.href) ? "border-b-2 border-[#20cece]" : "hover:border-b hover:border-[#20cece] hover:rounded-none"
                         }`}
                       >
@@ -564,7 +564,7 @@ export function BlueSiteHeader() {
             >
               <Link href="/admissions/apply-now">
                 <motion.button 
-                  className="flex items-center gap-2 bg-[#20cece] text-[#053f52] rounded-full border border-[#20cece] transition-all duration-300 hover:bg-white hover:border-white px-6 py-2.5 text-sm xl:px-8 xl:py-3"
+                  className="flex items-center gap-2 bg-[#20cece] truncate text-[#053f52] rounded-full border border-[#20cece] transition-all duration-300 hover:bg-white hover:border-white px-6 py-2.5 text-sm xl:px-8 xl:py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
