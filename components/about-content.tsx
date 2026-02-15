@@ -28,8 +28,8 @@ const aboutSchemaData = {
   "@type": "EducationalOrganization",
   "name": "Queensgate International School",
   "description": "Queensgate International School is a leading institution dedicated to delivering world-class education to students across the globe.",
-  "url": "https://www.qisug.org/about",
-  "image": "https://www.qisug.org/images/queen-27s-20gate-20web-20nw-02.jpeg",
+  "url": "https://www.qgis.ac.ug/about",
+  "image": "https://www.qgis.ac.ug/images/queen-27s-20gate-20web-20nw-02.jpeg",
   "telephone": "+1-234-567-8900",
   "address": {
     "@type": "PostalAddress",

@@ -568,8 +568,6 @@ export default function AcceptableUsePolicyPage() {
           </div>
         </div>
       </main>
-
-      <SiteFooter />
     </div>
   )
 }

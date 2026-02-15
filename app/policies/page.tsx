@@ -404,8 +404,6 @@ export default function PoliciesPage() {
           </div>
         </div>
       </main>
-
-      <SiteFooter />
     </div>
   )
 }

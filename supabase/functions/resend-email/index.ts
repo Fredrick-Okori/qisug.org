@@ -29,6 +29,11 @@ interface EmailRequest {
   notes?: string
   adminEmail?: string
   adminName?: string
+  // Contact form specific fields
+  userEmail?: string
+  userFirstName?: string
+  userLastName?: string
+  userMessage?: string
 }
 
 Deno.serve(async (req: Request) => {
@@ -41,10 +46,14 @@ Deno.serve(async (req: Request) => {
     // Get Resend API key from environment variable
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
     
+    console.log('=== RESEND EMAIL FUNCTION STARTED ===')
+    console.log('RESEND_API_KEY present:', !!RESEND_API_KEY)
+    console.log('RESEND_API_KEY value:', RESEND_API_KEY ? `${RESEND_API_KEY.substring(0, 10)}...` : 'NOT SET')
+    
     if (!RESEND_API_KEY) {
       console.error('RESEND_API_KEY not configured')
       return new Response(
-        JSON.stringify({ error: 'Email service not configured - RESEND_API_KEY missing' }),
+        JSON.stringify({ error: 'Email service not configured - RESEND_API_KEY missing in Supabase secrets' }),
         {
           status: 500,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -55,19 +64,32 @@ Deno.serve(async (req: Request) => {
     // Parse request body
     const requestData: EmailRequest = await req.json()
     
-    console.log('Email request received:', {
+    console.log('Email request received:', JSON.stringify({
       to: requestData.to,
       type: requestData.emailType,
       name: requestData.applicantName,
-      reference: requestData.referenceNumber
-    })
+      reference: requestData.referenceNumber,
+      userFirstName: requestData.userFirstName,
+      userLastName: requestData.userLastName,
+      userEmail: requestData.userEmail
+    }))
 
     // Validate required fields
     if (!requestData.to || !requestData.applicantName || !requestData.referenceNumber) {
+      console.error('Missing required fields:', {
+        to: requestData.to,
+        applicantName: requestData.applicantName,
+        referenceNumber: requestData.referenceNumber
+      })
       return new Response(
         JSON.stringify({ 
           error: 'Missing required fields',
-          required: ['to', 'applicantName', 'referenceNumber']
+          required: ['to', 'applicantName', 'referenceNumber'],
+          received: {
+            to: requestData.to,
+            applicantName: requestData.applicantName,
+            referenceNumber: requestData.referenceNumber
+          }
         }),
         {
           status: 400,
@@ -83,8 +105,11 @@ Deno.serve(async (req: Request) => {
     // Determine subject line based on email type
     const subject = requestData.subject || getDefaultSubject(requestData)
 
-    // Send email via Resend
     console.log(`Sending ${requestData.emailType} email via Resend...`)
+    console.log(`To: ${requestData.to}`)
+    console.log(`Subject: ${subject}`)
+
+    // Send email via Resend
     const resendResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -92,7 +117,7 @@ Deno.serve(async (req: Request) => {
         'Authorization': `Bearer ${RESEND_API_KEY}`
       },
       body: JSON.stringify({
-        from: 'onboarding@resend.dev', // Use Resend's default domain (no verification needed)
+        from: 'Queensgate International School <onboarding@resend.dev>',
         to: [requestData.to],
         subject: subject,
         html: emailHtml,
@@ -100,16 +125,21 @@ Deno.serve(async (req: Request) => {
       })
     })
 
+    const responseData = await resendResponse.text()
+    console.log('Resend API Response Status:', resendResponse.status)
+    console.log('Resend API Response Body:', responseData)
+
     if (resendResponse.ok) {
-      const result = await resendResponse.json()
+      const result = JSON.parse(responseData)
       console.log('Email sent successfully:', result.id)
+      console.log('=== RESEND EMAIL FUNCTION COMPLETED ===')
       
       return new Response(
         JSON.stringify({ 
           success: true, 
           emailId: result.id,
           emailType: requestData.emailType,
-          message: `${requestData.emailType} email sent successfully`
+          message: `${requestData.emailType} email sent successfully to ${requestData.to}`
         }),
         {
           status: 200,
@@ -117,13 +147,13 @@ Deno.serve(async (req: Request) => {
         }
       )
     } else {
-      const errorText = await resendResponse.text()
-      console.error('Resend API error:', errorText)
+      console.error('Resend API error:', responseData)
+      console.log('=== RESEND EMAIL FUNCTION FAILED ===')
       
       return new Response(
         JSON.stringify({ 
           error: 'Failed to send email via Resend',
-          details: errorText,
+          details: responseData,
           status: resendResponse.status
         }),
         {
@@ -135,11 +165,13 @@ Deno.serve(async (req: Request) => {
 
   } catch (error) {
     console.error('Edge function error:', error)
+    console.log('=== RESEND EMAIL FUNCTION ERROR ===')
     
     return new Response(
       JSON.stringify({ 
         error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
       }),
       {
         status: 500,
@@ -170,6 +202,9 @@ function getDefaultSubject(requestData: EmailRequest): string {
       return `Payment Received - ${requestData.applicantName}`
     case 'admin_review_status':
       return `Status Updated - ${requestData.applicantName}`
+    case 'contact_form':
+      const userName = `${requestData.userFirstName || ''} ${requestData.userLastName || ''}`.trim()
+      return `New Contact Form Submission from ${userName}`
     default:
       return `QIS Notification - ${requestData.referenceNumber}`
   }
@@ -245,6 +280,8 @@ function generateEmailHtml(data: EmailRequest): string {
       return generateAdminPaymentReceivedEmail(data, baseStyles)
     case 'admin_review_status':
       return generateAdminReviewStatusEmail(data, baseStyles)
+    case 'contact_form':
+      return generateContactFormEmail(data, baseStyles)
     default:
       return generateApplicationSubmittedEmail(data, baseStyles)
   }
@@ -271,6 +308,8 @@ function generateEmailText(data: EmailRequest): string {
       return generateAdminPaymentReceivedText(data)
     case 'admin_review_status':
       return generateAdminReviewStatusText(data)
+    case 'contact_form':
+      return generateContactFormText(data)
     default:
       return generateApplicationSubmittedText(data)
   }
@@ -816,6 +855,83 @@ APPLICANT DETAILS:
 - Reference: ${data.referenceNumber}
 
 STATUS: ${data.notes || 'Updated'}
+  `
+}
+
+// ============================================================================
+// CONTACT FORM EMAIL TEMPLATES
+// ============================================================================
+
+function generateContactFormEmail(data: EmailRequest, styles: string): string {
+  const userName = `${data.userFirstName || ''} ${data.userLastName || ''}`.trim()
+  const userEmail = data.userEmail || 'N/A'
+  const userMessage = data.userMessage || 'No message provided'
+  
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Contact Form Submission</title>
+  ${styles}
+</head>
+<body>
+  <div class="email-container">
+    <div class="header" style="background-color: #7c3aed;">
+      <h1>📬 New Contact Form Submission</h1>
+      <p>Queensgate International School - Website Contact</p>
+    </div>
+    <div class="content">
+      <h2>Hello Admissions Team,</h2>
+      <p>A new contact form submission has been received from the school website.</p>
+      <div class="details" style="background-color: #f3e8ff;">
+        <h3 style="color: #7c3aed;">👤 Sender Information</h3>
+        <p><strong>Name:</strong> ${userName}</p>
+        <p><strong>Email:</strong> <a href="mailto:${userEmail}">${userEmail}</a></p>
+      </div>
+      <div class="details">
+        <h3>📝 Message</h3>
+        <p style="white-space: pre-wrap; line-height: 1.8;">${userMessage}</p>
+      </div>
+      <div class="details" style="background-color: #fff9e6;">
+        <h3>📧 How to Reply</h3>
+        <p>Simply reply to this email at <strong>${userEmail}</strong> to respond to this inquiry.</p>
+      </div>
+    </div>
+    <div class="footer">
+      <p><strong>Queensgate International School</strong></p>
+      <p>Excellence in Education | Nurturing Future Leaders</p>
+      <p><a href="mailto:admissions@qgis.ac.ug">admissions@qgis.ac.ug</a></p>
+    </div>
+  </div>
+</body>
+</html>
+  `
+}
+
+function generateContactFormText(data: EmailRequest): string {
+  const userName = `${data.userFirstName || ''} ${data.userLastName || ''}`.trim()
+  const userEmail = data.userEmail || 'N/A'
+  const userMessage = data.userMessage || 'No message provided'
+  
+  return `
+QUEENSGATE INTERNATIONAL SCHOOL
+NEW CONTACT FORM SUBMISSION
+
+Hello Admissions Team,
+
+A new contact form submission has been received from the school website.
+
+SENDER INFORMATION:
+- Name: ${userName}
+- Email: ${userEmail}
+
+MESSAGE:
+${userMessage}
+
+---
+To reply to this inquiry, simply email: ${userEmail}
   `
 }
 

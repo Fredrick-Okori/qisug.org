@@ -93,8 +93,6 @@ export default function AdmissionsPage() {
           </div>
         </div>
       </main>
-
-      <SiteFooter />
     </div>
   )
 }

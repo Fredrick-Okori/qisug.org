@@ -457,10 +457,6 @@ export default function AcademicsPage() {
           </div>
         </div>
       </main>
-      
-
-      <MainSiteFooter />
     </div>
-  
   )
 }

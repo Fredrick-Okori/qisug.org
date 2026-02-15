@@ -715,7 +715,7 @@ export default function NewsAnnouncementsPage() {
 
       </main>
 
-      <MainSiteFooter />
+     
     </div>
   )
 }

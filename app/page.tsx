@@ -20,9 +20,9 @@ const schemaOrgData = {
   "@type": "EducationalOrganization",
   "name": "Queensgate International School",
   "description": "Queensgate International School provides world-class education for students worldwide. Discover our innovative curriculum, dedicated faculty, and nurturing learning environment.",
-  "url": "https://www.qisug.org",
-  "logo": "https://www.qisug.org/images/logo_white.png",
-  "image": "https://www.qisug.org/images/ndpjkk1uol9irckqx6db.avif",
+  "url": "https://www.qgis.ac.ug",
+  "logo": "https://www.qgis.ac.ug/images/logo_white.png",
+  "image": "https://www.qgis.ac.ug/images/ndpjkk1uol9irckqx6db.avif",
   "telephone": "+1-234-567-8900",
   "address": {
     "@type": "PostalAddress",
@@ -260,3 +260,4 @@ export default function HomePage() {
     </div>
   )
 }
+

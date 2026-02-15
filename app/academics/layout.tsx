@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { MainSiteFooter } from "@/components/main-footer"
 
 export const metadata: Metadata = {
   title: "Academics",
@@ -11,6 +12,11 @@ export default function AcademicsLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
+  return (
+    <>
+      {children}
+      <MainSiteFooter />
+    </>
+  )
 }
 

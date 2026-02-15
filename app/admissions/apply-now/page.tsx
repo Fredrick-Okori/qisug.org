@@ -751,7 +751,6 @@ export default function ApplyNowPage() {
             </motion.p>
           </motion.div>
         </div>
-        <MainSiteFooter />
       </>
     );
   }
@@ -1744,8 +1743,8 @@ export default function ApplyNowPage() {
                       transition={{ delay: 0.5 }}
                     >
                       You can skip this step and upload your payment slip later via email to{' '}
-                      <a href="mailto:admissions@queensgate.ac.ug" className="text-[#EFBF04] underline">
-                        admissions@queensgate.ac.ug
+                      <a href="mailto:admissions@qgis.ac.ug" className="text-[#EFBF04] underline">
+                        admissions@qgis.ac.ug
                       </a>
                     </motion.p>
                   </div>
@@ -1851,7 +1850,7 @@ export default function ApplyNowPage() {
           </AnimatePresence>
         </motion.div>
       </div>
-      <MainSiteFooter />
+  
     </>
   );
 }

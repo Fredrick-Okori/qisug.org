@@ -522,8 +522,6 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
       </main>
-
-      <SiteFooter />
     </div>
   )
 }

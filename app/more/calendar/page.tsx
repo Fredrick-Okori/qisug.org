@@ -901,7 +901,7 @@ export default function CalendarPage() {
 
       </main>
 
-      <MainSiteFooter />
+  
     </div>
   )
 }

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contact Queensgate International School | Get in Touch",
     description: "Contact Queensgate International School for admissions inquiries, academic information, and support. Reach us by email, phone, or visit our campus in Uganda.",
-    url: "https://www.qisug.org/contact",
+    url: "https://www.qgis.ac.ug/contact",
     images: [
       {
         url: "/images/queen-27s-20gate-20web-20nw-06.jpeg",

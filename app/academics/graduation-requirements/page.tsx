@@ -648,8 +648,6 @@ export default function GraduationRequirementsPage() {
 
 
       </main>
-
-      <MainSiteFooter />
     </div>
   )
 }

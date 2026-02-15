@@ -7,6 +7,7 @@ import PageTransition from "@/components/page-transition"
 import { AuthProvider } from '@/components/auth/auth-context'
 import { Toaster } from '@/components/ui/toaster'
 
+
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 const spectral = Spectral({
@@ -20,7 +21,7 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.qisug.org"),
+  metadataBase: new URL("https://www.qgis.ac.ug"),
   title: {
     default: "Queensgate International School | Excellence in Education",
     template: "%s | Queensgate International School",
@@ -55,7 +56,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.qisug.org",
+    url: "https://www.qgis.ac.ug",
     siteName: "Queensgate International School",
     title: "Queensgate International School | Excellence in Education",
     description: "Queensgate International School provides world-class education for students worldwide. Discover our innovative curriculum and nurturing learning environment.",
@@ -98,6 +99,8 @@ export const metadata: Metadata = {
     google: "google-site-verification-code",
   },
 }
+
+
 
 export default function RootLayout({
   children,

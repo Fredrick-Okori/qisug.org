@@ -8,37 +8,67 @@ import { Textarea } from "@/components/ui/textarea"
 import { BlueSiteHeader } from "@/components/blue-header"
 import { SiteFooter } from "@/components/site-footer"
 import { motion } from "framer-motion"
-import { Mail, Phone, Clock, MapPin, Send } from "lucide-react"
+import { Mail, Phone, Clock, MapPin, Send, CheckCircle, AlertCircle } from "lucide-react"
 import Image from "next/image"
 import { CTA } from "@/components/home/cta"
 
+interface FormData {
+  firstName: string
+  lastName: string
+  email: string
+  subject: string
+  message: string
+}
+
+type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error'
+
 export default function ContactForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
     email: "",
+    subject: "",
     message: "",
   })
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [status, setStatus] = useState<SubmitStatus>('idle')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
+    setStatus('submitting')
+    setErrorMessage('')
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    console.log("Form submitted:", formData)
-    setIsSubmitting(false)
-    
-    // Reset form
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      message: "",
-    })
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setStatus('success')
+        // Reset form after successful submission
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          subject: "",
+          message: "",
+        })
+      } else {
+        setStatus('error')
+        setErrorMessage(result.error || 'Failed to send message. Please try again.')
+      }
+    } catch (error) {
+      console.error('Form submission error:', error)
+      setStatus('error')
+      setErrorMessage('Network error. Please check your connection and try again.')
+    }
   }
 
   return (
@@ -102,10 +132,10 @@ export default function ContactForm() {
                           <div className="flex-1">
                             <h3 className="mb-1 font-semibold text-gray-900">Email</h3>
                             <a
-                              href="mailto:queensgateinternational@gmail.com"
+                              href="mailto:admissions@qgis.ac.ug"
                               className="text-sm text-gray-600 hover:text-[#053F52] transition-colors break-all"
                             >
-                              queensgateinternational@gmail.com
+                              admissions@qgis.ac.ug
                             </a>
                           </div>
                         </div>
@@ -118,7 +148,7 @@ export default function ContactForm() {
                           </div>
                           <div className="flex-1">
                             <h3 className="mb-1 font-semibold text-gray-900">Phone</h3>
-                            <p className="text-sm text-gray-600">123456788688</p>
+                            <p className="text-sm text-gray-600">+256 757 882 623</p>
                           </div>
                         </div>
                       </div>
@@ -144,7 +174,8 @@ export default function ContactForm() {
                           <div className="flex-1">
                             <h3 className="mb-1 font-semibold text-gray-900">Location</h3>
                             <p className="text-sm text-gray-600">
-                              Plot 38 Martyr's village, Intinda
+                           Plot 38, Martyrs' Way, Ministers' Village, Ntinda
+
                             </p>
                           </div>
                         </div>
@@ -218,6 +249,23 @@ export default function ContactForm() {
                         </div>
 
                         <div className="space-y-2">
+                          <Label htmlFor="subject" className="text-sm font-semibold text-gray-700">
+                            Subject *
+                          </Label>
+                          <Input
+                            id="subject"
+                            type="text"
+                            value={formData.subject}
+                            onChange={(e) =>
+                              setFormData({ ...formData, subject: e.target.value })
+                            }
+                            className="h-12 rounded-xl border-gray-300 bg-gray-50 transition-all focus:border-[#053F52] focus:bg-white focus:ring-2 focus:ring-[#053F52]/20"
+                            placeholder="Inquiry about admissions"
+                            required
+                          />
+                        </div>
+
+                        <div className="space-y-2">
                           <Label htmlFor="message" className="text-sm font-semibold text-gray-700">
                             How can we help? *
                           </Label>
@@ -235,10 +283,10 @@ export default function ContactForm() {
 
                         <Button
                           type="submit"
-                          disabled={isSubmitting}
+                          disabled={status === 'submitting'}
                           className="group h-14 w-full rounded-xl bg-gradient-to-r from-[#20cece] to-[#20cece] text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
                         >
-                          {isSubmitting ? (
+                          {status === 'submitting' ? (
                             <span className="flex items-center justify-center">
                               <svg
                                 className="mr-2 h-5 w-5 animate-spin"
@@ -269,6 +317,34 @@ export default function ContactForm() {
                             </span>
                           )}
                         </Button>
+
+                        {/* Success Message */}
+                        {status === 'success' && (
+                          <motion.div 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="flex items-center p-4 rounded-xl bg-green-50 border border-green-200 text-green-800"
+                          >
+                            <CheckCircle className="h-5 w-5 mr-2 flex-shrink-0" />
+                            <span className="text-sm font-medium">
+                              Thank you for your message! We have received your inquiry and will get back to you soon.
+                            </span>
+                          </motion.div>
+                        )}
+
+                        {/* Error Message */}
+                        {status === 'error' && (
+                          <motion.div 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="flex items-center p-4 rounded-xl bg-red-50 border border-red-200 text-red-800"
+                          >
+                            <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0" />
+                            <span className="text-sm font-medium">
+                              {errorMessage || 'Failed to send message. Please try again.'}
+                            </span>
+                          </motion.div>
+                        )}
                       </form>
                     </div>
                   </div>
@@ -329,7 +405,7 @@ export default function ContactForm() {
   
       </main>
 
-      <SiteFooter />
+   
     </div>
   )
 }

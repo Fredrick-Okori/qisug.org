@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Academics | Queensgate International School Curriculum & Programs",
     description: "Explore Queensgate International School's comprehensive academic programs including OSSD curriculum, compulsory courses, academic pathways, and Ontario Secondary School Diploma requirements.",
-    url: "https://www.qisug.org/academics",
+    url: "https://www.qgis.ac.ug/academics",
     images: [
       {
         url: "/images/design_portability_1__gfw34rh367u6_large_2x.jpg",

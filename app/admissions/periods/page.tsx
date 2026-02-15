@@ -218,8 +218,6 @@ export default function AdmissionPeriods() {
           </motion.div>
         </motion.div>
       </div>
-
-      <MainSiteFooter />
     </>
   );
 }

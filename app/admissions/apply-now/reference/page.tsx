@@ -212,7 +212,6 @@ export default function ReferenceEntryPage() {
             </motion.div>
           </motion.div>
         </div>
-        <MainSiteFooter />
       </>
     );
   }

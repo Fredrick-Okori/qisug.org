@@ -347,8 +347,6 @@ export default function HowToApplyPage() {
           </motion.div>
         </motion.div>
       </div>
-
-      <MainSiteFooter />
     </>
   );
 }

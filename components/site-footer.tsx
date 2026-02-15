@@ -10,19 +10,19 @@ export function SiteFooter() {
           {/* Location */}
           <div className="flex items-center gap-3">
             <MapPin className="h-5 w-5 flex-shrink-0" />
-            <span className="text-sm font-medium">Plot 38 Martyr's village, Intinda</span>
+            <span className="text-sm font-medium">Plot 38, Martyrs' Way, Ministers' Village, Ntinda</span>
           </div>
 
           {/* Hours */}
           <div className="flex items-center gap-3">
             <Clock className="h-5 w-5 flex-shrink-0" />
-            <span className="text-sm font-medium">Mon - Fri | 08:00 - 17:00. Sat - Sun CLOSED</span>
+            <span className="text-sm font-medium">Mon - Fri - Sat | 08:00 - 17:00. Sun CLOSED</span>
           </div>
 
           {/* Phone */}
           <div className="flex items-center gap-3">
             <Phone className="h-5 w-5 flex-shrink-0" />
-            <span className="text-sm font-medium">Toll Free: 123456788688</span>
+            <span className="text-sm font-medium">Call: +256 757 882 623</span>
           </div>
 
           {/* Social Media */}

@@ -170,8 +170,6 @@ export default function FAQPage() {
           </div>
         </div>
       </main>
-
-      <SiteFooter />
     </div>
   )
 }

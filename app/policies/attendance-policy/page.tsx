@@ -548,8 +548,6 @@ export default function AttendancePolicyPage() {
           </div>
         </div>
       </main>
-
-      <SiteFooter />
     </div>
   )
 }

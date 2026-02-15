@@ -404,8 +404,6 @@ export default function ESLProgramPage() {
 
 
       </main>
-
-      <MainSiteFooter />
     </div>
   )
 }

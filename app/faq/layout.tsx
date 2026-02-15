@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
   title: "FAQ | Queensgate International School",
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "FAQ | Queensgate International School",
     description: "Find answers to frequently asked questions about Queensgate International School admissions, academics, policies, and student life.",
-    url: "https://www.qisug.org/faq",
+    url: "https://www.qgis.ac.ug/faq",
     images: [
       {
         url: "/images/faq-hero.jpg",
@@ -87,6 +88,8 @@ export default function FAQLayout({
         }}
       />
       {children}
+      <SiteFooter />
     </>
   )
 }
+

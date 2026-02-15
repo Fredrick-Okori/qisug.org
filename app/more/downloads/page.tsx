@@ -583,7 +583,7 @@ export default function DownloadsPage() {
 
       </main>
 
-      <MainSiteFooter />
+    
     </div>
   )
 }

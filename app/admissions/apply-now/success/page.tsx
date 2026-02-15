@@ -255,7 +255,6 @@ export default function SuccessPage() {
             </div>
           </motion.div>
         </div>
-        <MainSiteFooter />
       </>
     );
   }

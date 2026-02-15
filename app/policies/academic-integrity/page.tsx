@@ -540,8 +540,6 @@ export default function AcademicIntegrityPage() {
           </div>
         </div>
       </main>
-
-      <SiteFooter />
     </div>
   )
 }

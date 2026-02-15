@@ -262,7 +262,6 @@ function LoginContent() {
             </Button>
           </div>
         </div>
-        <MainSiteFooter />
       </>
     );
   }

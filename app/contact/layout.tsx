@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
   title: "Contact Queensgate International School | Get in Touch",
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contact Queensgate International School | Get in Touch",
     description: "Contact Queensgate International School for admissions inquiries, academic information, and support. Reach us by email, phone, or visit our campus in Uganda.",
-    url: "https://www.qisug.org/contact",
+    url: "https://www.qgis.ac.ug/contact",
     images: [
       {
         url: "/images/queen-27s-20gate-20web-20nw-06.jpeg",
@@ -40,7 +41,7 @@ const contactSchemaData = {
   "@type": "EducationalOrganization",
   "name": "Queensgate International School",
   "description": "Contact Queensgate International School for world-class international education in Uganda.",
-  "url": "https://www.qisug.org/contact",
+  "url": "https://www.qgis.ac.ug/contact",
   "telephone": "+256-414-123-456",
   "email": "queensgateinternational@gmail.com",
   "address": {
@@ -78,6 +79,8 @@ export default function ContactLayout({
         }}
       />
       {children}
+      <SiteFooter />
     </>
   )
 }
+

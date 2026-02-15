@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
   title: "Policies | Queensgate International School",
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Policies | Queensgate International School",
     description: "Review Queensgate International School's policies including privacy policy, attendance policy, academic integrity, and acceptable use policy.",
-    url: "https://www.qisug.org/policies",
+    url: "https://www.qgis.ac.ug/policies",
     images: [
       {
         url: "/images/policies-hero.jpg",
@@ -39,7 +40,7 @@ const policiesSchemaData = {
   "@type": "WebPage",
   "name": "School Policies",
   "description": "Queensgate International School policies and regulations for students, parents, and staff.",
-  "url": "https://www.qisug.org/policies",
+  "url": "https://www.qgis.ac.ug/policies",
   "mainEntity": {
     "@type": "ItemList",
     "name": "School Policies",
@@ -87,6 +88,8 @@ export default function PoliciesLayout({
         }}
       />
       {children}
+      <SiteFooter />
     </>
   )
 }
+

@@ -252,11 +252,6 @@ export default function RequirementsPage() {
      
       </div>
     </section>
-    <div className="bg-[#f9f9f9]">
-  <CTA/>
-  <SiteFooter/>
-    </div>
-   
-      </>
+    </>
   )
 }

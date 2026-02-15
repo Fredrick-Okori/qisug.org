@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About Queensgate International School | Our Mission & Values",
     description: "Learn about Queensgate International School's mission to provide world-class education. Discover our core values, experienced faculty, and commitment to academic excellence and global citizenship.",
-    url: "https://www.qisug.org/about",
+    url: "https://www.qgis.ac.ug/about",
     images: [
       {
         url: "/images/queen-27s-20gate-20web-20nw-02.jpeg",
