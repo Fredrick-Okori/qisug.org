@@ -83,21 +83,21 @@ const educators = [
     name: "Dr. Sarah Mitchell",
     title: "Head of Mathematics",
     initials: "SM",
-    bio: "Dr. Mitchell has over 25 years of experience teaching mathematics at all levels. She holds a PhD in Mathematics Education and is passionate about making complex concepts accessible and engaging for all students.",
+    image: "/team/hedwig_namazzi.avif",
     expertise: ["Calculus", "Statistics", "Problem Solving"]
   },
   {
     name: "Mr. James Thompson",
     title: "Head of Sciences",
     initials: "JT",
-    bio: "With a Master's degree in Biology and 20 years of teaching experience, Mr. Thompson brings enthusiasm and real-world applications to science classes, inspiring students to explore the natural world.",
+    image: "/team/emma_golola.avif",
     expertise: ["Biology", "Chemistry", "Lab Sciences"]
   },
   {
     name: "Ms. Emily Chen",
     title: "English Department Lead",
     initials: "EC",
-    bio: "Ms. Chen holds a Master's in English Literature and has dedicated 15 years to developing students' critical thinking and communication skills through language and literature.",
+    image: "/team/claire_gomushabe.avif",
     expertise: ["Literature", "Writing", "Critical Analysis"]
   }
 ]
@@ -238,20 +238,17 @@ export default function AboutContent() {
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
               >
                 <motion.div 
-                  className="relative w-full aspect-[4/3] overflow-hidden rounded-lg shadow-2xl"
+                  className="relative w-full aspect-[3/4] overflow-hidden rounded-lg shadow-2xl"
                   whileHover={{ 
                     scale: 1.02,
                     boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)"
                   }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
-                  <Image
-                    src="/images/queen-27s-20gate-20web-20nw-02.jpeg"
-                    alt="Students learning together"
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                    className="object-cover"
-                    priority
+                  <img
+                    src="/images/Principal_s Official Portrait.avif"
+                    alt="Principal Dr. Margaret Williams"
+                    className="w-full h-full object-cover rounded-lg"
                   />
                 </motion.div>
               </motion.div>
@@ -359,36 +356,38 @@ export default function AboutContent() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {educators.map((teacher, index) => (
                 <motion.div
                   key={teacher.name}
-                  className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-xl overflow-hidden hover:border-[#053F52] hover:shadow-xl transition-all duration-300"
+                  className="bg-white rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <div className="relative h-48 bg-gradient-to-br from-[#053F52] to-[#2a3dc8ff] flex items-center justify-center">
-                    <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center text-white text-4xl font-bold">
-                      {teacher.initials}
+                  <div className="relative h-96 w-full overflow-hidden">
+                    <Image
+                      src={teacher.image}
+                      alt={teacher.name}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
+                      <h3 className="text-xl font-bold text-white mb-1">
+                        {teacher.name}
+                      </h3>
+                      <p className="text-sm text-white/80">
+                        {teacher.title}
+                      </p>
                     </div>
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-[#053F52] mb-1">
-                      {teacher.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-4">
-                      {teacher.title}
-                    </p>
-                    <p className="text-sm text-gray-700 leading-relaxed mb-4">
-                      {teacher.bio}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
+                  <div className="p-4 text-center bg-[#EFBF04]">
+                    <div className="flex flex-wrap gap-2 justify-center">
                       {teacher.expertise.map((skill) => (
                         <span 
                           key={skill}
-                          className="bg-[#EFBF04]/20 text-[#053F52] px-3 py-1 rounded-full text-xs font-medium"
+                          className="bg-white/30 text-[#053F52] px-3 py-1 rounded-full text-xs font-medium"
                         >
                           {skill}
                         </span>
@@ -422,13 +421,7 @@ export default function AboutContent() {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-[#053F52] to-[#053F52] flex items-center justify-center">
-                    <div className="text-white text-center p-8">
-                      <div className="w-40 h-40 mx-auto rounded-full bg-white/20 flex items-center justify-center text-7xl font-bold mb-4">
-                        MW
-                      </div>
-                      <p className="text-2xl font-bold">Dr. Margaret Williams</p>
-                      <p className="text-lg opacity-90">Principal</p>
-                    </div>
+                    <img src="/team/Principal_s Official Portrait.avif" alt="Principal Dr. Margaret Williams" className="w-full h-full object-cover rounded-lg" />
                   </div>
                 </motion.div>
               </motion.div>
@@ -481,7 +474,7 @@ export default function AboutContent() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.8 }}
                   >
-                    <p className="font-semibold text-[#053F52]">Dr. Margaret Williams</p>
+                    <p className="font-semibold text-[#053F52]">Ms. Ritah Kasembo</p>
                     <p className="text-sm text-[#053F52]/80">Principal, Queensgate International School</p>
                   </motion.div>
                 </div>

@@ -24,6 +24,14 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    localPatterns: [
+      {
+        pathname: '/team/**',
+      },
+      {
+        pathname: '/images/**',
+      },
+    ],
   },
   // Security headers
   async headers() {
