@@ -80,25 +80,25 @@ const coreValues = [
 
 const educators = [
   {
-    name: "Dr. Sarah Mitchell",
-    title: "Head of Mathematics",
-    initials: "SM",
+    name: "Ms. Hedwig Namazzi",
+    title: "English and History",
+    initials: "",
     image: "/team/hedwig_namazzi.avif",
-    expertise: ["Calculus", "Statistics", "Problem Solving"]
+    expertise: ["English", "History", ]
   },
   {
-    name: "Mr. James Thompson",
-    title: "Head of Sciences",
+    name: "Ms. Emma Golola",
+    title: "Head of English and Computer Science Department",
     initials: "JT",
     image: "/team/emma_golola.avif",
-    expertise: ["Biology", "Chemistry", "Lab Sciences"]
+    expertise: ["English", "Computer Science"]
   },
   {
-    name: "Ms. Emily Chen",
-    title: "English Department Lead",
+    name: "Mrs. Claire Gomushabe",
+    title: "Teacher Facilitator/Chemistry",
     initials: "EC",
     image: "/team/claire_gomushabe.avif",
-    expertise: ["Literature", "Writing", "Critical Analysis"]
+    expertise: ["Facilitator", "Chemistry"]
   }
 ]
 
