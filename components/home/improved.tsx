@@ -118,29 +118,7 @@ export function ImprovedHomeSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#3d4fd4]/20 to-transparent" />
             </motion.div>
 
-            {/* Floating Stats Card */}
-            <motion.div
-              className="absolute bottom-8 left-8 right-8 bg-[#EFBF04]/95 backdrop-blur-sm rounded-xl p-6 shadow-xl"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 1 }}
-            >
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-[#053F52]">1000+</div>
-                  <div className="text-xs text-gray-600">Students</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-[#053F52]">50+</div>
-                  <div className="text-xs text-gray-600">Countries</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-[#053F52]">15+</div>
-                  <div className="text-xs text-gray-600">Years</div>
-                </div>
-              </div>
-            </motion.div>
+     
           </div>
         </div>
       </div>
