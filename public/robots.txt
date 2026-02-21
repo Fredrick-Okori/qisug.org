@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.qgis.ac.ug/sitemap.xml
+
