@@ -153,6 +153,8 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#053F52" />
         <meta name="google-site-verification" content="UqDDsrSU8IL7pdXJRvNnXM2cyUdX-J0s21Iu59oWsqc" />
+        <link rel="icon" href="/favicon.ico?v=2" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
       </head>
       <body className={`${montserrat.variable} ${spectral.variable} font-sans antialiased`}>
         <AuthProvider>
