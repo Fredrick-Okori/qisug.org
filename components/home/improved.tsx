@@ -30,7 +30,10 @@ const features = [
 
 export function ImprovedHomeSection() {
   return (
-    <div className='bg-[#EFBF04]'>
+    <div 
+      className='bg-[#EFBF04]'
+      style={{ backgroundImage: "url('/dotted-map-2.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
 
    
     <section className="bg-[#053F52] max-w-7xl rounded-2xl mx-auto py-16 lg:py-24">
@@ -117,8 +120,6 @@ export function ImprovedHomeSection() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#3d4fd4]/20 to-transparent" />
             </motion.div>
-
-     
           </div>
         </div>
       </div>

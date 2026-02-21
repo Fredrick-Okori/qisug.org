@@ -194,7 +194,10 @@ export default function AcademicsPage() {
         </div>
 
         {/* Compulsory Courses Section */}
-        <div className="bg-white relative z-10">
+        <div 
+          className="bg-white relative z-10"
+          style={{ backgroundImage: "url('/dotted-map-2.png')", backgroundSize: '400px', backgroundPosition: 'center' }}
+        >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="text-center mb-12"
@@ -285,7 +288,10 @@ export default function AcademicsPage() {
         </div>
 
         {/* Community & Literacy Section */}
-        <div className="bg-white relative z-10">
+        <div 
+          className="bg-white relative z-10"
+          style={{ backgroundImage: "url('/dotted-map-2.png')", backgroundSize: '400px', backgroundPosition: 'center' }}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-start lg:items-center">
               {/* Left Side - Image */}

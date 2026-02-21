@@ -1,13 +1,16 @@
-# Task: Add images to Educators section in about-content.tsx
+# Task: Add New Director Images to About Page
 
-## Plan
-- [x] Read and understand the current about-content.tsx file
-- [x] Review available team images in public/team/
-- [x] Update educators array with image paths
-- [x] Modify educator cards to display images instead of initials
+## Plan:
+- [x] Update the directors grid in "Our Mission" section to use the 5 new director images
+- [x] Fix the image paths from .jpg to .avif format
+- [x] Add appropriate names and titles for the new directors
 
-## Implementation Steps
-1. [x] Add image paths to the educators array (3 educators: hedwig_namazzi, emma_golola, claire_gomushabe)
-2. [x] Replace the initials div with next/image components
-3. [x] Add localPatterns to next.config.mjs for /team/** images
+## Director Information (based on filenames):
+- Aaron (1)_converted.avif → Mr. Aaron
+- Douglas (2)_converted.avif → Mr. Douglas  
+- Edmund 1_converted.avif → Mr. Edmund
+- Maria 4_converted.avif → Ms. Maria
+- Martin (1)_converted.avif → Mr. Martin
+
+## Status: COMPLETED
 

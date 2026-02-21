@@ -48,12 +48,7 @@ const aboutSchemaData = {
   }
 }
 
-const stats = [
-  { icon: Award, number: "100%", label: "University Placement Rate" },
-  { icon: GraduationCap, number: "20+", label: "Years of Excellence" },
-  { icon: Users, number: "5:1", label: "Student to Teacher Ratio" },
-  { icon: Globe, number: "50+", label: "Countries Represented" }
-]
+
 
 const coreValues = [
   {
@@ -104,21 +99,21 @@ const educators = [
 
 const testimonials = [
   {
-    name: "Sarah Johnson",
-    role: "Class of 2023, Now at University of Toronto",
-    content: "Queensgate gave me the foundation I needed to excel at university. The personalized attention and challenging curriculum prepared me for success.",
+    name: "Laurent Kiiza Nahabwe",
+    role: "UNEB (S2) → OSSD (Grades 11 & 12) → University of the Fraser Valley, Canada",
+    content: "Transitioning from the UNEB curriculum after Senior 2 to the Ontario Secondary School Diploma (OSSD) was a game-changer for me. The shift exposed me to a skills-based, research-driven system where continuous assessment and structured coursework replaced rote learning. By the time I joined the University of the Fraser Valley, I was already comfortable with the Canadian academic structure. OSSD gave me the confidence, communication skills, and a direct pathway to excel in Canada.",
     rating: 5
   },
   {
-    name: "Michael Okonkwo",
-    role: "Class of 2022, Now at McGill University",
-    content: "The teachers at Queensgate truly care about your success. They pushed me to think critically and helped me discover my passion for engineering.",
+    name: "Victor Karamagi Naturinda",
+    role: "UNEB (S4) → OSSD (1 Year) → University of the Fraser Valley, Canada",
+    content: "After Senior 4, I spent one transformative year in the OSSD program before moving to Canada. The emphasis on critical thinking and practical application perfectly prepared me for the pace of a Canadian university. When I arrived at UFV, the transition felt seamless because the academic style was already familiar. OSSD didn't just strengthen my profile; it made my international education goals clear and achievable.",
     rating: 5
   },
   {
-    name: "Amina Hassan",
-    role: "Class of 2024, Now at University of British Columbia",
-    content: "As an international student, I appreciated the global perspective and supportive environment. Queensgate feels like a family.",
+    name: "Anonymous Alumni",
+    role: "UNEB (Senior 4) → OSSD (Grade 12 Pathway) → Saint Mary's University (SMU), Halifax → Clinical Psychologist",
+    content: "After finishing Senior 4 under the UNEB system, I pursued the Ontario Secondary School Diploma (OSSD) before enrolling at Saint Mary's University in Halifax. The program strengthened my academic writing, research ability, and independent learning habits—skills that were essential for studying psychology in Canada. Today, as a Clinical Psychologist, I can confidently say the OSSD pathway laid a strong foundation for my university journey and professional growth. It bridges students from UNEB into the Canadian education system in a structured and empowering way.",
     rating: 5
   }
 ]
@@ -229,7 +224,7 @@ export default function AboutContent() {
                 </div>
               </div>
 
-              {/* Right Side - Image */}
+              {/* Right Side - Directors Photos Grid */}
               <motion.div 
                 className="order-1 lg:order-2 w-full"
                 initial={{ opacity: 0, x: 30 }}
@@ -237,61 +232,54 @@ export default function AboutContent() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
               >
-                <motion.div 
-                  className="relative w-full aspect-[3/4] overflow-hidden rounded-lg shadow-2xl"
-                  whileHover={{ 
-                    scale: 1.02,
-                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)"
-                  }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  <img
-                    src="/images/Principal_s Official Portrait.avif"
-                    alt="Principal Dr. Margaret Williams"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </motion.div>
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-2xl">
+                    <img
+                      src="/directors/Aaron (1)_converted.avif"
+                      alt="Mr. Aaron"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white text-xs sm:text-sm p-2 rounded-b-lg">Mr. Aaron<br/>Director</div>
+                  </div>
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-2xl">
+                    <img
+                      src="/directors/Douglas  (2)_converted.avif"
+                      alt="Mr. Douglas"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white text-xs sm:text-sm p-2 rounded-b-lg">Mr. Douglas<br/>Director</div>
+                  </div>
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-2xl">
+                    <img
+                      src="/directors/Edmund 1_converted.avif"
+                      alt="Mr. Edmund"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white text-xs sm:text-sm p-2 rounded-b-lg">Mr. Edmund<br/>Director</div>
+                  </div>
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-2xl">
+                    <img
+                      src="/directors/Maria 4_converted.avif"
+                      alt="Ms. Maria"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white text-xs sm:text-sm p-2 rounded-b-lg">Ms. Maria<br/>Director</div>
+                  </div>
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-2xl">
+                    <img
+                      src="/directors/Martin  (1)_converted.avif"
+                      alt="Mr. Martin"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white text-xs sm:text-sm p-2 rounded-b-lg">Mr. Martin<br/>Director</div>
+                  </div>
+                </div>
               </motion.div>
             </div>
           </div>
         </div>
 
-        {/* Stats Section */}
-        <div className="bg-[#053F52] max-w-7xl mx-auto rounded-2xl relative z-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-            <motion.h2 
-              className="text-3xl lg:text-4xl xl:text-5xl text-white text-center mb-12"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              Queensgate by the Numbers
-            </motion.h2>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  className="bg-gradient-to-br from-[#053F52] to-[#053F52] rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl transition-all duration-300"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ y: -8 }}
-                >
-                  <stat.icon className="w-12 h-12 mx-auto mb-4 text-[#20cece]" />
-                  <div className="text-4xl md:text-5xl text-white mb-2">
-                    {stat.number}
-                  </div>
-                  <div className="text-base text-white/90">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
+
 
         {/* Core Values Section */}
         <div className="bg-[#EFBF04] relative z-10">
@@ -484,7 +472,10 @@ export default function AboutContent() {
         </div>
 
         {/* Student Testimonials Section */}
-        <div className="bg-white relative z-10">
+        <div 
+          className="bg-white relative z-10"
+          style={{ backgroundImage: "url('/dotted-map-2.png')", backgroundSize: '400px', backgroundPosition: 'center' }}
+        >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="text-center mb-12"

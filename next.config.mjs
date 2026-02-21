@@ -31,6 +31,9 @@ const nextConfig = {
       {
         pathname: '/images/**',
       },
+      {
+        pathname: '/partners/**',
+      },
     ],
   },
   // Security headers

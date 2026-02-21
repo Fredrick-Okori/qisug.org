@@ -153,7 +153,10 @@ export default function OurApproachPage() {
         </div>
 
         {/* Learning Tools Grid */}
-        <div className="bg-white relative z-10">
+        <div 
+          className="bg-white relative z-10"
+          style={{ backgroundImage: "url('/dotted-map-2.png')", backgroundSize: '400px', backgroundPosition: 'center' }}
+        >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="text-center mb-12"
@@ -250,7 +253,10 @@ export default function OurApproachPage() {
         </div>
 
         {/* Ontario Certified Resources Section */}
-        <div className="bg-white relative z-10">
+        <div 
+          className="bg-white relative z-10"
+          style={{ backgroundImage: "url('/dotted-map-2.png')", backgroundSize: '400px', backgroundPosition: 'center' }}
+        >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="text-center mb-12"

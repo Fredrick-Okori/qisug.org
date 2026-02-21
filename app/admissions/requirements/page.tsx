@@ -146,6 +146,7 @@ export default function RequirementsPage() {
     <section
       ref={sectionRef}
       className="pt-24 sm:pt-28 md:pt-32 lg:pt-40 pb-20"
+      style={{ backgroundImage: "url('/dotted-map-2.png')", backgroundSize: '400px', backgroundPosition: 'center' }}
     >
       <div className="mx-auto px-4 pt-20">
         {/* Header */}

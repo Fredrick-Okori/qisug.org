@@ -7,76 +7,34 @@ import { motion, useInView, useReducedMotion } from "framer-motion"
 // Partner/Accreditation logos data
 const partners = [
   {
-    name: "Ontario Ministry of Education",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "Ontario Ministry of Education Logo",
-    website: "https://www.ontario.ca/education",
+    name: "Edumandate",
+    logo: "/partners/edumandate logo.svg",
+    alt: "Edumandate Logo",
+    website: "https://www.edumandate.com",
   },
   {
-    name: "Cambridge Assessment",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "Cambridge Assessment International Education Logo",
-    website: "https://www.cambridgeinternational.org",
+    name: "Inspire",
+    logo: "/partners/inspire logo.avif",
+    alt: "Inspire Logo",
+    website: "https://www.inspire.com",
   },
   {
-    name: "International Baccalaureate",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "International Baccalaureate Logo",
-    website: "https://www.ibo.org",
+    name: "ITAC",
+    logo: "/partners/ITAC Dark.avif",
+    alt: "ITAC Logo",
+    website: "https://www.itac.org",
   },
   {
-    name: "NEASC Accreditation",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "NEASC Accreditation Logo",
-    website: "https://www.neasc.org",
-  },
-  {
-    name: "COIS Member School",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "Council of International Schools Logo",
-    website: "https://www.cois.org",
-  },
-  {
-    name: "UGX Partner School",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "Uganda Secondary Schools Association Logo",
+    name: "Kampala Quality",
+    logo: "/partners/KAMPALA QUALITY LOGO.avif",
+    alt: "Kampala Quality Logo",
     website: "#",
   },
   {
     name: "ISO Certification",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
+    logo: "/partners/PHOTO-2026-02-21-08-31-30.avif",
     alt: "ISO 9001 Certification Logo",
     website: "#",
-  },
-  {
-    name: "UNESCO Associate",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "UNESCO Associated Schools Network Logo",
-    website: "https://en.unesco.org/themes/education",
-  },
-  {
-    name: "ECIS Member",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "Educational Collaborative for International Schools Logo",
-    website: "https://www.ecis.org",
-  },
-  {
-    name: "IATA Authorized",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "IATA Authorized Training Center Logo",
-    website: "https://www.iata.org",
-  },
-  {
-    name: "Microsoft Showcase",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "Microsoft Showcase School Logo",
-    website: "https://www.microsoft.com",
-  },
-  {
-    name: "Google Certified",
-    logo: "/images/zas5zz9dmzkxht9zd4vz.avif",
-    alt: "Google Certified School Logo",
-    website: "https://edu.google.com",
   },
 ] as const
 
@@ -131,11 +89,9 @@ export function Accreditations() {
     },
   }), [getAnimationVariants])
 
-  // Split partners into 3 rows (4 per row)
+  // Split partners into rows (5 partners total - will display in flexible grid)
   const rows = [
-    partners.slice(0, 4),
-    partners.slice(4, 8),
-    partners.slice(8, 12),
+    partners.slice(0, 5),
   ]
 
   return (
