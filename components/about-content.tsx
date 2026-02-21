@@ -242,7 +242,7 @@ export default function AboutContent() {
                     <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white text-xs sm:text-sm p-2 rounded-b-lg">Mr. Aaron<br/>Director</div>
                   </div>
                   <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-2xl">
-                    <img
+                    <img 
                       src="/directors/Douglas  (2)_converted.avif"
                       alt="Mr. Douglas"
                       className="w-full h-full object-cover rounded-lg"
