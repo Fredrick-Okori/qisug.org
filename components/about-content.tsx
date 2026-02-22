@@ -20,6 +20,7 @@ import {
   Quote
 } from "lucide-react"
 import { CTA } from "@/components/home/cta"
+import Accreditations from "./home/accreditations"
 import Image from "next/image"
 
 // Structured Data for SEO
@@ -171,6 +172,179 @@ export default function AboutContent() {
           </div>
         </div>
 
+                {/* Principal's Message Section */}
+        <div className="bg-[#EFBF04] relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-start lg:items-center">
+              {/* Left Side - Image */}
+              <motion.div 
+                className="order-1 lg:order-1 w-full"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+              >
+                <motion.div 
+                  className="relative w-full aspect-[3/4] overflow-hidden rounded-lg shadow-2xl"
+                  whileHover={{ 
+                    scale: 1.02,
+                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)"
+                  }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#053F52] to-[#053F52] flex items-center justify-center">
+                    <img src="/team/Principal_s Official Portrait.avif" alt="Principal Dr. Margaret Williams" className="w-full h-full object-cover rounded-lg" />
+                  </div>
+                </motion.div>
+              </motion.div>
+
+              {/* Right Side - Text Content */}
+              <div className="order-2 lg:order-2">
+                <motion.h2 
+                  className="text-3xl lg:text-4xl text-[#053F52] mb-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                >
+                  A Message from Our Principal
+                </motion.h2>
+                <div className="space-y-4 text-[#053F52] text-base sm:text-lg leading-relaxed">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  >
+                    At Queensgate International School, we excel in preparing students for universities and colleges 
+                    worldwide through our comprehensive academic program. As a forward-thinking institution, we are 
+                    dedicated to educating young minds with purpose and passion.
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                  >
+                    Our staff ensures students are adaptable, resilient, and resourceful, contributing to our 100% 
+                    post-secondary placement record. At Queensgate, students follow a rigorous curriculum while 
+                    developing essential skills like independent thinking, collaboration, and effective communication.
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
+                  >
+                    Our community provides a peaceful and conducive learning environment. The smaller school community 
+                    allows our staff to know each student by name and offer personalized academic guidance.
+                  </motion.p>
+                  <motion.div 
+                    className="mt-6 pt-6 border-t-2 border-[#053F52]/20"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.8 }}
+                  >
+                    <p className="font-semibold text-[#053F52]">Ms. Ritah Kasembo</p>
+                    <p className="text-sm text-[#053F52]/80">Principal, Queensgate International School</p>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+                {/* Principal's Message Section */}
+        <div className="bg-[#EFBF04] relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-start lg:items-center">
+            
+
+              {/* Right Side - Text Content */}
+              <div className="order-2 lg:order-1">
+                <motion.h2 
+                  className="text-3xl lg:text-4xl text-[#053F52] mb-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                >
+                  A Message from Our Managing Director
+                </motion.h2>
+                <p className="font-semibold text-[#053F52]">Mr. Aaron Namanya</p>
+                <div className="space-y-4 text-[#053F52] text-base sm:text-lg leading-relaxed">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  >
+                    At Queensgate International School, our vision is deeply personal to me.
+                  </motion.p>
+                     <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  >
+                   Having lived and studied in Canada since 2016 to date, I have had the privilege of experiencing firsthand what makes that great nation’s education system exceptional. Canada is not just a country of opportunity; it is a country that deliberately builds thinkers, innovators, and independent learners. Its classrooms emphasize inquiry over cramming, research over repetition, and application over memorization. Students are trained to ask why, to defend their ideas, to collaborate across cultures, and to take ownership of their academic journeys.
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                  >
+                    Over the years, I have witnessed how the Ontario Secondary School Diploma (OSSD) framework shapes students into confident, self-driven individuals. It cultivates discipline, structured research skills, critical thinking, and the courage to explore ideas beyond textbooks. These are not merely academic traits, they are life skills.
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
+                   
+                  >
+                    This conviction is strengthened by my own family experience. All my siblings have gone through the OSSD pathway. Beyond academic success, I have seen how the program shaped them early, instilling a strong culture of independent learning, personal research, responsibility, and intellectual curiosity. They learned how to manage coursework, conduct credible research, write analytically, and prepare for university life long before stepping onto a university campus. That self-drive has been transformative.
+                  </motion.p>
+                  <motion.div 
+                    className="mt-6 pt-6 border-t-2 border-[#053F52]/20"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.8 }}
+                  >
+                    <p className="font-semibold text-[#053F52]">Aaron Namanya</p>
+                    <p className="text-sm text-[#053F52]/80">Managing Director | Proprietor | Academic Oversight</p>
+                  </motion.div>
+                </div>
+              </div>
+
+                {/* Left Side - Image */}
+              <motion.div 
+                className="order-1 lg:order-1 w-full"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+              >
+                <motion.div 
+                  className="relative w-full aspect-[3/4] overflow-hidden rounded-lg shadow-2xl"
+                  whileHover={{ 
+                    scale: 1.02,
+                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)"
+                  }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#053F52] to-[#053F52] flex items-center justify-center">
+                    <img src="/directors/Aaron (1)_converted.avif" alt="Director Mr. Aaron Namanya" className="w-full h-full object-cover rounded-lg" />
+                  </div>
+                </motion.div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+
         {/* Our Mission Section */}
         <div className="bg-[#EFBF04]  relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
@@ -233,14 +407,7 @@ export default function AboutContent() {
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
               >
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
-                  <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-2xl">
-                    <img
-                      src="/directors/Aaron (1)_converted.avif"
-                      alt="Mr. Aaron"
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                    <div className="absolute bottom-0 left-0 w-full bg-black/60 text-white text-xs sm:text-sm p-2 rounded-b-lg">Mr. Aaron<br/>Director</div>
-                  </div>
+                
                   <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-2xl">
                     <img 
                       src="/directors/Douglas  (2)_converted.avif"
@@ -388,88 +555,7 @@ export default function AboutContent() {
           </div>
         </div>
 
-        {/* Principal's Message Section */}
-        <div className="bg-[#EFBF04] relative z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-start lg:items-center">
-              {/* Left Side - Image */}
-              <motion.div 
-                className="order-1 lg:order-1 w-full"
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-              >
-                <motion.div 
-                  className="relative w-full aspect-[3/4] overflow-hidden rounded-lg shadow-2xl"
-                  whileHover={{ 
-                    scale: 1.02,
-                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)"
-                  }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#053F52] to-[#053F52] flex items-center justify-center">
-                    <img src="/team/Principal_s Official Portrait.avif" alt="Principal Dr. Margaret Williams" className="w-full h-full object-cover rounded-lg" />
-                  </div>
-                </motion.div>
-              </motion.div>
 
-              {/* Right Side - Text Content */}
-              <div className="order-2 lg:order-2">
-                <motion.h2 
-                  className="text-3xl lg:text-4xl text-[#053F52] mb-6"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                >
-                  A Message from Our Principal
-                </motion.h2>
-                <div className="space-y-4 text-[#053F52] text-base sm:text-lg leading-relaxed">
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                  >
-                    At Queensgate International School, we excel in preparing students for universities and colleges 
-                    worldwide through our comprehensive academic program. As a forward-thinking institution, we are 
-                    dedicated to educating young minds with purpose and passion.
-                  </motion.p>
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                  >
-                    Our staff ensures students are adaptable, resilient, and resourceful, contributing to our 100% 
-                    post-secondary placement record. At Queensgate, students follow a rigorous curriculum while 
-                    developing essential skills like independent thinking, collaboration, and effective communication.
-                  </motion.p>
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.6 }}
-                  >
-                    Our community provides a peaceful and conducive learning environment. The smaller school community 
-                    allows our staff to know each student by name and offer personalized academic guidance.
-                  </motion.p>
-                  <motion.div 
-                    className="mt-6 pt-6 border-t-2 border-[#053F52]/20"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.8 }}
-                  >
-                    <p className="font-semibold text-[#053F52]">Ms. Ritah Kasembo</p>
-                    <p className="text-sm text-[#053F52]/80">Principal, Queensgate International School</p>
-                  </motion.div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Student Testimonials Section */}
         <div 
@@ -578,6 +664,7 @@ export default function AboutContent() {
 
         {/* Call to Action */}
       <CTA/>
+      <Accreditations/>
       </main>
 
       <SiteFooter />

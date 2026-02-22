@@ -11,6 +11,7 @@ import { motion } from "framer-motion"
 import { Mail, Phone, Clock, MapPin, Send, CheckCircle, AlertCircle } from "lucide-react"
 import Image from "next/image"
 import { CTA } from "@/components/home/cta"
+import Accreditations from "./home/accreditations"
 
 interface FormData {
   firstName: string
@@ -402,7 +403,7 @@ export default function ContactForm() {
           </section>
 
         <CTA/>
-  
+  <Accreditations/>
       </main>
 
    

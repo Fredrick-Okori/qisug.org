@@ -7,6 +7,12 @@ import { motion, useInView, useReducedMotion } from "framer-motion"
 // Partner/Accreditation logos data
 const partners = [
   {
+    name: "CIC",
+    logo: "/partners/cic_logo_converted.avif",
+    alt: "CIC",
+    website: '#'
+  },
+  {
     name: "Edumandate",
     logo: "/partners/edumandate logo.svg",
     alt: "Edumandate Logo",
@@ -163,9 +169,9 @@ export function Accreditations() {
                     aria-label={`Visit ${partner.name} website`}
                     className="group block"
                   >
-                    <div className="relative w-32 h-24 md:w-40 md:h-28 lg:w-48 lg:h-32 bg-white rounded-lg md:rounded-xl flex items-center justify-center p-3 md:p-4 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-white/10">
+                    <div className="relative w-32 h-24 md:w-40 md:h-28 lg:w-48 lg:h-32 rounded-lg md:rounded-xl flex items-center justify-center p-3 md:p-4 shadow-lg transition-all duration-300 hover:shadow-2xl border border-white/10">
                       {/* Placeholder gradient background */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/10 rounded-lg md:rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 " />
                       
                       {/* Logo Image */}
                       <div className="relative w-full h-full flex items-center justify-center">
@@ -174,7 +180,7 @@ export function Accreditations() {
                           alt={partner.alt}
                           width={160}
                           height={100}
-                          className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                          className="max-w-full max-h-full object-contain"
                         />
                       </div>
                     </div>
