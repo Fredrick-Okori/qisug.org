@@ -99,26 +99,18 @@ const educators = [
 ]
 
 const directors = [
-  {
-    name: "Mr. Douglas",
-    title: "Board Director | Proprietor",
-    image: "/directors/Douglas  (2)_converted.avif"
-  },
+ 
   {
     name: "Turinawe Edmon",
-    title: "Board Director | Proprietor|  & Corporate Strategy, Growth & Infrastructure",
+    title: "Board Director & Corporate Strategy, Growth & Infrastructure",
     image: "/directors/Edmund 1_converted.avif"
   },
   {
     name: "Gahongaire Mary Kinobe",
-    title: "Chairperson, Board of Directors",
+    title: "Chairperson, Board of Directors | Propietors",
     image: "/directors/Maria 4_converted.avif"
   },
-  {
-    name: "Eng. Kuteesa Tumwiine Ferdinand",
-    title: "Board Director",
-    image: "/directors/Martin  (1)_converted.avif"
-  }
+ 
 ]
 
 const testimonials = [
@@ -453,8 +445,11 @@ export default function AboutContent() {
 {/* Meet Our Directors Section */}
         <div className="bg-[#053F52] relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-            <motion.div
-              className="text-center mb-12"
+           
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+               <motion.div
+              className="text-center mx-auto mb-12"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -467,12 +462,10 @@ export default function AboutContent() {
                 Our leadership team consists of experienced professionals dedicated to guiding our school towards excellence
               </p>
             </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
               {directors.map((director, index) => (
                 <motion.div
                   key={director.name}
-                  className="bg-white rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group"
+                  className="bg-white justify-center rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
