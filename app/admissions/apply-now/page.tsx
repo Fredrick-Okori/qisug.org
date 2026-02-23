@@ -27,7 +27,7 @@ const StepIndicator = ({ currentStep, totalSteps }: { currentStep: number; total
               index + 1 < currentStep
                 ? 'bg-green-500 text-white'
                 : index + 1 === currentStep
-                ? 'bg-[#053f52] text-white'
+                ? 'bg-[#032f36] text-white'
                 : 'bg-gray-200 text-gray-500'
             }`}
             initial={{ scale: 0.8, opacity: 0 }}
@@ -724,7 +724,7 @@ export default function ApplyNowPage() {
             </motion.div>
             
             <motion.h1 
-              className="text-3xl md:text-4xl text-[#053f52] mb-4 font-serif"
+              className="text-3xl md:text-4xl text-[#032f36] mb-4 font-serif"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -804,7 +804,7 @@ export default function ApplyNowPage() {
                   <AlertCircle className="w-8 h-8 text-red-600" />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-[#053f52] mb-3 text-center font-serif">
+                <h3 className="text-2xl font-bold text-[#032f36] mb-3 text-center font-serif">
                   Clear All Progress?
                 </h3>
                 
@@ -850,7 +850,7 @@ export default function ApplyNowPage() {
                 {/* Left Side - Image and Title */}
                 <div className="flex flex-col gap-8">
                     <motion.h1 
-                      className="text-5xl md:text-6xl text-[#053f52] leading-tight font-serif"
+                      className="text-5xl md:text-6xl text-[#032f36] leading-tight font-serif"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                     >
@@ -887,7 +887,7 @@ export default function ApplyNowPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                   >
-                    <h3 className="text-xl font-bold text-[#053f52] mb-3 font-serif">
+                    <h3 className="text-xl font-bold text-[#032f36] mb-3 font-serif">
                       Need Help?
                     </h3>
                     <p className="text-gray-700 mb-2 font-sans">
@@ -907,7 +907,7 @@ export default function ApplyNowPage() {
                   transition={{ delay: 0.2 }}
                 >
                   <motion.h2 
-                    className="text-3xl md:text-4xl text-[#053f52] mb-6 font-serif"
+                    className="text-3xl md:text-4xl text-[#032f36] mb-6 font-serif"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
@@ -931,7 +931,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.5 }}
                     >
-                      <h3 className="text-xl font-bold text-[#053f52] mb-3 font-serif">
+                      <h3 className="text-xl font-bold text-[#032f36] mb-3 font-serif">
                         Important Information
                       </h3>
                       <ul className="space-y-2 text-gray-700">
@@ -948,7 +948,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.6 }}
                     >
-                      <h3 className="text-xl font-bold text-[#053f52] mb-3 font-serif">
+                      <h3 className="text-xl font-bold text-[#032f36] mb-3 font-serif">
                         Required Documents
                       </h3>
                       <ul className="space-y-2 text-gray-700">
@@ -965,7 +965,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.7 }}
                     >
-                      <h3 className="text-xl font-bold text-[#053f52] mb-3 font-serif">
+                      <h3 className="text-xl font-bold text-[#032f36] mb-3 font-serif">
                         Application Process
                       </h3>
                       <ol className="space-y-3 text-gray-700">
@@ -986,7 +986,7 @@ export default function ApplyNowPage() {
                   >
                     <motion.button
                       onClick={() => setCurrentStep(2)}
-                      className="bg-[#053f52] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all flex items-center gap-2 font-sans"
+                      className="bg-[#032f36] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all flex items-center gap-2 font-sans"
                       whileHover={{ scale: 1.05 }}
                     >
                       Proceed to Application
@@ -1022,14 +1022,14 @@ export default function ApplyNowPage() {
                 )}
 
                 <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
-                  <h2 className="text-3xl font-bold text-[#053f52] mb-8 text-center font-serif">
+                  <h2 className="text-3xl font-bold text-[#032f36] mb-8 text-center font-serif">
                     Application Form
                   </h2>
 
                   <form onSubmit={(e) => { e.preventDefault(); handleFormSubmit(); }}>
                     {/* Personal Information */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
+                      <h3 className="text-xl font-bold text-[#032f36] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Personal Information
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -1124,7 +1124,7 @@ export default function ApplyNowPage() {
 
                     {/* Contact Information */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
+                      <h3 className="text-xl font-bold text-[#032f36] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Contact Information
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -1165,7 +1165,7 @@ export default function ApplyNowPage() {
 
                     {/* Address Information */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
+                      <h3 className="text-xl font-bold text-[#032f36] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Address Information
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -1267,7 +1267,7 @@ export default function ApplyNowPage() {
 
                     {/* Emergency Contact */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
+                      <h3 className="text-xl font-bold text-[#032f36] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Parent/Guardian Information
                       </h3>
                       <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4 rounded-r-lg">
@@ -1314,7 +1314,7 @@ export default function ApplyNowPage() {
 
                     {/* Academic Information */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
+                      <h3 className="text-xl font-bold text-[#032f36] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Academic Information
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -1382,7 +1382,7 @@ export default function ApplyNowPage() {
 
                     {/* Required Documents */}
                     <div className="mb-8">
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
+                      <h3 className="text-xl font-bold text-[#032f36] mb-4 pb-2 border-b-2 border-[#EFBF04] font-serif">
                         Required Documents
                       </h3>
                       <div className="space-y-4">
@@ -1462,7 +1462,7 @@ export default function ApplyNowPage() {
                       <motion.button 
                         type="submit" 
                         disabled={isSubmitting} 
-                        className={`bg-[#053f52] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                        className={`bg-[#032f36] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                         whileHover={!isSubmitting ? { scale: 1.05 } : {}}
                       >
                         {isSubmitting ? (
@@ -1501,7 +1501,7 @@ export default function ApplyNowPage() {
                       <FileText className="w-12 h-12 text-blue-600" />
                     </motion.div>
                     
-                    <h2 className="text-3xl md:text-4xl text-[#053f52] mb-4 font-serif">
+                    <h2 className="text-3xl md:text-4xl text-[#032f36] mb-4 font-serif">
                      One More Step to Go
                     </h2>
                     
@@ -1511,7 +1511,7 @@ export default function ApplyNowPage() {
 
                     {/* Reference Number Box */}
                     <motion.div 
-                      className="bg-[#053f52] rounded-xl p-8 mb-8"
+                      className="bg-[#032f36] rounded-xl p-8 mb-8"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
@@ -1541,7 +1541,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
                     >
-                    <h3 className="font-semibold text-[#053f52] mb-4 text-center font-sans">
+                    <h3 className="font-semibold text-[#032f36] mb-4 text-center font-sans">
                         Application Summary
                       </h3>
                       <div className="grid md:grid-cols-2 gap-4 text-sm">
@@ -1575,7 +1575,7 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5 }}
                     >
-                    <h3 className="font-semibold text-[#053f52] mb-4 font-sans">
+                    <h3 className="font-semibold text-[#032f36] mb-4 font-sans">
                         Bank Payment Instructions
                       </h3>
                       <div className="space-y-2 text-gray-700 font-sans">
@@ -1600,7 +1600,7 @@ export default function ApplyNowPage() {
                     >
                       <button
                         onClick={generatePDF}
-                        className="bg-[#20cece] text-[#053f52] px-8 py-3 rounded-full font-semibold hover:bg-[#20cece]/90 transition-all flex items-center justify-center gap-2"
+                        className="bg-[#20cece] text-[#032f36] px-8 py-3 rounded-full font-semibold hover:bg-[#20cece]/90 transition-all flex items-center justify-center gap-2"
                       >
                         <Download className="w-5 h-5" />
                         Download PDF
@@ -1615,7 +1615,7 @@ export default function ApplyNowPage() {
                     >
                       <button
                         onClick={() => setCurrentStep(4)}
-                        className="bg-[#053f52] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 mx-auto"
+                        className="bg-[#032f36] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 mx-auto"
                       >
                         Upload Payment Slip
                         <ChevronRight className="w-5 h-5" />
@@ -1638,7 +1638,7 @@ export default function ApplyNowPage() {
                 
                 <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
                   <div className="max-w-2xl mx-auto">
-                    <h2 className="text-3xl md:text-4xl text-[#053f52] mb-6 text-center font-serif">
+                    <h2 className="text-3xl md:text-4xl text-[#032f36] mb-6 text-center font-serif">
                       Upload Payment Slip
                     </h2>
                     
@@ -1697,7 +1697,7 @@ export default function ApplyNowPage() {
                       <p className="text-sm text-gray-700 mb-2">
                         <strong>Your Reference Number:</strong>
                       </p>
-                      <p className="text-2xl font-mono font-bold text-[#053f52]">{generatedReference}</p>
+                      <p className="text-2xl font-mono font-bold text-[#032f36]">{generatedReference}</p>
                     </motion.div>
 
                     {/* Navigation Buttons */}
@@ -1719,7 +1719,7 @@ export default function ApplyNowPage() {
                         <motion.button
                           onClick={handlePaymentSubmit}
                           disabled={!paymentSlip || isSubmitting}
-                          className={`bg-[#053f52] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all ${
+                          className={`bg-[#032f36] text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all ${
                             !paymentSlip || isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
                           }`}
                           whileHover={paymentSlip && !isSubmitting ? { scale: 1.05 } : {}}
@@ -1771,7 +1771,7 @@ export default function ApplyNowPage() {
                     </motion.div>
                     
                     <motion.h1 
-                      className="text-4xl md:text-5xl text-[#053f52] mb-6 font-serif"
+                      className="text-4xl md:text-5xl text-[#032f36] mb-6 font-serif"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
@@ -1794,24 +1794,24 @@ export default function ApplyNowPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5 }}
                     >
-                      <h3 className="text-xl font-bold text-[#053f52] mb-4 font-serif">
+                      <h3 className="text-xl font-bold text-[#032f36] mb-4 font-serif">
                         What Happens Next?
                       </h3>
                       <div className="text-left space-y-3 font-sans">
                         <div className="flex items-start gap-3">
-                          <div className="w-6 h-6 bg-[#053f52] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">1</div>
+                          <div className="w-6 h-6 bg-[#032f36] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">1</div>
                           <p className="text-gray-700">Our admissions team will review your application and documents</p>
                         </div>
                         <div className="flex items-start gap-3">
-                          <div className="w-6 h-6 bg-[#053f52] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">2</div>
+                          <div className="w-6 h-6 bg-[#032f36] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">2</div>
                           <p className="text-gray-700">You will receive a confirmation email at <strong>{formData.email}</strong></p>
                         </div>
                         <div className="flex items-start gap-3">
-                          <div className="w-6 h-6 bg-[#053f52] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">3</div>
+                          <div className="w-6 h-6 bg-[#032f36] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">3</div>
                           <p className="text-gray-700">We will contact you within <strong>5-7 business days</strong> regarding next steps</p>
                         </div>
                         <div className="flex items-start gap-3">
-                          <div className="w-6 h-6 bg-[#053f52] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">4</div>
+                          <div className="w-6 h-6 bg-[#032f36] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">4</div>
                           <p className="text-gray-700">Keep your reference number (<strong>{generatedReference}</strong>) for future correspondence</p>
                         </div>
                       </div>
@@ -1838,7 +1838,7 @@ export default function ApplyNowPage() {
                     >
                       <a
                         href="/dashboard"
-                        className="inline-block bg-[#EFBF04] text-[#053f52] px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all"
+                        className="inline-block bg-[#EFBF04] text-[#032f36] px-12 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all"
                       >
                         View My Application
                       </a>

@@ -308,7 +308,7 @@ export default function AdminApplicationsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -354,14 +354,14 @@ export default function AdminApplicationsPage() {
               placeholder="Search by name, email, or reference..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
             />
           </div>
           <div className="flex gap-3">
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+              className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
             >
               <option value="all">All Status</option>
               <option value="Submitted">Submitted</option>
@@ -403,7 +403,7 @@ export default function AdminApplicationsPage() {
                         href={`/dashboard/admin/applications/${app.id}`}
                         className="block"
                       >
-                        <span className="font-mono text-sm text-slate-700 group-hover:text-[#053f52] transition-colors">
+                        <span className="font-mono text-sm text-slate-700 group-hover:text-[#032f36] transition-colors">
                           {app.reference}
                         </span>
                       </Link>
@@ -413,7 +413,7 @@ export default function AdminApplicationsPage() {
                         href={`/dashboard/admin/applications/${app.id}`}
                         className="block"
                       >
-                        <p className="font-medium text-slate-900 group-hover:text-[#053f52] transition-colors">
+                        <p className="font-medium text-slate-900 group-hover:text-[#032f36] transition-colors">
                           {app.applicant_name}
                         </p>
                         <p className="text-sm text-slate-500">{app.email}</p>
@@ -424,7 +424,7 @@ export default function AdminApplicationsPage() {
                         href={`/dashboard/admin/applications/${app.id}`}
                         className="block"
                       >
-                        <p className="text-slate-900 group-hover:text-[#053f52] transition-colors">
+                        <p className="text-slate-900 group-hover:text-[#032f36] transition-colors">
                           {app.program}
                         </p>
                         <p className="text-sm text-slate-500">{app.grade}</p>
@@ -467,7 +467,7 @@ export default function AdminApplicationsPage() {
                     <td className="px-6 py-4 text-slate-600">
                       <Link 
                         href={`/dashboard/admin/applications/${app.id}`}
-                        className="block group-hover:text-[#053f52] transition-colors"
+                        className="block group-hover:text-[#032f36] transition-colors"
                       >
                         {app.submitted_at}
                       </Link>
@@ -542,7 +542,7 @@ export default function AdminApplicationsPage() {
                     onClick={() => setCurrentPage(page)}
                     className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                       currentPage === page
-                        ? 'bg-[#053f52] text-white'
+                        ? 'bg-[#032f36] text-white'
                         : 'hover:bg-slate-100 text-slate-700'
                     }`}
                   >

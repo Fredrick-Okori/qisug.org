@@ -4,7 +4,8 @@ import { Facebook, Instagram, Twitter } from "lucide-react"
 
 export function SiteFooter() {
   return (
-    <footer className="bg-[#053F52] py-8">
+    <>
+    <footer className="bg-[#032f36] py-8">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-white">
           {/* Location */}
@@ -55,5 +56,11 @@ export function SiteFooter() {
         </div>
       </div>
     </footer>
+    <div className="bg-[#032f36]">
+      <div className="container mx-auto px-4 py-3">
+        <p className="text-center text-xs text-white/90">Copyright © Queensgate International School 2026. All Rights Reserved.</p>
+      </div>
+    </div>
+    </>
   )
 }

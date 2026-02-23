@@ -158,12 +158,12 @@ export default function RequirementsPage() {
         >
          
 
-          <h2 className="text-4xl md:text-6xl text-[#053f52] font-serif mb-4 leading-tight">
+          <h2 className="text-4xl md:text-6xl text-[#032f36] font-serif mb-4 leading-tight">
             Requirements to Study at{" "}
             <span className="text-[#20cece]">Queensgate</span>
           </h2>
           
-          <p className="text-lg md:text-xl text-[#053f52]">
+          <p className="text-lg md:text-xl text-[#032f36]">
             Everything you need to know to start your educational journey with us
           </p>
         </motion.div>
@@ -193,14 +193,14 @@ export default function RequirementsPage() {
                       transition={{ duration: 0.5 }}
                       className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-[#20cece] to-[#20cece] rounded-2xl flex items-center justify-center shadow-lg"
                     >
-                      <Icon className="w-7 h-7 text-[#053f52]" />
+                      <Icon className="w-7 h-7 text-[#032f36]" />
                     </motion.div>
                     
                     <div className="flex-1">
-                      <h3 className="text-2xl md:text-3xl  text-[#053f52] mb-2">
+                      <h3 className="text-2xl md:text-3xl  text-[#032f36] mb-2">
                         {requirement.title}
                       </h3>
-                      <p className="text-[#053f52] text-base md:text-lg">
+                      <p className="text-[#032f36] text-base md:text-lg">
                         {requirement.description}
                       </p>
                     </div>
@@ -226,7 +226,7 @@ export default function RequirementsPage() {
                             transition={{ duration: 0.3 }}
                             className="flex-shrink-0 w-10 h-10 bg-[#20cece]/20 rounded-xl flex items-center justify-center group-hover:bg-[#EFBF04]/30 transition-colors duration-300"
                           >
-                            <ItemIcon className="w-5 h-5 text-[#053f52]" />
+                            <ItemIcon className="w-5 h-5 text-[#032f36]" />
                           </motion.div>
                           
                           <p className="text-gray-700 text-base md:text-lg leading-relaxed pt-1.5">

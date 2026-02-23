@@ -12,7 +12,7 @@ export default function NotFoundPage() {
     <div className="w-full flex flex-col min-h-screen">
      <BlueSiteHeader/>
 
-      <main className="flex-1 bg-[#053f52] pt-24 sm:pt-32 md:pt-20 lg:pt-25">
+      <main className="flex-1 bg-[#032f36] pt-24 sm:pt-32 md:pt-20 lg:pt-25">
         <MotionWrapper className="relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-center min-h-[calc(100vh-10rem)]">
@@ -74,7 +74,7 @@ export default function NotFoundPage() {
                   <Link href="/">
                     <Button
                       size="lg"
-                      className="bg-[#20cece] text-[#053f52] hover:bg-[#20cece]/90 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 rounded-md shadow-lg transition-all hover:shadow-xl"
+                      className="bg-[#20cece] text-[#032f36] hover:bg-[#20cece]/90 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 rounded-md shadow-lg transition-all hover:shadow-xl"
                     >
                       Go Back Home
                     </Button>

@@ -314,7 +314,7 @@ export default function CalendarPage() {
           <div className="max-w-7xl mx-auto px-4 py-5">
             <div className="max-w-5xl">
               <motion.h1 
-                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52]"
+                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#032f36]"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -326,7 +326,7 @@ export default function CalendarPage() {
                 Academic Calendar
               </motion.h1>
               <motion.p
-                className="text-xl sm:text-2xl text-[#053F52] mt-4"
+                className="text-xl sm:text-2xl text-[#032f36] mt-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -357,11 +357,11 @@ export default function CalendarPage() {
                     delay: 0.3
                   }}
                 >
-                  <CalendarDays className="w-8 h-8 text-[#053F52]" />
-                  <h2 className="text-3xl  text-[#053F52]">Plan Your Year</h2>
+                  <CalendarDays className="w-8 h-8 text-[#032f36]" />
+                  <h2 className="text-3xl  text-[#032f36]">Plan Your Year</h2>
                 </motion.div>
 
-                <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#053F52]">
+                <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#032f36]">
                   <motion.p 
                     className="text-base sm:text-lg md:text-xl leading-relaxed"
                     initial={{ opacity: 0, y: 20 }}
@@ -404,13 +404,13 @@ export default function CalendarPage() {
                     <div className="flex items-start gap-3">
                       <Download className="w-6 h-6 text-[#20cece] flex-shrink-0 mt-1" />
                       <div>
-                        <h3 className=" text-[#053F52] mb-2">Download Full Calendar</h3>
+                        <h3 className=" text-[#032f36] mb-2">Download Full Calendar</h3>
                         <p className="text-gray-700 text-sm mb-4">
                           Get a PDF version of the complete academic calendar with all important dates, 
                           exam schedules, and event information.
                         </p>
                         <Button
-                          className="bg-[#20cece] text-white hover:bg-[#053F52] transition-colors duration-300"
+                          className="bg-[#20cece] text-white hover:bg-[#032f36] transition-colors duration-300"
                         >
                           <Download className="mr-2 w-4 h-4" />
                           Download PDF Calendar
@@ -467,8 +467,8 @@ export default function CalendarPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <CalendarRange className="w-8 h-8 text-[#053F52]" />
-                <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                <CalendarRange className="w-8 h-8 text-[#032f36]" />
+                <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                   Semester Schedule
                 </h2>
               </div>
@@ -488,11 +488,11 @@ export default function CalendarPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <div className="flex items-center gap-4 mb-6">
-                      <div className="w-16 h-16 bg-[#053F52] rounded-xl flex items-center justify-center">
+                      <div className="w-16 h-16 bg-[#032f36] rounded-xl flex items-center justify-center">
                         <SemesterIcon className="w-8 h-8 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-2xl  text-[#053F52]">{semester.name}</h3>
+                        <h3 className="text-2xl  text-[#032f36]">{semester.name}</h3>
                         <p className="text-gray-600 text-sm">{academicYear.year}</p>
                       </div>
                     </div>
@@ -501,7 +501,7 @@ export default function CalendarPage() {
                       <div className="flex items-start gap-3 bg-white/70 p-4 rounded-lg">
                         <CalendarCheck className="w-5 h-5 text-[#20cece] flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-sm font-semibold text-[#053F52]">Semester Dates</p>
+                          <p className="text-sm font-semibold text-[#032f36]">Semester Dates</p>
                           <p className="text-sm text-gray-700">{semester.startDate} - {semester.endDate}</p>
                         </div>
                       </div>
@@ -509,7 +509,7 @@ export default function CalendarPage() {
                       <div className="flex items-start gap-3 bg-white/70 p-4 rounded-lg">
                         <Clock className="w-5 h-5 text-[#20cece] flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-sm font-semibold text-[#053F52]">Midterm Exams</p>
+                          <p className="text-sm font-semibold text-[#032f36]">Midterm Exams</p>
                           <p className="text-sm text-gray-700">{semester.midterm}</p>
                         </div>
                       </div>
@@ -517,14 +517,14 @@ export default function CalendarPage() {
                       <div className="flex items-start gap-3 bg-white/70 p-4 rounded-lg">
                         <FileText className="w-5 h-5 text-[#20cece] flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-sm font-semibold text-[#053F52]">Final Exams</p>
+                          <p className="text-sm font-semibold text-[#032f36]">Final Exams</p>
                           <p className="text-sm text-gray-700">{semester.finals}</p>
                         </div>
                       </div>
                     </div>
 
                     <div className="border-t-2 border-gray-200 pt-4">
-                      <h4 className="text-sm  text-[#053F52] mb-3">Breaks & Holidays:</h4>
+                      <h4 className="text-sm  text-[#032f36] mb-3">Breaks & Holidays:</h4>
                       <ul className="space-y-2">
                         {semester.breaks.map((break_item, idx) => (
                           <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
@@ -554,13 +554,13 @@ export default function CalendarPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <AlertCircle className="w-8 h-8 text-[#053F52]" />
-                <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                <AlertCircle className="w-8 h-8 text-[#032f36]" />
+                <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                   Important Dates
                 </h2>
               </div>
               <div className="h-1 w-24 bg-[#20cece] rounded-full"></div>
-              <p className="text-[#053F52] mt-4 text-lg">
+              <p className="text-[#032f36] mt-4 text-lg">
                 Mark these key dates on your calendar to stay on track throughout the academic year.
               </p>
             </motion.div>
@@ -578,17 +578,17 @@ export default function CalendarPage() {
                     transition={{ duration: 0.5, delay: index * 0.05 }}
                   >
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-[#053F52] rounded-xl flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 bg-[#032f36] rounded-xl flex items-center justify-center flex-shrink-0">
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
-                          <span className="bg-[#053F52] text-white text-xs  px-3 py-1 rounded-full">
+                          <span className="bg-[#032f36] text-white text-xs  px-3 py-1 rounded-full">
                             {item.type}
                           </span>
                         </div>
                         <p className="text-sm text-gray-600 mb-2">{item.date}</p>
-                        <h3 className="text-lg  text-[#053F52] mb-2">
+                        <h3 className="text-lg  text-[#032f36] mb-2">
                           {item.title}
                         </h3>
                         <p className="text-gray-700 text-sm leading-relaxed">
@@ -615,7 +615,7 @@ export default function CalendarPage() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <Star className="w-8 h-8 text-[#EFBF04]" />
-                <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                   Upcoming Events
                 </h2>
               </div>
@@ -638,7 +638,7 @@ export default function CalendarPage() {
                     </span>
                   </div>
                   
-                  <h3 className="text-lg  text-[#053F52] mb-3 group-hover:text-[#20cece] transition-colors">
+                  <h3 className="text-lg  text-[#032f36] mb-3 group-hover:text-[#20cece] transition-colors">
                     {event.title}
                   </h3>
 
@@ -685,8 +685,8 @@ export default function CalendarPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <CalendarDays className="w-8 h-8 text-[#053F52]" />
-                <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                <CalendarDays className="w-8 h-8 text-[#032f36]" />
+                <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                   Month-by-Month Overview
                 </h2>
               </div>
@@ -708,7 +708,7 @@ export default function CalendarPage() {
                     <div className={`w-12 h-12 ${month.color} rounded-xl flex items-center justify-center mb-4 mx-auto`}>
                       <MonthIcon className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-lg  text-[#053F52] text-center mb-3">
+                    <h3 className="text-lg  text-[#032f36] text-center mb-3">
                       {month.month}
                     </h3>
                     <ul className="space-y-2">
@@ -771,8 +771,8 @@ export default function CalendarPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                 >
-                  <Download className="w-8 h-8 text-[#053F52]" />
-                  <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                  <Download className="w-8 h-8 text-[#032f36]" />
+                  <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                     Stay Synchronized
                   </h2>
                 </motion.div>
@@ -785,7 +785,7 @@ export default function CalendarPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                   >
-                    <h3 className=" text-[#053F52] mb-3 flex items-center gap-2">
+                    <h3 className=" text-[#032f36] mb-3 flex items-center gap-2">
                       <FileText className="w-5 h-5 text-blue-500" />
                       Download PDF Calendar
                     </h3>
@@ -808,7 +808,7 @@ export default function CalendarPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                   >
-                    <h3 className=" text-[#053F52] mb-3 flex items-center gap-2">
+                    <h3 className=" text-[#032f36] mb-3 flex items-center gap-2">
                       <Calendar className="w-5 h-5 text-green-500" />
                       Subscribe to Calendar
                     </h3>
@@ -839,7 +839,7 @@ export default function CalendarPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    <h3 className=" text-[#053F52] mb-3 flex items-center gap-2">
+                    <h3 className=" text-[#032f36] mb-3 flex items-center gap-2">
                       <Bell className="w-5 h-5 text-purple-500" />
                       Calendar Notifications
                     </h3>
@@ -865,7 +865,7 @@ export default function CalendarPage() {
         <div className="bg-[#EFBF04] relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="bg-gradient-to-r from-[#053F52] to-[#064d66] rounded-2xl p-8 sm:p-12 lg:p-16 text-center"
+              className="bg-gradient-to-r from-[#032f36] to-[#064d66] rounded-2xl p-8 sm:p-12 lg:p-16 text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -882,7 +882,7 @@ export default function CalendarPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   size="lg"
-                  className="bg-[#20cece] text-[#053F52] hover:bg-white  px-10 py-6 rounded-full transition-all duration-300 text-lg"
+                  className="bg-[#20cece] text-[#032f36] hover:bg-white  px-10 py-6 rounded-full transition-all duration-300 text-lg"
                 >
                   Contact Us
                   <ArrowRight className="ml-2 w-6 h-6" />
@@ -890,7 +890,7 @@ export default function CalendarPage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#053F52]  px-10 py-6 rounded-full transition-all duration-300 text-lg"
+                  className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#032f36]  px-10 py-6 rounded-full transition-all duration-300 text-lg"
                 >
                   View FAQ
                 </Button>

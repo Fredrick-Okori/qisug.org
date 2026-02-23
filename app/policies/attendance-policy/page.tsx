@@ -105,10 +105,10 @@ export default function AttendancePolicyPage() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             >
               
-              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52] leading-tight mb-6">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#032f36] leading-tight mb-6">
                 Attendance Policy
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-[#053F52] leading-relaxed">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#032f36] leading-relaxed">
                 Ensuring Success Through Consistent Participation
               </p>
             </motion.div>
@@ -125,7 +125,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="space-y-6 text-[#053F52] text-base sm:text-lg leading-relaxed">
+              <div className="space-y-6 text-[#032f36] text-base sm:text-lg leading-relaxed">
                 <p>
                   Queensgate International School's Attendance Policy emphasizes the importance of regular attendance 
                   as it is directly related to student success. We believe that students must attend class consistently 
@@ -153,7 +153,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8">
+              <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-8">
                 Attendance Requirements
               </h2>
 
@@ -161,7 +161,7 @@ export default function AttendancePolicyPage() {
                 <div className="bg-white border-2 border-[#EFBF04]/30 rounded-xl p-8">
                   <div className="flex items-center gap-3 mb-4">
                     <Calendar className="w-8 h-8 text-[#20cece]" />
-                    <h3 className="text-2xl text-[#053F52]">
+                    <h3 className="text-2xl text-[#032f36]">
                       Class Attendance
                     </h3>
                   </div>
@@ -172,10 +172,10 @@ export default function AttendancePolicyPage() {
                   </p>
                 </div>
 
-                <div className="bg-white border-2 border-[#053F52]/30 rounded-xl p-8">
+                <div className="bg-white border-2 border-[#032f36]/30 rounded-xl p-8">
                   <div className="flex items-center gap-3 mb-4">
                     <UserCheck className="w-8 h-8 text-[#20cece]" />
-                    <h3 className="text-2xl text-[#053F52]">
+                    <h3 className="text-2xl text-[#032f36]">
                       Active Participation
                     </h3>
                   </div>
@@ -188,7 +188,7 @@ export default function AttendancePolicyPage() {
               </div>
 
               {/* 110-Hour Requirement */}
-              <div className="mt-8 bg-gradient-to-r from-[#053F52] to-[#053F52] rounded-2xl p-8 lg:p-12 text-white">
+              <div className="mt-8 bg-gradient-to-r from-[#032f36] to-[#032f36] rounded-2xl p-8 lg:p-12 text-white">
                 <div className="flex items-start gap-4">
                   <AlertCircle className="w-10 h-10 text-[#20cece] flex-shrink-0 mt-1" />
                   <div>
@@ -221,10 +221,10 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-4 text-center">
+              <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-4 text-center">
                 Methods of Recording Participation
               </h2>
-              <p className="text-lg text-[#053F52] text-center mb-12 max-w-3xl mx-auto">
+              <p className="text-lg text-[#032f36] text-center mb-12 max-w-3xl mx-auto">
                 Internet-based courses will, at a minimum, have weekly assignments to record student participation, 
                 which can be documented by any or all of the following methods:
               </p>
@@ -242,7 +242,7 @@ export default function AttendancePolicyPage() {
                     <div className="w-12 h-12 bg-[#20cece] rounded-lg flex items-center justify-center mb-4">
                       <method.icon className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-lg text-[#053F52] mb-2">
+                    <h3 className="text-lg text-[#032f36] mb-2">
                       {method.title}
                     </h3>
                     <p className="text-gray-600 text-sm leading-relaxed">
@@ -265,7 +265,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8">
+              <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-8">
                 Handling Absences
               </h2>
 
@@ -286,7 +286,7 @@ export default function AttendancePolicyPage() {
               </div>
 
               {/* Absence Procedure */}
-              <h3 className="text-2xl text-[#053F52] mb-6">
+              <h3 className="text-2xl text-[#032f36] mb-6">
                 Absence Procedure
               </h3>
 
@@ -304,7 +304,7 @@ export default function AttendancePolicyPage() {
                       {item.step}
                     </div>
                     <div>
-                      <h4 className="text-lg text-[#053F52] mb-2">
+                      <h4 className="text-lg text-[#032f36] mb-2">
                         {item.title}
                       </h4>
                       <p className="text-gray-700 text-sm leading-relaxed">
@@ -328,7 +328,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8">
+              <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-8">
                 Exceeding the Absence Limit
               </h2>
 
@@ -354,7 +354,7 @@ export default function AttendancePolicyPage() {
                       <Users className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="text-lg text-[#053F52] mb-2">
+                      <h4 className="text-lg text-[#032f36] mb-2">
                         Administrative Review
                       </h4>
                       <p className="text-gray-700 leading-relaxed">
@@ -369,7 +369,7 @@ export default function AttendancePolicyPage() {
                       <MessageSquare className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="text-lg text-[#053F52] mb-2">
+                      <h4 className="text-lg text-[#032f36] mb-2">
                         Student and Parent Meeting
                       </h4>
                       <p className="text-gray-700 leading-relaxed">
@@ -384,7 +384,7 @@ export default function AttendancePolicyPage() {
                       <ClipboardCheck className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="text-lg text-[#053F52] mb-2">
+                      <h4 className="text-lg text-[#032f36] mb-2">
                         Make-Up Plan
                       </h4>
                       <p className="text-gray-700 leading-relaxed">
@@ -424,7 +424,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="bg-gradient-to-br from-[#053F52] to-[#053F52] rounded-2xl p-8 lg:p-12 text-white">
+              <div className="bg-gradient-to-br from-[#032f36] to-[#032f36] rounded-2xl p-8 lg:p-12 text-white">
                 <div className="flex items-start gap-4 mb-6">
                   <CheckCircle2 className="w-10 h-10 flex-shrink-0 mt-1" />
                   <div>
@@ -464,7 +464,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-8 text-center">
+              <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-8 text-center">
                 Best Practices for Attendance
               </h2>
 
@@ -506,7 +506,7 @@ export default function AttendancePolicyPage() {
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-6 h-6 text-[#20cece] flex-shrink-0 mt-1" />
                       <div>
-                        <h3 className="text-lg text-[#053F52] mb-2">
+                        <h3 className="text-lg text-[#032f36] mb-2">
                           {practice.title}
                         </h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
@@ -530,7 +530,7 @@ export default function AttendancePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053F52] mb-6">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36] mb-6">
                 Questions About Attendance?
               </h2>
               <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
@@ -539,7 +539,7 @@ export default function AttendancePolicyPage() {
               </p>
               <Link 
                 href="/policies"
-                className="inline-flex items-center gap-2 text-[#053F52] hover:underline font-medium text-lg"
+                className="inline-flex items-center gap-2 text-[#032f36] hover:underline font-medium text-lg"
               >
                 <ArrowRight className="w-5 h-5" />
                 Back to All Policies

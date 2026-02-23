@@ -111,7 +111,7 @@ export default function GraduationRequirementsPage() {
           <div className="max-w-7xl mx-auto px-4 py-5">
             <div className="max-w-5xl">
               <motion.h1 
-                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52]"
+                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#032f36]"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -123,7 +123,7 @@ export default function GraduationRequirementsPage() {
                 Graduation Requirements
               </motion.h1>
               <motion.p
-                className="text-xl sm:text-2xl text-[#053F52] mt-4"
+                className="text-xl sm:text-2xl text-[#032f36] mt-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -154,11 +154,11 @@ export default function GraduationRequirementsPage() {
                     delay: 0.3
                   }}
                 >
-                  <GraduationCap className="w-8 h-8 text-[#053F52]" />
-                  <h2 className="text-3xl font-bold text-[#053F52]">Your Path to Success</h2>
+                  <GraduationCap className="w-8 h-8 text-[#032f36]" />
+                  <h2 className="text-3xl font-bold text-[#032f36]">Your Path to Success</h2>
                 </motion.div>
 
-                <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#053F52]">
+                <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#032f36]">
                   <motion.p 
                     className="text-base sm:text-lg md:text-xl leading-relaxed"
                     initial={{ opacity: 0, y: 20 }}
@@ -255,7 +255,7 @@ export default function GraduationRequirementsPage() {
             >
               <div className="inline-flex items-center justify-center gap-3 mb-4">
                 <Calendar className="w-8 h-8 text-amber-600" />
-                <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053F52]">
+                <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36]">
                   For Students Starting Grade 9 in 2023 or Earlier
                 </h2>
               </div>
@@ -267,7 +267,7 @@ export default function GraduationRequirementsPage() {
             {/* Compulsory Credits */}
             <div className="mb-12">
               <motion.h3 
-                className="text-2xl font-bold text-[#053F52] mb-6 flex items-center gap-2 justify-center"
+                className="text-2xl font-bold text-[#032f36] mb-6 flex items-center gap-2 justify-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -292,7 +292,7 @@ export default function GraduationRequirementsPage() {
                         {item.credits}
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-bold text-[#053F52] mb-1">{item.subject}</h4>
+                        <h4 className="font-bold text-[#032f36] mb-1">{item.subject}</h4>
                         {item.details && (
                           <p className="text-sm text-gray-600">{item.details}</p>
                         )}
@@ -311,7 +311,7 @@ export default function GraduationRequirementsPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h4 className="font-bold text-[#053F52] text-xl mb-6">Group Requirements (3 credits total):</h4>
+              <h4 className="font-bold text-[#032f36] text-xl mb-6">Group Requirements (3 credits total):</h4>
               <div className="space-y-4 text-gray-700">
                 <div className="bg-white/70 rounded-lg p-4">
                   <span className="font-semibold text-amber-600">Group 1:</span> English, French as a second language, 
@@ -330,7 +330,7 @@ export default function GraduationRequirementsPage() {
                   American Sign Language, Langue des signes québécoise.
                 </div>
                 <div className="bg-amber-100 rounded-lg p-4 border-l-4 border-amber-500">
-                  <span className="font-semibold text-[#053F52]">Note:</span> Up to 2 credits in French as a 
+                  <span className="font-semibold text-[#032f36]">Note:</span> Up to 2 credits in French as a 
                   second language (1 from Group 1 and 1 from either Group 2 or 3); Up to 2 credits in 
                   cooperative education from any group.
                 </div>
@@ -345,7 +345,7 @@ export default function GraduationRequirementsPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h3 className="text-2xl font-bold text-[#053F52] mb-4 flex items-center gap-2">
+              <h3 className="text-2xl font-bold text-[#032f36] mb-4 flex items-center gap-2">
                 <CheckCircle2 className="w-6 h-6 text-amber-600" />
                 Optional Credits (12 credits)
               </h3>
@@ -374,12 +374,12 @@ export default function GraduationRequirementsPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="inline-flex items-center justify-center gap-3 mb-4">
-                <Calendar className="w-8 h-8 text-[#053F52]" />
-                <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053F52]">
+                <Calendar className="w-8 h-8 text-[#032f36]" />
+                <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36]">
                   For Students Starting Grade 9 in 2024 or Later
                 </h2>
               </div>
-              <p className="text-lg text-[#053F52] max-w-3xl mx-auto">
+              <p className="text-lg text-[#032f36] max-w-3xl mx-auto">
                 Total: <strong className="text-[#20cece]">31 Credits Required</strong> (19 compulsory including STEM + 12 optional)
               </p>
             </motion.div>
@@ -387,7 +387,7 @@ export default function GraduationRequirementsPage() {
             {/* Compulsory Credits */}
             <div className="mb-12">
               <motion.h3 
-                className="text-2xl font-bold text-[#053F52] mb-6 flex items-center gap-2 justify-center"
+                className="text-2xl font-bold text-[#032f36] mb-6 flex items-center gap-2 justify-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -418,7 +418,7 @@ export default function GraduationRequirementsPage() {
                         {item.credits}
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-bold text-[#053F52] mb-1">
+                        <h4 className="font-bold text-[#032f36] mb-1">
                           {item.subject}
                           {item.subject === "STEM-Related Course" && (
                             <span className="ml-2 text-xs bg-[#20cece] text-white px-2 py-1 rounded-full">
@@ -446,7 +446,7 @@ export default function GraduationRequirementsPage() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <Award className="w-8 h-8 text-[#20cece]" />
-                <h4 className="font-bold text-[#053F52] text-xl">STEM-Related Course Options:</h4>
+                <h4 className="font-bold text-[#032f36] text-xl">STEM-Related Course Options:</h4>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {stemCourses.map((course, index) => (
@@ -473,7 +473,7 @@ export default function GraduationRequirementsPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h3 className="text-2xl font-bold text-[#053F52] mb-4 flex items-center gap-2">
+              <h3 className="text-2xl font-bold text-[#032f36] mb-4 flex items-center gap-2">
                 <CheckCircle2 className="w-6 h-6 text-[#20cece]" />
                 Optional Credits (12 credits)
               </h3>
@@ -504,7 +504,7 @@ export default function GraduationRequirementsPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053F52] mb-4">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36] mb-4">
                 Additional Graduation Requirements
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -525,14 +525,14 @@ export default function GraduationRequirementsPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <div className="w-14 h-14 bg-[#053F52] rounded-xl flex items-center justify-center">
+                      <div className="w-14 h-14 bg-[#032f36] rounded-xl flex items-center justify-center">
                         <Icon className="w-7 h-7 text-white" />
                       </div>
-                      <span className="bg-[#053F52] text-white text-xs font-bold px-3 py-1 rounded-full">
+                      <span className="bg-[#032f36] text-white text-xs font-bold px-3 py-1 rounded-full">
                         {req.badge}
                       </span>
                     </div>
-                    <h3 className="text-xl font-bold text-[#053F52] mb-3">{req.title}</h3>
+                    <h3 className="text-xl font-bold text-[#032f36] mb-3">{req.title}</h3>
                     <p className="text-gray-700 mb-3 leading-relaxed text-sm">
                       {req.description}
                     </p>
@@ -591,15 +591,15 @@ export default function GraduationRequirementsPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                 >
-                  <BookOpen className="w-8 h-8 text-[#053F52]" />
-                  <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                  <BookOpen className="w-8 h-8 text-[#032f36]" />
+                  <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                     About the OLC4O Course
                   </h2>
                 </motion.div>
 
                 <div className="space-y-6">
                   <motion.div 
-                    className="bg-white/80 border-l-4 border-[#053F52] p-6 rounded-r-xl"
+                    className="bg-white/80 border-l-4 border-[#032f36] p-6 rounded-r-xl"
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -612,15 +612,15 @@ export default function GraduationRequirementsPage() {
                     </p>
                     <ul className="space-y-2">
                       <li className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-[#032f36] flex-shrink-0 mt-0.5" />
                         <span>Alternative to the OSSLT literacy test</span>
                       </li>
                       <li className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-[#032f36] flex-shrink-0 mt-0.5" />
                         <span>Comprehensive reading and writing development</span>
                       </li>
                       <li className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-[#032f36] flex-shrink-0 mt-0.5" />
                         <span>Offered to students who need literacy support</span>
                       </li>
                     </ul>
@@ -633,13 +633,13 @@ export default function GraduationRequirementsPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    <p className="text-[#053F52] mb-4 font-medium">
+                    <p className="text-[#032f36] mb-4 font-medium">
                       For more details on graduation requirements, credit planning, and the complete OSSD pathway, 
                       download our comprehensive guide.
                     </p>
                     <Button
                       size="lg"
-                      className="bg-[#20cece] text-[#053f52] hover:bg-[#053f52] hover:text-white px-8 py-6 rounded-full transition-all duration-300"
+                      className="bg-[#20cece] text-[#032f36] hover:bg-[#032f36] hover:text-white px-8 py-6 rounded-full transition-all duration-300"
                     >
                       <Download className="mr-2 w-5 h-5" />
                       Download Graduation Requirements Guide

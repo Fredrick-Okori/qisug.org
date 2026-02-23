@@ -103,7 +103,7 @@ export function Accreditations() {
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-24 bg-[#053F52]"
+      className="py-16 md:py-24 bg-[#032f36]"
       role="region"
       aria-label="Partners and Accreditations"
     >

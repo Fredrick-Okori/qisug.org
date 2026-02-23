@@ -141,7 +141,7 @@ export default function AcceptableUsePolicyPage() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             >
               
-              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52] leading-tight mb-6">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#032f36] leading-tight mb-6">
                 Acceptable Use Policy
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
@@ -161,8 +161,8 @@ export default function AcceptableUsePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="border-l-4 border-[#053F52] pl-6 mb-8">
-                <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-4">
+              <div className="border-l-4 border-[#032f36] pl-6 mb-8">
+                <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-4">
                   Code of Online Conduct
                 </h2>
                 <div className="space-y-4 text-gray-700 text-base sm:text-lg leading-relaxed">
@@ -195,10 +195,10 @@ export default function AcceptableUsePolicyPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="text-center mb-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#053F52] rounded-2xl mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#032f36] rounded-2xl mb-4">
                   <Shield className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-4">
+                <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-4">
                   Individual Safety Rules
                 </h2>
                 <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -210,16 +210,16 @@ export default function AcceptableUsePolicyPage() {
                 {safetyRules.map((rule, index) => (
                   <motion.div
                     key={rule.title}
-                    className="bg-[#efbf04] border-2 border-gray-200 rounded-xl p-6 hover:border-[#053F52] hover:shadow-lg transition-all duration-300"
+                    className="bg-[#efbf04] border-2 border-gray-200 rounded-xl p-6 hover:border-[#032f36] hover:shadow-lg transition-all duration-300"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
                     <div className="w-12 h-12 bg-[#EFBF04] rounded-lg flex items-center justify-center mb-4">
-                      <rule.icon className="w-6 h-6 text-[#053F52]" />
+                      <rule.icon className="w-6 h-6 text-[#032f36]" />
                     </div>
-                    <h3 className="text-lg text-[#053F52] mb-3">
+                    <h3 className="text-lg text-[#032f36] mb-3">
                       {rule.title}
                     </h3>
                     <p className="text-gray-600 text-sm leading-relaxed">
@@ -246,7 +246,7 @@ export default function AcceptableUsePolicyPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-red-500 rounded-2xl mb-4">
                   <Ban className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-3xl lg:text-4xl text-[#053f52] mb-4">
+                <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-4">
                   Unacceptable Sites and Materials
                 </h2>
               </div>
@@ -270,7 +270,7 @@ export default function AcceptableUsePolicyPage() {
               </div>
 
               <div className="bg-[#efbf04] rounded-xl border-2 border-red-200 p-8">
-                <h3 className="text-2xl text-[#053F52] mb-6">
+                <h3 className="text-2xl text-[#032f36] mb-6">
                   Prohibited Content
                 </h3>
                 <p className="text-gray-700 mb-6">
@@ -304,9 +304,9 @@ export default function AcceptableUsePolicyPage() {
             >
               <div className="text-center mb-12">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-[#EFBF04] rounded-2xl mb-4">
-                  <CheckCircle2 className="w-8 h-8 text-[#053F52]" />
+                  <CheckCircle2 className="w-8 h-8 text-[#032f36]" />
                 </div>
-                <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-4">
+                <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-4">
                   Queensgate Use Guidelines
                 </h2>
               </div>
@@ -314,9 +314,9 @@ export default function AcceptableUsePolicyPage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-[#efbf04] border-2 border-[#EFBF04] rounded-xl p-8">
                   <div className="flex items-start gap-4">
-                    <Clock className="w-8 h-8 text-[#053F52] flex-shrink-0" />
+                    <Clock className="w-8 h-8 text-[#032f36] flex-shrink-0" />
                     <div>
-                      <h3 className="text-xl text-[#053F52] mb-3">
+                      <h3 className="text-xl text-[#032f36] mb-3">
                         Usage Limits
                       </h3>
                       <p className="text-gray-700 leading-relaxed">
@@ -329,9 +329,9 @@ export default function AcceptableUsePolicyPage() {
 
                 <div className="bg-[#efbf04] border-2 border-[#EFBF04] rounded-xl p-8">
                   <div className="flex items-start gap-4">
-                    <AlertCircle className="w-8 h-8 text-[#053F52] flex-shrink-0" />
+                    <AlertCircle className="w-8 h-8 text-[#032f36] flex-shrink-0" />
                     <div>
-                      <h3 className="text-xl text-[#053F52] mb-3">
+                      <h3 className="text-xl text-[#032f36] mb-3">
                         Reporting Harm
                       </h3>
                       <p className="text-gray-700 leading-relaxed">
@@ -347,7 +347,7 @@ export default function AcceptableUsePolicyPage() {
         </div>
 
         {/* Prohibited Uses and Activities */}
-        <div className="bg-[#053f52] relative z-10">
+        <div className="bg-[#032f36] relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="max-w-7xl mx-auto"
@@ -380,7 +380,7 @@ export default function AcceptableUsePolicyPage() {
                         <Ban className="w-5 h-5 text-red-500" />
                       </div>
                       <div>
-                        <h3 className="text-lg text-[#053F52] mb-2">
+                        <h3 className="text-lg text-[#032f36] mb-2">
                           {activity.title}
                         </h3>
                         <p className="text-gray-600 text-sm leading-relaxed">
@@ -409,7 +409,7 @@ export default function AcceptableUsePolicyPage() {
                 <div className="flex items-start gap-4">
                   <AlertTriangle className="w-10 h-10 text-red-600 flex-shrink-0 mt-1" />
                   <div>
-                    <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-4">
+                    <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-4">
                       Consequences for Violating This Policy
                     </h2>
                     <p className="text-gray-800 text-lg leading-relaxed font-medium">
@@ -438,7 +438,7 @@ export default function AcceptableUsePolicyPage() {
         </div>
 
         {/* Online Publishing Section */}
-        <div className="bg-[#053f52] relative z-10">
+        <div className="bg-[#032f36] relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
               className="max-w-7xl mx-auto"
@@ -448,7 +448,7 @@ export default function AcceptableUsePolicyPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="text-center mb-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#053F52] rounded-2xl mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#032f36] rounded-2xl mb-4">
                   <FileText className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-3xl lg:text-4xl text-white mb-4">
@@ -459,14 +459,14 @@ export default function AcceptableUsePolicyPage() {
                 </p>
               </div>
 
-              <div className="bg-[#efbf04] border-2 border-[#053F52] rounded-xl p-8">
+              <div className="bg-[#efbf04] border-2 border-[#032f36] rounded-xl p-8">
                 <div className="space-y-4">
                   {publishingGuidelines.map((guideline, index) => (
                     <div 
                       key={index}
                       className="flex items-start gap-3 pb-4 border-b border-gray-100 last:border-0 last:pb-0"
                     >
-                      <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-[#032f36] flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700 leading-relaxed">{guideline}</span>
                     </div>
                   ))}
@@ -488,9 +488,9 @@ export default function AcceptableUsePolicyPage() {
             >
               <div className="bg-gray-100 border-l-4 border-[#EFBF04] rounded-r-xl p-8">
                 <div className="flex items-start gap-4">
-                  <Scale className="w-8 h-8 text-[#053F52] flex-shrink-0 mt-1" />
+                  <Scale className="w-8 h-8 text-[#032f36] flex-shrink-0 mt-1" />
                   <div>
-                    <h2 className="text-2xl lg:text-3xl text-[#053F52] mb-4">
+                    <h2 className="text-2xl lg:text-3xl text-[#032f36] mb-4">
                       Liability
                     </h2>
                     <div className="space-y-3 text-gray-700 leading-relaxed">
@@ -523,16 +523,16 @@ export default function AcceptableUsePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#053f52] mb-6">
+              <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-6">
                 Your Commitment to Responsible Technology Use
               </h2>
-              <p className="text-lg text-[#053f52] leading-relaxed mb-8">
+              <p className="text-lg text-[#032f36] leading-relaxed mb-8">
                 By using Queensgate International School's technology resources, you agree to follow this 
                 Acceptable Use Policy. Responsible use of technology is essential for maintaining a safe, 
                 productive, and respectful learning environment for all members of our school community.
               </p>
               <div className="bg-[#efbf04] backdrop-blur-sm rounded-xl p-6">
-                <p className="text-[#053f52] font-medium">
+                <p className="text-[#032f36] font-medium">
                   Remember: All online activities may be monitored to ensure compliance with this policy 
                   and to maintain the safety and security of our school community.
                 </p>
@@ -550,7 +550,7 @@ export default function AcceptableUsePolicyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-3xl lg:text-4xl text-[#053F52] mb-6">
+              <h2 className="text-3xl lg:text-4xl text-[#032f36] mb-6">
                 Questions About This Policy?
               </h2>
               <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
@@ -559,7 +559,7 @@ export default function AcceptableUsePolicyPage() {
               </p>
               <Link 
                 href="/policies"
-                className="inline-flex items-center gap-2 text-[#053F52] hover:underline font-medium text-lg"
+                className="inline-flex items-center gap-2 text-[#032f36] hover:underline font-medium text-lg"
               >
                 <ArrowRight className="w-5 h-5" />
                 Back to All Policies

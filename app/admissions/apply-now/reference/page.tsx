@@ -139,7 +139,7 @@ export default function ReferenceEntryPage() {
             </motion.div>
             
             <motion.h1 
-              className="text-3xl md:text-4xl text-[#053f52] mb-4"
+              className="text-3xl md:text-4xl text-[#032f36] mb-4"
               style={{ fontFamily: "'Crimson Pro', serif" }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -159,7 +159,7 @@ export default function ReferenceEntryPage() {
             </motion.p>
             
             <motion.div 
-              className="bg-[#053f52] rounded-xl p-6 mb-8"
+              className="bg-[#032f36] rounded-xl p-6 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
@@ -199,13 +199,13 @@ export default function ReferenceEntryPage() {
                   navigator.clipboard.writeText(createdReference);
                 }}
                 variant="outline"
-                className="border-2 border-[#053f52] text-[#053f52] hover:bg-[#053f52] hover:text-white rounded-full px-6 py-3"
+                className="border-2 border-[#032f36] text-[#032f36] hover:bg-[#032f36] hover:text-white rounded-full px-6 py-3"
               >
                 Copy Reference
               </Button>
               <Button 
                 onClick={proceedToApplication}
-                className="bg-[#053f52] text-white hover:bg-[#042a38] rounded-full px-8 py-3"
+                className="bg-[#032f36] text-white hover:bg-[#042a38] rounded-full px-8 py-3"
               >
                 Continue to Application <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
@@ -234,7 +234,7 @@ export default function ReferenceEntryPage() {
         >
           <div className="text-center mb-10">
             <motion.h1 
-              className="text-4xl md:text-5xl text-[#053f52] mb-4"
+              className="text-4xl md:text-5xl text-[#032f36] mb-4"
               style={{ fontFamily: "'Crimson Pro', serif" }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -310,7 +310,7 @@ export default function ReferenceEntryPage() {
                     <Button
                       onClick={validateReference}
                       disabled={isValidating || !referenceInput.trim()}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#053f52] hover:bg-[#042a38] rounded-lg px-4"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#032f36] hover:bg-[#042a38] rounded-lg px-4"
                     >
                       {isValidating ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
@@ -339,7 +339,7 @@ export default function ReferenceEntryPage() {
                   </p>
                   <Button
                     onClick={() => setShowNewApplicantForm(true)}
-                    className="bg-[#20cece] text-[#053f52] hover:bg-[#20cece]/90 rounded-full px-8 py-4 text-lg font-semibold"
+                    className="bg-[#20cece] text-[#032f36] hover:bg-[#20cece]/90 rounded-full px-8 py-4 text-lg font-semibold"
                   >
                     Create New Application <RefreshCw className="ml-2 w-5 h-5" />
                   </Button>
@@ -349,7 +349,7 @@ export default function ReferenceEntryPage() {
               /* New Applicant Form */
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-[#053f52]" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                  <h2 className="text-xl font-bold text-[#032f36]" style={{ fontFamily: "'Crimson Pro', serif" }}>
                     Create New Application
                   </h2>
                   <Button
@@ -420,7 +420,7 @@ export default function ReferenceEntryPage() {
                   <Button
                     onClick={handleCreateNewApplicant}
                     disabled={isCreatingNew || !newApplicantName.firstName.trim() || !newApplicantName.lastName.trim()}
-                    className="bg-[#053f52] text-white hover:bg-[#042a38] rounded-full px-8"
+                    className="bg-[#032f36] text-white hover:bg-[#042a38] rounded-full px-8"
                   >
                     {isCreatingNew ? (
                       <span className="flex items-center gap-2">

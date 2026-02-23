@@ -75,7 +75,7 @@ export default function DashboardLayout({
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
           <p className="text-slate-600">Redirecting to login...</p>
         </div>
       </div>
@@ -94,7 +94,7 @@ export default function DashboardLayout({
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-slate-50">
       {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[#053f52] z-50 flex items-center justify-between px-4 flex-shrink-0">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[#032f36] z-50 flex items-center justify-between px-4 flex-shrink-0">
         <div className="flex items-center gap-3">
           <button
             className="p-2 text-white hover:bg-white/10 rounded-lg"
@@ -115,7 +115,7 @@ export default function DashboardLayout({
             className="lg:hidden fixed inset-0 bg-black/50 z-50"
             onClick={() => setIsMobileMenuOpen(false)}
           />
-          <div className="lg:hidden fixed left-0 top-0 bottom-0 w-[280px] bg-[#053f52] z-50">
+          <div className="lg:hidden fixed left-0 top-0 bottom-0 w-[280px] bg-[#032f36] z-50">
             <div className="flex items-center justify-between p-4 border-b border-white/10">
               <span className="text-white font-semibold">Navigation</span>
               <button
@@ -137,7 +137,7 @@ export default function DashboardLayout({
       {/* Desktop Layout */}
       <div className="lg:flex flex-1 overflow-hidden">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:flex flex-col w-64 bg-[#053f52] flex-shrink-0">
+        <div className="hidden lg:flex flex-col w-64 bg-[#032f36] flex-shrink-0">
           <ApplicantSidebar />
         </div>
 

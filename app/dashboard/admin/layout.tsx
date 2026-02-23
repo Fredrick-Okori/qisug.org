@@ -39,7 +39,7 @@ function AdminSkeleton() {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
         <p className="text-slate-600">Verifying admin access...</p>
       </div>
     </div>
@@ -81,7 +81,7 @@ export default function AdminLayout({
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
           <p className="text-slate-600">Redirecting to student portal...</p>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default function AdminLayout({
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-slate-50">
       {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[#053f52] z-50 flex items-center justify-between px-4 flex-shrink-0">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[#032f36] z-50 flex items-center justify-between px-4 flex-shrink-0">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -130,11 +130,11 @@ export default function AdminLayout({
             className="lg:hidden fixed inset-0 bg-black/50 z-50"
             onClick={() => setIsMobileMenuOpen(false)}
           />
-          <div className="lg:hidden fixed left-0 top-0 bottom-0 w-[280px] bg-[#053f52] z-50 flex flex-col">
+          <div className="lg:hidden fixed left-0 top-0 bottom-0 w-[280px] bg-[#032f36] z-50 flex flex-col">
             <div className="flex items-center justify-between p-4 border-b border-white/10">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-[#EFBF04] rounded-full flex items-center justify-center">
-                  <GraduationCap className="w-6 h-6 text-[#053f52]" />
+                  <GraduationCap className="w-6 h-6 text-[#032f36]" />
                 </div>
                 <span className="text-white font-semibold">Admin Panel</span>
               </div>
@@ -159,7 +159,7 @@ export default function AdminLayout({
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                           isActive
-                            ? 'bg-[#EFBF04] text-[#053f52]'
+                            ? 'bg-[#EFBF04] text-[#032f36]'
                             : 'text-white/80 hover:bg-white/10 hover:text-white'
                         }`}
                       >
@@ -194,13 +194,13 @@ export default function AdminLayout({
       {/* Desktop Layout - Flex container with sidebar */}
       <div className="flex flex-1 overflow-hidden">
         {/* Desktop Sidebar */}
-        <div className={`hidden lg:flex flex-col bg-[#053f52] z-40 transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
+        <div className={`hidden lg:flex flex-col bg-[#032f36] z-40 transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
           {/* Logo */}
           <div className="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
             {!isSidebarCollapsed && (
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-[#EFBF04] rounded-full flex items-center justify-center">
-                  <GraduationCap className="w-6 h-6 text-[#053f52]" />
+                  <GraduationCap className="w-6 h-6 text-[#032f36]" />
                 </div>
                 <div>
                   <p className="text-white font-semibold text-sm">QIS Admin</p>
@@ -210,7 +210,7 @@ export default function AdminLayout({
             )}
             {isSidebarCollapsed && (
               <div className="w-10 h-10 bg-[#EFBF04] rounded-full flex items-center justify-center mx-auto">
-                <GraduationCap className="w-6 h-6 text-[#053f52]" />
+                <GraduationCap className="w-6 h-6 text-[#032f36]" />
               </div>
             )}
             <Button
@@ -235,7 +235,7 @@ export default function AdminLayout({
                       href={item.href}
                       className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                         isActive
-                          ? 'bg-[#EFBF04] text-[#053f52]'
+                          ? 'bg-[#EFBF04] text-[#032f36]'
                           : 'text-white/80 hover:bg-white/10 hover:text-white'
                       }`}
                       title={isSidebarCollapsed ? item.title : undefined}
@@ -257,7 +257,7 @@ export default function AdminLayout({
               href="/dashboard"
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 pathname === '/dashboard'
-                  ? 'bg-[#EFBF04] text-[#053f52]'
+                  ? 'bg-[#EFBF04] text-[#032f36]'
                   : 'text-white/80 hover:bg-white/10 hover:text-white'
               }`}
               title={isSidebarCollapsed ? 'Student View' : undefined}

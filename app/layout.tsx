@@ -151,7 +151,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon.png" />
         <link rel="apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#053F52" />
+        <meta name="theme-color" content="#032f36" />
         <meta name="google-site-verification" content="UqDDsrSU8IL7pdXJRvNnXM2cyUdX-J0s21Iu59oWsqc" />
         <link rel="icon" href="/favicon.ico?v=2" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />

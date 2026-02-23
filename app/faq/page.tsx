@@ -120,7 +120,7 @@ export default function FAQPage() {
       >
         <div className="container mx-auto px-4 py-16 lg:py-24">
           <div className="max-w-5xl mx-auto">
-            <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#053F52] my-12 text-center">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#032f36] my-12 text-center">
               Frequently Asked questions
             </h1>
 
@@ -133,7 +133,7 @@ export default function FAQPage() {
                   placeholder="Looking for something?"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-white border-[#053F52] focus:ring-[#053F52]"
+                  className="pl-10 bg-white border-[#032f36] focus:ring-[#032f36]"
                 />
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function FAQPage() {
                   onClick={() => setActiveCategory(category.id)}
                   className={`px-6 py-2 rounded-full font-medium transition-all ${
                     activeCategory === category.id
-                      ? "bg-[#ffd500] text-[#053F52]"
+                      ? "bg-[#ffd500] text-[#032f36]"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -161,9 +161,9 @@ export default function FAQPage() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border border-gray-200 rounded-lg px-6 data-[state=open]:border-[#053F52]"
+                  className="border border-gray-200 rounded-lg px-6 data-[state=open]:border-[#032f36]"
                 >
-                  <AccordionTrigger className="text-left text-[#053F52] font-semibold hover:no-underline py-6">
+                  <AccordionTrigger className="text-left text-[#032f36] font-semibold hover:no-underline py-6">
                     {item.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-700 pb-6">{item.answer}</AccordionContent>

@@ -66,7 +66,7 @@ export default function AdminSettingsPage() {
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium flex items-center gap-2 disabled:opacity-50"
+            className="px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium flex items-center gap-2 disabled:opacity-50"
           >
             {isSaving ? (
               <>
@@ -110,7 +110,7 @@ export default function AdminSettingsPage() {
                     onClick={() => setActiveTab(tab.id)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                       activeTab === tab.id
-                        ? 'bg-[#053f52] text-white'
+                        ? 'bg-[#032f36] text-white'
                         : 'text-slate-600 hover:bg-slate-50'
                     }`}
                   >
@@ -136,7 +136,7 @@ export default function AdminSettingsPage() {
                         type="text"
                         value={settings.siteName}
                         onChange={(e) => setSettings({ ...settings, siteName: e.target.value })}
-                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -145,7 +145,7 @@ export default function AdminSettingsPage() {
                         type="url"
                         value={settings.siteUrl}
                         onChange={(e) => setSettings({ ...settings, siteUrl: e.target.value })}
-                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                       />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -154,7 +154,7 @@ export default function AdminSettingsPage() {
                         <select
                           value={settings.timezone}
                           onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
-                          className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+                          className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
                         >
                           <option value="Africa/Kampala">Africa/Kampala (UTC+3)</option>
                           <option value="Africa/Nairobi">Africa/Nairobi (UTC+3)</option>
@@ -167,7 +167,7 @@ export default function AdminSettingsPage() {
                         <select
                           value={settings.language}
                           onChange={(e) => setSettings({ ...settings, language: e.target.value })}
-                          className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+                          className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
                         >
                           <option value="en">English</option>
                           <option value="fr">French</option>
@@ -197,7 +197,7 @@ export default function AdminSettingsPage() {
                         type="checkbox"
                         checked={settings.emailNotifications}
                         onChange={(e) => setSettings({ ...settings, emailNotifications: e.target.checked })}
-                        className="w-5 h-5 text-[#053f52] rounded focus:ring-[#053f52]"
+                        className="w-5 h-5 text-[#032f36] rounded focus:ring-[#032f36]"
                       />
                     </label>
                     <label className="flex items-center justify-between p-4 bg-slate-50 rounded-lg cursor-pointer">
@@ -212,7 +212,7 @@ export default function AdminSettingsPage() {
                         type="checkbox"
                         checked={settings.applicationUpdates}
                         onChange={(e) => setSettings({ ...settings, applicationUpdates: e.target.checked })}
-                        className="w-5 h-5 text-[#053f52] rounded focus:ring-[#053f52]"
+                        className="w-5 h-5 text-[#032f36] rounded focus:ring-[#032f36]"
                       />
                     </label>
                     <label className="flex items-center justify-between p-4 bg-slate-50 rounded-lg cursor-pointer">
@@ -227,7 +227,7 @@ export default function AdminSettingsPage() {
                         type="checkbox"
                         checked={settings.paymentAlerts}
                         onChange={(e) => setSettings({ ...settings, paymentAlerts: e.target.checked })}
-                        className="w-5 h-5 text-[#053f52] rounded focus:ring-[#053f52]"
+                        className="w-5 h-5 text-[#032f36] rounded focus:ring-[#032f36]"
                       />
                     </label>
                     <label className="flex items-center justify-between p-4 bg-slate-50 rounded-lg cursor-pointer">
@@ -242,7 +242,7 @@ export default function AdminSettingsPage() {
                         type="checkbox"
                         checked={settings.weeklyReports}
                         onChange={(e) => setSettings({ ...settings, weeklyReports: e.target.checked })}
-                        className="w-5 h-5 text-[#053f52] rounded focus:ring-[#053f52]"
+                        className="w-5 h-5 text-[#032f36] rounded focus:ring-[#032f36]"
                       />
                     </label>
                   </div>
@@ -267,7 +267,7 @@ export default function AdminSettingsPage() {
                         type="checkbox"
                         checked={settings.twoFactorAuth}
                         onChange={(e) => setSettings({ ...settings, twoFactorAuth: e.target.checked })}
-                        className="w-5 h-5 text-[#053f52] rounded focus:ring-[#053f52]"
+                        className="w-5 h-5 text-[#032f36] rounded focus:ring-[#032f36]"
                       />
                     </label>
                     <div>
@@ -275,7 +275,7 @@ export default function AdminSettingsPage() {
                       <select
                         value={settings.sessionTimeout}
                         onChange={(e) => setSettings({ ...settings, sessionTimeout: e.target.value })}
-                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
                       >
                         <option value="15">15 minutes</option>
                         <option value="30">30 minutes</option>
@@ -290,7 +290,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setSettings({ ...settings, ipWhitelist: e.target.value })}
                         placeholder="Enter IP addresses, one per line"
                         rows={4}
-                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                       />
                       <p className="text-sm text-slate-500 mt-1">Leave empty to allow all IP addresses</p>
                     </div>
@@ -316,7 +316,7 @@ export default function AdminSettingsPage() {
                         type="checkbox"
                         checked={settings.applicationOpen}
                         onChange={(e) => setSettings({ ...settings, applicationOpen: e.target.checked })}
-                        className="w-5 h-5 text-[#053f52] rounded focus:ring-[#053f52]"
+                        className="w-5 h-5 text-[#032f36] rounded focus:ring-[#032f36]"
                       />
                     </label>
                     <div>
@@ -325,7 +325,7 @@ export default function AdminSettingsPage() {
                         type="number"
                         value={settings.maxApplications}
                         onChange={(e) => setSettings({ ...settings, maxApplications: e.target.value })}
-                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                       />
                       <p className="text-sm text-slate-500 mt-1">Maximum number of applications to accept</p>
                     </div>
@@ -335,7 +335,7 @@ export default function AdminSettingsPage() {
                         type="date"
                         value={settings.reviewDeadline}
                         onChange={(e) => setSettings({ ...settings, reviewDeadline: e.target.value })}
-                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                        className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                       />
                     </div>
                   </div>

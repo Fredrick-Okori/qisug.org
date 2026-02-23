@@ -264,7 +264,7 @@ export default function AdminClassesPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -294,7 +294,7 @@ export default function AdminClassesPage() {
           <select
             value={selectedGrade}
             onChange={(e) => setSelectedGrade(e.target.value)}
-            className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+            className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
           >
             <option value="all">All Grades</option>
             <option value="9">Grade 9</option>
@@ -428,7 +428,7 @@ export default function AdminClassesPage() {
                       setSelectedClass(cls)
                       setShowApplicantsModal(true)
                     }}
-                    className="text-sm text-[#053f52] hover:text-[#0a4d63] font-medium flex items-center gap-1"
+                    className="text-sm text-[#032f36] hover:text-[#0a4d63] font-medium flex items-center gap-1"
                   >
                     View All
                     <ArrowRight className="w-4 h-4" />
@@ -441,7 +441,7 @@ export default function AdminClassesPage() {
                     {classApplicants.slice(0, 5).map((app) => (
                       <div
                         key={app.id}
-                        className="w-8 h-8 rounded-full bg-[#053f52] text-white flex items-center justify-center text-xs font-medium border-2 border-white"
+                        className="w-8 h-8 rounded-full bg-[#032f36] text-white flex items-center justify-center text-xs font-medium border-2 border-white"
                         title={`${app.first_name} ${app.last_name}`}
                       >
                         {app.first_name.charAt(0)}{app.last_name.charAt(0)}
@@ -508,7 +508,7 @@ export default function AdminClassesPage() {
                     placeholder="Search applicants..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                   />
                 </div>
               </div>
@@ -528,7 +528,7 @@ export default function AdminClassesPage() {
                       className="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#053f52] text-white flex items-center justify-center font-medium">
+                        <div className="w-10 h-10 rounded-full bg-[#032f36] text-white flex items-center justify-center font-medium">
                           {app.first_name.charAt(0)}{app.last_name.charAt(0)}
                         </div>
                         <div>
@@ -546,7 +546,7 @@ export default function AdminClassesPage() {
                           setSelectedApplicant(app)
                           setShowReassignModal(true)
                         }}
-                        className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg hover:bg-[#053f52] hover:text-white transition-colors flex items-center gap-1"
+                        className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg hover:bg-[#032f36] hover:text-white transition-colors flex items-center gap-1"
                       >
                         <Edit className="w-3 h-3" />
                         Reassign
@@ -604,7 +604,7 @@ export default function AdminClassesPage() {
 
                 {/* Arrow */}
                 <div className="flex justify-center">
-                  <div className="w-8 h-8 rounded-full bg-[#053f52] text-white flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-[#032f36] text-white flex items-center justify-center">
                     <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -617,7 +617,7 @@ export default function AdminClassesPage() {
                   <select
                     value={newProgramId}
                     onChange={(e) => setNewProgramId(e.target.value)}
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                   >
                     <option value="">Select a program</option>
                     {programs
@@ -642,7 +642,7 @@ export default function AdminClassesPage() {
                   <button
                     onClick={handleReassign}
                     disabled={!newProgramId || isUpdating}
-                    className="flex-1 px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="flex-1 px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {isUpdating ? (
                       <>

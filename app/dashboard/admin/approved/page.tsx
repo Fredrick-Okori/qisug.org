@@ -168,7 +168,7 @@ export default function AdminApprovedPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -217,7 +217,7 @@ export default function AdminApprovedPage() {
             Refresh
           </button>
           {totalCount > 0 && (
-            <button className="px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#042d40] transition-colors font-medium flex items-center gap-2">
+            <button className="px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#042d40] transition-colors font-medium flex items-center gap-2">
               <Download className="w-4 h-4" />
               Export List
             </button>
@@ -277,13 +277,13 @@ export default function AdminApprovedPage() {
                 placeholder="Search by name, email, or reference..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
               />
             </div>
             <select
               value={programFilter}
               onChange={(e) => setProgramFilter(e.target.value)}
-              className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+              className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
             >
               <option value="all">All Programs</option>
               {uniquePrograms.map((program) => (
@@ -293,7 +293,7 @@ export default function AdminApprovedPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+              className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
             >
               <option value="all">All Status</option>
               <option value="pending_enrollment">Pending Enrollment</option>
@@ -315,7 +315,7 @@ export default function AdminApprovedPage() {
           </p>
           <button
             onClick={fetchStudents}
-            className="mt-6 px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#042d40] transition-colors font-medium inline-flex items-center gap-2"
+            className="mt-6 px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#042d40] transition-colors font-medium inline-flex items-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
             Refresh Data

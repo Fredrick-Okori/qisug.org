@@ -426,7 +426,7 @@ export default function ApplicationDetailPage({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -444,7 +444,7 @@ export default function ApplicationDetailPage({
         </div>
         <button
           onClick={() => router.back()}
-          className="px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#042d3d] transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#042d3d] transition-colors flex items-center gap-2"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Applications
@@ -518,8 +518,8 @@ export default function ApplicationDetailPage({
             className="bg-white rounded-xl shadow-sm border border-slate-100 p-6"
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-[#053f52]/10 rounded-lg">
-                <User className="w-5 h-5 text-[#053f52]" />
+              <div className="p-2 bg-[#032f36]/10 rounded-lg">
+                <User className="w-5 h-5 text-[#032f36]" />
               </div>
               <h2 className="text-lg font-semibold text-slate-900">Applicant Information</h2>
             </div>
@@ -595,8 +595,8 @@ export default function ApplicationDetailPage({
             className="bg-white rounded-xl shadow-sm border border-slate-100 p-6"
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-[#053f52]/10 rounded-lg">
-                <GraduationCap className="w-5 h-5 text-[#053f52]" />
+              <div className="p-2 bg-[#032f36]/10 rounded-lg">
+                <GraduationCap className="w-5 h-5 text-[#032f36]" />
               </div>
               <h2 className="text-lg font-semibold text-slate-900">Program Details</h2>
             </div>
@@ -633,8 +633,8 @@ export default function ApplicationDetailPage({
             className="bg-white rounded-xl shadow-sm border border-slate-100 p-6"
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-[#053f52]/10 rounded-lg">
-                <Building className="w-5 h-5 text-[#053f52]" />
+              <div className="p-2 bg-[#032f36]/10 rounded-lg">
+                <Building className="w-5 h-5 text-[#032f36]" />
               </div>
               <h2 className="text-lg font-semibold text-slate-900">Academic History</h2>
             </div>
@@ -666,7 +666,7 @@ export default function ApplicationDetailPage({
                         href={school.certificate_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 mt-3 text-sm text-[#053f52] hover:underline"
+                        className="inline-flex items-center gap-2 mt-3 text-sm text-[#032f36] hover:underline"
                       >
                         <FileText className="w-4 h-4" />
                         View Certificate
@@ -691,8 +691,8 @@ export default function ApplicationDetailPage({
             className="bg-white rounded-xl shadow-sm border border-slate-100 p-6"
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-[#053f52]/10 rounded-lg">
-                <FileText className="w-5 h-5 text-[#053f52]" />
+              <div className="p-2 bg-[#032f36]/10 rounded-lg">
+                <FileText className="w-5 h-5 text-[#032f36]" />
               </div>
               <h2 className="text-lg font-semibold text-slate-900">Uploaded Documents</h2>
             </div>
@@ -708,7 +708,7 @@ export default function ApplicationDetailPage({
                     <div key={doc.id || index} className={`bg-slate-50 rounded-lg p-4 ${isPaymentSlip ? 'border-green-200 border' : ''}`}>
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-3 flex-1 min-w-0">
-                          <FileText className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isPaymentSlip ? 'text-green-600' : 'text-[#053f52]'}`} />
+                          <FileText className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isPaymentSlip ? 'text-green-600' : 'text-[#032f36]'}`} />
                           <div className="min-w-0 flex-1">
                             <p className="font-medium text-slate-900">{getDocTypeLabel(doc.document_type)}</p>
                             <p className="text-sm text-slate-500 truncate">{doc.file_name}</p>
@@ -738,7 +738,7 @@ export default function ApplicationDetailPage({
                             href={getDocumentUrl(doc)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#053f52] text-white rounded-lg hover:bg-[#042d3d] transition-colors text-sm font-medium"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#032f36] text-white rounded-lg hover:bg-[#042d3d] transition-colors text-sm font-medium"
                           >
                             <FileText className="w-4 h-4" />
                             View
@@ -799,8 +799,8 @@ export default function ApplicationDetailPage({
               className="bg-white rounded-xl shadow-sm border border-slate-100 p-6"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-[#053f52]/10 rounded-lg">
-                  <Briefcase className="w-5 h-5 text-[#053f52]" />
+                <div className="p-2 bg-[#032f36]/10 rounded-lg">
+                  <Briefcase className="w-5 h-5 text-[#032f36]" />
                 </div>
                 <h2 className="text-lg font-semibold text-slate-900">Agent Information</h2>
               </div>
@@ -880,8 +880,8 @@ export default function ApplicationDetailPage({
             className="bg-white rounded-xl shadow-sm border border-slate-100 p-6"
           >
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-[#053f52]/10 rounded-lg">
-                <CreditCard className="w-5 h-5 text-[#053f52]" />
+              <div className="p-2 bg-[#032f36]/10 rounded-lg">
+                <CreditCard className="w-5 h-5 text-[#032f36]" />
               </div>
               <h2 className="text-lg font-semibold text-slate-900">Payment</h2>
             </div>

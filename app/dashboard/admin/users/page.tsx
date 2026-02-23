@@ -136,7 +136,7 @@ export default function AdminUsersPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -162,7 +162,7 @@ export default function AdminUsersPage() {
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium flex items-center gap-2"
+          className="px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
           Add New User
@@ -218,13 +218,13 @@ export default function AdminUsersPage() {
               placeholder="Search by name or email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
             />
           </div>
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+            className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
           >
             <option value="all">All Roles</option>
             <option value="admin">Admin</option>
@@ -336,7 +336,7 @@ export default function AdminUsersPage() {
                   <input
                     type="text"
                     defaultValue={selectedUser.fullName}
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -344,14 +344,14 @@ export default function AdminUsersPage() {
                   <input
                     type="email"
                     defaultValue={selectedUser.email}
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Role</label>
                   <select
                     defaultValue={selectedUser.role}
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
                   >
                     <option value="admin">Admin</option>
                     <option value="reviewer">Reviewer</option>
@@ -367,7 +367,7 @@ export default function AdminUsersPage() {
                   </button>
                   <button
                     onClick={() => setSelectedUser(null)}
-                    className="flex-1 px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium"
+                    className="flex-1 px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium"
                   >
                     Save Changes
                   </button>
@@ -410,7 +410,7 @@ export default function AdminUsersPage() {
                   <input
                     type="text"
                     placeholder="Enter full name"
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -418,12 +418,12 @@ export default function AdminUsersPage() {
                   <input
                     type="email"
                     placeholder="Enter email address"
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Role</label>
-                  <select className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white">
+                  <select className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white">
                     <option value="viewer">Viewer</option>
                     <option value="reviewer">Reviewer</option>
                     <option value="admin">Admin</option>
@@ -438,7 +438,7 @@ export default function AdminUsersPage() {
                   </button>
                   <button
                     onClick={() => setShowAddModal(false)}
-                    className="flex-1 px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium"
+                    className="flex-1 px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium"
                   >
                     Add User
                   </button>

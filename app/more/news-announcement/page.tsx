@@ -152,7 +152,7 @@ const newsArticles = [
 ]
 
 const categories = [
-  { name: "All News", count: 12, color: "bg-[#053F52]" },
+  { name: "All News", count: 12, color: "bg-[#032f36]" },
   { name: "Achievements", count: 3, color: "bg-[#20cece]" },
   { name: "Academics", count: 4, color: "bg-[#EFBF04]" },
   { name: "Community", count: 2, color: "bg-green-500" },
@@ -184,7 +184,7 @@ export default function NewsAnnouncementsPage() {
           <div className="max-w-7xl mx-auto px-4 py-5">
             <div className="max-w-5xl">
               <motion.h1 
-                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52]"
+                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#032f36]"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -196,7 +196,7 @@ export default function NewsAnnouncementsPage() {
                 News & Announcements
               </motion.h1>
               <motion.p
-                className="text-xl sm:text-2xl text-[#053F52] mt-4"
+                className="text-xl sm:text-2xl text-[#032f36] mt-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -227,11 +227,11 @@ export default function NewsAnnouncementsPage() {
                     delay: 0.3
                   }}
                 >
-                  <Megaphone className="w-8 h-8 text-[#053F52]" />
-                  <h2 className="text-3xl  text-[#053F52]">What's Happening</h2>
+                  <Megaphone className="w-8 h-8 text-[#032f36]" />
+                  <h2 className="text-3xl  text-[#032f36]">What's Happening</h2>
                 </motion.div>
 
-                <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#053F52]">
+                <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#032f36]">
                   <motion.p 
                     className="text-base sm:text-lg md:text-xl leading-relaxed"
                     initial={{ opacity: 0, y: 20 }}
@@ -273,13 +273,13 @@ export default function NewsAnnouncementsPage() {
                     <div className="flex items-start gap-3 mb-4">
                       <Bell className="w-6 h-6 text-[#20cece] flex-shrink-0 mt-1" />
                       <div>
-                        <h3 className=" text-[#053F52] mb-2">Never Miss an Update</h3>
+                        <h3 className=" text-[#032f36] mb-2">Never Miss an Update</h3>
                         <p className="text-gray-700 text-sm mb-4">
                           Subscribe to our newsletter to receive the latest news, announcements, and important 
                           dates directly to your inbox.
                         </p>
                         <Button
-                          className="bg-[#20cece] text-white hover:bg-[#053F52] transition-colors duration-300"
+                          className="bg-[#20cece] text-white hover:bg-[#032f36] transition-colors duration-300"
                         >
                           Subscribe to Newsletter
                         </Button>
@@ -336,7 +336,7 @@ export default function NewsAnnouncementsPage() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <Star className="w-8 h-8 text-[#EFBF04]" />
-                <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                   Featured Stories
                 </h2>
               </div>
@@ -361,7 +361,7 @@ export default function NewsAnnouncementsPage() {
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4">
-                      <span className="bg-[#EFBF04] text-[#053F52] text-xs  px-3 py-1 rounded-full">
+                      <span className="bg-[#EFBF04] text-[#032f36] text-xs  px-3 py-1 rounded-full">
                         {article.category}
                       </span>
                     </div>
@@ -377,7 +377,7 @@ export default function NewsAnnouncementsPage() {
                         {article.readTime}
                       </span>
                     </div>
-                    <h3 className="text-xl  text-[#053F52] mb-3 group-hover:text-[#20cece] transition-colors">
+                    <h3 className="text-xl  text-[#032f36] mb-3 group-hover:text-[#20cece] transition-colors">
                       {article.title}
                     </h3>
                     <p className="text-gray-700 mb-4 leading-relaxed">
@@ -387,7 +387,7 @@ export default function NewsAnnouncementsPage() {
                       <span className="text-sm text-gray-600">By {article.author}</span>
                       <Button
                         size="sm"
-                        className="bg-[#20cece] text-white hover:bg-[#053F52] transition-colors"
+                        className="bg-[#20cece] text-white hover:bg-[#032f36] transition-colors"
                       >
                         Read More
                         <ArrowRight className="w-4 h-4 ml-1" />
@@ -411,8 +411,8 @@ export default function NewsAnnouncementsPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <Bell className="w-8 h-8 text-[#053F52]" />
-                <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                <Bell className="w-8 h-8 text-[#032f36]" />
+                <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                   Recent Announcements
                 </h2>
               </div>
@@ -432,19 +432,19 @@ export default function NewsAnnouncementsPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <div className="flex items-start gap-4 mb-4">
-                      <div className="w-12 h-12 bg-[#053F52] rounded-xl flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 bg-[#032f36] rounded-xl flex items-center justify-center flex-shrink-0">
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
-                          <span className="bg-[#053F52] text-white text-xs  px-3 py-1 rounded-full">
+                          <span className="bg-[#032f36] text-white text-xs  px-3 py-1 rounded-full">
                             {announcement.type}
                           </span>
                           <span className="text-sm text-gray-600">{announcement.date}</span>
                         </div>
                       </div>
                     </div>
-                    <h3 className="text-lg  text-[#053F52] mb-3">
+                    <h3 className="text-lg  text-[#032f36] mb-3">
                       {announcement.title}
                     </h3>
                     <p className="text-gray-700 text-sm leading-relaxed">
@@ -468,8 +468,8 @@ export default function NewsAnnouncementsPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <FileText className="w-8 h-8 text-[#053F52]" />
-                <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                <FileText className="w-8 h-8 text-[#032f36]" />
+                <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                   Latest News
                 </h2>
               </div>
@@ -516,7 +516,7 @@ export default function NewsAnnouncementsPage() {
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3">
-                      <span className="bg-white/90 text-[#053F52] text-xs  px-3 py-1 rounded-full">
+                      <span className="bg-white/90 text-[#032f36] text-xs  px-3 py-1 rounded-full">
                         {article.category}
                       </span>
                     </div>
@@ -532,7 +532,7 @@ export default function NewsAnnouncementsPage() {
                         {article.readTime}
                       </span>
                     </div>
-                    <h3 className="text-base  text-[#053F52] mb-2 group-hover:text-[#20cece] transition-colors line-clamp-2">
+                    <h3 className="text-base  text-[#032f36] mb-2 group-hover:text-[#20cece] transition-colors line-clamp-2">
                       {article.title}
                     </h3>
                     <p className="text-gray-700 text-sm mb-4 leading-relaxed line-clamp-3">
@@ -540,7 +540,7 @@ export default function NewsAnnouncementsPage() {
                     </p>
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-gray-600">By {article.author}</span>
-                      <button className="text-[#20cece] hover:text-[#053F52] font-medium flex items-center gap-1">
+                      <button className="text-[#20cece] hover:text-[#032f36] font-medium flex items-center gap-1">
                         Read
                         <ArrowRight className="w-3 h-3" />
                       </button>
@@ -561,7 +561,7 @@ export default function NewsAnnouncementsPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-[#053F52] text-[#053F52] hover:bg-[#053F52] hover:text-white px-8 py-6 rounded-full transition-all duration-300"
+                className="border-2 border-[#032f36] text-[#032f36] hover:bg-[#032f36] hover:text-white px-8 py-6 rounded-full transition-all duration-300"
               >
                 Load More Articles
                 <TrendingUp className="ml-2 w-5 h-5" />
@@ -615,8 +615,8 @@ export default function NewsAnnouncementsPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                 >
-                  <Sparkles className="w-8 h-8 text-[#053F52]" />
-                  <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                  <Sparkles className="w-8 h-8 text-[#032f36]" />
+                  <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                     Stay in the Loop
                   </h2>
                 </motion.div>
@@ -629,7 +629,7 @@ export default function NewsAnnouncementsPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                   >
-                    <h3 className=" text-[#053F52] text-xl mb-4">
+                    <h3 className=" text-[#032f36] text-xl mb-4">
                       Subscribe to Our Newsletter
                     </h3>
                     <p className="text-gray-700 mb-6 leading-relaxed">
@@ -666,7 +666,7 @@ export default function NewsAnnouncementsPage() {
 
                       <Button
                         size="lg"
-                        className="w-full bg-[#20cece] text-white hover:bg-[#053F52] transition-colors duration-300 py-6"
+                        className="w-full bg-[#20cece] text-white hover:bg-[#032f36] transition-colors duration-300 py-6"
                       >
                         Subscribe Now
                         <Bell className="ml-2 w-5 h-5" />
@@ -685,7 +685,7 @@ export default function NewsAnnouncementsPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    <h4 className=" text-[#053F52] mb-3 flex items-center gap-2">
+                    <h4 className=" text-[#032f36] mb-3 flex items-center gap-2">
                       <MessageSquare className="w-5 h-5 text-[#20cece]" />
                       Follow Us on Social Media
                     </h4>

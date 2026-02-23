@@ -29,7 +29,7 @@ const learningTools = [
     title: "Lecture Slides",
     description: "Comprehensive and Accessible Content",
     details: "Our lecture slides are meticulously prepared to cover all essential topics and concepts. These slides are available for students to review at any time, providing a reliable resource for studying and revising course material.",
-    color: "from-[#053f52] to-[#2a3dc8ff]"
+    color: "from-[#032f36] to-[#2a3dc8ff]"
   },
   {
     icon: MessageSquare,
@@ -43,7 +43,7 @@ const learningTools = [
     title: "Prerecorded Lectures",
     description: "Flexible Learning Opportunities",
     details: "Prerecorded lectures allow students to learn at their own pace. These lectures are available 24/7, enabling students to revisit complex topics and ensure they have a solid understanding before moving forward.",
-    color: "from-[#053f52] to-[#2a3dc8ff]"
+    color: "from-[#032f36] to-[#2a3dc8ff]"
   },
   {
     icon: MonitorPlay,
@@ -107,10 +107,10 @@ export default function OurApproachPage() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             >
              
-              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053f52] leading-tight mb-6">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#032f36] leading-tight mb-6">
                 Learning Made Simple
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-[#053f52] leading-relaxed">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#032f36] leading-relaxed">
                 Innovative and Engaging Learning Methods
               </p>
             </motion.div>
@@ -127,10 +127,10 @@ export default function OurApproachPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053f52] mb-8 text-center">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36] mb-8 text-center">
                 Innovative Learning for a Digital Age
               </h2>
-              <div className="space-y-6 text-[#053f52] text-base sm:text-lg leading-relaxed">
+              <div className="space-y-6 text-[#032f36] text-base sm:text-lg leading-relaxed">
                 <p>
                   At Queensgate International School, we leverage cutting-edge technology and innovative teaching methods 
                   to provide a comprehensive and flexible online learning experience. Our approach integrates a variety of 
@@ -165,7 +165,7 @@ export default function OurApproachPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053f52] mb-4">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36] mb-4">
                 Our Learning Tools
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -177,7 +177,7 @@ export default function OurApproachPage() {
               {learningTools.map((tool, index) => (
                 <motion.div
                   key={tool.title}
-                  className="bg-white border-2 border-gray-100 rounded-2xl p-8 hover:border-[#053f52] hover:shadow-xl transition-all duration-300"
+                  className="bg-white border-2 border-gray-100 rounded-2xl p-8 hover:border-[#032f36] hover:shadow-xl transition-all duration-300"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -186,7 +186,7 @@ export default function OurApproachPage() {
                   <div className={`w-16 h-16 bg-[#20cece] rounded-xl flex items-center justify-center mb-4`}>
                     <tool.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-2xl  text-[#053f52] mb-2">
+                  <h3 className="text-2xl  text-[#032f36] mb-2">
                     {tool.title}
                   </h3>
                   <p className="text-lg text-gray-700 font-medium mb-3">
@@ -211,13 +211,13 @@ export default function OurApproachPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-[#053f52] rounded-2xl mb-6">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-[#032f36] rounded-2xl mb-6">
                 <FlaskConical className="w-10 h-10 text-white" />
               </div>
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053f52] mb-4">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36] mb-4">
                 Virtual Labs
               </h2>
-              <p className="text-lg text-[#053f52] max-w-3xl mx-auto">
+              <p className="text-lg text-[#032f36] max-w-3xl mx-auto">
                 Cutting-edge virtual laboratory experiences that bring science to life
               </p>
             </motion.div>
@@ -235,10 +235,10 @@ export default function OurApproachPage() {
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-[#20cece] rounded-xl flex items-center justify-center flex-shrink-0">
-                      <feature.icon className="w-6 h-6 text-[#053f52]" />
+                      <feature.icon className="w-6 h-6 text-[#032f36]" />
                     </div>
                     <div>
-                      <h3 className="text-xl text-[#053f52] mb-3">
+                      <h3 className="text-xl text-[#032f36] mb-3">
                         {feature.title}
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
@@ -265,7 +265,7 @@ export default function OurApproachPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053f52] mb-4">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36] mb-4">
                 Ontario Certified Resources
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -302,15 +302,15 @@ export default function OurApproachPage() {
               ].map((resource, index) => (
                 <motion.div
                   key={resource.title}
-                  className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-xl p-6 hover:border-[#053f52] hover:shadow-lg transition-all duration-300"
+                  className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-xl p-6 hover:border-[#032f36] hover:shadow-lg transition-all duration-300"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
                   <div className="flex items-start gap-3 mb-3">
-                    <CheckCircle2 className="w-6 h-6 text-[#053f52] flex-shrink-0 mt-1" />
-                    <h3 className="text-lg font-bold text-[#053f52]">
+                    <CheckCircle2 className="w-6 h-6 text-[#032f36] flex-shrink-0 mt-1" />
+                    <h3 className="text-lg font-bold text-[#032f36]">
                       {resource.title}
                     </h3>
                   </div>
@@ -333,10 +333,10 @@ export default function OurApproachPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053f52] mb-8">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36] mb-8">
                 Designed with You in Mind
               </h2>
-              <p className="text-lg text-[#053f52] leading-relaxed mb-12">
+              <p className="text-lg text-[#032f36] leading-relaxed mb-12">
                 Our approach to learning is designed to cater to the diverse needs of our students, providing them 
                 with the tools and resources they need to excel academically. By integrating technology and innovative 
                 teaching methods, we ensure that our students are well-prepared for their future educational and 
@@ -370,7 +370,7 @@ export default function OurApproachPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <benefit.icon className="w-12 h-12 text-[#20cece] mx-auto mb-4" />
-                    <h3 className="text-xl  text-[#053f52] mb-3">
+                    <h3 className="text-xl  text-[#032f36] mb-3">
                       {benefit.title}
                     </h3>
                     <p className="text-gray-600 leading-relaxed">

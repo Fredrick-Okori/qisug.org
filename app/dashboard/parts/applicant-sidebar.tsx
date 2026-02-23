@@ -46,12 +46,12 @@ export default function ApplicantSidebar({ children }: ApplicantSidebarProps) {
   ];
 
   return (
-    <div className="flex flex-col h-screen w-64 bg-[#053f52] text-white border-r border-[#042a3a]">
+    <div className="flex flex-col h-screen w-64 bg-[#032f36] text-white border-r border-[#042a3a]">
       {/* School Logo/Title Area */}
       <div className="p-6 border-b border-[#042a3a]">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#EFBF04] rounded-full flex items-center justify-center">
-            <GraduationCap className="w-6 h-6 text-[#053f52]" />
+            <GraduationCap className="w-6 h-6 text-[#032f36]" />
           </div>
           <div>
             <h1 className="text-lg font-bold tracking-tight">

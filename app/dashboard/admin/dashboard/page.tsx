@@ -134,7 +134,7 @@ export default function AdminDashboardPage() {
           <p className="text-slate-500">{error || 'No data available'}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors"
+            className="mt-4 px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors"
           >
             Retry
           </button>
@@ -187,7 +187,7 @@ export default function AdminDashboardPage() {
             <Download className="w-4 h-4" />
             Export Report
           </button>
-          <button className="px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium">
+          <button className="px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors font-medium">
             View All Applications
           </button>
         </div>
@@ -307,7 +307,7 @@ export default function AdminDashboardPage() {
                     boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
                   }}
                 />
-                <Bar dataKey="applications" fill="#053f52" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="applications" fill="#032f36" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -397,7 +397,7 @@ export default function AdminDashboardPage() {
         <div className="px-6 py-4 border-b border-slate-100">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-slate-900">Recent Applications</h2>
-            <a href="/dashboard/admin/applications" className="text-sm text-[#053f52] hover:underline font-medium flex items-center gap-1">
+            <a href="/dashboard/admin/applications" className="text-sm text-[#032f36] hover:underline font-medium flex items-center gap-1">
               View All
               <Eye className="w-4 h-4" />
             </a>
@@ -439,7 +439,7 @@ export default function AdminDashboardPage() {
                     <td className="px-6 py-4 text-right">
                       <a 
                         href={`/dashboard/admin/applications?id=${app.id}`}
-                        className="text-[#053f52] hover:text-[#0a4d63] font-medium text-sm"
+                        className="text-[#032f36] hover:text-[#0a4d63] font-medium text-sm"
                       >
                         Review
                       </a>
@@ -469,7 +469,7 @@ export default function AdminDashboardPage() {
           href="/dashboard/admin/applications"
           className="p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors text-left group"
         >
-          <FileText className="w-6 h-6 text-[#053f52] mb-2 group-hover:scale-110 transition-transform" />
+          <FileText className="w-6 h-6 text-[#032f36] mb-2 group-hover:scale-110 transition-transform" />
           <p className="font-medium text-slate-900">Review Applications</p>
           <p className="text-sm text-slate-500">{stats.pendingApplications} pending</p>
         </a>
@@ -477,7 +477,7 @@ export default function AdminDashboardPage() {
           href="/dashboard/admin/users"
           className="p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors text-left group"
         >
-          <Users className="w-6 h-6 text-[#053f52] mb-2 group-hover:scale-110 transition-transform" />
+          <Users className="w-6 h-6 text-[#032f36] mb-2 group-hover:scale-110 transition-transform" />
           <p className="font-medium text-slate-900">Manage Users</p>
           <p className="text-sm text-slate-500">{stats.totalUsers} total</p>
         </a>
@@ -485,7 +485,7 @@ export default function AdminDashboardPage() {
           href="/dashboard/admin/documents"
           className="p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors text-left group"
         >
-          <CheckCircle className="w-6 h-6 text-[#053f52] mb-2 group-hover:scale-110 transition-transform" />
+          <CheckCircle className="w-6 h-6 text-[#032f36] mb-2 group-hover:scale-110 transition-transform" />
           <p className="font-medium text-slate-900">Approve Documents</p>
           <p className="text-sm text-slate-500">Review uploads</p>
         </a>
@@ -493,7 +493,7 @@ export default function AdminDashboardPage() {
           href="/dashboard/admin/settings"
           className="p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors text-left group"
         >
-          <Clock className="w-6 h-6 text-[#053f52] mb-2 group-hover:scale-110 transition-transform" />
+          <Clock className="w-6 h-6 text-[#032f36] mb-2 group-hover:scale-110 transition-transform" />
           <p className="font-medium text-slate-900">View Reports</p>
           <p className="text-sm text-slate-500">Analytics</p>
         </a>

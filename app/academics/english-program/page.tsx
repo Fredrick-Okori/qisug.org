@@ -83,7 +83,7 @@ export default function ESLProgramPage() {
             <div className="max-w-5xl">
             
               <motion.h1 
-                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52]"
+                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#032f36]"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -95,7 +95,7 @@ export default function ESLProgramPage() {
                 ESL Program
               </motion.h1>
               <motion.p
-                className="text-xl sm:text-2xl text-[#053F52] mt-4"
+                className="text-xl sm:text-2xl text-[#032f36] mt-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -126,11 +126,11 @@ export default function ESLProgramPage() {
                     delay: 0.3
                   }}
                 >
-                  <BookOpen className="w-8 h-8 text-[#053F52]" />
-                  <h2 className="text-3xl font-bold text-[#053F52]">Program Overview</h2>
+                  <BookOpen className="w-8 h-8 text-[#032f36]" />
+                  <h2 className="text-3xl font-bold text-[#032f36]">Program Overview</h2>
                 </motion.div>
 
-                <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#053F52]">
+                <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#032f36]">
                   <motion.p 
                     className="text-base sm:text-lg md:text-xl leading-relaxed"
                     initial={{ opacity: 0, y: 20 }}
@@ -228,7 +228,7 @@ export default function ESLProgramPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053F52] mb-4">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36] mb-4">
                 Program Levels
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -247,7 +247,7 @@ export default function ESLProgramPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
                 >
-                  <h3 className="text-lg font-bold text-[#053F52] mb-3">
+                  <h3 className="text-lg font-bold text-[#032f36] mb-3">
                     {item.level}
                   </h3>
                   <p className="text-gray-700 text-sm leading-relaxed">
@@ -304,15 +304,15 @@ export default function ESLProgramPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                 >
-                  <GraduationCap className="w-8 h-8 text-[#053F52]" />
-                  <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                  <GraduationCap className="w-8 h-8 text-[#032f36]" />
+                  <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                     Additional Information
                   </h2>
                 </motion.div>
 
                 <div className="space-y-6">
                   <motion.div 
-                    className="bg-white/80 border-l-4 border-[#053F52] p-6 rounded-r-xl"
+                    className="bg-white/80 border-l-4 border-[#032f36] p-6 rounded-r-xl"
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -326,15 +326,15 @@ export default function ESLProgramPage() {
                     </p>
                     <ul className="space-y-2">
                       <li className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-[#032f36] flex-shrink-0 mt-0.5" />
                         <span>Placement testing for appropriate level assignment</span>
                       </li>
                       <li className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-[#032f36] flex-shrink-0 mt-0.5" />
                         <span>Self-paced progression through levels</span>
                       </li>
                       <li className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle2 className="w-5 h-5 text-[#053F52] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-[#032f36] flex-shrink-0 mt-0.5" />
                         <span>Cultural identity preservation</span>
                       </li>
                     </ul>
@@ -347,12 +347,12 @@ export default function ESLProgramPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    <p className="text-[#053F52] mb-4 font-medium">
+                    <p className="text-[#032f36] mb-4 font-medium">
                       For more details on the program structure and course progression chart, download our complete ESL program guide.
                     </p>
                     <Button
                       size="lg"
-                      className="bg-[#20cece] text-[#053f52] hover:bg-[#053f52] hover:text-white px-8 py-6 rounded-full transition-all duration-300"
+                      className="bg-[#20cece] text-[#032f36] hover:bg-[#032f36] hover:text-white px-8 py-6 rounded-full transition-all duration-300"
                     >
                       <Download className="mr-2 w-5 h-5" />
                       Download Full ESL Program Guide
@@ -377,7 +377,7 @@ export default function ESLProgramPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#053F52] mb-4">
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-[#032f36] mb-4">
                 How We Support Our ESL Students
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -390,14 +390,14 @@ export default function ESLProgramPage() {
               {supportServices.map((service, index) => (
                 <motion.div
                   key={service}
-                  className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-xl p-6 hover:border-[#053F52] hover:shadow-lg transition-all duration-300"
+                  className="bg-gradient-to-br from-[#EFBF04]/10 to-white border-2 border-[#EFBF04]/30 rounded-xl p-6 hover:border-[#032f36] hover:shadow-lg transition-all duration-300"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
                   <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-6 h-6 text-[#053F52] flex-shrink-0 mt-1" />
+                    <CheckCircle2 className="w-6 h-6 text-[#032f36] flex-shrink-0 mt-1" />
                     <p className="text-gray-700">
                       {service}
                     </p>

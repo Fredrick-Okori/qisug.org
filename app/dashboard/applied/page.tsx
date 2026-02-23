@@ -242,7 +242,7 @@ export default function AppliedStudentsPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
           <p className="text-slate-600">Redirecting to login...</p>
         </div>
       </div>
@@ -301,7 +301,7 @@ export default function AppliedStudentsPage() {
                 setSearch(e.target.value)
                 setPage(0)
               }}
-              className="w-full pl-10 pr-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#053f52]"
+              className="w-full pl-10 pr-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#032f36]"
             />
           </div>
 
@@ -314,7 +314,7 @@ export default function AppliedStudentsPage() {
                 setStatusFilter(e.target.value as ApplicationStatus | '')
                 setPage(0)
               }}
-              className="pl-10 pr-8 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#053f52] appearance-none"
+              className="pl-10 pr-8 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#032f36] appearance-none"
             >
               <option value="">All Statuses</option>
               <option value="Draft">Draft</option>
@@ -331,7 +331,7 @@ export default function AppliedStudentsPage() {
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
         {loading ? (
           <div className="p-8 text-center">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#053f52]"></div>
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#032f36]"></div>
             <p className="mt-2 text-slate-500 dark:text-slate-400">Loading your applications...</p>
           </div>
         ) : filteredApplications.length === 0 ? (
@@ -384,7 +384,7 @@ export default function AppliedStudentsPage() {
                     </div>
                     <button 
                       onClick={() => router.push(`/dashboard/applications/${app.id}`)}
-                      className="p-2 text-slate-400 hover:text-[#053f52] hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                      className="p-2 text-slate-400 hover:text-[#032f36] hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                       title="View Details"
                     >
                       <Eye size={18} />
@@ -428,12 +428,12 @@ export default function AppliedStudentsPage() {
       {/* Help Section */}
       <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4">
         <div className="flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-[#053f52] mt-0.5" />
+          <AlertCircle className="w-5 h-5 text-[#032f36] mt-0.5" />
           <div>
-            <h4 className="font-medium text-[#053f52]">Need Help?</h4>
+            <h4 className="font-medium text-[#032f36]">Need Help?</h4>
             <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
               If you have questions about your application status, please contact admissions at{' '}
-              <a href="mailto:admissions@qisug.ac.ug" className="text-[#053f52] hover:underline">
+              <a href="mailto:admissions@qisug.ac.ug" className="text-[#032f36] hover:underline">
                 admissions@qisug.ac.ug
               </a>
             </p>

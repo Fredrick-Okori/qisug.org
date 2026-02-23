@@ -230,7 +230,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
           <p className="text-slate-600">Redirecting to login...</p>
         </div>
       </div>
@@ -242,7 +242,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#053f52]" style={{ fontFamily: "'Crimson Pro', serif" }}>
+          <h1 className="text-2xl font-bold text-[#032f36]" style={{ fontFamily: "'Crimson Pro', serif" }}>
             My Dashboard
           </h1>
           <p className="text-slate-600 mt-1">
@@ -251,7 +251,7 @@ export default function DashboardPage() {
           </p>
         </div>
         <Link href="/admissions/apply-now">
-          <Button className="bg-[#053f52] hover:bg-[#0a4d63] flex items-center gap-2">
+          <Button className="bg-[#032f36] hover:bg-[#0a4d63] flex items-center gap-2">
             <Plus className="w-4 h-4" />
             Start New Application
           </Button>
@@ -260,10 +260,10 @@ export default function DashboardPage() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-[#053f52] to-[#042a3a] rounded-xl p-6 text-white transition-transform hover:scale-[1.02]">
+        <div className="bg-gradient-to-br from-[#032f36] to-[#042a3a] rounded-xl p-6 text-white transition-transform hover:scale-[1.02]">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-[#EFBF04] rounded-full flex items-center justify-center">
-              <FileText className="w-6 h-6 text-[#053f52]" />
+              <FileText className="w-6 h-6 text-[#032f36]" />
             </div>
             <div>
               <p className="text-blue-100 text-sm">Total Applications</p>
@@ -335,7 +335,7 @@ export default function DashboardPage() {
                 You haven't started any applications. Begin your journey with Queensgate International School today!
               </p>
               <Link href="/admissions/apply-now">
-                <Button className="bg-[#053f52] text-white hover:bg-[#0a4d63]">
+                <Button className="bg-[#032f36] text-white hover:bg-[#0a4d63]">
                   <Plus className="w-4 h-4 mr-2" />
                   Start Your First Application
                 </Button>
@@ -353,7 +353,7 @@ export default function DashboardPage() {
                       {getStatusIcon(app.status)}
                     </div>
                     <div>
-                      <h4 className="font-medium text-[#053f52]">
+                      <h4 className="font-medium text-[#032f36]">
                         Grade {app.grade} - {app.stream} Stream
                       </h4>
                       <p className="text-sm text-slate-500">
@@ -403,7 +403,7 @@ export default function DashboardPage() {
             <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 border-transparent hover:border-[#EFBF04] h-full">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#053f52] rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-[#032f36] rounded-full flex items-center justify-center">
                     <Plus className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -420,7 +420,7 @@ export default function DashboardPage() {
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-[#EFBF04] rounded-full flex items-center justify-center">
-                    <FileText className="w-6 h-6 text-[#053f52]" />
+                    <FileText className="w-6 h-6 text-[#032f36]" />
                   </div>
                   <div>
                     <CardTitle className="text-lg">Application Guide</CardTitle>
@@ -452,21 +452,21 @@ export default function DashboardPage() {
       {/* Help Section */}
       <div className="bg-blue-50 rounded-xl p-6">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 bg-[#053f52] rounded-full flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 bg-[#032f36] rounded-full flex items-center justify-center flex-shrink-0">
             <GraduationCap className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="font-semibold text-[#053f52]">Need Help?</h3>
+            <h3 className="font-semibold text-[#032f36]">Need Help?</h3>
             <p className="text-slate-600 mt-1">
               If you have any questions about your application or the admissions process, 
               our team is here to help.
             </p>
             <div className="flex flex-wrap gap-4 mt-3">
-              <a href="mailto:admissions@qisug.ac.ug" className="text-[#053f52] hover:underline text-sm">
+              <a href="mailto:admissions@qisug.ac.ug" className="text-[#032f36] hover:underline text-sm">
                 admissions@qisug.ac.ug
               </a>
               <span className="text-slate-400">|</span>
-              <a href="tel:+256414123456" className="text-[#053f52] hover:underline text-sm">
+              <a href="tel:+256414123456" className="text-[#032f36] hover:underline text-sm">
                 +256 414 123 456
               </a>
             </div>

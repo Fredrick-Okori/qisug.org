@@ -193,7 +193,7 @@ export default function DownloadsPage() {
           <div className="max-w-7xl mx-auto px-4 py-5">
             <div className="max-w-5xl">
               <motion.h1 
-                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#053F52]"
+                className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl pt-10 text-[#032f36]"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -205,7 +205,7 @@ export default function DownloadsPage() {
                 Downloads
               </motion.h1>
               <motion.p
-                className="text-xl sm:text-2xl text-[#053F52] mt-4"
+                className="text-xl sm:text-2xl text-[#032f36] mt-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ 
@@ -236,11 +236,11 @@ export default function DownloadsPage() {
                     delay: 0.3
                   }}
                 >
-                  <FolderOpen className="w-8 h-8 text-[#053F52]" />
-                  <h2 className="text-3xl text-[#053F52]">Document Center</h2>
+                  <FolderOpen className="w-8 h-8 text-[#032f36]" />
+                  <h2 className="text-3xl text-[#032f36]">Document Center</h2>
                 </motion.div>
 
-                <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#053F52]">
+                <div className="space-y-4 sm:space-y-5 md:space-y-6 text-[#032f36]">
                   <motion.p 
                     className="text-base sm:text-lg md:text-xl leading-relaxed"
                     initial={{ opacity: 0, y: 20 }}
@@ -271,7 +271,7 @@ export default function DownloadsPage() {
                   </motion.p>
 
                   <motion.div 
-                    className="bg-white/80 border-l-4 border-[#053F52] p-6 rounded-r-xl"
+                    className="bg-white/80 border-l-4 border-[#032f36] p-6 rounded-r-xl"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ 
@@ -280,7 +280,7 @@ export default function DownloadsPage() {
                       delay: 0.6
                     }}
                   >
-                    <p className="text-[#053F52] font-medium mb-3">
+                    <p className="text-[#032f36] font-medium mb-3">
                       Need Help?
                     </p>
                     <p className="text-gray-700 text-sm mb-3">
@@ -290,7 +290,7 @@ export default function DownloadsPage() {
                     <div className="flex flex-col sm:flex-row gap-3">
                       <Button
                         variant="outline"
-                        className="border-[#053F52] text-[#053F52] hover:bg-[#053F52] hover:text-white"
+                        className="border-[#032f36] text-[#032f36] hover:bg-[#032f36] hover:text-white"
                       >
                         Contact Support
                       </Button>
@@ -356,8 +356,8 @@ export default function DownloadsPage() {
                   transition={{ duration: 0.6 }}
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <CategoryIcon className="w-8 h-8 text-[#053F52]" />
-                    <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                    <CategoryIcon className="w-8 h-8 text-[#032f36]" />
+                    <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                       {category.title}
                     </h2>
                   </div>
@@ -378,13 +378,13 @@ export default function DownloadsPage() {
                       >
                         <div className="flex items-start gap-4">
                           <div className="flex-shrink-0">
-                            <div className="w-14 h-14 bg-[#053F52] rounded-xl flex items-center justify-center group-hover:bg-[#20cece] transition-colors duration-300">
+                            <div className="w-14 h-14 bg-[#032f36] rounded-xl flex items-center justify-center group-hover:bg-[#20cece] transition-colors duration-300">
                               <DocIcon className="w-7 h-7 text-white" />
                             </div>
                           </div>
                           
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-lg text-[#053F52] mb-2 group-hover:text-[#20cece] transition-colors duration-300">
+                            <h3 className="text-lg text-[#032f36] mb-2 group-hover:text-[#20cece] transition-colors duration-300">
                               {doc.name}
                             </h3>
                             <p className="text-gray-700 text-sm leading-relaxed mb-4">
@@ -403,7 +403,7 @@ export default function DownloadsPage() {
                               
                               <Button
                                 size="sm"
-                                className="bg-[#20cece] text-white hover:bg-[#053F52] transition-colors duration-300"
+                                className="bg-[#20cece] text-white hover:bg-[#032f36] transition-colors duration-300"
                               >
                                 <Download className="w-4 h-4 mr-1" />
                                 Download
@@ -465,8 +465,8 @@ export default function DownloadsPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                 >
-                  <Info className="w-8 h-8 text-[#053F52]" />
-                  <h2 className="text-3xl lg:text-4xl text-[#053F52]">
+                  <Info className="w-8 h-8 text-[#032f36]" />
+                  <h2 className="text-3xl lg:text-4xl text-[#032f36]">
                     Important Information
                   </h2>
                 </motion.div>
@@ -479,7 +479,7 @@ export default function DownloadsPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                   >
-                    <h3 className="text-[#053F52] mb-3 flex items-center gap-2">
+                    <h3 className="text-[#032f36] mb-3 flex items-center gap-2">
                       <CheckCircle2 className="w-5 h-5 text-blue-500" />
                       Document Formats
                     </h3>
@@ -497,7 +497,7 @@ export default function DownloadsPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                   >
-                    <h3 className="text-[#053F52] mb-3 flex items-center gap-2">
+                    <h3 className="text-[#032f36] mb-3 flex items-center gap-2">
                       <CheckCircle2 className="w-5 h-5 text-green-500" />
                       Document Updates
                     </h3>
@@ -515,7 +515,7 @@ export default function DownloadsPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    <h3 className="text-[#053F52] mb-3 flex items-center gap-2">
+                    <h3 className="text-[#032f36] mb-3 flex items-center gap-2">
                       <CheckCircle2 className="w-5 h-5 text-amber-500" />
                       Accessibility
                     </h3>
@@ -542,7 +542,7 @@ export default function DownloadsPage() {
         <div className="bg-[#EFBF04] relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <motion.div
-              className="bg-gradient-to-r from-[#053F52] to-[#064d66] rounded-2xl p-8 sm:p-12 lg:p-16 text-center"
+              className="bg-gradient-to-r from-[#032f36] to-[#064d66] rounded-2xl p-8 sm:p-12 lg:p-16 text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -560,7 +560,7 @@ export default function DownloadsPage() {
                  <Link href="/contact">
                       <Button
                         size="lg"
-                        className="bg-[#20cece] text-[#053f52] rounded-full hover:bg-[#20cece]/90 border-[#20cece] text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6  transition-all "
+                        className="bg-[#20cece] text-[#032f36] rounded-full hover:bg-[#20cece]/90 border-[#20cece] text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6  transition-all "
                       >
                         Contact us
                         <ArrowRight className="ml-2"/>

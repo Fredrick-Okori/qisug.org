@@ -225,7 +225,7 @@ export default function SuccessPage() {
               <AlertCircle className="w-12 h-12 text-red-600" />
             </motion.div>
             
-            <h2 className="text-3xl text-[#053f52] mb-4" style={{ fontFamily: "'Crimson Pro', serif" }}>
+            <h2 className="text-3xl text-[#032f36] mb-4" style={{ fontFamily: "'Crimson Pro', serif" }}>
               Session Expired
             </h2>
             <p className="text-gray-600 mb-6" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -241,14 +241,14 @@ export default function SuccessPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 onClick={handleStartNewApplication}
-                className="bg-[#053f52] text-white hover:bg-[#042a38] rounded-full px-8 py-3"
+                className="bg-[#032f36] text-white hover:bg-[#042a38] rounded-full px-8 py-3"
               >
                 Start New Application
               </Button>
               <Button 
                 onClick={() => router.push('/contact')}
                 variant="outline"
-                className="border-2 border-[#053f52] text-[#053f52] hover:bg-[#053f52] hover:text-white rounded-full px-8 py-3"
+                className="border-2 border-[#032f36] text-[#032f36] hover:bg-[#032f36] hover:text-white rounded-full px-8 py-3"
               >
                 Contact Admissions
               </Button>
@@ -279,7 +279,7 @@ export default function SuccessPage() {
           {/* Timer Banner */}
           {timeRemaining && !isExpired && (
             <motion.div 
-              className="bg-[#053f52] rounded-xl p-4 mb-6 flex items-center justify-between"
+              className="bg-[#032f36] rounded-xl p-4 mb-6 flex items-center justify-between"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
             >
@@ -311,7 +311,7 @@ export default function SuccessPage() {
             </motion.div>
             
             <motion.h1 
-              className="text-3xl md:text-4xl text-[#053f52] mb-4"
+              className="text-3xl md:text-4xl text-[#032f36] mb-4"
               style={{ fontFamily: "'Crimson Pro', serif" }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -338,7 +338,7 @@ export default function SuccessPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
           >
-            <h2 className="text-2xl font-bold text-[#053f52] mb-6" style={{ fontFamily: "'Crimson Pro', serif" }}>
+            <h2 className="text-2xl font-bold text-[#032f36] mb-6" style={{ fontFamily: "'Crimson Pro', serif" }}>
               Application Summary
             </h2>
             
@@ -346,7 +346,7 @@ export default function SuccessPage() {
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="bg-[#EFBF04]/20 p-2 rounded-lg">
-                    <User className="w-5 h-5 text-[#053f52]" />
+                    <User className="w-5 h-5 text-[#032f36]" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Applicant Name</p>
@@ -356,7 +356,7 @@ export default function SuccessPage() {
                 
                 <div className="flex items-start gap-3">
                   <div className="bg-[#EFBF04]/20 p-2 rounded-lg">
-                    <FileText className="w-5 h-5 text-[#053f52]" />
+                    <FileText className="w-5 h-5 text-[#032f36]" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
@@ -366,7 +366,7 @@ export default function SuccessPage() {
                 
                 <div className="flex items-start gap-3">
                   <div className="bg-[#EFBF04]/20 p-2 rounded-lg">
-                    <Calendar className="w-5 h-5 text-[#053f52]" />
+                    <Calendar className="w-5 h-5 text-[#032f36]" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Phone</p>
@@ -378,7 +378,7 @@ export default function SuccessPage() {
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="bg-[#20cece]/20 p-2 rounded-lg">
-                    <GraduationCap className="w-5 h-5 text-[#053f52]" />
+                    <GraduationCap className="w-5 h-5 text-[#032f36]" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Grade Applying</p>
@@ -388,7 +388,7 @@ export default function SuccessPage() {
                 
                 <div className="flex items-start gap-3">
                   <div className="bg-[#20cece]/20 p-2 rounded-lg">
-                    <Calendar className="w-5 h-5 text-[#053f52]" />
+                    <Calendar className="w-5 h-5 text-[#032f36]" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Admission Period</p>
@@ -398,11 +398,11 @@ export default function SuccessPage() {
                 
                 <div className="flex items-start gap-3">
                   <div className="bg-[#20cece]/20 p-2 rounded-lg">
-                    <CreditCard className="w-5 h-5 text-[#053f52]" />
+                    <CreditCard className="w-5 h-5 text-[#032f36]" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Application Fee</p>
-                    <p className="font-semibold text-[#053f52]">$300 USD</p>
+                    <p className="font-semibold text-[#032f36]">$300 USD</p>
                   </div>
                 </div>
               </div>
@@ -416,7 +416,7 @@ export default function SuccessPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
           >
-            <h2 className="text-2xl font-bold text-[#053f52] mb-2" style={{ fontFamily: "'Crimson Pro', serif" }}>
+            <h2 className="text-2xl font-bold text-[#032f36] mb-2" style={{ fontFamily: "'Crimson Pro', serif" }}>
               Upload Bank Payment Slip
             </h2>
             <p className="text-gray-600 mb-6" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -464,9 +464,9 @@ export default function SuccessPage() {
                   />
                   <label htmlFor="payment-slip" className="cursor-pointer">
                     <div className="w-16 h-16 bg-[#EFBF04]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Upload className="w-8 h-8 text-[#053f52]" />
+                      <Upload className="w-8 h-8 text-[#032f36]" />
                     </div>
-                    <p className="text-lg font-semibold text-[#053f52] mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <p className="text-lg font-semibold text-[#032f36] mb-2" style={{ fontFamily: "'Inter', sans-serif" }}>
                       {paymentSlip ? paymentSlip.name : 'Click to upload payment slip'}
                     </p>
                     <p className="text-sm text-gray-500" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -480,7 +480,7 @@ export default function SuccessPage() {
                     <Button
                       onClick={handleSubmitPaymentSlip}
                       disabled={isUploading}
-                      className="w-full bg-[#053f52] text-white hover:bg-[#042a38] rounded-full py-4 text-lg"
+                      className="w-full bg-[#032f36] text-white hover:bg-[#042a38] rounded-full py-4 text-lg"
                     >
                       {isUploading ? (
                         <span className="flex items-center gap-2">
@@ -507,7 +507,7 @@ export default function SuccessPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.75 }}
           >
-            <h3 className="font-bold text-[#053f52] mb-4 flex items-center gap-2">
+            <h3 className="font-bold text-[#032f36] mb-4 flex items-center gap-2">
               <CreditCard className="w-5 h-5" />
               ABSA Bank Payment Details
             </h3>
@@ -553,13 +553,13 @@ export default function SuccessPage() {
           >
             <Button 
               onClick={() => router.push('/dashboard/applied')}
-              className="bg-[#EFBF04] text-[#053f52] hover:bg-[#e0ad00] rounded-full px-6 py-3 font-semibold"
+              className="bg-[#EFBF04] text-[#032f36] hover:bg-[#e0ad00] rounded-full px-6 py-3 font-semibold"
             >
               Track Application Status
             </Button>
             <Button 
               onClick={() => router.push('/')}
-              className="bg-[#053f52] text-white hover:bg-[#042a38] rounded-full px-6 py-3"
+              className="bg-[#032f36] text-white hover:bg-[#042a38] rounded-full px-6 py-3"
             >
               Return Home
             </Button>
@@ -572,7 +572,7 @@ export default function SuccessPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
           >
-            <h3 className="text-xl font-bold text-[#053f52] mb-4" style={{ fontFamily: "'Crimson Pro', serif" }}>
+            <h3 className="text-xl font-bold text-[#032f36] mb-4" style={{ fontFamily: "'Crimson Pro', serif" }}>
               Need Help?
             </h3>
             <div className="flex flex-col sm:flex-row gap-4 justify-center text-gray-700">

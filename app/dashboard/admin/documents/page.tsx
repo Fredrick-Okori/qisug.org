@@ -235,7 +235,7 @@ export default function AdminDocumentsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-12 h-12 border-4 border-[#053f52] border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-[#032f36] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -249,7 +249,7 @@ export default function AdminDocumentsPage() {
         <p className="text-sm text-slate-500">{error}</p>
         <button
           onClick={fetchDocuments}
-          className="px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors flex items-center gap-2"
         >
           <RefreshCw className="w-4 h-4" />
           Retry
@@ -268,7 +268,7 @@ export default function AdminDocumentsPage() {
         </div>
         <button
           onClick={fetchDocuments}
-          className="px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors flex items-center gap-2"
         >
           <RefreshCw className="w-4 h-4" />
           Refresh
@@ -336,13 +336,13 @@ export default function AdminDocumentsPage() {
               placeholder="Search by name, email, or file..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+            className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
           >
             <option value="all">All Status</option>
             <option value="pending">Pending Review</option>
@@ -352,7 +352,7 @@ export default function AdminDocumentsPage() {
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#053f52] focus:border-transparent bg-white"
+            className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#032f36] focus:border-transparent bg-white"
           >
             <option value="all">All Types</option>
             {documentTypes.map((type) => (
@@ -494,7 +494,7 @@ export default function AdminDocumentsPage() {
                   <div className="text-center">
                     {getFileIcon(selectedDocument.fileName)}
                     <p className="text-slate-500 mt-2">Document Preview</p>
-                    <button className="mt-2 px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors text-sm">
+                    <button className="mt-2 px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors text-sm">
                       Open Full Preview
                     </button>
                   </div>

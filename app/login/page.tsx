@@ -281,7 +281,7 @@ function LoginContent() {
           <div className="grid lg:grid-cols-2 items-stretch overflow-hidden rounded-2xl shadow-2xl">
             
             {/* Left Panel */}
-            <div className="hidden lg:flex flex-col justify-center bg-[#053f52] p-12 text-white">
+            <div className="hidden lg:flex flex-col justify-center bg-[#032f36] p-12 text-white">
               <GraduationCap className="w-16 h-16 text-[#EFBF04] mb-6" />
               <h1 className="text-4xl font-serif mb-4">
                 {isSignUp ? 'Begin Your Journey' : 'Portal Login'}
@@ -302,7 +302,7 @@ function LoginContent() {
             {/* Form Panel */}
             <div className="bg-white p-8">
               <div className="text-center mb-8">
-                <h2 className="text-2xl font-serif text-[#053f52]">
+                <h2 className="text-2xl font-serif text-[#032f36]">
                   {isSignUp ? 'Create Account' : 'Sign In'}
                 </h2>
               </div>
@@ -358,7 +358,7 @@ function LoginContent() {
                   </div>
                 )}
 
-                <Button type="submit" className="w-full bg-[#053f52] hover:bg-[#0a4d63]" disabled={isLoading}>
+                <Button type="submit" className="w-full bg-[#032f36] hover:bg-[#0a4d63]" disabled={isLoading}>
                   {isLoading ? <Loader2 className="animate-spin" /> : (isSignUp ? 'Register' : 'Login')}
                 </Button>
               </form>
@@ -380,7 +380,7 @@ function LoginContent() {
 
               <p className="mt-8 text-center text-sm text-gray-600">
                 {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-                <button onClick={() => setIsSignUp(!isSignUp)} className="text-[#053f52] font-bold hover:underline">
+                <button onClick={() => setIsSignUp(!isSignUp)} className="text-[#032f36] font-bold hover:underline">
                   {isSignUp ? 'Sign In' : 'Sign Up'}
                 </button>
               </p>
@@ -395,7 +395,7 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-[#053f52]" /></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-[#032f36]" /></div>}>
       <LoginContent />
     </Suspense>
   );

@@ -128,7 +128,7 @@ export default function AdminDashboardPage() {
           <p className="text-slate-500">{error || 'No data available'}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-[#053f52] text-white rounded-lg hover:bg-[#0a4d63] transition-colors"
+            className="mt-4 px-4 py-2 bg-[#032f36] text-white rounded-lg hover:bg-[#0a4d63] transition-colors"
           >
             Retry
           </button>
@@ -186,7 +186,7 @@ export default function AdminDashboardPage() {
             Export Report
           </Button>
           <Link href="/dashboard/admin/applications">
-            <Button className="bg-[#053f52] hover:bg-[#0a4d63]">
+            <Button className="bg-[#032f36] hover:bg-[#0a4d63]">
               View All Applications
             </Button>
           </Link>
@@ -299,7 +299,7 @@ export default function AdminDashboardPage() {
           href="/dashboard/admin/applications"
           className="p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors text-left group"
         >
-          <FileText className="w-6 h-6 text-[#053f52] mb-2 group-hover:scale-110 transition-transform" />
+          <FileText className="w-6 h-6 text-[#032f36] mb-2 group-hover:scale-110 transition-transform" />
           <p className="font-medium text-slate-900">Review Applications</p>
           <p className="text-sm text-slate-500">{stats.pendingApplications} pending</p>
         </Link>
@@ -307,7 +307,7 @@ export default function AdminDashboardPage() {
           href="/dashboard/admin/users"
           className="p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors text-left group"
         >
-          <Users className="w-6 h-6 text-[#053f52] mb-2 group-hover:scale-110 transition-transform" />
+          <Users className="w-6 h-6 text-[#032f36] mb-2 group-hover:scale-110 transition-transform" />
           <p className="font-medium text-slate-900">Manage Users</p>
           <p className="text-sm text-slate-500">{stats.totalUsers} total</p>
         </Link>
@@ -315,7 +315,7 @@ export default function AdminDashboardPage() {
           href="/dashboard/admin/documents"
           className="p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors text-left group"
         >
-          <CheckCircle className="w-6 h-6 text-[#053f52] mb-2 group-hover:scale-110 transition-transform" />
+          <CheckCircle className="w-6 h-6 text-[#032f36] mb-2 group-hover:scale-110 transition-transform" />
           <p className="font-medium text-slate-900">Approve Documents</p>
           <p className="text-sm text-slate-500">Review uploads</p>
         </Link>
@@ -323,7 +323,7 @@ export default function AdminDashboardPage() {
           href="/dashboard/admin/settings"
           className="p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors text-left group"
         >
-          <BarChart3 className="w-6 h-6 text-[#053f52] mb-2 group-hover:scale-110 transition-transform" />
+          <BarChart3 className="w-6 h-6 text-[#032f36] mb-2 group-hover:scale-110 transition-transform" />
           <p className="font-medium text-slate-900">View Reports</p>
           <p className="text-sm text-slate-500">Analytics</p>
         </Link>
@@ -365,21 +365,21 @@ export default function AdminDashboardPage() {
         className="bg-blue-50 rounded-xl p-6"
       >
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 bg-[#053f52] rounded-full flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 bg-[#032f36] rounded-full flex items-center justify-center flex-shrink-0">
             <AlertCircle className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="font-semibold text-[#053f52]">Need Help?</h3>
+            <h3 className="font-semibold text-[#032f36]">Need Help?</h3>
             <p className="text-slate-600 mt-1">
               If you have questions about managing applications or user accounts, 
               our support team is here to assist you.
             </p>
             <div className="flex flex-wrap gap-4 mt-3">
-              <a href="mailto:support@qisug.ac.ug" className="text-[#053f52] hover:underline text-sm">
+              <a href="mailto:support@qisug.ac.ug" className="text-[#032f36] hover:underline text-sm">
                 support@qisug.ac.ug
               </a>
               <span className="text-slate-400">|</span>
-              <a href="tel:+256414123456" className="text-[#053f52] hover:underline text-sm">
+              <a href="tel:+256414123456" className="text-[#032f36] hover:underline text-sm">
                 +256 414 123 456
               </a>
             </div>

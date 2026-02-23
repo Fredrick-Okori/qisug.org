@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { MainSiteFooter } from "@/components/main-footer"
+import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
   title: "Resources & Information | Queensgate International School",
@@ -94,7 +95,7 @@ export default function MoreLayout({
         }}
       />
       {children}
-      <MainSiteFooter />
+       <SiteFooter />
     </>
   )
 }
