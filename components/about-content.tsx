@@ -101,7 +101,7 @@ const educators = [
 const directors = [
  
   {
-    name: "Turinawe Edmon",
+    name: "Turinawe Edmund",
     title: "Board Director & Corporate Strategy, Growth & Infrastructure",
     image: "/directors/Edmund 1_converted.avif"
   },
@@ -113,7 +113,7 @@ const directors = [
    {
     name: "Eng. Kuteesa Tumwiine Ferdinand",
     title: "Board Director Propietor | Finance & Infrastructure",
-    image: "/directors/Martin  (1)_converted.avif"
+    image: "/directors/ferdinand.avif"
   },
  
 ]
