@@ -107,8 +107,13 @@ const directors = [
   },
   {
     name: "Gahongaire Mary Kinobe",
-    title: "Chairperson, Board of Directors | Propietors",
+    title: "Chairperson, Board of Directors of Propietors",
     image: "/directors/Maria 4_converted.avif"
+  },
+   {
+    name: "Eng. Kuteesa Tumwiine Ferdinand",
+    title: "Board Director Propietor | Finance & Infrastructure",
+    image: "/directors/Martin  (1)_converted.avif"
   },
  
 ]
