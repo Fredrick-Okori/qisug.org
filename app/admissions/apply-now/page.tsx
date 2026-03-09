@@ -679,16 +679,15 @@ export default function ApplyNowPage() {
     doc.text('Bank Payment Instructions', 20, 180);
     
     doc.setFontSize(11);
-    doc.text('Bank: I&M Bank (Uganda) Limited', 20, 195);
+    doc.text('Bank: KCB Bank, Ben Kiwanuka Branch', 20, 195);
     doc.text('Account Name: Queensgate International School', 20, 205);
-    doc.text('Account Number UGX: 5076029001', 20, 215);
-    doc.text('Account Number USD: 5076029002', 20, 225);
-    doc.text('Amount: $300 USD (Application Fee)', 20, 235);
+    doc.text('Account Number USD: 2335953176', 20, 225);
+    doc.text('Amount: $250 USD (Application Fee)', 20, 235);
     doc.text(`Reference: ${generatedReference}`, 20, 245);
     
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
-    doc.text('Please present this reference number when making your payment at any I&M Bank branch.', 20, 260);
+    doc.text('Please present this reference number when making your payment at any KCB Bank.', 20, 260);
     doc.text('After payment, upload your payment slip to complete your application.', 20, 270);
     
     // Footer
@@ -696,7 +695,7 @@ export default function ApplyNowPage() {
     doc.rect(0, 270, 210, 27, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(9);
-    doc.text('Queensgate International School | admissions@queensgate.ac.ug | +256-XXX-XXXXX', 105, 283, { align: 'center' });
+    doc.text('Queensgate International School | admissions@qgis.ac.ug | +256-757 882 623', 105, 283, { align: 'center' });
     
     doc.save(`QIS-Application-${generatedReference}.pdf`);
   };
@@ -894,7 +893,7 @@ export default function ApplyNowPage() {
                       Contact our admissions team:
                     </p>
                     <a href="mailto:admissions@queensgate.ac.ug" className="text-[#EFBF04] font-semibold hover:underline font-sans">
-                      admissions@queensgate.ac.ug
+                      admissions@qgis.ac.ug
                     </a>
                   </motion.div>
                 </div>
@@ -937,7 +936,7 @@ export default function ApplyNowPage() {
                       <ul className="space-y-2 text-gray-700">
                         <li>• All information provided must be accurate and truthful</li>
                         <li>• Required documents must be clear and legible</li>
-                        <li>• Application fee: <strong>$300 USD (non-refundable)</strong></li>
+                        <li>• Application fee: <strong>$250 USD (non-refundable)</strong></li>
                         <li>• Processing time: 5-7 business days</li>
                       </ul>
                     </motion.div>
@@ -971,7 +970,7 @@ export default function ApplyNowPage() {
                       <ol className="space-y-3 text-gray-700">
                         <li>1. Complete the application form</li>
                         <li>2. Receive your payment reference number</li>
-                        <li>3. Make payment at any I&M Bank (Uganda) Limited</li>
+                        <li>3. Make payment at any KCB Bank Branch</li>
                         <li>4. Upload your payment slip</li>
                         <li>5. Await confirmation from our admissions team</li>
                       </ol>
@@ -1506,7 +1505,7 @@ export default function ApplyNowPage() {
                     </h2>
                     
                     <p className="text-lg text-gray-700 mb-8 font-sans">
-                      Your information & documents has been sent successfully. Here is your payment reference number for bnak payments:
+                      Your information & documents has been sent successfully. Here is your payment reference number for bank payments:
                     </p>
 
                     {/* Reference Number Box */}
@@ -1579,11 +1578,11 @@ export default function ApplyNowPage() {
                         Bank Payment Instructions
                       </h3>
                       <div className="space-y-2 text-gray-700 font-sans">
-                        <p><strong>Bank:</strong> I&M Bank (Uganda) Limited</p>
+                        <p><strong>Bank:</strong> KCB Bank Uganda Ltd</p>
                         <p><strong>Account Name:</strong> Queensgate International School</p>
-                        <p><strong>Account Number UGX:</strong> 5076029001</p>
-                        <p><strong>Account Number USD:</strong> 5076029002</p>
-                        <p><strong>Amount:</strong> $300 USD (Application Fee)</p>
+
+                        <p><strong>Account Number USD:</strong> 2335953176</p>
+                        <p><strong>Amount:</strong> $250 USD (Application Fee)</p>
                         <p><strong>Reference:</strong> {generatedReference}</p>
                       </div>
                       <p className="text-sm text-gray-600 mt-4">
@@ -1826,7 +1825,7 @@ export default function ApplyNowPage() {
                       <p className="text-gray-700 font-sans">
                         <strong>Need help?</strong> Contact our admissions team at{' '}
                         <a href="mailto:admissions@queensgate.ac.ug" className="text-[#EFBF04] font-semibold underline">
-                          admissions@queensgate.ac.ug
+                          admissions@qgis.ac.ug
                         </a>
                       </p>
                     </motion.div>
