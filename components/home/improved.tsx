@@ -113,7 +113,7 @@ export function ImprovedHomeSection() {
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <Image
-                src="/images/design_portability_1__gfw34rh367u6_large_2x.jpg"
+                src="/images/design_portability_1__gfw34rh367u6_large_2x.avif"
                 alt="Queensgate International School Uganda"
                 fill
                 className="object-cover"

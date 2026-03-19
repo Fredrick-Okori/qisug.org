@@ -873,7 +873,7 @@ export default function ApplyNowPage() {
                   </motion.p>
                   
                   <motion.img 
-                    src="/images/02a-header-How-To-Apply-Header-PhotoV3.jpg" 
+                    src="/images/chatgptimagemar272c20252c12_25_02pm.avif" 
                     alt="Students at Queensgate International School" 
                     className="rounded-2xl shadow-lg w-full"
                     initial={{ opacity: 0, scale: 0.95 }}
