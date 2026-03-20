@@ -1,1 +1,1 @@
-- [x] 1. Edit next.config.mjs to add '/directors/**' to images.localPatterns
+# Original Task COMPLETE: Next.js Image Error Fixed\n\n- ✅ Added `/directors/**` to `images.localPatterns` in `next.config.mjs`\n- ✅ Dev server restarted (`npm run dev` on port 3000)\n- ✅ `/about` page compiles and renders (GET /about 200 confirmed)\n- ✅ All 3 director images valid\n\nDev server logs clean, no localPatterns errors.\n\n**Note:** Separate TypeScript error in `app/admissions/apply-now/page.tsx` (missing `next/image` import) - not part of original task.
