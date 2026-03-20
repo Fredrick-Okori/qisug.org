@@ -38,6 +38,9 @@ images: {
       {
         pathname: '/partners/**',
       },
+      {
+        pathname: '/directors/**',
+      },
     ],
   },
   // Security headers

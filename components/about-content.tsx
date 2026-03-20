@@ -80,7 +80,7 @@ const educators = [
     title: "English and History",
     initials: "",
     image: "/team/hedwig_namazzi.avif",
-    expertise: ["English", "History", ]
+    expertise: ["English", "History"]
   },
   {
     name: "Ms. Emma Golola",
@@ -99,7 +99,6 @@ const educators = [
 ]
 
 const directors = [
- 
   {
     name: "Turinawe Edmund",
     title: "Board Director & Corporate Strategy, Growth & Infrastructure",
@@ -110,12 +109,11 @@ const directors = [
     title: "Chairperson, Board of Directors of Propietors",
     image: "/directors/Maria 4_converted.avif"
   },
-   {
+  {
     name: "Eng. Kuteesa Tumwiine Ferdinand",
     title: "Board Director Propietor | Finance & Infrastructure",
     image: "/directors/ferdinand.avif"
   },
- 
 ]
 
 const testimonials = [
@@ -240,7 +238,7 @@ export default function AboutContent() {
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-[#053F52] to-[#053F52] flex items-center justify-center">
                       <Image 
-                        src="/directors/Aaron (1)_converted.avif" 
+src="/directors/Aaron (1)_converted.avif"
                         alt="Mr. Aaron Namanya - Managing Director" 
                         className="w-full h-full object-cover rounded-lg" 
                         width={400} 
@@ -361,7 +359,7 @@ export default function AboutContent() {
         </div>
 
         {/* Our Mission Section with Core Values */}
-        <div className="bg-[#EFBF04]  relative z-10">
+        <div className="bg-[#EFBF04] relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-start lg:items-center">
               {/* Left Side - Text Content */}
@@ -451,26 +449,25 @@ export default function AboutContent() {
           </div>
         </div>
 
-{/* Meet Our Directors Section */}
+        {/* Meet Our Directors Section */}
         <div className="bg-[#053F52] relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-           
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-               <motion.div
-              className="text-center mx-auto mb-12"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-3xl lg:text-4xl xl:text-5xl text-white mb-4">
-                Meet Our Directors
-              </h2>
-              <p className="text-lg text-white max-w-3xl mx-auto">
-                Our leadership team consists of experienced professionals dedicated to guiding our school towards excellence
-              </p>
-            </motion.div>
+              <motion.div
+                className="text-center mx-auto mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <h2 className="text-3xl lg:text-4xl xl:text-5xl text-white mb-4">
+                  Meet Our Directors
+                </h2>
+                <p className="text-lg text-white max-w-3xl mx-auto">
+                  Our leadership team consists of experienced professionals dedicated to guiding our school towards excellence
+                </p>
+              </motion.div>
               {directors.map((director, index) => (
                 <motion.div
                   key={director.name}
@@ -481,12 +478,12 @@ export default function AboutContent() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
                   <div className="relative h-96 w-full overflow-hidden">
-                      <Image
-                        src={director.image}
-                        alt={director.name}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                        width={400} height={600} loading="lazy"
-                      />
+                    <Image
+                      src={director.image}
+                      alt={director.name}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      width={400} height={600} loading="lazy"
+                    />
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
                       <h3 className="text-xl font-bold text-white mb-1">
                         {director.name}
@@ -506,8 +503,7 @@ export default function AboutContent() {
           </div>
         </div>
 
-
-                        {/* Principal's Message Section */}
+        {/* Principal's Message Section */}
         <div className="bg-[#EFBF04] relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-start lg:items-center">
@@ -528,7 +524,7 @@ export default function AboutContent() {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-[#053F52] to-[#053F52] flex items-center justify-center">
-                      <Image src="/team/Principal_s Official Portrait.avif" alt="Principal Dr. Margaret Williams" className="w-full h-full object-cover rounded-lg" width={400} height={600} sizes="(max-width: 768px) 100vw, 50vw" priority />
+                    <Image src="/team/Principal_s Official Portrait.avif" alt="Principal Dr. Margaret Williams" className="w-full h-full object-cover rounded-lg" width={400} height={600} sizes="(max-width: 768px) 100vw, 50vw" priority />
                   </div>
                 </motion.div>
               </motion.div>
@@ -550,40 +546,39 @@ export default function AboutContent() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                    At Queensgate International School, we excel in preparing students for universities and colleges 
-                    worldwide through our comprehensive academic program. As a forward-thinking institution, we are 
-                    dedicated to educating young minds with purpose and passion.
-                  </motion.p>
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                  >
-                    Our staff ensures students are adaptable, resilient, and resourceful, contributing to our 100% 
-                    post-secondary placement record. At Queensgate, students follow a rigorous curriculum while 
-                    developing essential skills like independent thinking, collaboration, and effective communication.
-                  </motion.p>
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.6 }}
-                  >
-                    Our community provides a peaceful and conducive learning environment. The smaller school community 
-                    allows our staff to know each student by name and offer personalized academic guidance.
-                  </motion.p>
-                  <motion.div 
-                    className="mt-6 pt-6 border-t-2 border-[#053F52]/20"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.8 }}
-                  >
-                    <p className="font-semibold text-[#053F52]">Ms. Ritah Kasembo</p>
-                    <p className="text-sm text-[#053F52]/80">Principal, Queensgate International School</p>
-                  </motion.div>
-                </div>
+                  At Queensgate International School, we excel in preparing students for universities and colleges 
+                  worldwide through our comprehensive academic program. As a forward-thinking institution, we are 
+                  dedicated to educating young minds with purpose and passion.
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  Our staff ensures students are adaptable, resilient, and resourceful, contributing to our 100% 
+                  post-secondary placement record. At Queensgate, students follow a rigorous curriculum while 
+                  developing essential skills like independent thinking, collaboration, and effective communication.
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                >
+                  Our community provides a peaceful and conducive learning environment. The smaller school community 
+                  allows our staff to know each student by name and offer personalized academic guidance.
+                </motion.p>
+                <motion.div 
+                  className="mt-6 pt-6 border-t-2 border-[#053F52]/20"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                >
+                  <p className="font-semibold text-[#053F52]">Ms. Ritah Kasembo</p>
+                  <p className="text-sm text-[#053F52]/80">Principal, Queensgate International School</p>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -759,13 +754,14 @@ export default function AboutContent() {
           </div>
         </div>
 
-        {/* Call to Action */}
-      <CTA/>
-      <Accreditations/>
+        <div>
+          {/* Call to Action */}
+          <CTA/>
+          <Accreditations/>
+        </div>
       </main>
 
       <SiteFooter />
     </div>
   )
 }
-
