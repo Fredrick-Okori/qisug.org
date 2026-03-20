@@ -4,6 +4,7 @@ import { BlueSiteHeader } from '@/components/blue-header';
 import { MainSiteFooter } from '@/components/main-footer';
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export default function AdmissionPeriods() {
   const periods = [
