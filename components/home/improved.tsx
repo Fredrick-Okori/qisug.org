@@ -116,7 +116,9 @@ export function ImprovedHomeSection() {
                 src="/images/design_portability_1__gfw34rh367u6_large_2x.avif"
                 alt="Queensgate International School Uganda"
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#3d4fd4]/20 to-transparent" />
             </motion.div>

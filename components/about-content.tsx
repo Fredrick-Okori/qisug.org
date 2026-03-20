@@ -239,11 +239,15 @@ export default function AboutContent() {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-[#053F52] to-[#053F52] flex items-center justify-center">
-                    <img 
-                      src="/directors/Aaron (1)_converted.avif" 
-                      alt="Mr. Aaron Namanya - Managing Director" 
-                      className="w-full h-full object-cover rounded-lg" 
-                    />
+                      <Image 
+                        src="/directors/Aaron (1)_converted.avif" 
+                        alt="Mr. Aaron Namanya - Managing Director" 
+                        className="w-full h-full object-cover rounded-lg" 
+                        width={400} 
+                        height={600} 
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        priority 
+                      />
                   </div>
                 </motion.div>
               </motion.div>
@@ -477,11 +481,12 @@ export default function AboutContent() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
                   <div className="relative h-96 w-full overflow-hidden">
-                    <img
-                      src={director.image}
-                      alt={director.name}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
+                      <Image
+                        src={director.image}
+                        alt={director.name}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        width={400} height={600} loading="lazy"
+                      />
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
                       <h3 className="text-xl font-bold text-white mb-1">
                         {director.name}
@@ -523,7 +528,7 @@ export default function AboutContent() {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-[#053F52] to-[#053F52] flex items-center justify-center">
-                    <img src="/team/Principal_s Official Portrait.avif" alt="Principal Dr. Margaret Williams" className="w-full h-full object-cover rounded-lg" />
+                      <Image src="/team/Principal_s Official Portrait.avif" alt="Principal Dr. Margaret Williams" className="w-full h-full object-cover rounded-lg" width={400} height={600} sizes="(max-width: 768px) 100vw, 50vw" priority />
                   </div>
                 </motion.div>
               </motion.div>
@@ -539,13 +544,12 @@ export default function AboutContent() {
                 >
                   A Message from Our Principal
                 </motion.h2>
-                <div className="space-y-4 text-[#053F52] text-base sm:text-lg leading-relaxed">
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                  >
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
                     At Queensgate International School, we excel in preparing students for universities and colleges 
                     worldwide through our comprehensive academic program. As a forward-thinking institution, we are 
                     dedicated to educating young minds with purpose and passion.

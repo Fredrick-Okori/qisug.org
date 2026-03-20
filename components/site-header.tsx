@@ -265,6 +265,7 @@ export function SiteHeader() {
                   alt="Queensgate International School"
                   width={340}
                   height={256}
+                  sizes="100px"
                   className="object-contain"
                   priority
                 />

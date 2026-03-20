@@ -120,6 +120,7 @@ export default function HomePage() {
                 src="/images/ndpjkk1uol9irckqx6db.avif"
                 alt="Happy students with backpacks"
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-contain object-top"
                 priority
               />
@@ -242,6 +243,7 @@ export default function HomePage() {
                 alt="Happy students with backpacks"
                 width={1300}
                 height={850}
+                sizes="(max-width: 1200px) 50vw, 40vw"
                 className="w-full object-contain max-h-[calc(100vh-7rem)]"
                 style={{ objectPosition: 'bottom' }}
                 priority

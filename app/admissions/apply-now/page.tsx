@@ -872,13 +872,14 @@ export default function ApplyNowPage() {
                     Take the first step toward your educational journey at Queensgate International School.
                   </motion.p>
                   
-                  <motion.img 
+                  <Image 
                     src="/images/chatgptimagemar272c20252c12_25_02pm.avif" 
                     alt="Students at Queensgate International School" 
-                    className="rounded-2xl shadow-lg w-full"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3 }}
+                    width={800} 
+                    height={600}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="rounded-2xl shadow-lg w-full object-cover"
+                    priority
                   />
                   
                   <motion.div 

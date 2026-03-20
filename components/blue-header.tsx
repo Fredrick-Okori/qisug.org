@@ -231,6 +231,7 @@ export function BlueSiteHeader() {
                   alt="Queensgate International School"
                   width={240}
                   height={256}
+                  sizes="100px"
                   className="object-contain"
                   priority
                 />

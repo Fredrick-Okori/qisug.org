@@ -166,11 +166,12 @@ export default function AdmissionPeriods() {
                 animate="visible"
                 custom={0.4}
               >
-                <img 
-                  src="/images/02a-header-How-To-Apply-Header-PhotoV3.jpg"
-                  alt="University Application Accepted"
-                  className="w-full h-auto object-cover"
-                />
+                  <Image 
+                    src="/images/02a-header-How-To-Apply-Header-PhotoV3.jpg"
+                    alt="University Application Accepted"
+                    className="w-full h-auto object-cover"
+                    width={800} height={600} loading="lazy"
+                  />
               </motion.div>
             </div>
 
