@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image'
 import { BlueSiteHeader } from '@/components/blue-header';
 import { MainSiteFooter } from '@/components/main-footer';
 import React, { useState, useEffect } from 'react';
@@ -12,6 +13,7 @@ import { useAuth } from '@/components/auth/auth-context';
 import type { CitizenshipType, VisaStatus, IntakeMonth, FullApplicationData } from '@/types/database';
 import confetti from 'canvas-confetti';
 import jsPDF from 'jspdf';
+
 
 // Local storage key
 const STORAGE_KEY = 'qis_application_progress';
