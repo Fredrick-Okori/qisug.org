@@ -332,6 +332,7 @@ export default function DownloadsPage() {
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                     className="object-cover"
+                    quality={75}
                     priority
                   />
                 </motion.div>
@@ -452,6 +453,8 @@ export default function DownloadsPage() {
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                     className="object-cover"
+                    loading="lazy"
+                    quality={75}
                   />
                 </motion.div>
               </motion.div>

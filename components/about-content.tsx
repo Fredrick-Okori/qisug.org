@@ -237,14 +237,15 @@ export default function AboutContent() {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-[#053F52] to-[#053F52] flex items-center justify-center">
-                      <Image 
+                      <Image
 src="/directors/Aaron (1)_converted.avif"
-                        alt="Mr. Aaron Namanya - Managing Director" 
-                        className="w-full h-full object-cover rounded-lg" 
-                        width={400} 
-                        height={600} 
+                        alt="Mr. Aaron Namanya - Managing Director"
+                        className="w-full h-full object-cover rounded-lg"
+                        width={400}
+                        height={600}
                         sizes="(max-width: 768px) 100vw, 50vw"
-                        priority 
+                        quality={75}
+                        priority
                       />
                   </div>
                 </motion.div>
@@ -482,7 +483,7 @@ src="/directors/Aaron (1)_converted.avif"
                       src={director.image}
                       alt={director.name}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                      width={400} height={600} loading="lazy"
+                      width={400} height={600} loading="lazy" quality={75}
                     />
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
                       <h3 className="text-xl font-bold text-white mb-1">
@@ -618,7 +619,10 @@ src="/directors/Aaron (1)_converted.avif"
                       src={teacher.image}
                       alt={teacher.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      loading="lazy"
+                      quality={75}
                     />
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
                       <h3 className="text-xl font-bold text-white mb-1">

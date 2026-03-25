@@ -171,7 +171,7 @@ export default function AdmissionPeriods() {
                     src="/images/02a-header-How-To-Apply-Header-PhotoV3.jpg"
                     alt="University Application Accepted"
                     className="w-full h-auto object-cover"
-                    width={800} height={600} loading="lazy"
+                    width={800} height={600} loading="lazy" quality={75}
                   />
               </motion.div>
             </div>

@@ -316,6 +316,7 @@ export default function NewsAnnouncementsPage() {
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                     className="object-cover"
+                    quality={75}
                     priority
                   />
                 </motion.div>
@@ -358,7 +359,10 @@ export default function NewsAnnouncementsPage() {
                       src={article.image}
                       alt={article.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                      quality={75}
                     />
                     <div className="absolute top-4 left-4">
                       <span className="bg-[#EFBF04] text-[#032f36] text-xs  px-3 py-1 rounded-full">
@@ -513,7 +517,10 @@ export default function NewsAnnouncementsPage() {
                       src={article.image}
                       alt={article.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                      quality={75}
                     />
                     <div className="absolute top-3 left-3">
                       <span className="bg-white/90 text-[#032f36] text-xs  px-3 py-1 rounded-full">
@@ -602,6 +609,8 @@ export default function NewsAnnouncementsPage() {
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                     className="object-cover"
+                    loading="lazy"
+                    quality={75}
                   />
                 </motion.div>
               </motion.div>

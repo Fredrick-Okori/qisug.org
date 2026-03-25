@@ -207,6 +207,7 @@ export default function ESLProgramPage() {
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                     className="object-cover"
+                    quality={75}
                     priority
                   />
                 </motion.div>
@@ -286,11 +287,13 @@ export default function ESLProgramPage() {
                   }}
                 >
                   <Image
-                    src="/images/courses-800x800.jpg"
+                    src="/images/courses-800x800.avif"
                     alt="ESL Learning"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                     className="object-cover"
+                    loading="lazy"
+                    quality={75}
                   />
                 </motion.div>
               </motion.div>

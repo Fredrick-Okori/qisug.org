@@ -159,7 +159,9 @@ export function ApplySectionProduction() {
                   src={cards[0].image}
                   alt={cards[0].title}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  quality={75}
                 />
                 
                 <div className="absolute inset-0 bg-gradient-to-br from-[#053F52]/80 to-[#053F52]/80" />
@@ -212,7 +214,9 @@ export function ApplySectionProduction() {
                   src={cards[1].image}
                   alt={cards[1].title}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  quality={75}
                 />
                 
                 <div className="absolute inset-0 bg-gradient-to-br from-[#053F52]/80 to-[#053F52]/80" />
@@ -266,7 +270,9 @@ export function ApplySectionProduction() {
                   src={cards[2].image}
                   alt={cards[2].title}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-30"
+                  quality={75}
                 />
                 
                 <div className="absolute inset-0 bg-gradient-to-br from-[#053F52]/80 to-[#053F52]/80" />

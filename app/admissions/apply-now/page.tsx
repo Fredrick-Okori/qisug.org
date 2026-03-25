@@ -873,13 +873,14 @@ export default function ApplyNowPage() {
                     Take the first step toward your educational journey at Queensgate International School.
                   </motion.p>
                   
-                  <Image 
-                    src="/images/chatgptimagemar272c20252c12_25_02pm.avif" 
-                    alt="Students at Queensgate International School" 
-                    width={800} 
+                  <Image
+                    src="/images/chatgptimagemar272c20252c12_25_02pm.avif"
+                    alt="Students at Queensgate International School"
+                    width={800}
                     height={600}
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="rounded-2xl shadow-lg w-full object-cover"
+                    quality={75}
                     priority
                   />
                   

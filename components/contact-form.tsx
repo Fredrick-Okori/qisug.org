@@ -375,7 +375,10 @@ export default function ContactForm() {
                         src="/images/queen-27s-20gate-20web-20nw-06.jpeg"
                         alt="Queensgate International School Campus"
                         fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                        quality={75}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#053F52]/30 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                     </div>

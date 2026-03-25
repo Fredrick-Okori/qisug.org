@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     url: "https://www.qgis.ac.ug/academics",
     images: [
       {
-        url: "/images/design_portability_1__gfw34rh367u6_large_2x.jpg",
+        url: "/images/design_portability_1__gfw34rh367u6_large_2x.avif",
         width: 1200,
         height: 630,
         alt: "Queensgate International School academic programs and curriculum",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Academics | Queensgate International School Curriculum & Programs",
     description: "Explore Queensgate International School's comprehensive academic programs and OSSD curriculum.",
-    images: ["/images/design_portability_1__gfw34rh367u6_large_2x.jpg"],
+    images: ["/images/design_portability_1__gfw34rh367u6_large_2x.avif"],
   },
 }
 

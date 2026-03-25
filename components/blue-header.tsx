@@ -29,7 +29,7 @@ const navItems = [
         title: "Our Approach", 
         href: "/about/our-approach",
         description: "Discover our educational philosophy",
-        image: "/images/courses-800x800.jpg"
+        image: "/images/courses-800x800.avif"
       },
     ],
   },

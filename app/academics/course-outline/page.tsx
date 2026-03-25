@@ -180,11 +180,12 @@ export default function AcademicsPage() {
                   }}
                 >
                   <Image
-                    src="/images/design_portability_1__gfw34rh367u6_large_2x.jpg"
+                    src="/images/design_portability_1__gfw34rh367u6_large_2x.avif"
                     alt="OSSD Certificate"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                     className="object-cover"
+                    quality={75}
                     priority
                   />
                 </motion.div>
@@ -312,11 +313,13 @@ export default function AcademicsPage() {
                  
                 >
                   <Image
-                    src="/images/courses-800x800.jpg"
+                    src="/images/courses-800x800.avif"
                     alt="Community Service"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                     className="object-cover"
+                    loading="lazy"
+                    quality={75}
                   />
                 </motion.div>
               </motion.div>
