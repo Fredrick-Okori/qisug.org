@@ -25,11 +25,11 @@ interface AdminUser {
 }
 
 const mockAdminUsers: AdminUser[] = [
-  { id: '1', email: 'admin@qisug.org', fullName: 'System Administrator', role: 'admin', isActive: true, createdAt: '2023-01-15', lastLogin: '2024-01-16' },
-  { id: '2', email: 'john@qisug.org', fullName: 'John Kamau', role: 'reviewer', isActive: true, createdAt: '2023-06-20', lastLogin: '2024-01-15' },
-  { id: '3', email: 'sarah@qisug.org', fullName: 'Sarah Mukiibi', role: 'reviewer', isActive: true, createdAt: '2023-08-10', lastLogin: '2024-01-14' },
-  { id: '4', email: 'michael@qisug.org', fullName: 'Michael Omondi', role: 'viewer', isActive: false, createdAt: '2023-09-05', lastLogin: '2024-01-10' },
-  { id: '5', email: 'emma@qisug.org', fullName: 'Emma Nakiwala', role: 'reviewer', isActive: true, createdAt: '2023-11-20', lastLogin: '2024-01-16' },
+  { id: '1', email: 'admin@qgis.ac.ug', fullName: 'System Administrator', role: 'admin', isActive: true, createdAt: '2023-01-15', lastLogin: '2024-01-16' },
+  { id: '2', email: 'john@qgis.ac.ug', fullName: 'John Kamau', role: 'reviewer', isActive: true, createdAt: '2023-06-20', lastLogin: '2024-01-15' },
+  { id: '3', email: 'sarah@qgis.ac.ug', fullName: 'Sarah Mukiibi', role: 'reviewer', isActive: true, createdAt: '2023-08-10', lastLogin: '2024-01-14' },
+  { id: '4', email: 'michael@qgis.ac.ug', fullName: 'Michael Omondi', role: 'viewer', isActive: false, createdAt: '2023-09-05', lastLogin: '2024-01-10' },
+  { id: '5', email: 'emma@qgis.ac.ug', fullName: 'Emma Nakiwala', role: 'reviewer', isActive: true, createdAt: '2023-11-20', lastLogin: '2024-01-16' },
 ]
 
 export default function AdminUsersPage() {

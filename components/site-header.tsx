@@ -123,7 +123,7 @@ const navItems = [
       { 
         title: "News & Announcements", 
         href: "/more/news-announcement",
-        description: "What is happening at Qisu",
+        description: "What is happening at QGIS",
         image: "/images/privacy.jpg"
       },
       { 
@@ -135,7 +135,7 @@ const navItems = [
       { 
         title: "Calendar", 
         href: "/more/calendar",
-        description: "Qisu Calendar",
+        description: "QGIS Calendar",
         image: "/images/attendance.jpg"
       },
       

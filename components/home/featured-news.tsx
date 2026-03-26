@@ -71,7 +71,7 @@ export default function FeaturedNews(){
                   Featured Announcements
                 </h2>
               </div>
-                <p className='text-[#052f53]'>Here is what is happening at QISU</p>
+                <p className='text-[#052f53]'>Here is what is happening at QGIS</p>
             
             </motion.div>
 

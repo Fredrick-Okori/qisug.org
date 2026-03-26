@@ -433,8 +433,8 @@ export default function AppliedStudentsPage() {
             <h4 className="font-medium text-[#032f36]">Need Help?</h4>
             <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
               If you have questions about your application status, please contact admissions at{' '}
-              <a href="mailto:admissions@qisug.ac.ug" className="text-[#032f36] hover:underline">
-                admissions@qisug.ac.ug
+              <a href="mailto:admissions@qgis.ac.ug" className="text-[#032f36] hover:underline">
+                admissions@qgis.ac.ug
               </a>
             </p>
           </div>

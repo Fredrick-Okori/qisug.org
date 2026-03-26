@@ -55,7 +55,7 @@ export default function ApplicantSidebar({ children }: ApplicantSidebarProps) {
           </div>
           <div>
             <h1 className="text-lg font-bold tracking-tight">
-              QISUG <span className="text-[#EFBF04]">Portal</span>
+              QGIS <span className="text-[#EFBF04]">Portal</span>
             </h1>
             <p className="text-xs text-slate-400 mt-0.5 font-medium uppercase">Student Area</p>
           </div>

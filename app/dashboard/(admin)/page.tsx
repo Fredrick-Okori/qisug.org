@@ -375,8 +375,8 @@ export default function AdminDashboardPage() {
               our support team is here to assist you.
             </p>
             <div className="flex flex-wrap gap-4 mt-3">
-              <a href="mailto:support@qisug.ac.ug" className="text-[#032f36] hover:underline text-sm">
-                support@qisug.ac.ug
+              <a href="mailto:support@qgis.ac.ug" className="text-[#032f36] hover:underline text-sm">
+                support@qgis.ac.ug
               </a>
               <span className="text-slate-400">|</span>
               <a href="tel:+256414123456" className="text-[#032f36] hover:underline text-sm">

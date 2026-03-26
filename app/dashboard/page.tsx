@@ -462,8 +462,8 @@ export default function DashboardPage() {
               our team is here to help.
             </p>
             <div className="flex flex-wrap gap-4 mt-3">
-              <a href="mailto:admissions@qisug.ac.ug" className="text-[#032f36] hover:underline text-sm">
-                admissions@qisug.ac.ug
+              <a href="mailto:admissions@qgis.ac.ug" className="text-[#032f36] hover:underline text-sm">
+                admissions@qgis.ac.ug
               </a>
               <span className="text-slate-400">|</span>
               <a href="tel:+256414123456" className="text-[#032f36] hover:underline text-sm">

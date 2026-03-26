@@ -84,7 +84,7 @@ export default function AdminSidebar({ children }: AdminSidebarProps) {
           </div>
           <div>
             <h1 className="text-lg font-bold text-white tracking-tight">
-              QISUG <span className="text-blue-400">Admin</span>
+              QGIS <span className="text-blue-400">Admin</span>
             </h1>
             <p className="text-xs text-slate-500 mt-0.5 font-medium uppercase">Management Portal</p>
           </div>

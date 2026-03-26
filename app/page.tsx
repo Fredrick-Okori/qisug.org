@@ -29,9 +29,9 @@ const schemaOrgData = {
     "addressCountry": "US"
   },
   "sameAs": [
-    "https://www.facebook.com/qisug",
-    "https://www.twitter.com/qisug",
-    "https://www.instagram.com/qisug"
+    "https://www.facebook.com/qgis",
+    "https://www.twitter.com/qgis",
+    "https://www.instagram.com/qgis"
   ],
   "areaServed": "Worldwide",
   "type": "PrivateSchool"

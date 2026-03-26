@@ -172,7 +172,7 @@ export default function SuccessPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          to: 'admissions@qisug.ac.ug',
+          to: 'admissions@qgis.ac.ug',
           applicantName: applicationSummary.applicantName,
           reference: applicationSummary.reference,
           email: applicationSummary.email,
@@ -576,9 +576,9 @@ export default function SuccessPage() {
               Need Help?
             </h3>
             <div className="flex flex-col sm:flex-row gap-4 justify-center text-gray-700">
-              <a href="mailto:admissions@qisug.ac.ug" className="flex items-center gap-2 hover:text-[#EFBF04]">
+              <a href="mailto:admissions@qgis.ac.ug" className="flex items-center gap-2 hover:text-[#EFBF04]">
                 <Mail className="w-5 h-5" />
-                admissions@qisug.ac.ug
+                admissions@qgis.ac.ug
               </a>
               <a href="tel:+256XXXXXXXX" className="flex items-center gap-2 hover:text-[#EFBF04]">
                 <Phone className="w-5 h-5" />

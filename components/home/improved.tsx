@@ -48,7 +48,7 @@ export function ImprovedHomeSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              Why Choose QISU
+              Why Choose QGIS
             </motion.h2>
             <motion.p
               className="text-lg text-white mb-8"

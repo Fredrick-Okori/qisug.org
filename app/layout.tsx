@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     title: "Queensgate International School | Excellence in Education",
     description: "Queensgate International School provides world-class education for students worldwide.",
     images: ["/images/og-image.jpg"],
-    creator: "@qisug",
+    creator: "@qgis",
   },
   icons: {
     icon: [
