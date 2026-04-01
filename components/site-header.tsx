@@ -236,6 +236,12 @@ export function SiteHeader() {
       }}
     >
 
+      {/* Background Pattern */}
+      <div
+        className="absolute inset-0 bg-center bg-repeat"
+        style={{ backgroundImage: "url('/images/pattern.webp')" }}
+      />
+
       <motion.div
         className="absolute inset-0"
         style={{ backgroundColor: '#EFBF04', opacity: 0.88 }}
