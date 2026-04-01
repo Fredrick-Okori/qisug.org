@@ -42,7 +42,7 @@ const contactSchemaData = {
   "name": "Queensgate International School",
   "description": "Contact Queensgate International School for world-class international education in Uganda.",
   "url": "https://www.qgis.ac.ug/contact",
-  "telephone": "+256-414-123-456",
+  "telephone": "+256-757-882-623",
   "email": "queensgateinternational@gmail.com",
   "address": {
     "@type": "PostalAddress",
@@ -51,7 +51,7 @@ const contactSchemaData = {
   },
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+256-414-123-456",
+    "telephone": "+256-757-882-623",
     "contactType": "customer service",
     "availableLanguage": "English",
     "hoursAvailable": {

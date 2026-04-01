@@ -23,7 +23,7 @@ const schemaOrgData = {
   "url": "https://www.qgis.ac.ug",
   "logo": "https://www.qgis.ac.ug/images/logo_white.png",
   "image": "https://www.qgis.ac.ug/images/ndpjkk1uol9irckqx6db.avif",
-  "telephone": "+1-234-567-8900",
+  "telephone": "+256-757-882-623",
   "address": {
     "@type": "PostalAddress",
     "addressCountry": "US"

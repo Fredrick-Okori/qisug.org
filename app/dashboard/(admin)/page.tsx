@@ -379,8 +379,8 @@ export default function AdminDashboardPage() {
                 support@qgis.ac.ug
               </a>
               <span className="text-slate-400">|</span>
-              <a href="tel:+256414123456" className="text-[#032f36] hover:underline text-sm">
-                +256 414 123 456
+              <a href="tel:+256757882623" className="text-[#032f36] hover:underline text-sm">
+                +256 757 882 623
               </a>
             </div>
           </div>

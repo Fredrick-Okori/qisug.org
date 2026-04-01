@@ -41,7 +41,7 @@ const admissionsSchemaData = {
   "name": "Queensgate International School",
   "description": "Queensgate International School offers comprehensive admissions for students worldwide seeking international education excellence.",
   "url": "https://www.qgis.ac.ug/admissions",
-  "telephone": "+1-234-567-8900",
+  "telephone": "+256-757-882-623",
   "address": {
     "@type": "PostalAddress",
     "addressCountry": "US"

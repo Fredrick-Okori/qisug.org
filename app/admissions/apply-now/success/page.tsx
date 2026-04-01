@@ -580,9 +580,9 @@ export default function SuccessPage() {
                 <Mail className="w-5 h-5" />
                 admissions@qgis.ac.ug
               </a>
-              <a href="tel:+256XXXXXXXX" className="flex items-center gap-2 hover:text-[#EFBF04]">
+              <a href="tel:+256757882623" className="flex items-center gap-2 hover:text-[#EFBF04]">
                 <Phone className="w-5 h-5" />
-                +256 XXX XXXXXX
+                +256 757 882 623
               </a>
             </div>
           </motion.div>
