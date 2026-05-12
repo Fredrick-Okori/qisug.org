@@ -1,7 +1,21 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+const STATIC_PREFIXES = ['/_next/', '/images/', '/favicon', '/icon', '/apple', '/site.webmanifest', '/google']
+
+function isStaticOrHome(pathname: string) {
+  if (pathname === '/') return true
+  return STATIC_PREFIXES.some((p) => pathname.startsWith(p))
+}
+
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // Holding page mode: redirect all non-static routes to /
+  if (!isStaticOrHome(pathname)) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -168,8 +182,6 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-    '/admin/:path*',
-    '/dashboard/:path*',
   ],
 }
 
