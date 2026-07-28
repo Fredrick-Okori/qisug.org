@@ -322,6 +322,8 @@ export default function HowToApplyPage() {
                 </p>
                 <a
                   href="/admissions/apply-now"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-block bg-gradient-to-r from-[#032f36] to-[#032f36] text-white px-8 py-4 rounded-full text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >

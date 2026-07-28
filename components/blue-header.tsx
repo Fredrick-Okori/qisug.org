@@ -371,6 +371,8 @@ export function BlueSiteHeader() {
                     <SheetClose asChild>
                       <Link
                         href="/login"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="w-full inline-flex items-center justify-center gap-2 text-white border-white hover:bg-white hover:text-[#2a3dc8ff] font-medium py-2 px-3 rounded-md"
                       >
                         <motion.div
@@ -533,6 +535,8 @@ export function BlueSiteHeader() {
                 // Log In button when signed out
                 <Link
                   href="/login"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-white hover:bg-white/10 font-medium flex items-center gap-2 transition-all duration-300 rounded-md text-sm px-3 py-2"
                 >
                   <motion.div
@@ -563,8 +567,8 @@ export function BlueSiteHeader() {
                 duration: 0.4
               }}
             >
-              <Link href="/admissions/apply-now">
-                <motion.button 
+              <Link href="/admissions/apply-now" target="_blank" rel="noopener noreferrer">
+                <motion.button
                   className="flex items-center gap-2 bg-[#20cece] truncate text-[#053f52] rounded-full border border-[#20cece] transition-all duration-300 hover:bg-white hover:border-white px-6 py-2.5 text-sm xl:px-8 xl:py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

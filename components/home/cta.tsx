@@ -133,6 +133,8 @@ export function CTA() {
               >
                 <Link
                   href="/admissions/apply-now"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group inline-flex items-center gap-2 px-8 py-4 bg-[#20cece] text-gray-900 rounded-full  text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
                   Apply Now

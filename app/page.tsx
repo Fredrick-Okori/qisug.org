@@ -173,7 +173,7 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
               >
-                <Link href="/admissions/apply-now" className="w-full sm:w-auto">
+                <Link href="/admissions/apply-now" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                   <Button
                     size="lg"
                     className="w-full bg-[#20cece] text-[#032f36] font-semibold hover:bg-[#20cece]/90 text-base px-8 py-6 rounded-full shadow-lg shadow-[#20cece]/20 transition-all"
@@ -232,7 +232,7 @@ export default function HomePage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
                 >
-                  <Link href="/admissions/apply-now">
+                  <Link href="/admissions/apply-now" target="_blank" rel="noopener noreferrer">
                     <Button
                       size="lg"
                       className="bg-[#20cece] text-[#032f36] font-normal hover:bg-[#20cece]/90 text-base sm:text-lg px-9 py-6 rounded-full shadow-lg shadow-[#20cece]/25 hover:shadow-xl transition-all duration-300"

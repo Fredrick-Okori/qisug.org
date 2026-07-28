@@ -204,14 +204,6 @@ export function SiteHeader() {
     }
   }
 
-  // Handle Apply Now click - redirect to login if not signed in
-  const handleApplyClick = (e: React.MouseEvent) => {
-    if (!isMounted || !isSignedIn) {
-      e.preventDefault()
-      window.location.href = "/login?redirect=/admissions/apply-now"
-    }
-  }
-
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null)
   const [isAdminState, setIsAdminState] = useState(false)
   useEffect(() => {
@@ -374,6 +366,8 @@ export function SiteHeader() {
                     <SheetClose asChild>
                       <Link
                         href={isSignedIn ? "/admissions/apply-now" : "/login?redirect=/admissions/apply-now"}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="flex items-center justify-center gap-2 bg-[#053F52] text-white rounded-full px-6 py-3 font-semibold text-sm hover:bg-[#20cece] transition-colors w-full"
                       >
                         Apply Now
@@ -469,6 +463,8 @@ export function SiteHeader() {
                     <SheetClose asChild>
                       <Link
                         href="/login"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="w-full inline-flex items-center justify-center gap-2 bg-white/60 text-[#053F52] hover:bg-white font-medium py-2.5 px-4 rounded-lg transition-colors text-sm"
                       >
                         <User className="h-4 w-4" />
@@ -586,9 +582,12 @@ export function SiteHeader() {
                   duration: 0.4
                 }}
               >
-                <Link href={isSignedIn ? "/admissions/apply-now" : "#"}>
-                  <motion.button 
-                    onClick={handleApplyClick}
+                <Link
+                  href={isSignedIn ? "/admissions/apply-now" : "/login?redirect=/admissions/apply-now"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <motion.button
                     className={`flex items-center gap-2 bg-[#053F52] truncate text-white rounded-full border border-[#053F52] transition-all duration-300 hover:bg-[#20cece] hover:border-[#20cece] ${
                       isScrolled ? "px-5 py-2 text-xs xl:px-6 xl:py-2.5" : "px-6 py-2.5 text-sm xl:px-8 xl:py-3"
                     }`}
@@ -676,6 +675,8 @@ export function SiteHeader() {
                 // Log In button when signed out
                 <Link
                   href="/login"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`text-[#053F52] font-medium flex items-center gap-2 transition-all duration-300 rounded-md ${
                     isScrolled ? "text-xs xl:text-sm px-2 py-1.5 h-8" : "text-sm px-3 py-2 h-9"
                   }`}

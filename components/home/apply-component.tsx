@@ -71,14 +71,6 @@ export function ApplySectionProduction() {
     }
   }, [])
 
-  // Handle Apply Now click - redirect to login if not signed in
-  const handleApplyClick = (e: React.MouseEvent) => {
-    if (!isMounted || !isSignedIn) {
-      e.preventDefault()
-      window.location.href = "/login?redirect=/admissions/apply-now"
-    }
-  }
-
   // Don't render until mounted to prevent hydration mismatch
   if (!isMounted) {
     return null
@@ -113,9 +105,12 @@ export function ApplySectionProduction() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-              <Link href={isSignedIn ? "/admissions/apply-now/reference" : "#"}>
+              <Link
+                href={isSignedIn ? "/admissions/apply-now/reference" : "/login?redirect=/admissions/apply-now"}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button
-                  onClick={handleApplyClick}
                   className="bg-[#053f52] text-white hover:bg-[#042a38] px-8 py-6 text-base rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
                   Apply Now

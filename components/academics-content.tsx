@@ -448,7 +448,7 @@ export default function AcademicsContent() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <Link href="/admissions/apply-now">
+              <Link href="/admissions/apply-now" target="_blank" rel="noopener noreferrer">
                 <Button
                   size="lg"
                   className="bg-[#20cece] text-[#053f52] hover:bg-[#20cece] px-8 py-6 rounded-full  transition-all duration-300"
