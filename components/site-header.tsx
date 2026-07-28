@@ -249,7 +249,7 @@ export function SiteHeader() {
             className={`flex-shrink-0 flex items-center gap-2 transition-all duration-300 ${
               isScrolled
                 ? 'py-2'
-                : 'py-2 sm:py-4 md:py-6'
+                : 'py-4 px-5 sm:py-4 md:py-6'
             }`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -264,7 +264,7 @@ export function SiteHeader() {
                 className={`relative transition-all duration-300 ${
                   isScrolled
                     ? 'w-11 h-11 sm:w-14 sm:h-16'
-                    : 'w-11 h-11 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-43'
+                    : 'w-16 h-16 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-43'
                 }`}
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
@@ -288,10 +288,10 @@ export function SiteHeader() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-[#053F52] font-bold whitespace-nowrap leading-tight text-[13px] sm:text-[16px] font-serif">
+              <span className="text-[#053F52] font-bold whitespace-nowrap leading-tight text-[18px] sm:text-[16px] font-serif">
                 QUEENSGATE
               </span>
-              <span className="text-[#053F52] whitespace-nowrap text-[9px] sm:text-[11px] font-serif">
+              <span className="text-[#053F52] whitespace-nowrap text-[11px] sm:text-[14px] font-serif">
                 INTERNATIONAL SCHOOL
               </span>
             </motion.div>
@@ -329,35 +329,35 @@ export function SiteHeader() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Button variant="ghost" size="icon" className="text-[#053F52] h-10 w-10">
-                    <Menu className="h-6 w-6" />
+                  <Button variant="ghost" size="icon" className="text-[#053F52] h-11 w-11">
+                    <Menu className="h-11 w-11" />
                     <span className="sr-only">Open menu</span>
                   </Button>
                 </motion.div>
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="bg-[#EFBF04] text-[#053F52] border-l-0 w-[85vw] sm:w-[350px] px-0 flex flex-col overflow-y-auto"
+                className="bg-[#EFBF04] text-[#053F52] border-l-0 w-[85vw] sm:w-[350px] px-2 flex flex-col overflow-y-auto"
               >
                 {/* Sheet Header */}
                 <div className="flex items-center justify-between px-5 py-4 border-b border-[#053F52]/15">
                   <div className="flex items-center gap-3">
-                    <div className="relative w-9 h-9 flex-shrink-0">
+                    <div className="relative w-16 h-16 flex-shrink-0">
                       <Image src="/images/zas5zz9dmzkxht9zd4vz.avif" alt="QGIS" width={36} height={36} className="object-contain w-full h-full" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold text-[#053F52] text-[13px] font-serif leading-tight">QUEENSGATE</span>
+                      <span className="font-bold text-[#053F52] text-[18px] font-serif leading-tight">QUEENSGATE</span>
                       <span className="text-[#053F52] text-[9px] font-serif tracking-wide">INTERNATIONAL SCHOOL</span>
                     </div>
                   </div>
-                  <SheetClose asChild>
+
                     <motion.div whileHover={{ rotate: 90 }} transition={{ duration: 0.2 }}>
-                      <Button variant="ghost" size="icon" className="text-[#053F52] h-8 w-8 hover:bg-[#053F52]/10">
-                        <X className="h-5 w-5" />
+                      
+                       
                         <span className="sr-only">Close menu</span>
-                      </Button>
+                   
                     </motion.div>
-                  </SheetClose>
+                 
                 </div>
 
                 {/* Apply Now CTA */}
