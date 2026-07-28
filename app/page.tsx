@@ -109,7 +109,7 @@ export default function HomePage() {
             style={{ minHeight: 'calc(100vh - var(--navbar-height, 4rem) - 2.5rem)' }}
           >
             <motion.div
-              className="absolute inset-0 z-0"
+              className="absolute py-3 inset-0 z-0"
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
@@ -127,7 +127,7 @@ export default function HomePage() {
             <div
               className="absolute inset-x-0 bottom-0 z-10 pointer-events-none"
               style={{
-                height: '75%',
+                height: '65%',
                 background: 'linear-gradient(to top, #032f36 60%, rgba(3,47,54,0.85) 80%, transparent 100%)',
               }}
             />
@@ -139,7 +139,7 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="inline-flex items-center gap-2 self-start bg-white/10 backdrop-blur-md border border-white/15 px-3.5 py-1.5 rounded-full text-xs font-medium text-white/90"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#efbf04]" />
+               
                 Admissions Open 2026/2027
               </motion.div>
 
@@ -149,10 +149,10 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
               >
-                <span className="block text-5xl sm:text-6xl font-black tracking-[0.08em] text-[#20cece] drop-shadow-md">
+                <span className="block text-5xl sm:text-6xl font-black text-[#20cece] drop-shadow-md">
                   QUEENSGATE
                 </span>
-                <span className="block text-xl sm:text-2xl font-extrabold tracking-[0.18em] text-white mt-1.5 drop-shadow-sm">
+                <span className="block text-xl sm:text-2xl font-extrabold  text-white mt-1.5 drop-shadow-sm">
                   INTERNATIONAL SCHOOL
                 </span>
               </motion.h1>
@@ -181,15 +181,7 @@ export default function HomePage() {
                     Apply Today <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
-                <Link href="/academics" className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full border-white/20 text-white bg-white/5 hover:bg-white/10 backdrop-blur-md text-base px-6 py-6 rounded-full"
-                  >
-                    Explore Programs
-                  </Button>
-                </Link>
+               
               </motion.div>
             </div>
           </div>
